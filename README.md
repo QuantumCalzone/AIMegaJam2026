@@ -45,7 +45,14 @@ If something else on your machine already uses port 8000, change the port in **E
 
 ## Working together
 
-- **Binary assets can't be merged.** Two people editing the same Blueprint, level or asset means one person's work is lost. Agree on who edits what, and pull before you start.
+- **Binary assets can't be merged.** Two people editing the same Blueprint, level or asset means one person's work is lost. Pull before you start, then lock the file:
+
+  ```bash
+  git lfs lock Content/Maps/Main.umap
+  ```
+
+  After you push your change, release it with `git lfs unlock <path>`. `git lfs locks` shows who holds what. Git refuses to push changes to a file someone else has locked. Unreal's editor doesn't take these locks for you, so run the commands yourself or ask your agent to.
+- **Agent notes:** [Agents/](Agents/README.md) holds notes that Claude Code agents and people use to coordinate: messages, handoffs and decisions. To see who is working on what, run `git lfs locks`. Agents read it at the start of each session. Put your GitHub username in your own `CLAUDE.local.md` so your agents know which notes are yours.
 - **Outside assets** (Fab and others) must be listed in the jam submission. Note the source and license when you add one.
 - **Git LFS storage and bandwidth** count against the GitHub account's limits. Avoid committing large source files you don't need.
 
@@ -58,7 +65,7 @@ If something else on your machine already uses port 8000, change the port in **E
 
 - The theme is **"Director's Cut"**.
 - Building runs Nov 12–15, 2026. The **deadline is Nov 15, 5:59 PM PST**, and late entries are disqualified.
-- No game work before Nov 12. Anything made before the jam (prompts, scripts, assets) must be declared, including this repo's setup files.
+- No game assets before Nov 12. The organizers said setting up the project and planning the design before then is fine. Anything made before the jam (prompts, scripts, design notes) must still be declared, including this repo's setup files.
 - Teams can have up to 5 people. Any AI tools are allowed.
 - Each team member must be 18 or older and have an active Epic Games account. The submission form asks for the email linked to that account.
 - Partners email their codes to people who joined the jam on itch.io. Some codes have claim deadlines, so check the jam page.

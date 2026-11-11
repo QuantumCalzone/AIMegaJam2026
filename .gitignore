@@ -23,6 +23,9 @@ Packaged/
 .claude/settings.local.json
 CLAUDE.local.md
 
+# Agent status files stay on one machine (see Agents/README.md)
+Agents/status/
+
 # OS files
 Thumbs.db
 Desktop.ini
