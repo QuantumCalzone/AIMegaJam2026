@@ -54,8 +54,14 @@ Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.lo
 
 UE 5.8 includes **Unreal MCP**, the experimental `ModelContextProtocol` plugin. It runs an MCP server inside the editor process at `http://127.0.0.1:8000/mcp`. Through it, an agent can spawn and edit actors, build Blueprints and Widget Blueprints, author materials, MetaSounds, Niagara, PCG and Sequencer content, and run automation tests. Docs: https://dev.epicgames.com/documentation/unreal-engine/unreal-mcp-in-unreal-editor
 
-- **Not enabled in this project yet.** In this engine install the plugin is off by default. To turn it on, add `ModelContextProtocol` and `AllToolsets` to the `Plugins` list in the `.uproject` (with the editor closed) or use Edit > Plugins. Then restart the editor and click Edit > Editor Preferences > Agentic Workflows > Model Context Protocol > Generate Client Config. This writes `.mcp.json` to the project root. Start Claude Code from the project root after the editor is running.
-- The server uses tool search: it lists four meta-tools (`list_toolsets`, `describe_toolsets`, `describe_tools`, `call_tool`), not every tool. Find tools with those first.
+- **How it's set up here** (UE 5.8.4 has both the plugin and auto-start off by default, unlike the docs):
+  - `ModelContextProtocol` and `AllToolsets` are enabled in the `.uproject`, limited to the Editor target, so packaged builds don't include the server.
+  - Auto-start is on through `Config/DefaultEditorPerProjectUserSettings.ini` (`bAutoStartServer=True`), so the server starts whenever the editor opens.
+  - `AllToolsets` pulls in Game Features, which needs the `GameFeatureData` entry under `AssetManagerSettings` in `DefaultGame.ini`. Without that entry, the editor reports load errors at startup.
+  - `.mcp.json` in the project root (written by `ModelContextProtocol.GenerateClientConfig ClaudeCode`) points Claude Code at the server as `unreal-mcp`.
+- **Connecting:** open the editor first, then start Claude Code from the project root. A session that started before the editor won't see the server until it reconnects.
+- The server uses tool search. In 5.8.4 it lists three meta-tools, not the four in the docs: `list_toolsets`, `describe_toolset` and `call_tool`. In Claude Code they appear as `mcp__unreal-mcp__<name>`. Start with `list_toolsets`, then `describe_toolset` to get a toolset's tools, then `call_tool` to run one. Every editor action, read or write, goes through `call_tool`.
+- If the editor restarts during a session, the connection drops. Reconnect `unreal-mcp` from `/mcp`.
 - Tool calls run one at a time on the game thread. Don't send several calls in parallel. Claude Code stops waiting after about 120 seconds, so split long work (big scripts, asset scans, automation runs) into shorter calls.
 - The server only exists while the editor runs. Commandlets don't start it unless you pass `-ModelContextProtocolStartServer`.
 - Instructions for every connecting agent can be set in Project Settings > Agentic Workflows > Model Context Protocol > Instructions. They are stored in `DefaultGame.ini`.
