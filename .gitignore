@@ -1,0 +1,25 @@
+# Unreal Engine generated folders
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Plugins/**/Binaries/
+Plugins/**/Intermediate/
+
+# Packaged builds (archive directory used in CLAUDE.md)
+Packaged/
+
+# Visual Studio / Rider (only relevant if C++ is added later)
+.vs/
+.idea/
+*.sln
+*.suo
+*.sdf
+*.VC.db
+*.VC.opendb
+*.vsconfig
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
