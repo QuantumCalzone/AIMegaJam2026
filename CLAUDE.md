@@ -15,7 +15,10 @@ Source: the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). The O
 - **AI:** Any AI tools are allowed, with no limit on agents.
 - **Outside assets** (Fab and others) are allowed if the license permits. Every one must be listed in the submission, so record each asset's source and license when you add it.
 - **Team:** solo, or up to 5 people.
-- **Submission:** a packaged build (Windows, macOS, Android or iOS; this project targets Windows), zipped as `TeamName_GameName`, under 1 GB (use butler for larger builds), uploaded to itch.io. It needs a 30–60 second gameplay video. A dev log is optional but required for the Glass Box category. A "Tools you used" field is optional but required for some partner prizes. Web builds need the separate UE 5.9 MegaJam Preview, so this 5.8 project targets desktop.
+- **Eligibility:** each entrant must be 18 or older and have an active Epic Games account. The submission form asks for each member's name and the email linked to their Epic account.
+- **Partner codes:** partners email their codes to people who joined the jam on itch.io. Some codes have claim deadlines (the jam page lists Anthropic as Nov 12–27 and Meshy as by Nov 17). Check the jam page for the others.
+- **Build configuration:** the jam page lists the platforms as "Windows 10 or 11, macOS, Android, or iOS (development build)". It is not clear if that note is for all platforms or only for iOS. The package commands below use `-clientconfig=Development`. Read the Official Rules before you change to Shipping.
+- **Submission:** a packaged build (Windows 10 or 11, macOS, Android or iOS; this project targets Windows), zipped as `TeamName_GameName`, under 1 GB (use butler for larger builds), uploaded to itch.io. It needs a 30–60 second gameplay video. A dev log is optional but required for the Glass Box category. A "Tools you used" field is optional but required for some partner prizes. Web builds need the separate UE 5.9 MegaJam Preview, so this 5.8 project targets desktop.
 - **Judging:** each entry is scored 1–5 on all of: ambition and innovation, theme, fun, gameplay, visuals, level design and progression, and audio. Audio and progression count as much as visuals.
 
 ## Engine

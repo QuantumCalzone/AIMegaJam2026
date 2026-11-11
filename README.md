@@ -59,4 +59,6 @@ If something else on your machine already uses port 8000, change the port in **E
 - Building runs Nov 12–15, 2026. The **deadline is Nov 15, 5:59 PM PST**, and late entries are disqualified.
 - No game work before Nov 12. Anything made before the jam (prompts, scripts, assets) must be declared, including this repo's setup files.
 - Teams can have up to 5 people. Any AI tools are allowed.
+- Each team member must be 18 or older and have an active Epic Games account. The submission form asks for the email linked to that account.
+- Partners email their codes to people who joined the jam on itch.io. Some codes have claim deadlines, so check the jam page.
 - Full rules: the [itch.io jam page](https://itch.io/jam/2026-epic-ai-megajam) and the Official Rules linked there.
