@@ -26,7 +26,7 @@ Contributors work on Windows and macOS. Everyone must use **UE 5.8.4**, because 
 - Engine root, written `<UE_ROOT>` below:
   - Windows launcher default: `C:/Program Files/Epic Games/UE_5.8`
   - macOS launcher default: `/Users/Shared/Epic Games/UE_5.8`
-  - Original dev PC: `E:/Epic Games/UE_5.8`. That install isn't in the Epic launcher's list, so `"5.8"` doesn't resolve there. Double-clicking the `.uproject` on that PC asks for an engine and writes a GUID. Open the project with the editor command below instead.
+  - A custom install location may also be listed in your own `CLAUDE.local.md`. Git ignores that file; use it for notes about your own machine.
 - Editor binary:
   - Windows: `<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor.exe` (GUI) and `UnrealEditor-Cmd.exe` (headless and commandlets).
   - macOS: `<UE_ROOT>/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor`, for both GUI and commandlets.

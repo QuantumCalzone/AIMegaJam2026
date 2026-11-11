@@ -19,8 +19,9 @@ Packaged/
 *.VC.opendb
 *.vsconfig
 
-# Claude Code personal settings
+# Claude Code personal settings and notes
 .claude/settings.local.json
+CLAUDE.local.md
 
 # OS files
 Thumbs.db
