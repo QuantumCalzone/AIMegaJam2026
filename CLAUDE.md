@@ -15,32 +15,47 @@ Source: the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). The O
 - **AI:** Any AI tools are allowed, with no limit on agents.
 - **Outside assets** (Fab and others) are allowed if the license permits. Every one must be listed in the submission, so record each asset's source and license when you add it.
 - **Team:** solo, or up to 5 people.
-- **Submission:** a packaged Windows build, zipped as `TeamName_GameName`, under 1 GB (use butler for larger builds), uploaded to itch.io. It needs a 30–60 second gameplay video. A dev log is optional but required for the Glass Box category. A "Tools you used" field is optional but required for some partner prizes. Web builds need the separate UE 5.9 MegaJam Preview, so this 5.8 project targets desktop.
+- **Submission:** a packaged build (Windows, macOS, Android or iOS; this project targets Windows), zipped as `TeamName_GameName`, under 1 GB (use butler for larger builds), uploaded to itch.io. It needs a 30–60 second gameplay video. A dev log is optional but required for the Glass Box category. A "Tools you used" field is optional but required for some partner prizes. Web builds need the separate UE 5.9 MegaJam Preview, so this 5.8 project targets desktop.
 - **Judging:** each entry is scored 1–5 on all of: ambition and innovation, theme, fun, gameplay, visuals, level design and progression, and audio. Audio and progression count as much as visuals.
 
 ## Engine
 
-- `AIMegaJam2026.uproject` points to the engine with a GUID (`EngineAssociation`), not a version string. On this machine the GUID resolves (through `HKCU\Software\Epic Games\Unreal Engine\Builds`) to the launcher install at `E:/Epic Games/UE_5.8` (5.8.4). On another machine, use "Switch Unreal Engine version" on the `.uproject` to fix the association.
-- Editor binaries: `E:/Epic Games/UE_5.8/Engine/Binaries/Win64/UnrealEditor.exe` (GUI) and `UnrealEditor-Cmd.exe` (headless and commandlets).
+Contributors work on Windows and macOS. Everyone must use **UE 5.8.4**, because assets saved in a newer engine version won't open in an older one. 5.8.4 is also the first 5.8 release reported to package Mac builds on macOS 27.
+
+- `EngineAssociation` in the `.uproject` is `"5.8"`, which matches an Epic launcher install of 5.8 on either platform. If opening the project rewrites it (to a `{GUID}` or anything else), revert that line and never commit it.
+- Engine root, written `<UE_ROOT>` below:
+  - Windows launcher default: `C:/Program Files/Epic Games/UE_5.8`
+  - macOS launcher default: `/Users/Shared/Epic Games/UE_5.8`
+  - Original dev PC: `E:/Epic Games/UE_5.8`. That install isn't in the Epic launcher's list, so `"5.8"` doesn't resolve there. Double-clicking the `.uproject` on that PC asks for an engine and writes a GUID. Open the project with the editor command below instead.
+- Editor binary:
+  - Windows: `<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor.exe` (GUI) and `UnrealEditor-Cmd.exe` (headless and commandlets).
+  - macOS: `<UE_ROOT>/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor`, for both GUI and commandlets.
+- `<PROJECT>` below is the absolute path to `AIMegaJam2026.uproject` in the repo root. On Windows, give the engine a Windows-style path (`C:/...`), not a Git Bash path (`/c/...`).
 
 ## Commands
 
-Open the editor:
+Open the editor (Windows shown; on macOS use the macOS editor binary):
 
 ```bash
-"E:/Epic Games/UE_5.8/Engine/Binaries/Win64/UnrealEditor.exe" "C:/Users/Personal/Projects/AIMegaJam2026/AIMegaJam2026.uproject"
+"<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor.exe" "<PROJECT>"
 ```
 
-Run an editor Python script headless (the editor must be closed if the script saves assets):
+Run an editor Python script headless (the editor must be closed if the script saves assets). On macOS, use the macOS editor binary in place of `UnrealEditor-Cmd.exe`:
 
 ```bash
-"E:/Epic Games/UE_5.8/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" "C:/Users/Personal/Projects/AIMegaJam2026/AIMegaJam2026.uproject" -run=pythonscript -script="C:/path/to/script.py"
+"<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" "<PROJECT>" -run=pythonscript -script="<absolute path to script.py>"
 ```
 
-Package a Windows build:
+Package a Windows build. This only works on a Windows machine:
 
 ```bash
-"E:/Epic Games/UE_5.8/Engine/Build/BatchFiles/RunUAT.bat" BuildCookRun -project="C:/Users/Personal/Projects/AIMegaJam2026/AIMegaJam2026.uproject" -platform=Win64 -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="C:/Users/Personal/Projects/AIMegaJam2026/Packaged"
+"<UE_ROOT>/Engine/Build/BatchFiles/RunUAT.bat" BuildCookRun -project="<PROJECT>" -platform=Win64 -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="<repo root>/Packaged"
+```
+
+Package a macOS build. This needs a Mac with Xcode:
+
+```bash
+"<UE_ROOT>/Engine/Build/BatchFiles/RunUAT.sh" BuildCookRun -project="<PROJECT>" -platform=Mac -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="<repo root>/Packaged"
 ```
 
 Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.log`.
@@ -59,7 +74,7 @@ UE 5.8 includes **Unreal MCP**, the experimental `ModelContextProtocol` plugin. 
   - Auto-start is on through `Config/DefaultEditorPerProjectUserSettings.ini` (`bAutoStartServer=True`), so the server starts whenever the editor opens.
   - `AllToolsets` pulls in Game Features, which needs the `GameFeatureData` entry under `AssetManagerSettings` in `DefaultGame.ini`. Without that entry, the editor reports load errors at startup.
   - `.mcp.json` in the project root (written by `ModelContextProtocol.GenerateClientConfig ClaudeCode`) points Claude Code at the server as `unreal-mcp`.
-- **Connecting:** open the editor first, then start Claude Code from the project root. A session that started before the editor won't see the server until it reconnects.
+- **Connecting:** open the editor first, then start Claude Code from the project root. A session that started before the editor won't see the server until it reconnects. Each person approves `unreal-mcp` once, or adds `"enabledMcpjsonServers": ["unreal-mcp"]` to their own `.claude/settings.local.json` (git ignores that file).
 - The server uses tool search. In 5.8.4 it lists three meta-tools, not the four in the docs: `list_toolsets`, `describe_toolset` and `call_tool`. In Claude Code they appear as `mcp__unreal-mcp__<name>`. Start with `list_toolsets`, then `describe_toolset` to get a toolset's tools, then `call_tool` to run one. Every editor action, read or write, goes through `call_tool`.
 - If the editor restarts during a session, the connection drops. Reconnect `unreal-mcp` from `/mcp`.
 - Tool calls run one at a time on the game thread. Don't send several calls in parallel. Claude Code stops waiting after about 120 seconds, so split long work (big scripts, asset scans, automation runs) into shorter calls.
@@ -73,7 +88,7 @@ These settings (in `Config/DefaultEngine.ini`) affect how content must be author
 
 - Lumen for global illumination and reflections, Virtual Shadow Maps and hardware ray tracing are on. Static lighting is off (`r.AllowStaticLighting=False`), so do not rely on baked lightmaps.
 - **Substrate** materials are on (`r.Substrate=True`). Build materials with Substrate nodes, not the legacy material model.
-- Windows uses DX12 with SM6. Target hardware is Desktop with Maximum quality.
+- Windows uses DX12 with SM6, and macOS uses Metal SM6. Target hardware is Desktop with Maximum quality.
 - `GameDefaultMap` points to the engine template `/Engine/Maps/Templates/OpenWorld` (a World Partition map). Change it when the project has its own map.
 - Input uses **Enhanced Input** (`EnhancedPlayerInput` / `EnhancedInputComponent`). Make Input Actions and Mapping Contexts, not legacy action or axis mappings.
 - The `ModelingToolsEditorMode` plugin is on (editor only).
@@ -83,3 +98,5 @@ These settings (in `Config/DefaultEngine.ini`) affect how content must be author
 - Remote: `https://github.com/QuantumCalzone/AIMegaJam2026.git`, branch `main`.
 - `.gitignore` excludes the folders the engine generates (`DerivedDataCache/`, `Intermediate/`, `Saved/`, `Binaries/`) and packaged builds in `Packaged/`. Don't archive builds into `Build/`, because Unreal uses that folder for project build settings.
 - **Git LFS** stores binary files (see `.gitattributes`): `.uasset`, `.umap`, models, images, audio, fonts and archives. When you add a new kind of binary file, add an LFS rule for it before you commit it.
+- Binary assets can't be merged. Before changing a Blueprint, level or other asset, pull first. If someone else may be editing the same asset, check with the user.
+- `README.md` holds the setup steps for human contributors. Keep it in step with this file when setup changes.
