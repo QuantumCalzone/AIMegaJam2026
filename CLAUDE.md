@@ -10,6 +10,7 @@ Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the
 
 Source: the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). The Official Rules PDF linked there is the final authority.
 
+- **Theme: "Director's Cut".** Revealed at the kickoff livestream on Nov 11, 2026. Theme counts as one of the judging criteria, so the game should clearly be built around it.
 - **Dates:** The theme is revealed at the kickoff livestream on Nov 11, 2026, 11 AM PST. Building runs from Nov 12, 12:00 AM EST, to the **deadline on Nov 15, 5:59 PM PST (8:59 PM EST)**. Late entries are disqualified.
 - **No game work before Nov 12.** Any prompts, scripts or assets made before the jam must be declared in the submission. This includes this repo's setup files (CLAUDE.md, `.gitignore`, `.gitattributes`).
 - **AI:** Any AI tools are allowed, with no limit on agents.
