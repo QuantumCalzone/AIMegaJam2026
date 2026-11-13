@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T01 · Opus 5.5 · high
+**Next up:** T02 · Opus 5.5 · high
 
 ## Goal
 
@@ -81,7 +81,7 @@ Never edit the claim files. They exist only to be locked.
 These hold unless T01 or T02 finds otherwise. If one changes, change it here in a `Plan:` commit.
 
 - **Blueprint-only.** No C++ unless the spikes show it is needed. The choice goes in `Agents/decisions/`.
-- **Where things live.** Assets go under `Content/NHOS/` (`Maps/`, `Core/`, `UI/`). Files the game reads at runtime go in `Content/NHOS/Data/` as `.json`. The API key and local switches go in a git-ignored folder; T01 picks it (proposed: `Local/` in the project root).
+- **Where things live.** Assets go under `Content/NHOS/` (`Maps/`, `Core/`, `UI/`). Files the game reads at runtime go in `Content/NHOS/Data/` as `.json`. The API key and local switches go in `Local/` in the project root, which git ignores. The key file is `Local/llm_key.json`; copy it from `Docs/llm_key.example.json`. Blueprint reads it at `Get Project Directory` + `Local/llm_key.json`.
 - **API keys never go in git, and never into chat.** I paste my key into the key file myself.
 - **Prompts are files, not Blueprint strings.** The opening game prompt, the base prompt, the personas, the input LLM prompt and the scene cards live in `Content/NHOS/Data/`, so they diff in git. Store long text as an array of lines.
 - **One provider.** All calls go to the Claude Messages API. The model, effort and token limit for each role (actor, input LLM, Director) are values in `Content/NHOS/Data/llm.json`. Start with `claude-opus-5-5` at low effort. T02 records seconds per call and cost per show; a faster or cheaper model is then my call.
@@ -89,14 +89,14 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 - **The shared log** is what the AIs read. Every actor's lines have the same form, human or AI. It never holds my raw input, times, errors, anyone's note, or who has the decoy. Game messages reach the AIs in a separate field that actors can't write to.
 - **Check lines.** Anything a Done-when check reads is printed with the prefix `NHOS:` to the editor log (`Saved/Logs/AIMegaJam2026.log`). It never goes in the shared log.
 - **Autoplay.** From T07 on, a local switch makes the human seat play canned lines, so an agent can run a whole show unattended and read the result in the log.
-- **Unreal MCP.** Do editor work through Unreal MCP. One call at a time, each under about 100 seconds (the client stops waiting at about 120). Split long work, and save after each step.
+- **Unreal MCP.** Do editor work through Unreal MCP. One call at a time, each under about 100 seconds (the client stops waiting at about 120). Split long work, and save after each step. Write graphs with `BlueprintTools.write_graph_dsl`, and batch calls with `ProgrammaticToolset.execute_tool_script`. Read "T01: spike results" in Findings first: it lists the DSL rules that cost time to find. MCP can't create a level, so a person makes new levels in the editor (File > New Level > Empty Level).
 - **Each task leaves the game runnable.** One task = one session = one commit, about an hour of agent work at most.
 
 ## Tasks
 
 ### Spikes
 
-- [ ] **T01 Spike: one Claude call from Blueprint, in PIE**
+- [x] **T01 Spike: one Claude call from Blueprint, in PIE**
   - **Model and effort:** Opus 5.5, high. The riskiest task; every other task depends on it.
   - **Depends on:** nothing
   - **Needs:** my API key. The editor **closed** at the start: the task turns on two plugins, then asks me to open the editor and reconnect Unreal MCP.
@@ -310,3 +310,43 @@ T01 and T02 write the answers here.
 6. Which HTTP timeout applies, and does `[HTTP]` in `Config/DefaultEngine.ini` need a longer one?
 7. How many seconds does one call take, and what does one show cost, with the model and effort in `llm.json`?
 8. Blueprint-only or C++? (T02 writes the decision note.)
+
+### T01: spike results (2026-11-13)
+
+Proven in PIE on `L_Stage`: `BP_Show` calls `RunSpike` on its `BPC_LLMClient` at BeginPlay, and the editor log shows `NHOS: SPIKE OK Good morning, Director. Unit RX-7 is calibrated, in costume, and ready for your first take.` With a wrong key it shows `NHOS: SPIKE FAIL API error authentication_error: invalid x-api-key`.
+
+Answers to the spike questions (T02 answers the packaged half of 4, and 8):
+
+1. **Unreal MCP can place both nodes. Editor Python was not needed.**
+   - `Get Field`, `Set Field`, `Load Json from File/String` and `Get Json String` work in `write_graph_dsl`.
+   - The `Http Request` node shares its type ID `Http|HttpRequest` with the raw `CreateHttpRequestProxyObject` function, and the DSL and `create_node` both pick the raw function. `create_node` with `declaring_class` = `/Script/HttpBlueprintGraph.K2Node_HttpRequest` makes the real node. The DSL can't make it at all, so wire it with `connect_pins`. `write_graph_dsl` replaces the whole graph, so add the hand-wired node after the last DSL write to that graph.
+   - The node only works in an Event Graph, not inside a function.
+2. **Build the request body from JSON templates plus `Set Field`, then `Get Json String`.** `Load Json from String` with a template string makes each fixed part (escaped quotes in DSL strings come through as plain quotes). `Set Field` adds every value: strings, ints, a nested object, or an array of objects from `Make Array`. The engine's JSON writer escapes quotes and line breaks. No string building by hand.
+3. **Yes to both.**
+   - `Get Field` reads `content` into an `Array of JsonObjectWrapper` variable, and a ForEach then finds the first `text` block.
+   - It reads an array of strings into an `Array of String` variable, with quotes and tabs intact, and `Join String Array` turns the lines into one prompt.
+   - Its output is a wildcard, so connect it to a typed variable setter to fix its type.
+   - A missing field returns false and logs a `LogScript` warning. Check `Has Field` first for optional fields.
+4. **PIE: yes.** `Get Project Directory` + `Local/llm_key.json` and `Get Project Content Directory` + `NHOS/Data/llm.json` both load with `Load Json from File`. Packaged: T02.
+5. **The plugin reports success whenever the server answers, even with a 4xx or 5xx.** So "On Success" fires for a wrong key, and the error is in the body: `{"type":"error","error":{"type":"authentication_error","message":"..."}}`. `ParseReply` checks the top-level `type`, then `stop_reason == "refusal"`.
+   - "On Error" fires only when no reply arrives (no network, timeout), and its Result Body then holds the failure reason. Not tested.
+   - The node's `OutHeader` output returns the request headers, not the response's (plugin source), so Blueprint can't read the status code or `retry-after`. A rate limit should arrive as a `rate_limit_error` body through the same path. Not tested.
+6. **The engine defaults are 30 s for connection and 30 s for activity.** A reply that isn't streamed sends no bytes while the model thinks, so `HttpActivityTimeout=120` is set under `[HTTP]` in `Config/DefaultEngine.ini`. The spike calls took about 2 s, well under the default. Longer asks (votes, the Director) may need the margin.
+7. **About 2 s per call.** Six real calls with `claude-opus-5-5` at low effort took 1.5 to 2.6 s each (from log timestamps), with 225 input and 36 to 43 output tokens. That costs about $0.002 per call at $4 / $20 per million tokens.
+   - A guess for a show: about 55 calls with game prompts of 2,000 to 4,000 input tokens and about 100 output tokens, so about $0.80 per show before prompt caching. T05 and T07 measure it with real prompts.
+   - `Get Real Time Seconds` only moves once per frame, and the editor in the background ran at about 3 frames per second. Time calls with log timestamps or a `Now`-based timer.
+8. **Blueprint-only works in PIE.** T02 decides after packaging. These plugins ship no game binaries in the launcher build, so packaging will probably compile a game target (Visual Studio 2022 is installed).
+
+Also found:
+
+- **The API takes `fallbacks: "default"`** (header `anthropic-beta: server-side-fallback-2026-07-01`) together with `output_config.format`. Both are in `llm.json`; leave `beta` and `fallbacks` empty to turn fallbacks off.
+- **`llm.json` holds `reply_schema`**, the JSON schema sent as `output_config.format`. The spike's schema has one field, `speech`. T03 sets the real reply shape there.
+- **DSL rules** for `write_graph_dsl` that cost time to find:
+  - Make a custom event with `add_event` first, then name it `Custom|Name` in the DSL.
+  - Call the Blueprint's own functions as `CallFunction|Name` with named arguments (`:Response x`). Positional arguments bind to `self` first.
+  - On another Blueprint, call them as `Class|BPCLLMClient|Name :self <component>`.
+  - `==` does not compare strings; use `Utilities|String|EqualExactly(String)`.
+  - A literal can't go into a wildcard pin such as `Set Field`'s value. Put it in a JSON template or a typed variable.
+  - An `if` whose body ends in `return` makes the rest of the code its else branch. An `if` without one joins the code after it.
+- **MCP can't create a level.** No tool makes one, and duplicating `/Engine/Maps/Entry` gives a map that can't be saved (it keeps a reference to a private object in the engine map). I made `L_Stage` in the editor with File > New Level > Empty Level.
+- **Call `get_execution_environment` once per session** before you use `ProgrammaticToolset`. It batches many MCP calls into one script, so you approve each batch once instead of each call.

@@ -30,3 +30,7 @@ Agents/status/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Local secrets and switches: the Claude API key file and local test switches.
+# Never commit these. The example key file is Docs/llm_key.example.json.
+Local/

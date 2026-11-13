@@ -1,0 +1,4 @@
+{
+	"_readme": "Copy this file to Local/llm_key.json (next to AIMegaJam2026.uproject) and paste your Claude API key into api_key. Local/ is git-ignored. In a packaged build, Local/ sits next to the game's Content folder.",
+	"api_key": ""
+}
