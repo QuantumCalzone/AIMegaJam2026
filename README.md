@@ -2,6 +2,14 @@
 
 Our entry for the [2026 Epic AI MegaJam](https://itch.io/jam/2026-epic-ai-megajam). It's an Unreal Engine 5.8 project with Blueprints only, so there's no C++ to compile.
 
+## What we're building
+
+The game is **No Humans On Set**: you are the only human in an all-AI improv cast, and you win by not getting voted off.
+
+- [Docs/GameDesign.md](Docs/GameDesign.md): the design, copied from a private Claude Doc.
+- [Docs/MVPPlan.md](Docs/MVPPlan.md): the MVP task list. With Claude Code, say "Next task" to build the next step. The file also explains how to claim a task so two people don't start the same one.
+- [Docs/DevLog.md](Docs/DevLog.md): the dev log for the jam's Glass Box category.
+
 ## What you need
 
 - **Unreal Engine 5.8.4** from the Epic Games launcher, on Windows or macOS. Everyone must use the same version, because assets saved in a newer engine won't open in an older one.

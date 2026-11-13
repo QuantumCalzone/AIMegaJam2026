@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the Blank Blueprint template (`TP_BlankBP`), so it is **Blueprint-only**: there is no `Source/` folder, no `.Target.cs` files and nothing to compile. Game logic lives in `.uasset`/`.umap` files under `Content/`.
 
+## "Next task"
+
+The game is **No Humans On Set**. [Docs/MVPPlan.md](Docs/MVPPlan.md) is the living plan for its MVP: the task list, the model and effort for each task, and how to claim one. When the user says "Next task" or "Next ask", follow "How to run a task" in that file. The design is in [Docs/GameDesign.md](Docs/GameDesign.md), a copy of a private Claude Doc. Each task's commit adds one line to [Docs/DevLog.md](Docs/DevLog.md).
+
 ## Game jam rules (2026 Epic AI MegaJam)
 
 Source: the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). The Official Rules PDF linked there is the final authority.
