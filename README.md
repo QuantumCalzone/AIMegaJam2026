@@ -7,7 +7,7 @@ Our entry for the [2026 Epic AI MegaJam](https://itch.io/jam/2026-epic-ai-megaja
 The game is **No Humans On Set**: you are the only human in an all-AI improv cast, and you win by not getting voted off.
 
 - [Docs/GameDesign.md](Docs/GameDesign.md): the design, copied from a private Claude Doc.
-- [Docs/MVPPlan.md](Docs/MVPPlan.md): the MVP task list. With Claude Code, say "Next task" to build the next step. The file also explains how to claim a task so two people don't start the same one.
+- [Docs/Plan.md](Docs/Plan.md): the plan, with the tasks in priority order. With Claude Code, say "Next task" to build the next step. The file also explains how to claim a task so two people don't start the same one, and how to add a task at the place where it belongs.
 - [Docs/DevLog.md](Docs/DevLog.md): the dev log for the jam's Glass Box category.
 
 ## What you need

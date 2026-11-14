@@ -1,6 +1,6 @@
 # Submission drafts
 
-The text for every field of the jam's submission, ready to paste. It was drafted on 2026-11-14 for T23 in [MVPPlan.md](MVPPlan.md), before T19 to T22 were done, so that T23 only has the zip, the video and a last check left. The itch.io page text is in [ItchPage.md](ItchPage.md).
+The text for every field of the jam's submission, ready to paste. It was drafted on 2026-11-14 for T23 in [Plan.md](Plan.md), before T19 to T22 were done, so that T23 only has the zip, the video and a last check left. The itch.io page text is in [ItchPage.md](ItchPage.md).
 
 - **Where the fields come from:** the jam page, https://itch.io/jam/2026-epic-ai-megajam, read on 2026-11-14 (its "What to submit" section, for Unreal Engine teams). The form itself was not visible: itch.io shows the submit page only to a signed-in member of the jam. When you open the form, add any field it has that this file lacks.
 - **The Official Rules PDF** (linked from the jam page) is the final authority. Its Box viewer shows the pages as images, so they weren't read for this draft. Check its rules on declarations and assets before you send the form.

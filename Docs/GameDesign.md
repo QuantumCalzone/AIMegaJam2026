@@ -3,7 +3,7 @@
 - **Source:** the Claude Doc "No Humans On Set — concise draft (suggested edits)", <https://claude.ai/artifact/XKrsACU5w4kHFwhztXCoTA>
 - **Snapshot taken:** 2026-11-14, about 09:00 UTC: all five tabs, read again after T26's edits (five actors, Player names, the provider on the reveal stamp). The doc's own date is 2026-11-13.
 - The Claude Doc is private, so teammates' agents can only read this copy. The Claude Doc is the original. To refresh this file, read all five tabs again with the Claude Docs connector and replace the text below. Don't edit the text below by hand.
-- What the MVP builds from this design, and what it leaves out, is in [MVPPlan.md](MVPPlan.md).
+- What is built from this design so far, and what is still to do, is in [Plan.md](Plan.md).
 
 The doc has five tabs: Overview, Rules, Bot Prompts, Tech & Build, and Art Inspiration. Each one is a section below. The Art Inspiration images are not copied here; their captions and alt text are.
 

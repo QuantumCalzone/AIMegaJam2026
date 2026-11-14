@@ -1,6 +1,6 @@
 # itch.io page draft
 
-The text for the game's itch.io page: T21's step 3 in [MVPPlan.md](MVPPlan.md), used by T23. It was drafted on 2026-11-14, before T19 to T22 were done. The form fields and the open questions for the submission are in [Submission.md](Submission.md).
+The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used by T23. It was drafted on 2026-11-14, before T19 to T22 were done. The form fields and the open questions for the submission are in [Submission.md](Submission.md).
 
 - **Markers:** **[T19]** (robots act out their actions), **[T20]** (audio), **[T21]** (the relay's limits and errors on screen), **[T22]** (the packaged build) and **[T24]** (timers, if done) mark text those tasks may change. **[YOU]** marks a blank only you can fill in. Settle every marker, then delete the markers before you paste.
 - Each AI player goes by its provider here, as in the game: OpenAI, Anthropic, SpaceXAI and Meta. If open question 8 in `Submission.md` changes "SpaceXAI", change it here too.

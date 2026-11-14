@@ -1,6 +1,6 @@
 # Relay
 
-The relay lets a judge play **No Humans On Set** without their own API keys. It is a Cloudflare Worker. It holds our provider keys as Worker secrets, checks each request from the game, forwards the request body unchanged to the provider and returns the provider's reply. It is the server half of T21 in [Docs/MVPPlan.md](../Docs/MVPPlan.md). The game half (calling the relay, the key-entry screen) was built in T18.
+The relay lets a judge play **No Humans On Set** without their own API keys. It is a Cloudflare Worker. It holds our provider keys as Worker secrets, checks each request from the game, forwards the request body unchanged to the provider and returns the provider's reply. It is the server half of T21 in [Docs/Plan.md](../Docs/Plan.md). The game half (calling the relay, the key-entry screen) was built in T18.
 
 There are no keys in this folder, and none may ever go in git. Players who enter their own keys call the providers directly. Their keys never go to the relay.
 
@@ -96,7 +96,7 @@ Each is the cheapest current model that its provider documents as supporting Str
 
 | Provider id | Model | Price per 1M tokens (in / out) | Endpoint | Token field | Notes |
 |---|---|---|---|---|---|
-| `anthropic` | `claude-haiku-5-5` | see Findings in `Docs/MVPPlan.md` | `https://api.anthropic.com/v1/messages` | `max_tokens` | JSON through `output_config.format` |
+| `anthropic` | `claude-haiku-5-5` | see Findings in `Docs/Plan.md` | `https://api.anthropic.com/v1/messages` | `max_tokens` | JSON through `output_config.format` |
 | `openai` | `gpt-6-luna` | $0.10 / $0.50 | `https://api.openai.com/v1/chat/completions` | `max_completion_tokens` | Reasoning model, default effort `medium`; send `reasoning_effort: "none"` (also `low` … `max`). The token cap includes reasoning tokens. |
 | `xai` | `grok-4.3` | $1.25 / $2.50 | `https://api.x.ai/v1/chat/completions` | `max_tokens` (not stated in the docs; the test confirms it) | Reasoning, default effort `low`; values `none`, `low`, `medium`, `high`, `xhigh`. The company now brands itself SpaceXAI; keys come from `console.x.ai`. The console's only cheaper chat model, `grok-build-0.1` ($1.00 / $2.00), rejects `reasoning_effort` (400) and spent 967 reasoning tokens and 8.4 s on a one-line reply ($0.0023, against $0.00036 for `grok-4.3` at `none`), so it costs more in practice. |
 | `meta` | `muse-ember-1.0` | $0.10 / $0.50 | `https://api.meta.ai/v1/chat/completions` | `max_completion_tokens` (`max_tokens` is a deprecated alias) | Reasons by default (583 reasoning tokens on a one-line reply); send `reasoning_effort: "minimal"` (63 tokens). `"none"` returns 400. Meta's hosted API is now the "Meta Model API" with Muse models, not Llama (`llama.developer.meta.com` redirects to `dev.meta.ai`). Keys come from `dev.meta.ai`. |

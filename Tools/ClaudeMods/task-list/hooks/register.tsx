@@ -3,15 +3,17 @@ import type { EngineInterface, Register } from 'claude-code'
 
 import type { SessionRef, Snapshot, Task, TaskFlag } from '../types'
 
-// The task list of Docs/MVPPlan.md in a pane beside the chat:
+// The task list of Docs/Plan.md in a pane beside the chat:
 // done tasks collapsed and crossed out, in-progress tasks with the Code
 // sessions that work on them (a click opens one), and the tasks not started.
+// Tasks keep the plan's order, which is the priority order: a new task can
+// sit anywhere in the plan, whatever its number.
 
 type Engine = EngineInterface
 
 const PANE = 'task-list'
 const TITLE = 'Tasks'
-const PLAN = 'Docs/MVPPlan.md'
+const PLAN = 'Docs/Plan.md'
 const STATUS_DIR = 'Agents/status'
 const TICK_MS = 20_000
 // `git lfs locks` asks GitHub, so claims refresh every 6 ticks (2 minutes).
@@ -92,13 +94,14 @@ function parsePlan(text: string): PlanTask[] {
   return tasks
 }
 
-// Agents/status/mvp-T18.md: a session works on T18. Its "Waiting on" or
-// "State" line is the note shown under the task.
+// Agents/status/task-T18.md: a session works on T18. Its "Waiting on" or
+// "State" line is the note shown under the task. Status files from before
+// the plan was renamed are called mvp-T18.md, and count too.
 async function readStatus($: Engine, root: string) {
   const notes = new Map<string, string>()
   const entries = await $.fs.list(`${root}/${STATUS_DIR}`).catch(() => [])
   for (const entry of entries) {
-    const match = /^mvp-(T\d+)\.md$/.exec(entry.name)
+    const match = /^(?:task|mvp)-(T\d+)\.md$/.exec(entry.name)
     if (!match) continue
     const text = await $.fs.read(`${root}/${STATUS_DIR}/${entry.name}`).catch(() => '')
     const line =
@@ -295,7 +298,7 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'task-list',
-      description: 'Show the MVP plan task list in a pane',
+      description: "Show the plan's task list in a pane",
     })
     void $.ui.open({ id: PANE, title: TITLE })
     void refresh($, { withClaims: true })

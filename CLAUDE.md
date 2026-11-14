@@ -11,7 +11,7 @@ Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the
 | `Content/NHOS/` | The game. `Core/` has `BP_Show` (the show's logic) and `BPC_LLMClient` (every LLM call). `Stage/` has the robots and the set, `UI/` the widgets, `Maps/` the one level, `L_Stage`. |
 | `Content/NHOS/Data/*.json` | Data the game reads at run time: prompts, personas, scenes, LLM settings, autoplay and free-mode lines. A build stages them as loose files, so they can change without a new package. |
 | `Graphs/` | The DSL source last written to each Blueprint graph. See "Working with assets". |
-| `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `dslpp.py` expands the DSL shorthand. |
+| `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `dslpp.py` expands the DSL shorthand. `ClaudeMods/` holds a Claude Code mod that shows the plan's tasks in a pane; it reads `Docs/Plan.md`, so keep the task form that "Changing the plan" describes. |
 | `Relay/` | The relay: a Cloudflare Worker that holds our provider keys, so judges can play without their own. Not part of the Unreal project. See `Relay/README.md`. |
 | `Docs/` | The plan, the design, the dev log, the asset list (`Assets.md`), the dispatcher's instructions (`LaunchAgents.md`) and example files for `Local/`. |
 | `Agents/` | Coordination notes. See "Coordinating with other agents". |
@@ -19,7 +19,7 @@ Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the
 
 ## "Next task"
 
-The game is **No Humans On Set**. [Docs/MVPPlan.md](Docs/MVPPlan.md) is the living plan for its MVP: the task list, the model and effort for each task, and how to claim one. When the user says "Next task" or "Next ask", follow "How to run a task" in that file. The design is in [Docs/GameDesign.md](Docs/GameDesign.md), a copy of a private Claude Doc. Each task's commit adds one line to [Docs/DevLog.md](Docs/DevLog.md).
+The game is **No Humans On Set**. [Docs/Plan.md](Docs/Plan.md) is the living plan: the tasks in priority order, the model and effort for each task, how to claim one and how to add one. When the user says "Next task" or "Next ask", follow "How to run a task" in that file. When the user adds, moves or drops a task, follow "Changing the plan" there: a new task goes wherever it belongs in the list, whatever its number. The design is in [Docs/GameDesign.md](Docs/GameDesign.md), a copy of a private Claude Doc. Each task's commit adds one line to [Docs/DevLog.md](Docs/DevLog.md).
 
 ## Asking for input
 
@@ -116,7 +116,7 @@ Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.lo
   - `Graphs/<Blueprint>/<Graph>.txt` holds the DSL source last written to each graph with `BlueprintTools.write_graph_dsl`. To change a graph, start from its file, then commit the updated file with your change. If you change a graph some other way (a pin value, a hand edit in the editor), make the same change in its file, or delete the file. Never write a read-back to the editor as it is, because that drops data. [Graphs/README.md](Graphs/README.md) has the details.
   - List a Blueprint's graphs, then read only the ones you change or call. Never dump every graph of `BP_Show`: that takes 7 to 8 minutes.
   - Put new systems in their own Blueprint or component, and call them from one node in `BP_Show`.
-  - The "Build notes for every task" in [Docs/MVPPlan.md](Docs/MVPPlan.md) have the rest. Follow them for editor work outside the task list too.
+  - The "Build notes for every task" in [Docs/Plan.md](Docs/Plan.md) have the rest. Follow them for editor work outside the task list too.
 - Project settings live in `Config/Default*.ini`. These are text and safe to edit, but the editor rewrites them when settings change in its UI. Make edits while the editor is closed, or the editor may overwrite them.
 
 ## Coordinating with other agents (`Agents/`)

@@ -14,22 +14,29 @@ const PANE = {
   },
 } as const
 
+// The plan's form: open tasks in priority order, then the done ones. T27 was
+// added last and placed above T19 and T22, so the numbers are not in order.
 const PLAN = [
   '# Plan',
   '## How to run a task',
   '- [ ] **T98 Not a task: outside the Tasks section**',
   '## Tasks',
-  '### Spikes',
-  '- [x] **T01 Spike one**',
-  '  - **Depends on:** nothing',
+  '### Open',
   '- [ ] **T17 Stage art**',
   '  - **Waiting:** the work is done (see `Findings`). Left: I watch a show.',
   '- [ ] **T18 One LLM per AI player**',
   '  - **Depends on:** T16, T17',
+  '- [ ] **T27 Added later, placed first**',
+  '  - **Depends on:** T01',
   '- [ ] **T19 Robots act**',
   '  - **Depends on:** T17, T18',
   '- [ ] **T22 Package**',
   '  - **Depends on:** T19, and T24 if it is done',
+  '- [ ] **T23 Submission**',
+  '  - **Depends on:** T22',
+  '### Done',
+  '- [x] **T01 Spike one**',
+  '  - **Depends on:** nothing',
   '## Findings',
   '- [ ] **T99 Not a task either**',
 ].join('\n')
@@ -46,11 +53,22 @@ test('the pane sorts tasks and opens a session on a press, on every surface', as
   on('ui.log', () => ({ value: undefined }))
   on('ui.toast', () => ({ value: undefined }))
   on('session.root', () => ({ value: '/repo' }))
-  on('fs.read', (_, e) => ({
-    value: e.path.endsWith('MVPPlan.md') ? PLAN : '- State: planning done; waiting for a go',
-  }))
+  on('fs.read', (_, e) => {
+    if (e.path.replace(/\\/g, '/').endsWith('/repo/Docs/Plan.md')) return { value: PLAN }
+    // A status file. The older name, mvp-T23.md, still counts. A file with
+    // any other name, such as notes-T19.md, is not a task's status file.
+    return {
+      value: e.path.endsWith('mvp-T23.md')
+        ? '- State: an older status file'
+        : '- State: planning done; waiting for a go',
+    }
+  })
   on('fs.list', () => ({
-    value: [{ name: 'mvp-T18.md', kind: 'file', size: 1, mtimeMs: 0, isLink: false }],
+    value: [
+      { name: 'task-T18.md', kind: 'file', size: 1, mtimeMs: 0, isLink: false },
+      { name: 'mvp-T23.md', kind: 'file', size: 1, mtimeMs: 0, isLink: false },
+      { name: 'notes-T19.md', kind: 'file', size: 1, mtimeMs: 0, isLink: false },
+    ],
   }))
   on('process.run', () => ({
     value: {
@@ -80,8 +98,13 @@ test('the pane sorts tasks and opens a session on a press, on every surface', as
     const ui = await $.ui.mount({ ...PANE, surface })
 
     expect((await ui.find({ type: 'Text', text: /done · / }))?.text).toBe(
-      '1 done · 2 in progress · 2 not started',
+      '1 done · 3 in progress · 3 not started',
     )
+    expect(await ui.find({ type: 'Text', text: /an older status file/ })).toBeDefined()
+    // Not started keeps the plan's order, not the order of the numbers.
+    const todo = await ui.findAll({ type: 'Text', text: /^○ T\d+/ })
+    expect(todo.map(row => /T\d+/.exec(row.text ?? '')?.[0])).toEqual(['T27', 'T19', 'T22'])
+    expect((await ui.find({ type: 'Text', text: /T27 Added later/ }))?.text).toContain('· ready')
     // Done is collapsed until its header is pressed, then crossed out.
     expect(await ui.find({ type: 'Text', text: /T01 Spike one/ })).toBeUndefined()
     await ui.press({ key: 'done-toggle' })

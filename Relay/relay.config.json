@@ -3,7 +3,7 @@
 	"max_body_bytes": 65536,
 	"upstream_timeout_ms": 90000,
 	"limits": {
-		"_readme": "A show is about 55 calls of 1,300 to 5,400 input tokens each (Findings in Docs/MVPPlan.md). The day is the UTC day. session_calls is per session id per day, ip_daily_calls per player address per day, daily_calls for everyone together.",
+		"_readme": "A show is about 55 calls of 1,300 to 5,400 input tokens each (Findings in Docs/Plan.md). The day is the UTC day. session_calls is per session id per day, ip_daily_calls per player address per day, daily_calls for everyone together.",
 		"session_calls": 150,
 		"ip_daily_calls": 600,
 		"daily_calls": 5000,
