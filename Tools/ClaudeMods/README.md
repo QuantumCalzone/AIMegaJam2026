@@ -34,6 +34,8 @@ Use one of these. Both load the mod from this folder, so a `git pull` brings its
 }
 ```
 
+If `CLAUDE_CODE_PLUGIN_DIRS` already names a folder, add this one after it in the same value, separated by `;` on Windows or `:` on macOS.
+
 A session picks up changes when it starts. To have a running desktop session reload the mod when its files change, also set `"CLAUDE_CODE_PLUGIN_DIR_WATCH": "1"` there.
 
 **B. Install it from this folder.** In a terminal:
