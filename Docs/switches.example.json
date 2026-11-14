@@ -1,0 +1,4 @@
+{
+	"_readme": "Local switches for testing. Copy this file to Local/switches.json (git ignores Local/). The game reads it at the start of each scene; a missing file means every switch is off. autoplay: the human seat sends the canned lines in Content/NHOS/Data/autoplay.json instead of waiting for typed input.",
+	"autoplay": false
+}

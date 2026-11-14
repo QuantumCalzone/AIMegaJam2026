@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T07 · Opus 5.5 · high (then T08 · Sonnet 5.5 · medium, which needs T07)
+**Next up:** T08 · Sonnet 5.5 · medium (then T09 · Opus 5.5 · high, which needs T08)
 
 ## Goal
 
@@ -88,7 +88,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 - **One reply shape.** Every ask (scene turn, Free Talk line, vote, reaction, tiebreak) gets back the same small JSON object, with unused fields empty. One parser serves the whole game.
 - **The shared log** is what the AIs read. Every actor's lines have the same form, human or AI. It never holds my raw input, times, errors, anyone's note, or who has the decoy. Game messages reach the AIs in a separate field that actors can't write to.
 - **Check lines.** Anything a Done-when check reads is printed with the prefix `NHOS:` to the editor log (`Saved/Logs/AIMegaJam2026.log`). It never goes in the shared log.
-- **Autoplay.** From T07 on, a local switch makes the human seat play canned lines, so an agent can run a whole show unattended and read the result in the log.
+- **Autoplay.** From T07 on, a local switch makes the human seat play canned lines, so an agent can run a whole show unattended and read the result in the log. The switch file is `Local/switches.json` (copy `Docs/switches.example.json`), with `"autoplay": true`. The canned lines are in `Content/NHOS/Data/autoplay.json`, one list per phase, and they go through the input LLM like typed lines. Later switches (such as T09's `force_tie`) go in the same file. Set autoplay back to `false` before a person plays.
 - **Unreal MCP.** Do editor work through Unreal MCP. One call at a time, each under about 100 seconds (the client stops waiting at about 120). Split long work, and save after each step. Write graphs with `BlueprintTools.write_graph_dsl`, and batch calls with `ProgrammaticToolset.execute_tool_script`. Read "T01: spike results" in Findings first: it lists the DSL rules that cost time to find. MCP can't create a level, so a person makes new levels in the editor (File > New Level > Empty Level).
 - **Each task leaves the game runnable.** One task = one session = one commit, about an hour of agent work at most.
 
@@ -174,7 +174,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** two PIE runs each print a `NHOS: SETUP` line, and the screen shows the cast, the scene card and my note (screenshot).
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, new `Content/NHOS/Core/E_ShowPhase.uasset`, new `Content/NHOS/Core/S_Seat.uasset`. T06 made neither new asset: Unreal MCP can't create a struct or an enum, so the seats are parallel arrays in `BP_Show` and the phase is a string (see "T06: show setup results").
 
-- [ ] **T07 The Scene: three simultaneous turns**
+- [x] **T07 The Scene: three simultaneous turns**
   - **Model and effort:** Opus 5.5, high. Parallel asks that must all return before the turn plays out; the hardest Blueprint part.
   - **Depends on:** T06
   - **Needs:** editor + Unreal MCP running, my API key.
@@ -184,7 +184,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
     3. A reply that fails or can't be parsed makes that actor look around. No error goes in the shared log.
     4. Add autoplay: if the local switch file says so, the human seat sends canned lines.
   - **Done when:** with autoplay on, a PIE run prints `NHOS: SCENE 1 TURN 3 DONE` and the on-screen log holds 12 turn lines in mixed order (screenshot). With autoplay off, one turn I type shows up in the same form as the AI lines.
-  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, the local switch file (not in git).
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, the local switch file (not in git). T07 left `BPC_LLMClient` unchanged and added `Content/NHOS/Data/autoplay.json` and `Docs/switches.example.json`.
 
 - [ ] **T08 Free Talk**
   - **Model and effort:** Sonnet 5.5, medium. The same ask-and-log pattern as T07, with one speaker at a time.
@@ -522,3 +522,43 @@ Unreal MCP rules found in this task:
 - **Run `StartPIE` as its own call.** Inside `execute_tool_script`, the call never returned. That was the run with the broken graph, so the script may not be the cause.
 - Random draws differ between PIE runs in the same editor session.
 - `To Upper` doesn't change "é", so the panel shows the set name as written.
+
+### T07: the scene results (2026-11-14)
+
+Proven in PIE on `L_Stage`:
+
+- **Autoplay on, two runs:** each printed `NHOS: SCENE 1 TURN 1 DONE` to `NHOS: SCENE 1 TURN 3 DONE` and 12 `NHOS: LOG` lines, 4 per turn, in a new random order each turn. The on-screen log shows the same 12 lines and ends with "Cut! That's the scene." No call failed. Each scene took about 6 s.
+- **Autoplay off:** I typed `walk to teh counter and grab the menu "Who wants to hear todays specials?"` through the Slate inspector. Turn 1 played out as soon as it was in, and my line showed up as `The Visionary moves to Counter; grabs the menu. "Who wants to hear todays specials?"`, the same form as the AI lines (`NHOS: LOG scene 1, turn 1 | The Visionary | moves to Counter; grabs the menu | Who wants to hear todays specials?`).
+- Screenshots: `Saved/Screenshots/T07/` (not in git).
+
+How the scene works now (T08 to T10 extend it):
+
+- **`ScenePrep` ends by calling `StartScene`.** The call was added by hand after the SETUP print, not with the DSL. `StartScene` sets `Phase` to "scene" and `TurnNum` to 0, clears the pending asks, caches `DoesTpl` (`does_templates`) and `DoesLook`, calls `LoadSwitches` and then `StartTurn`. So T10's scene 2 starts its turns on its own.
+- **`StartTurn`** adds 1 to `TurnNum`, sets the header, resets `TurnDoes` and `TurnSays` (one slot per seat) and sets `TurnLeft` to the number of seats on stage. It asks every AI on stage at once with the `scene_turn` ask and `now` = "the scene, turn t of 3". With autoplay on, it then sends the human seat's canned line.
+- **Pending asks:** `PendingTags` and `PendingSeats` are parallel arrays. A tag goes in before `Ask` is called, because `OnAnswer` can fire inside `Ask`. AI tags are `<persona id>-<n>` and the input LLM's are `input-<n>`, where `n` is `AskCount`.
+- **`HandleReply(Tag, Ok, Speech, Pass, Verbs, Targets, Items)`** replaces T05's `HandleAnswer`, and `OnAnswer(LLMClient)` calls it. It finds the tag (an unknown tag prints `NHOS: STALE reply <tag>` and is dropped), removes it, calls `StoreTurn` and takes 1 off `TurnLeft`. At 0 it calls `PlayTurn`. It reads the found index and seat into `RIdx` and `RSeat` first, because a pure `Find` node runs again after each `RemoveIndex`.
+- **`StoreTurn`** keeps one seat's turn. A failed reply becomes "looks around" with no speech. Otherwise `BuildDoes` makes the action text and `CapWords` cuts the speech to 25 words.
+  - **`BuildDoes`** uses at most 2 actions. `look` with an empty target is `look_around`. It drops an action whose template needs a target or an item that is empty. No actions give `does_templates.nothing` ("stands still").
+  - **`CapWords`** changes line breaks to spaces, trims the text and cuts it to 25 words. It doesn't trim a dangling bracket yet; T09 should, for vote reasons.
+- **`PlayTurn`** shuffles the seats on stage. For each seat it adds a `MakeEntry` to `SharedLog`, shows `<Name> <does>. "<says>"` on screen (with no quote part when the speech is empty) and prints `NHOS: LOG <when> | <actor> | <does> | <says>`. Then it prints `NHOS: SCENE n TURN t DONE` and calls `StartTurn`, or `EndScene` after turn 3.
+- **`EndScene`** sets `Phase` to "scene done", the header to "SCENE n: CUT!" and adds "Cut! That's the scene." to the log. **T08 replaces its body to start Free Talk.**
+- **The human seat:** `HandleSend` sends a typed line to `SendHumanTurn` only while `Phase` is "scene" and `HumanSent` is false. Otherwise it shows "(Your turn is in. Waiting for the cast.)" or "(Not your turn yet.)". `SendHumanTurn(Line)` sets `HumanSent`, shows `> <line>` on screen (not in the shared log), and asks the input LLM with the `input` prompt and `InputState(Line, "scene")`: actor, phase, place names, props, cast names, typed and the `input` ask. T08 and T10 can call `InputState` with "free talk" or "reaction".
+- **Autoplay:** `LoadSwitches` reads `Local/switches.json` at the start of each scene. A missing file or field means off. With autoplay on, it reads `scene` from `Content/NHOS/Data/autoplay.json` into `CannedScene`, and turns autoplay off if the list is empty. It prints `NHOS: SWITCHES autoplay=<true|false>`. Turn t of scene s uses line `(s-1)*3 + t-1`, wrapping around. T08 should add a `free_talk` list to the same file.
+- **`WBP_Stage`:** `SubmitInput` no longer writes the typed line to the log. `BP_Show` writes every line now. `AddLogLine` ends with `ScrollSoon`, which sets `ScrollFrames` to 5, and Event Tick calls `ScrollToEnd` while `ScrollFrames` is above 0.
+
+Numbers, with `claude-haiku-5-5` at low effort, over 43 calls in four runs:
+
+- **Actor scene turns:** 33 calls, 1.0 to 3.3 s (median 2.0 s), 3,300 to 4,100 input tokens, 85 to 430 output tokens. The input grows by about 350 tokens per turn as the log grows.
+- **Input LLM:** 10 calls, 1.0 to 2.0 s (median 1.7 s), about 1,340 input tokens, 63 to 193 output tokens.
+- A turn waits for its slowest ask, so a turn takes about 2 to 3 s once my line is in.
+
+Also found:
+
+- **`ScrollToEnd` right after `AddChild` stops short.** An auto-wrapped TextBlock reports a one-line height until it has been laid out once, and the editor in the background runs at about 3 frames per second. A 0.05 s delay was less than one frame and didn't help. Calling `ScrollToEnd` on the next 5 ticks does.
+- **The ⚡ emoji shows as a box.** Roboto has no glyph for U+26A1, and the editor log warns "Could not find Glyph Index 0 with codepoint U+26a1" at every redraw. The Overclocker uses it in most lines. Fix it in polish: a font with emoji fallback, or strip the character for display only.
+- **Canned lines must use names the input LLM can map.** "look at the window" became "stands still", because no place is called window. "look at the counter" maps to Counter.
+- **Actors reuse a tag from the prompt's example.** `prompts.json` gives "[STATUS: PETTY MODE ENGAGED]" as an example. It came back 6 times in four runs, from three personas, mostly in turn 1, and twice from two actors in the same turn. That is a prompt-tuning item for T12 if the playtest finds it blurs the personas.
+- **`write_graph_dsl` on a new function fails until the Blueprint compiles** after `add_function_param`: "Unknown input pin "Tag" on CallFunction|HandleReply". Compile once after adding all params.
+- **`find_node_types` and `find_nodes` have required arguments** that the docs don't stress: `context_pins` (pass `[]`) and `title` (pass `""` for all nodes).
+- **Hand-made call nodes:** `create_node` with type ID `CallFunction|<Name>` makes a call to the Blueprint's own function or custom event, and `connect_pins` wires it after the last node's `then` pin. This is the safe way to add one call to a graph that has no DSL source.
+- **`AssetTools.write_file` takes only `.csv`, `.html`, `.json`, `.md`, `.py` and `.txt`.** Write a screenshot's base64 to a `.txt` file, then decode it outside the editor.
