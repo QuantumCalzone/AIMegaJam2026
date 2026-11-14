@@ -109,7 +109,9 @@ Cloudflare answers 403 to Python's default `Python-urllib` User-Agent, so the sc
 
 Cloudflare builds and deploys the relay from GitHub on its own machines, so nobody needs Node.js or wrangler on their computer. You need a Cloudflare account (the free Workers plan is enough: it includes Durable Objects with SQLite storage). Each deploy needs the person's OK, because every push to the connected branch deploys.
 
-**Status:** deployed on 2026-11-14 as `nhos-relay` in our Cloudflare account, built from `noHumansOnSet`, with `ANTHROPIC_API_KEY` set. The curl tests passed against it (23 of 23), and a request with the game's exact body shape (system text, `output_config` with the reply schema) came back as a normal reply. The address is on the Worker's page in the dashboard.
+**Status:** deployed on 2026-11-14 as `nhos-relay` in our Cloudflare account, built from `noHumansOnSet`, with all four secrets set. The curl tests passed against it (23 of 23). `test/game_shape.py` passed for `anthropic` (1.0 s) and `xai` (1.0 s, about $0.0004 for a 378-token call). `openai` answered 429 `insufficient_quota` (no credits on the account) and `meta` answered 402 `billing_not_configured`; both need billing set up at the provider, not a relay change. The address is on the Worker's page in the dashboard.
+
+**Adding a secret in the dashboard:** use **Add variable and deploy**, not **Save**. Save only makes a new version; the live one keeps the old secrets until you promote the new version under **Deployments > (version) > Promote version**.
 
 **How it was set up (to do it again, for example in another account):**
 
