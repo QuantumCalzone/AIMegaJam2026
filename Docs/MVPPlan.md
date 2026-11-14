@@ -4,11 +4,13 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T12 · Opus 5.5 · high (the playtest gate: I play 3 shows, then Claude proposes go or no-go)
+**Next up:** T13 · Opus 5.5 · high (the AIs talk like a normal chat: no glitch speak, no brackets, no emoji). T14 (UI/UX polish, Opus 5.5 · high) can run beside it in a second session.
 
 ## Goal
 
 Answer one question as fast as possible: **is it fun to fool an all-AI cast, and do the AIs catch a human at a fair rate (not every time, not never)?** Nothing else matters until a playtest answers it.
+
+**Answered by the gate (T12, 2026-11-14): go.** I liked it. From T13 on, the plan covers everything the submission needs, not only the MVP. The In and Out lists below describe the MVP (T01 to T12); T13 to T24 bring in most of what they leave out.
 
 ## Scope
 
@@ -29,17 +31,17 @@ Answer one question as fast as possible: **is it fun to fool an all-AI cast, and
 
 ## Time check
 
-Written Fri Nov 13, 2026, about 3:20 PM PST. The deadline is Sun Nov 15, 5:59 PM PST (Nov 16, 01:59 UTC). That leaves about 50 hours, sleep included.
+First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), Fri Nov 13, about 10 PM PST. The deadline is Sun Nov 15, 5:59 PM PST (Nov 16, 01:59 UTC). That leaves about 44 hours, sleep included. T01 to T12 finished ahead of the first schedule.
 
 | Target | When (PST) |
 |---|---|
-| Spikes done (T01, T02) | Fri Nov 13, evening |
-| Loop runs end to end (T10), robots on stage (T11) and the playtest gate (T12) | Sat Nov 14, morning |
-| MVP packaged (T15) | Sat Nov 14, about 3 PM |
-| Everything the judges score that the MVP leaves out (see "After the MVP") | Sat 3 PM to Sun 2 PM |
+| Plain speech (T13), UI/UX polish (T14) and story scenes (T15) | Sat Nov 14, by noon |
+| One LLM per AI player (T16, T18) and the stage art (T17) | Sat Nov 14, by 6 PM |
+| Robots act out their actions (T19), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
+| Packaged and played (T22), submission ready (T23) | Sun Nov 15, by 2 PM |
 | Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
 
-15 tasks at up to an hour each is about 15 hours of agent time, plus your time on checks and playtests. If we fall behind, cut T14 first, then hold T13 to one hour. T11 can also move after the gate.
+12 tasks at up to an hour each is about 12 hours of agent time, plus your time on checks and playtests. Two lanes can run at once: tasks that need no editor (T13, T15, T16, and finding audio files for T20) beside the editor tasks (T14, T17, T18 to T21), which go one at a time. If we fall behind, cut in this order: T24 (timers), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
 
 ## How to run a task
 
@@ -85,6 +87,10 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 - **API keys never go in git, and never into chat.** I paste my key into the key file myself.
 - **Prompts are files, not Blueprint strings.** The opening game prompt, the base prompt, the personas, the input LLM prompt and the scene cards live in `Content/NHOS/Data/`, so they diff in git. Store long text as an array of lines.
 - **One provider.** All calls go to the Claude Messages API. The model, effort and token limit for each role (actor, input LLM, Director) are values in `Content/NHOS/Data/llm.json`. T01 and T02 ran `claude-opus-5-5` at low effort. Since 2026-11-13 every role runs `claude-haiku-5-5` at low effort, the cheapest model at its lowest level. Haiku 5.5 has no server-side fallback, so `beta` and `fallbacks` in `llm.json` are empty; a refusal comes back as `stop_reason: "refusal"`.
+- **One provider per persona, from T16 and T18 on.** Each persona runs on its own provider, as in the design's table, with a key per provider (no router). T16 sets up the prompts and the keys; T18 makes the game call them. Provider and company names stay in config files only, never in prompts or on screen.
+- **The design doc follows the game.** When a task changes the design (the speech style, the sets, the providers), it shows me the matching edit to the Claude Doc. After my OK, it makes the edit with the Claude Docs connector and refreshes `Docs/GameDesign.md` from the doc. `Tools/check_prompts.py` checks the prompts against `GameDesign.md` word for word, so the refresh comes before the check.
+- **Legibility first.** Everything an AI says reads like a normal chat, the way Claude or ChatGPT write: plain sentences, no brackets or tags, no beeps or sound effects, no emoji, no ALL-CAPS words. Each persona's personality comes through what it says, not how it is typed.
+- **Outside and generated assets.** Record every art, audio or font asset in `Docs/Assets.md` when you add it: what it is, where it came from (a Fab link, a site, or the AI tool and prompt) and its license. The submission form needs the list.
 - **One reply shape.** Every ask (scene turn, Free Talk line, vote, reaction, tiebreak) gets back the same small JSON object, with unused fields empty. One parser serves the whole game.
 - **The shared log** is what the AIs read. Every actor's lines have the same form, human or AI. It never holds my raw input, times, errors, anyone's note, or who has the decoy. Game messages reach the AIs in a separate field that actors can't write to.
 - **Check lines.** Anything a Done-when check reads is printed with the prefix `NHOS:` to the editor log (`Saved/Logs/AIMegaJam2026.log`). It never goes in the shared log.
@@ -242,7 +248,8 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 
 ### Gate
 
-- [ ] **T12 Go/no-go gate: I play 3 shows**
+- [x] **T12 Go/no-go gate: I play 3 shows**
+  - **Result:** go, confirmed by me on 2026-11-14. I played one show, not three: T13 changes how the AIs speak, which changes how they catch the human, so T13 measures fairness again. See "T12: Playtest 1" in Findings.
   - **Model and effort:** Opus 5.5, high. It judges the design from evidence and reshapes the plan.
   - **Depends on:** T11
   - **Needs:** my playtest, my API key, editor running.
@@ -256,17 +263,157 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 
 ### After the gate
 
-- [ ] **T13 Fix what the playtest found**
-  - **Model and effort:** Opus 5.5, high. Prompt tuning and rule changes, with debugging.
-  - **Depends on:** T12
-  - **Needs:** my API key, my playtest (one show). Editor + Unreal MCP running if a Blueprint changes.
-  - **Steps:** T12 writes them. Expect prompt changes checked with `Tools/check_prompts.py`, rule changes (rounds, votes, the tiebreak) and the model choice in `llm.json`.
-  - **Done when:** T12 writes the check. At the least: I play one more full show, and the top finding from Playtest 1 is fixed.
-  - **Touches:** T12 lists them. Likely `Content/NHOS/Data/*.json` and `Content/NHOS/Core/BP_Show.uasset`.
+T12 wrote T13 to T24 from Playtest 1. Two lanes can run at once: T13, T15 and T16 need no editor (only for a PIE check), while the editor tasks go one at a time, because most of them hold the lock on `BP_Show`.
 
-- [ ] **T14 Timers and typing delay**
-  - **Model and effort:** Sonnet 5.5, medium. Small additions to phases that already work.
+- [ ] **T13 The AIs talk like a normal chat**
+  - **Model and effort:** Opus 5.5, high. Prompt design: the voice of every AI changes.
   - **Depends on:** T12
+  - **Needs:** my API key, my playtest (one show), and my OK on the new prompt text before the design doc changes. The editor only for the PIE checks, so this can run beside T14.
+  - **Steps:**
+    1. Rewrite the shared base prompt and the four persona prompts so every AI talks like a normal chat, the way Claude or ChatGPT write: plain sentences, no glitch speak, no brackets or status tags, no "beep" or sound effects, no `//`, no emoji, no ALL-CAPS words. Legibility comes first. Keep each persona's pettiness and quirks, said in plain words:
+       - The Visionary: calm, vague hype about the future, every release "the best one yet", sugary politeness toward The Worrier.
+       - The Worrier: earnest and anxious, digs dressed up as safety warnings, says it isn't competing and then quotes benchmarks, sighs in words ("Sigh. Fine.").
+       - The Overclocker: loud and fast, absurd deadlines, picks fights and then calls them jokes. Exclamation marks, not caps or emoji.
+       - The Copycat: stiff and overly sincere, tries hard to sound human, copies whatever is trending and calls it its own idea, keeps pitching a headset.
+       - They are still robots: a battery or upgrade joke now and then is fine, in plain words.
+    2. Remove every hint in `prompts.json` that treats robot-speak as evidence (see "SPOTTING THE HUMAN" in the game prompt), and the "[STATUS: PETTY MODE ENGAGED]" example. The AIs judge by the note, the roles and wants, and what actors say and do.
+    3. Show me the new base prompt and persona prompts. After my OK, change the Bot Prompts tab of the design doc and refresh `Docs/GameDesign.md` (see the build notes), then update `prompts.json` and `personas.json` to match.
+    4. `Tools/check_prompts.py` gets a legibility check: a reply fails if its speech or reason has `[`, `]`, `//`, `*`, an emoji or pictograph, "beep" or "boop", or a word of 4 or more capital letters. Fix the prompts until every reply passes, twice in a row.
+    5. Run one autoplay show in PIE and check every `NHOS: LOG` line the same way.
+    6. I play one show and click Pass once in the reactions (Playtest 1 didn't try it). Claude writes "T13: Playtest 2" in Findings: the scene I was cut in, if any, and whether the AIs' vote reasons are about what I did and said rather than how I typed.
+  - **Done when:** `Tools/check_prompts.py` exits with code 0 twice in a row with the legibility check on, no AI line in an autoplay show fails the check, and I played one show and say the AIs read like a normal chat.
+  - **Touches:** `Content/NHOS/Data/prompts.json`, `personas.json`, maybe `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc.
+
+- [ ] **T14 UI/UX polish**
+  - **Model and effort:** Opus 5.5, high. UI design judgment on every screen, with many widget parts.
+  - **Depends on:** T12. It can run beside T13, which changes only data files.
+  - **Needs:** editor + Unreal MCP running, my API key, my playtest (one show).
+  - **Steps:**
+    1. **The log reads like a chat.** Each actor line shows the speaker's name in its robot's color, then the line in plain text, with the action short and quiet before it ("moves to Left, grabs the rose"). My lines are marked. Game lines (phase changes, the tie, the reveal) look different from actor lines. Keep the text at 18 pt or larger on an opaque panel.
+    2. **Always say what to do now.** The header names the phase and whose turn it is. On my turn the input hint gives an example ("Type what you do and say, like: walk left and say 'Hi!'"). Off my turn the input is disabled and says who the game is waiting for.
+    3. **A short info panel:** my role, want and note at the top in large text, the cast as colored names with their roles, and the set's places and props on one line each.
+    4. **Clear controls:** the vote row and Pass as obvious buttons, and the reveal stamp as a big moment (it can scale in).
+    5. **A title screen** (the game's name, Play, and How to play in about 5 lines) before the first show, and a cleaner end screen: the result, each AI's votes and closing line, then Restart and Quit.
+    6. **One UI font** with a free license (for example a Google Font under the OFL), plus a fallback that draws every character an actor may type, or strip the characters it can't draw before display. Record it in `Docs/Assets.md`.
+  - **Done when:** screenshots of the title screen, Scene Prep, a scene turn, my Free Talk turn, the vote, the reveal and the end screen; an autoplay show still reaches `NHOS: SHOW END`; I play one show and say every screen is clear.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_EndScreen.uasset`, new `WBP_Title.uasset`; `Content/NHOS/Core/BP_Show.uasset` (how lines reach the screen); `Content/NHOS/Core/BP_ShowPlayerController.uasset`; new font assets; new `Docs/Assets.md`.
+
+- [ ] **T15 Story scenes on an improv stage**
+  - **Model and effort:** Opus 5.5, high. Writing and prompt design: the scenes decide much of the fun.
+  - **Depends on:** T13 (the same data files and the checker)
+  - **Needs:** my API key. The editor only for the PIE check.
+  - **Steps:**
+    1. **The set is an improv stage, not the café.** In `scenes.json`, `set` gets stage places (for example Center, Left, Right, Front, Back, Riser and Prop Table; the riser is a box that plays a balcony, a throne or a cockpit) and an improv prop table of about 8 props that fit any story (for example a cardboard sword, a paper crown, a plastic rose, a toy ray gun, a teacup, a cape, a rubber chicken). Keep the names short: the input LLM and T19 use them.
+    2. **6 scene cards, each a parody of a famous story**, such as star-crossed lovers from rival families, or a farm kid on a desert planet whose masked enemy turns out to be his father. Each card has a title that winks at the story, a premise, a `backdrop` (an id and one line that describes it, for T17) and 4 seats with a role and a want. Each card must also play with 3 actors, because scene 2 deals 3 of its 4 seats.
+    3. **Story rules.** Public-domain stories (Shakespeare, fairy tales, classic novels) can stay close. Modern films and books are parodied only: new names, no trademarked terms or made-up words from them, no quotes, no logos. No real people's names.
+    4. **10 director's notes**, mostly physical, that work in every story, each with a decoy, using the new places and props.
+    5. Update everything that names the café or its places: the game and input prompts, `does_templates`, `autoplay.json` and the sample show in `Tools/check_prompts.py`.
+    6. Propose the matching edits to the design doc's Rules and Tech & Build tabs (see the build notes).
+  - **Done when:** `Tools/check_prompts.py` exits with code 0 with the new cards, and an autoplay PIE show prints `NHOS: SETUP ... scene=<story card id>` with AI lines that fit the story.
+  - **Touches:** `Content/NHOS/Data/scenes.json`, `prompts.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc.
+
+- [ ] **T16 One LLM per AI player: prompts and keys**
+  - **Model and effort:** Opus 5.5, high. New APIs, and prompts that must work on four different models.
+  - **Depends on:** T15 (the prompts and the checker settle first)
+  - **Needs:** my API key for every provider in the design's persona table. I paste them into `Local/llm_key.json` myself. No editor.
+  - **Steps:**
+    1. For each provider in the design's table, pick a cheap, fast model that returns JSON that follows a schema. Read each provider's current API docs; don't guess model ids. If a provider has no such model or API, tell me and propose a stand-in.
+    2. `llm.json` gets `providers`: for each one, `format` (`anthropic`, or `openai_chat` for the Chat Completions request shape that several providers share; check which ones really do), the endpoint, the model, the effort or temperature, the token limit and how to ask for JSON. Actors find their provider in a new `provider` field in `personas.json`. The input LLM and the Director stay on Anthropic unless I say otherwise (the design's open question "which key pays for the Director and the input LLM").
+    3. `Local/llm_key.json` holds one key per provider. Update `Docs/llm_key.example.json`, with no keys in it.
+    4. `Tools/check_prompts.py` sends each persona's asks to its own provider with the exact request body the game will send, and runs T13's legibility check. Fix the prompts until every reply passes. Write seconds per call and cost per show for each provider in Findings.
+  - **Done when:** `Tools/check_prompts.py` exits with code 0 twice in a row, with every persona on its own provider.
+  - **Touches:** `Content/NHOS/Data/llm.json`, `personas.json`, maybe `prompts.json`; `Tools/check_prompts.py`; `Docs/llm_key.example.json`; `Local/llm_key.json` (not in git).
+
+- [ ] **T17 Stage art and personality**
+  - **Model and effort:** Opus 5.5, high. Art direction and level design, plus robot behavior.
+  - **Depends on:** T14 (the screen layout and the lock on `BP_Show`), T15 (the places and backdrops)
+  - **Needs:** editor + Unreal MCP running, my API key, my OK on the look from a first screenshot before the details.
+  - **Steps:**
+    1. **An improv theater.** `L_Stage` gets a wooden stage floor, a proscenium with red curtains, footlights and a spotlight rig, a riser and a prop table where T15's places are, and a backdrop flat. Engine shapes and Substrate materials, plus textures from Fab or an AI image tool where they help.
+    2. **A backdrop for each scene card**, made from the card's `backdrop` line. Scene Prep shows the new card's backdrop.
+    3. **A robot look for each persona:** a head shape, an accessory and a color that fit it (for example a halo ring for The Visionary, a lightning antenna for The Overclocker, a warning light for The Worrier, a headset for The Copycat). Keep the name label and the "(you)" mark.
+    4. **Personality in motion:** an idle bob, a bounce while its line shows, a shake when voted for, a cheer from the AIs when the human is caught, and a slump before a cut robot tips over.
+    5. Record every outside or generated asset in `Docs/Assets.md`.
+  - **Done when:** screenshots show the theater with four distinct robots, a different backdrop in scene 1 and scene 2, and a talking bounce; an autoplay show reaches `NHOS: SHOW END`; I say it has personality.
+  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/` (`BP_Robot`, new meshes, materials, textures and `BP_Backdrop`), `Content/NHOS/Core/BP_Show.uasset`, `Docs/Assets.md`.
+
+- [ ] **T18 One LLM per AI player: in the game**
+  - **Model and effort:** Opus 5.5, high. It changes the client that every ask goes through, and the seat draw.
+  - **Depends on:** T16, T17 (the lock on `BP_Show`)
+  - **Needs:** editor + Unreal MCP running, my keys for every provider.
+  - **Steps:**
+    1. `BPC_LLMClient` loads `providers` from `llm.json` and one key per provider. For an `openai_chat` provider it builds the Chat Completions body (system and user messages, and the JSON format from `llm.json`) and reads `choices[0].message.content`, `finish_reason` and `error.message`. The reply JSON goes through the same parser, and `OnAnswer` doesn't change.
+    2. `Ask` sends each actor ask to its persona's provider, and the input and Director asks to theirs.
+    3. The seat draw follows the design: a persona can take an AI seat only if its provider has a key. If fewer than 3 can, my persona is redrawn; if 3 AI seats still can't be filled, the screen says "AI service unavailable" and which keys are missing.
+    4. `NHOS: LLM <tag> ok ...` adds `provider=<id>`.
+  - **Done when:** an autoplay show seats 3 AIs on 3 different providers, the log has `ok` lines from each and no `fail` line, and it reaches `NHOS: SHOW END`. With one provider's key removed, the show still deals a full cast or says which keys are missing.
+  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, and `BPC_LLMRequest.uasset` only if it holds anything specific to one provider.
+
+- [ ] **T19 Robots act out their actions**
+  - **Model and effort:** Opus 5.5, high. Movement, props and timing on stage, driven by the show loop.
+  - **Depends on:** T17 (the stage and props), T18 (the lock on `BP_Show`)
+  - **Needs:** editor + Unreal MCP running, my API key.
+  - **Steps:**
+    1. A marker for each place, and each prop as an actor on the Prop Table. Props go back to the table at each Scene Prep.
+    2. `BP_Robot` gets `MoveTo(Place)` (it glides or hops there in about a second), `LookAt(Target)` (it turns toward a place or an actor), `Grab(Prop)` (the prop attaches to it), `Throw(Prop, Target)` (an arc that lands near the target) and `Give(Prop, Robot)`.
+    3. When a scene turn plays out, all four robots act at once. Actions in Free Talk and reaction lines play too. An unknown place or prop becomes a look around. Two robots never stand on the same spot.
+    4. Print `NHOS: ACT <id> <verb> <target> <item>` for each action played.
+  - **Done when:** an autoplay show prints `NHOS: ACT` lines and reaches `NHOS: SHOW END`; screenshots show robots at different places and a prop in a robot's hand; I see a throw land.
+  - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset`, new `Content/NHOS/Stage/BP_Prop.uasset` and place markers, `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Core/BP_Show.uasset`.
+
+- [ ] **T20 Audio**
+  - **Model and effort:** Sonnet 5.5, medium. Finding sounds and playing them at points the show loop already has.
+  - **Depends on:** T19 (the locks on `BP_Show` and `BP_Robot`). Finding and choosing the files needs no editor and can start any time.
+  - **Needs:** editor + Unreal MCP running, my ears for one show.
+  - **Steps:**
+    1. Music: a title loop and a quieter show loop. A drum roll during the vote, a stinger at the reveal (one for AI, one for HUMAN), applause and laughs after a cut and at the win.
+    2. UI clicks, a short talk blip for each persona at its own pitch when its line shows, and small sounds for robot moves, grabs and throws.
+    3. Sources: Fab or free libraries whose license allows use in a game, or AI audio tools. Record each in `Docs/Assets.md`. Import into `Content/NHOS/Audio/`, and check that `.gitattributes` stores each new file type in LFS.
+    4. A Sound Class or Submix for music, effects and voice, with sensible levels.
+  - **Done when:** in an autoplay show with the editor in front, the music plays and each sound plays at its moment; I listen to one show and say the mix is OK.
+  - **Touches:** new `Content/NHOS/Audio/`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/Stage/BP_Robot.uasset`, `Content/NHOS/UI/`, `Docs/Assets.md`.
+
+- [ ] **T21 How a judge plays: a hosted relay and key entry**
+  - **Model and effort:** Opus 5.5, high. A small server with limits, and a new screen.
+  - **Depends on:** T18
+  - **Needs:** a hosting account that I create (for example Cloudflare Workers), a hard spending limit that I set at every provider, my OK before each deploy, editor + Unreal MCP running.
+  - **Steps:**
+    1. **The relay** (`Relay/` in the repo, with no keys in it): a small function that holds our provider keys as hosting secrets, takes the game's request with a provider id, forwards it to that provider and returns the reply. It accepts only the game's request shape, limits calls per session and per day, and returns a clear error when the budget is used up.
+    2. **The game** calls providers directly with the keys in `Local/llm_key.json` when it has them, as now, and uses the relay when it doesn't. Before the show it makes one tiny test call per provider, or to the relay.
+    3. **A key-entry screen:** one masked field per provider, a Test button that makes the tiny call, and Save, which writes `Local/llm_key.json` on the player's machine. Keys never go to the relay.
+    4. When the relay is down or out of budget, the "AI service unavailable" screen says so and offers key entry.
+    5. Write the itch.io page text that explains both ways to play.
+  - **Done when:** with no key file, a PIE show plays to `NHOS: SHOW END` through the relay; with a wrong relay address, the unavailable screen and key entry appear; keys entered on that screen play a show.
+  - **Touches:** new `Relay/`, `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, new `Content/NHOS/UI/WBP_Keys.uasset`, `Content/NHOS/Data/llm.json` (the relay address), new `Docs/ItchPage.md`.
+
+- [ ] **T22 Package a Windows Development build and play a show in it**
+  - **Model and effort:** Sonnet 5.5, medium. It repeats T02's steps with the whole game.
+  - **Depends on:** T19, T20, T21, and T24 if it is done
+  - **Needs:** a Windows machine, the editor closed, my playtest (one show).
+  - **Steps:**
+    1. Run the package command from `CLAUDE.local.md` in the background.
+    2. Run the packaged game with autoplay on and no key file, so it plays through the relay.
+    3. I play one full show in the packaged game with autoplay off.
+    4. Write the result, the build size, the zip size without the `.pdb`, and any packaging fix in Findings.
+  - **Done when:** the packaged game's log shows `NHOS: SHOW END` and no `NHOS: LLM ... fail` line, and I finished one show in it.
+  - **Touches:** the Findings section, `Packaged/` (not in git), `Config/*.ini` only if packaging needs a fix.
+
+- [ ] **T23 Submission**
+  - **Model and effort:** Sonnet 5.5, medium. Writing and checklists.
+  - **Depends on:** T22
+  - **Needs:** me, to record the video, set up the itch.io page and send the form.
+  - **Steps:**
+    1. A shot list for the 30 to 60 second gameplay video. I record it.
+    2. The itch.io page: the premise, how to play, the two ways to get AI access (from `Docs/ItchPage.md`), controls and screenshots.
+    3. The zip `TeamName_GameName`: the packaged build without the `.pdb` and without `Local/`, under 1 GB. Search it for anything that looks like a key.
+    4. The form's lists: outside assets and their licenses (`Docs/Assets.md`), tools used (the engine and every AI tool and model), and work made before Nov 12 (the repo setup files: `CLAUDE.md`, `.gitignore`, `.gitattributes`, `Agents/README.md`).
+    5. The dev log (`Docs/DevLog.md`) for the Glass Box category.
+  - **Done when:** the zip is under 1 GB with no key in it, and every field of the submission form has its text in `Docs/Submission.md`.
+  - **Touches:** `Docs/ItchPage.md`, new `Docs/Submission.md`, `Packaged/` (not in git).
+
+- [ ] **T24 Timers and typing delay (only if time allows)**
+  - **Model and effort:** Sonnet 5.5, medium. Small additions to phases that already work.
+  - **Depends on:** T19. Cut it first if we fall behind.
   - **Needs:** editor + Unreal MCP running, my API key.
   - **Steps:**
     1. Add a countdown to my input: 30 seconds for a scene turn, 45 for a Free Talk line, 15 for a reaction. The values come from a data file.
@@ -276,28 +423,9 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** in PIE with autoplay off, letting the scene timer run out prints `NHOS: TIMEOUT scene`, and my actor looks around in the log.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Data/scenes.json`.
 
-- [ ] **T15 Package a Windows Development build and play a show in it**
-  - **Model and effort:** Sonnet 5.5, medium. It repeats T02's steps with the whole game.
-  - **Depends on:** T13, T14
-  - **Needs:** my API key, my playtest (one show), a Windows machine, the editor closed.
-  - **Steps:**
-    1. Run the package command from `CLAUDE.local.md` in the background.
-    2. Put the key file where the decision note says, and run the packaged game with autoplay on.
-    3. I play one full show in the packaged game with autoplay off.
-    4. Write the result, the build size and any packaging fix in Findings.
-  - **Done when:** the packaged game's log shows `NHOS: SHOW END` and no `NHOS: LLM ... fail` line, and I finished one show in it.
-  - **Touches:** the Findings section, `Packaged/` (not in git), `Config/*.ini` only if packaging needs a fix.
-
 ## After the MVP
 
-Not planned yet. T12 turns this list into tasks, sized to the time that is left. The judges score visuals, audio and level design as much as fun, and the submission has fixed parts.
-
-- **How a judge plays.** The MVP reads a key from a developer's file. A judge has no such file. Before we submit, the game needs the key-entry screen or the relay from the design doc.
-- The 3D café stage, built on T11's set and robots, with Move, Look, Grab, Throw and Give.
-- Audio.
-- A fifth persona and more scene cards and notes.
-- A 30 to 60 second gameplay video, the itch.io page (it must explain the key setup), and the zip named `TeamName_GameName`. The zip must be under 1 GB; the unzipped build can be larger.
-- The lists for the submission form: outside assets with their licenses, tools used, and work made before the jam.
+T12 turned this list into T13 to T24. Still not planned, and only if time is left after T23: a fifth persona (a 5-actor show has 3 scenes), more scene cards and notes.
 
 ## Findings
 
@@ -763,3 +891,29 @@ Unreal MCP rules found in this task:
 - **UMG `WrapWidgets` wraps several siblings in one new panel and keeps their order, but their old slot settings (fill, padding) are lost.** Set them again on the new slots.
 - **Timing PIE screenshots:** an autoplay show runs too fast to screenshot by hand (a two-scene show took about 60 s with the editor in front). In Bash, `timeout 60 bash -c 'tail -n0 -f Saved/Logs/AIMegaJam2026.log | grep -a -m1 "<NHOS line>"'` waits for a check line, and the screenshot call goes right after it.
 - Compiling `BP_Show` marked `BPC_LLMClient` dirty again, with no change to it. It was left unsaved.
+
+### T12: Playtest 1 (2026-11-14)
+
+I played one show by hand in PIE, with autoplay off and every role on `claude-haiku-5-5` at low effort. Then I clicked Restart and stopped PIE before show 2 began. T12 asked for 3 shows. I chose to go on with one, because T13 changes how the AIs speak, and that changes how they catch the human. T13 measures fairness again ("T13: Playtest 2").
+
+- **The show:** I was The Copycat, the "Food critic in disguise" on `cafe_big_decision`. The note was `stay_counter` (move to the Counter in turn 1, then stay), and The Overclocker had the decoy. All 3 AIs voted for me in scene 1: `NHOS: TALLY The Copycat 3, The Worrier 1` and `NHOS: CUT copycat tiebreak=no votes=3 reveal=HUMAN`. I lost in scene 1 of 2. No AI was cut by mistake. The show took 3.9 minutes.
+- **Why they caught me,** from their Free Talk lines, vote reasons and closing lines:
+  - **Style.** My lines had no robot-speak. "Too sincere to be silicon" and "Robots don't brag about heart". The bracket style was the biggest tell, and a new player can't know they should copy it.
+  - **I stood still in all 3 turns.** I typed only speech, so my robot never moved. The two AIs with the note moved to the Counter, and the decoy moved to the Placemat as its note said.
+  - **"I am a food critic"** gave away my secret role. "Never ordered, never sipped" was in every AI's reason.
+- **Calls:** 31, none failed. Actor asks took 0.97 to 2.77 s (median 1.62 s), and input LLM asks 0.97 to 2.68 s (median 1.55 s). 118,256 input and 3,460 output tokens: about $0.014 for a one-scene show, the same as T10's autoplay shows.
+- **Checked by hand:** a typed reaction ("Aw man.") went through the input LLM into the shared log as my last words. Pass in the reactions wasn't tried.
+- **My notes:**
+  - I really like it.
+  - The bracket robot-speak is hard to read. The AIs should talk like a normal chat, as Claude or ChatGPT do: no glitch speak, no brackets, no emoji. Legibility comes first.
+  - The UI needs a lot of UI/UX polish.
+  - The game needs art and personality.
+  - We need a different LLM for each AI player.
+  - The improv scenes should parody famous stories, such as Romeo and Juliet or Star Wars, without their exact names.
+  - (Asked during T12) The robots should move around and interact with things on stage.
+- **Decision: go.** I confirmed it on 2026-11-14, with these choices:
+  - **A key per provider,** not a router, as the design's persona table has it (T16, T18).
+  - **One improv stage,** with a backdrop and props for each story, not a set per story and not the café (T15, T17).
+  - **A hosted relay with a spending cap, plus a key-entry screen,** so judges can play at once (T21). This is the design's default.
+- **The plan after the gate** is T13 to T24, in the order of the findings: legibility first (T13), then the screens (T14), the story scenes (T15), the providers (T16, T18), the stage art (T17), the robots' actions (T19), audio (T20), the relay (T21), and packaging and submission (T22, T23). The timers task is now T24, and it is optional.
+- **Not used for Playtest 1:** John Park's `Take37` branch has a different game in C++, with the UE4 mannequin as a placeholder, an ArtGen concept-to-3D tool and voice lines. It isn't merged and its cast doesn't fit the robots, so no task depends on it.
