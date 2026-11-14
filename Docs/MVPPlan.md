@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13 and T15 are done. T14 waits only for my verdict on its playtest (every screen is clear). T26 (Opus 5.5 · high, added after a playtest put a provider name on my robot) is running. T16 and T17 (both Opus 5.5 · high) start after it; T17 also needs T14's box checked.
+**Next up:** T13, T14 and T15 are done. T26 (Opus 5.5 · high, added after a playtest put a provider name on my robot) is running. T16 and T17 (both Opus 5.5 · high) start after it.
 
 ## Goal
 
@@ -285,7 +285,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
   - **Touches:** `Content/NHOS/Data/prompts.json`, `personas.json`, maybe `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc.
   - **Result:** done, confirmed by me on 2026-11-14 after three shows by hand. See "T13: plain chat results" and "T13: Playtest 2" in Findings.
 
-- [ ] **T14 UI/UX polish**
+- [x] **T14 UI/UX polish**
   - **Model and effort:** Opus 5.5, high. UI design judgment on every screen, with many widget parts.
   - **Depends on:** T12. It can run beside T13, which changes only data files.
   - **Needs:** editor + Unreal MCP running, my API key, my playtest (one show).
@@ -298,7 +298,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
     6. **One UI font** with a free license (for example a Google Font under the OFL), plus a fallback that draws every character an actor may type, or strip the characters it can't draw before display. Record it in `Docs/Assets.md`.
   - **Done when:** screenshots of the title screen, Scene Prep, a scene turn, my Free Talk turn, the vote, the reveal and the end screen; an autoplay show still reaches `NHOS: SHOW END`; I play one show and say every screen is clear.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_EndScreen.uasset`, new `WBP_Title.uasset`; `Content/NHOS/Core/BP_Show.uasset` (how lines reach the screen); `Content/NHOS/Core/BP_ShowPlayerController.uasset`; new font assets; new `Docs/Assets.md`. T14 left `BP_ShowPlayerController` unchanged and also added `Content/NHOS/UI/WBP_ChatLine.uasset`, `WBP_EndCard.uasset` and `Fonts/F_UI.uasset`.
-  - **Waiting:** the screenshots and the autoplay show are done and committed (see "T14: UI/UX polish results" in Findings). Left: I play one show and say every screen is clear, then the checked box.
+  - **Result:** done, confirmed by me on 2026-11-14. I played one show and said every screen is clear, after one fix from that playtest: the end screen now waits behind a See the results button, so the last reactions stay readable. See "T14: UI/UX polish results" in Findings.
 
 - [x] **T15 Story scenes on an improv stage**
   - **Model and effort:** Opus 5.5, high. Writing and prompt design: the scenes decide much of the fun.
