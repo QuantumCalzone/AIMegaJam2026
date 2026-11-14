@@ -112,7 +112,7 @@ below) that created your model. Rules for every bot:
 
 ### Persona prompts
 
-Personas carry no label during play, and the prompts never name them. Each one’s pun name appears only on the stamp when it’s cut, such as “Sam Botman: AI”.
+Personas carry no label during play, and the prompts never name them. The headings below are pun names for this doc only. In play every actor goes by a Player number. Only the player’s screen shows which provider runs each AI, and the reveal stamp names the provider, such as “OPENAI: AI”.
 
 #### Sam Botman
 
@@ -171,7 +171,7 @@ human. Petty traits:
 
 ### Config & persona rules
 
-Each persona always runs on its own provider. Keep these company names out of prompts and on-screen text.
+Each persona always runs on its own provider. Provider names show only on the player’s screen (the labels and the reveal stamp). Keep them out of prompts and out of anything the AIs read.
 
 | Persona | Provider |
 |---|---|
@@ -183,7 +183,7 @@ Each persona always runs on its own provider. Keep these company names out of pr
 Changes from the original prompts:
 
 - References to protected characters were removed. The bots run on a battery and talk in plain sentences, like a normal chat.
-- Real names were removed from the prompts. Each persona has a pun name instead, shown only on its cut reveal stamp.
+- Real names were removed from the prompts. Each persona has a pun name in this doc. In the game it shows as its provider, on the player’s screen only.
 - Traits that broke gameplay were cut:
   - Sam Botman never answering direct questions, which made questioning him pointless.
   - Dario1010’s long essays, which fight the 25-word cap.
@@ -191,7 +191,7 @@ Changes from the original prompts:
 - There are no bracketed tags. “[SYSTEM: …]” tags were dropped so the models don’t learn to write fake system messages, and “[STATUS: …]” tags were dropped so every line is easy to read.
 - Long quoted lines in the persona traits became descriptions, because the models repeated them word for word.
 
-New personas follow the same rules: no real names, no company names, no protected characters, and no traits that block answering questions or break the 25-word cap. Each also gets a pun name for its reveal stamp.
+New personas follow the same rules: no real names, no company names, no protected characters, and no traits that block answering questions or break the 25-word cap. Each also runs on its own provider, whose name only the player sees.
 
 ---
 
@@ -239,7 +239,8 @@ Cut for the jam: voice acting, extra sets, animations beyond Move, Look, Grab, T
 
 ### Open questions & jam notes
 
-- [ ] Add a fifth persona, so a full 5-actor show is possible.
+- [x] Add a fifth persona, so a full 5-actor show is possible.
+  Settled: you take the fifth seat with no persona, so 4 personas fill a 5-actor show (see Rules).
 - [ ] Decide which key pays for the Director and the input LLM.
 - [ ] Choose between direct provider connections and a router service (one integration, one key format).
 - [ ] Keep or replace the Director tiebreak (provisional).
