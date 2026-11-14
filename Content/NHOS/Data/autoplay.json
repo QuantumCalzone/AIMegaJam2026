@@ -1,5 +1,5 @@
 {
-	"_readme": "Canned lines for the human seat. When Local/switches.json has \"autoplay\": true (copy Docs/switches.example.json), the human seat sends these instead of waiting for typed input, so an agent can run a show unattended. They go through the input LLM exactly like typed lines, except \"pass\", which passes at once, like the Pass button. scene: one line per scene turn, used in order and repeated. free_talk: one line per Free Talk round (2 per scene), used in order and repeated. vote: one reason per scene for the human seat's vote in The Cut, which goes to a random valid name. reaction: one line per scene for the human seat's reaction after the cut (its last words if it was cut); \"pass\" stays silent. Keep them generic: they must fit any persona, role and story card, and name only the improv stage's places and props.",
+	"_readme": "Canned lines for the human seat. When Local/switches.json has \"autoplay\": true (copy Docs/switches.example.json), the human seat sends these instead of waiting for typed input, so an agent can run a show unattended. They go through the input LLM exactly like typed lines, except \"pass\", which passes at once, like the Pass button. scene: one line per scene turn, used in order and repeated. free_talk: one line per Free Talk round (2 per scene), used in order and repeated. vote: one reason per scene (a full show has 3) for the human seat's vote in The Cut, which goes to a random valid name. reaction: one line per scene for the human seat's reaction after the cut (its last words if it was cut); \"pass\" stays silent. Keep them generic: they must fit any persona, role and story card, and name only the improv stage's places and props. One free_talk line names actors by the provider names the player sees on screen: the game must turn them into Player names before the AIs read it (check its NHOS: LOG line, or run Tools/check_prompts.py --log).",
 	"scene": [
 		"walk to center stage and say \"Places, everyone! This is my big scene.\"",
 		"grab the rubber chicken \"This is mine now. I think. Probably.\"",
@@ -12,14 +12,17 @@
 		"Somebody here keeps dodging questions. I'm watching you.",
 		"pass",
 		"My circuits are clean. Can everyone else say the same?",
-		"That last scene felt rehearsed. Robots don't rehearse. Who planned their lines?"
+		"That last scene felt rehearsed. Robots don't rehearse. Who planned their lines?",
+		"Meta and OpenAI keep looking at each other. What are they planning, Meta?"
 	],
 	"vote": [
 		"They keep dodging the questions. A real robot would just answer.",
-		"They broke the pattern everyone else followed. A robot doesn't make that mistake."
+		"They broke the pattern everyone else followed. A robot doesn't make that mistake.",
+		"Their story keeps changing. I trust the robot who repeats the same story."
 	],
 	"reaction": [
 		"Well. Nobody saw that coming. My circuits are still processing it.",
-		"Right. Deep breath. Robots breathe, right? Let's keep going."
+		"Right. Deep breath. Robots breathe, right? Let's keep going.",
+		"Fine. One robot fewer. I am ready for whatever comes next, fellow machines."
 	]
 }
