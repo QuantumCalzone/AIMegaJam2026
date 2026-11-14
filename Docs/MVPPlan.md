@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T06 · Opus 5.5 · high (then T07 · Opus 5.5 · high, which needs T06)
+**Next up:** T07 · Opus 5.5 · high (then T08 · Sonnet 5.5 · medium, which needs T07)
 
 ## Goal
 
@@ -162,7 +162,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 
 ### The show loop
 
-- [ ] **T06 Show setup and Scene Prep**
+- [x] **T06 Show setup and Scene Prep**
   - **Model and effort:** Opus 5.5, high. It sets the show state that T07 to T10 all extend.
   - **Depends on:** T05
   - **Needs:** editor + Unreal MCP running.
@@ -172,7 +172,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
     3. The screen shows the cast, the scene card, my role and my note. It never shows who has the decoy.
     4. Print `NHOS: SETUP human=<persona> decoy=<persona> scene=<id>`.
   - **Done when:** two PIE runs each print a `NHOS: SETUP` line, and the screen shows the cast, the scene card and my note (screenshot).
-  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, new `Content/NHOS/Core/E_ShowPhase.uasset`, new `Content/NHOS/Core/S_Seat.uasset`.
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, new `Content/NHOS/Core/E_ShowPhase.uasset`, new `Content/NHOS/Core/S_Seat.uasset`. T06 made neither new asset: Unreal MCP can't create a struct or an enum, so the seats are parallel arrays in `BP_Show` and the phase is a string (see "T06: show setup results").
 
 - [ ] **T07 The Scene: three simultaneous turns**
   - **Model and effort:** Opus 5.5, high. Parallel asks that must all return before the turn plays out; the hardest Blueprint part.
@@ -479,3 +479,46 @@ Unreal MCP rules found in this task:
 - **`ObjectTools.set_properties` takes `values` as a JSON string**, for example `{"NL": "\n"}`. On a new variable it works only after the Blueprint compiles.
 - **The DSL can't make the Http Request node** under its readback name `Http|HttpPostRequest` either.
 - **`read_graph_dsl` names a call to the Blueprint's own `Finish` function `Ability|Tasks|Finish`.** `get_node_infos` shows a `Self` target, so the node is right.
+
+### T06: show setup results (2026-11-14)
+
+Proven in PIE on `L_Stage`, two runs in a row:
+
+- Run 1: `NHOS: SETUP human=worrier decoy=visionary scene=cafe_missing_tip_jar note=give_every_turn`.
+- Run 2: `NHOS: SETUP human=overclocker decoy=worrier scene=cafe_big_decision note=hold_cup`.
+- The screen shows the scene card, my persona, role, want and note, the cast with each role and want, and the set's places and props. It never says who has the decoy. Screenshots: `Saved/Screenshots/T06/` (not in git).
+- The SETUP line names personas by `id`, so it splits on spaces, and it adds `note=<id>` for T11's analysis.
+- In run 2, a typed line got an answer from The Worrier with the full state object: `NHOS: LLM worrier-1 ok 2.33 in=3404 out=80`.
+
+How the show state works now (T07 to T10 extend it):
+
+- **Seats are parallel arrays in `BP_Show`, indexed by seat:** `SeatId`, `SeatName`, `SeatAbout`, `SeatSystem` (the actor's whole system text: `game`, `base`, then the persona), `SeatRole`, `SeatWant`, `SeatNote` (strings), `SeatHuman` and `SeatCut` (bools).
+  - The rest of the state: `HumanSeat`, `DecoySeat`, `SeatCount` (the persona count, at most `MaxCast` = 4), `SceneNum`, `SceneCount` (= `SeatCount` − 2), `CardId`, `CardTitle`, `CardPremise`, `NoteId`, `NoteText`, `DecoyText`, and `Phase`.
+  - `Phase` is a string. T06 sets "scene prep"; later tasks set "scene", "free talk", "the cut", "reactions" and "end".
+  - No `S_Seat` or `E_ShowPhase`: no Unreal MCP tool makes a struct or an enum asset. Typed arrays read and write cleanly in the DSL (`Utilities|Array|Get(acopy)`, `SetArrayElem`).
+- **`LoadData`** reads `prompts.json`, `personas.json` and `scenes.json`. It keeps the persona pool, `Header` (`game` + `base`), `SetObj` ({name, places, props} for the state), `SetLine` (the panel's set text), `CardArr` and `NoteArr`. It fails on fewer than 3 personas, or on no cards or no notes.
+- **`SetupShow`** starts a show: it shuffles the persona pool, builds the seats from the first `SeatCount`, draws `HumanSeat`, clears `SharedLog`, shuffles `CardOrder` and `NoteOrder`, then calls `ScenePrep`. T10's Restart calls `SetupShow`.
+- **`ScenePrep`** starts a scene. T10 calls it for scene 2.
+  - It adds 1 to `SceneNum`. The card is `CardArr[CardOrder[(SceneNum-1) % cards]]`, and the note is picked the same way, so scene 2 gets the other card and a new note.
+  - It deals the card's seats in random order to the seats that aren't cut. Cut seats get an empty role, want and note.
+  - Every seat on stage gets the note. One random seat on stage gets the decoy; that draw is separate from the deal, so the decoy isn't tied to a role.
+  - Then it calls `BuildCast` and `ShowPrep` and prints the SETUP line.
+- **`BuildCast`** rebuilds `Cast` = [{name, about, role, want, status}] from the seats. Status is "on stage", "cut, revealed AI" or "cut, revealed HUMAN". Call it after every cut.
+- **`ActorState(Seat, AskKey, Now)`** returns the actor's state object as a string, with the fields in `Tools/check_prompts.py`'s order. `game_messages` and `options` are empty for now; T07 and T09 fill them.
+- **`ShowPrep`** fills the new info panel (`WBP_Stage.SetInfo`), sets the header to "SCENE PREP: SCENE n OF m" and adds a line to the log.
+- **The talk flow is still temporary; T07 replaces it.** A typed line goes into `SharedLog` as my Free Talk line, and the first AI seat (`TalkSeat`) answers the `free_talk` ask with `ActorState`.
+- **`WBP_Stage`:** `LogScroll` now sits in `BodyRow` (HorizontalBox) beside `InfoSize` (SizeBox, 560 wide) > `InfoPanel` (Border) > `InfoText` (16 pt, auto wrap). `SetInfo(Info)` sets the panel text.
+
+Unreal MCP rules found in this task:
+
+- **Never edit a graph by reading it with `read_graph_dsl` and writing it back.** The readback loses data:
+  - It printed `(CallFunction|PromptText "")` where the graph had the key "game".
+  - It gave two different nodes in different scopes the same name, `_outvalue_8`.
+  - Writing that text back compiled without a warning, but the next PIE crashed the editor (an access violation in `JsonUtilities`). Always rewrite a graph from your own source, and check pin values with `get_node_infos`.
+- **Call the Blueprint's own functions with named arguments only** (`(CallFunction|PromptText :Key "game")`). A pin as the first positional argument fails with "Could not connect pin ReturnValue to self".
+- **Bind an impure node before you return its value.** `(return (Json|GetJsonString x))` leaves the node off the exec chain. It returns an empty string, and the compiler only warns ("was pruned"). Compile with `warnings_as_errors` = true to catch it.
+- **Node names:** `%` makes a node that doesn't exist, so use `Math|Integer|%(Integer)`. Min is `Math|Integer|Min(Integer)`. `Utilities|Array|MakeArray` has one input pin in the DSL, so it can't take a list of values.
+- **These work:** a literal into the item pin of `Utilities|Array|Add` or `SetArrayElem`, `select` with string literals, and an array `Get` straight into `Json|SetField`. `(range n)` runs from 0 to n − 1.
+- **Run `StartPIE` as its own call.** Inside `execute_tool_script`, the call never returned. That was the run with the broken graph, so the script may not be the cause.
+- Random draws differ between PIE runs in the same editor session.
+- `To Upper` doesn't change "é", so the panel shows the set name as written.
