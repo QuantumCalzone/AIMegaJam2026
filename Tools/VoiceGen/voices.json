@@ -1,0 +1,38 @@
+{
+  "settings": {
+    "design_model": "eleven_ttv_v3",
+    "tts_model": "eleven_v3",
+    "use_delivery_tags": true,
+    "output_format": "pcm_24000",
+    "takes_per_line": 3,
+    "target_lufs": -16,
+    "trim_silence_ms": 50
+  },
+  "speakers": {
+    "Brick": {
+      "label": "Brick Hardcastle (Leading Man)",
+      "description": "Deep, resonant male baritone, 1940s Hollywood matinee idol, over-enunciated and self-important, slight Western drawl, confident and vain.",
+      "sample": "Stand back, little lady. Hardcastle is on the scene, and the camera simply adores this jawline. Never fear! I do all of my own stunts, and most of my own dialogue. Now, which way is my good side?"
+    },
+    "Vivienne": {
+      "label": "Dame Vivienne Sterling (Diva)",
+      "description": "Older female, Mid-Atlantic accent, grand theatrical stage actress, imperious and dramatic, crisp diction, capable of operatic shrieks.",
+      "sample": "Darling, I have been acting since before you were a rumor. This is my scene, my light, and my monologue. Is no one watching the set? How dare you, gravity! Someone fetch my lawyer, and a very large pillow."
+    },
+    "Gus": {
+      "label": "Gus Pickles (Nervous PA)",
+      "description": "Young male, fast and high-pitched, nervous and eager, frequent voice cracks, breathy, apologetic.",
+      "sample": "Uh, quiet on set! Please? Thanks! Sorry! Is that supposed to be wobbling? Oh no, oh no, oh no. I got it, I got it! Don't worry, I'll just fix this, and, oh no. Am I fired? I feel like I'm fired."
+    },
+    "Director": {
+      "label": "The Director (the player)",
+      "description": "Middle-aged male film director shouting through a megaphone, passionate and theatrical.",
+      "sample": "Quiet on set! Places, everyone! Roll camera, and aaand, action! Cut! Cut! Beautiful. Print it! Again, from the top! Let's make cinema history, people, one disaster at a time."
+    },
+    "FirstAD": {
+      "label": "First Assistant Director",
+      "description": "Female, dry, deadpan, efficient stage manager, talks over a radio.",
+      "sample": "Call sheet's up, boss. Actors to set, please. We're losing the light. Fire marshal's on his way. Insurance called, again. That was the two-million-dollar camera. Scene one, take thirty-seven."
+    }
+  }
+}

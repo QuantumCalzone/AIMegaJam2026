@@ -1,0 +1,288 @@
+{
+  "speakers": {
+    "Brick": {
+      "rounds": [
+        {
+          "round": 1,
+          "description": "Deep, resonant male baritone, 1940s Hollywood matinee idol, over-enunciated and self-important, slight Western drawl, confident and vain.",
+          "files": [
+            "r001_1.mp3",
+            "r001_2.mp3",
+            "r001_3.mp3"
+          ],
+          "voice_ids": {
+            "r001_1": "m8TFvNpgyDobqarm9D31",
+            "r001_2": "VPvYDirTbVISYF3iyAqt",
+            "r001_3": "wJlzIQyTAe08RvRWqgyN"
+          },
+          "time": "2026-11-14T00:05:34.866943+00:00"
+        }
+      ],
+      "notes": [],
+      "approved": {
+        "preview": "r001_1",
+        "voice_id": "m8TFvNpgyDobqarm9D31",
+        "time": "2026-11-14T00:16:41.687394+00:00"
+      }
+    },
+    "Vivienne": {
+      "rounds": [
+        {
+          "round": 1,
+          "description": "Older female, Mid-Atlantic accent, grand theatrical stage actress, imperious and dramatic, crisp diction, capable of operatic shrieks.",
+          "files": [
+            "r001_1.mp3",
+            "r001_2.mp3",
+            "r001_3.mp3"
+          ],
+          "voice_ids": {
+            "r001_1": "MRKUHmYkkY0Khf44Nsjj",
+            "r001_2": "nU0vHfh1acSNqRgfl3ZF",
+            "r001_3": "ddshHwIXAyGKvD48Wic5"
+          },
+          "time": "2026-11-14T00:05:59.045670+00:00"
+        }
+      ],
+      "notes": [],
+      "approved": {
+        "preview": "r001_1",
+        "voice_id": "MRKUHmYkkY0Khf44Nsjj",
+        "time": "2026-11-14T00:16:44.658954+00:00"
+      }
+    },
+    "Gus": {
+      "rounds": [
+        {
+          "round": 1,
+          "description": "Young male, fast and high-pitched, nervous and eager, frequent voice cracks, breathy, apologetic.",
+          "files": [
+            "r001_1.mp3",
+            "r001_2.mp3",
+            "r001_3.mp3"
+          ],
+          "voice_ids": {
+            "r001_1": "8Z8NgjzjjBR7KMEEmwIM",
+            "r001_2": "VlvXkTFUyyHKvW4UKWKB",
+            "r001_3": "HMv2dggupG38zkpYLbWr"
+          },
+          "time": "2026-11-14T00:06:08.856405+00:00"
+        }
+      ],
+      "notes": [],
+      "approved": {
+        "preview": "r001_2",
+        "voice_id": "VlvXkTFUyyHKvW4UKWKB",
+        "time": "2026-11-14T00:27:28.363862+00:00"
+      }
+    },
+    "Director": {
+      "rounds": [
+        {
+          "round": 1,
+          "description": "Middle-aged male film director shouting through a megaphone, passionate and theatrical.",
+          "files": [
+            "r001_1.mp3",
+            "r001_2.mp3",
+            "r001_3.mp3"
+          ],
+          "voice_ids": {
+            "r001_1": "jNarj8TVwUMifaOmokgM",
+            "r001_2": "ryASqZWIBmdC3xEfBuYz",
+            "r001_3": "E5PcJzc7GEe0xjeUXHDH"
+          },
+          "time": "2026-11-14T00:06:18.733720+00:00"
+        },
+        {
+          "round": 2,
+          "description": "Middle-aged male film director shouting through a megaphone, passionate and theatrical. Adjustments: different take: a booming veteran director with a raspy, hoarse shout, impatient and passionate, slightly more gravelly and bigger than before.",
+          "files": [
+            "r002_1.mp3",
+            "r002_2.mp3",
+            "r002_3.mp3"
+          ],
+          "voice_ids": {
+            "r002_1": "04W1qLnCaZj4ZsVhL3qy",
+            "r002_2": "7gEb52SxW0IyKsSskIrX",
+            "r002_3": "TEPhWIDuZJRrQBtBvFiO"
+          },
+          "time": "2026-11-14T00:16:53.120177+00:00"
+        }
+      ],
+      "notes": [
+        "different take: a booming veteran director with a raspy, hoarse shout, impatient and passionate, slightly more gravelly and bigger than before"
+      ],
+      "approved": {
+        "preview": "r001_3",
+        "voice_id": "E5PcJzc7GEe0xjeUXHDH",
+        "time": "2026-11-14T00:27:31.184508+00:00"
+      }
+    },
+    "FirstAD": {
+      "rounds": [
+        {
+          "round": 1,
+          "description": "Female, dry, deadpan, efficient stage manager, talks over a radio.",
+          "files": [
+            "r001_1.mp3",
+            "r001_2.mp3",
+            "r001_3.mp3"
+          ],
+          "voice_ids": {
+            "r001_1": "TWAuxepZO77w0JyCpJUH",
+            "r001_2": "A8tP9PTkBGLCySZInkx3",
+            "r001_3": "hiRDSXLM1qKhTps26fr0"
+          },
+          "time": "2026-11-14T00:06:27.368420+00:00"
+        },
+        {
+          "round": 2,
+          "description": "Female, dry, deadpan, efficient stage manager, talks over a radio. Adjustments: much more sarcasm, extremely deadpan and dry, flat monotone delivery, bone-dry wit, world-weary and unimpressed, barely hiding contempt, low energy.",
+          "files": [
+            "r002_1.mp3",
+            "r002_2.mp3",
+            "r002_3.mp3"
+          ],
+          "voice_ids": {
+            "r002_1": "lkLVSfnEwlFURC0Fq4HC",
+            "r002_2": "jtdKXMIjvAtoW6wqdNyz",
+            "r002_3": "Q3khSKvikCpuVR09BCTC"
+          },
+          "time": "2026-11-14T00:17:00.720782+00:00"
+        },
+        {
+          "round": 3,
+          "description": "Female, dry, deadpan, efficient stage manager, talks over a radio. Adjustments: much more sarcasm, extremely deadpan and dry, flat monotone delivery, bone-dry wit, world-weary and unimpressed, barely hiding contempt, low energy; even more sarcastic and openly annoyed, dripping with irritation, deadpan and dry, flat monotone with exasperated sighs, a smoker's dry rasp, sardonic and fed up, like she has said this a thousand times, minimal emotion.",
+          "files": [
+            "r003_1.mp3",
+            "r003_2.mp3",
+            "r003_3.mp3"
+          ],
+          "voice_ids": {
+            "r003_1": "zeIi9NZ0LhU8Jb3tC3zr",
+            "r003_2": "tjqD2QEa34iR3Efyw0z5",
+            "r003_3": "HLYNSUizX5Pj639m6QQM"
+          },
+          "time": "2026-11-14T00:24:29.949046+00:00"
+        },
+        {
+          "round": 4,
+          "description": "Female, dry, deadpan, efficient stage manager, talks over a radio. Adjustments: much more sarcasm, extremely deadpan and dry, flat monotone delivery, bone-dry wit, world-weary and unimpressed, barely hiding contempt, low energy; even more sarcastic and openly annoyed, dripping with irritation, deadpan and dry, flat monotone with exasperated sighs, a smoker's dry rasp, sardonic and fed up, like she has said this a thousand times, minimal emotion; try a different voice type: a younger, sharp-tongued woman in her thirties, nasal and bored, sarcastic with a barely audible eye-roll in every line, flat and dry, passive-aggressive stage manager who is done with everyone, speaking tersely into a radio.",
+          "files": [
+            "r004_1.mp3",
+            "r004_2.mp3",
+            "r004_3.mp3"
+          ],
+          "voice_ids": {
+            "r004_1": "7g7YPJwu3mu7r8hjOpPe",
+            "r004_2": "0gSg6U4oOHnQOXT0VlmP",
+            "r004_3": "OQqBd5b2KAtndTXPqW8u"
+          },
+          "time": "2026-11-14T00:30:21.059854+00:00"
+        },
+        {
+          "round": 5,
+          "description": "Female, dry, deadpan, efficient stage manager, talks over a radio. Adjustments: a sharp-tongued woman in her thirties, nasal and bored, passive-aggressive stage manager done with everyone, speaking tersely into a radio; highly expressive and emotionally rich despite the deadpan: audible exasperation, eye-rolling sarcasm, clipped irritated sighs, pointed pauses, sing-song mockery, dramatic pitch swings on key words, a real personality with attitude, never flat or robotic; lots of vocal character: biting sarcasm, sudden bursts of annoyance and weary resignation, comedic timing.",
+          "files": [
+            "r005_1.mp3",
+            "r005_2.mp3",
+            "r005_3.mp3"
+          ],
+          "voice_ids": {
+            "r005_1": "AaL6ILiqZybkz0EaBnyo",
+            "r005_2": "E9BUYiR81gu6Z4ny7D08",
+            "r005_3": "UdqAl9LSC7sVjy2Fqk9l"
+          },
+          "time": "2026-11-14T00:32:54.794124+00:00"
+        }
+      ],
+      "notes": [
+        "a sharp-tongued woman in her thirties, nasal and bored, passive-aggressive stage manager done with everyone, speaking tersely into a radio",
+        "highly expressive and emotionally rich despite the deadpan: audible exasperation, eye-rolling sarcasm, clipped irritated sighs, pointed pauses, sing-song mockery, dramatic pitch swings on key words, a real personality with attitude, never flat or robotic",
+        "lots of vocal character: biting sarcasm, sudden bursts of annoyance and weary resignation, comedic timing"
+      ],
+      "approved": {
+        "preview": "r005_2",
+        "voice_id": "E9BUYiR81gu6Z4ny7D08",
+        "time": "2026-11-14T00:34:13.818960+00:00"
+      }
+    }
+  },
+  "picked": {
+    "VO_Brick_Notice_01": 1,
+    "VO_Brick_Notice_02": 1,
+    "VO_Brick_Notice_03": 1,
+    "VO_Brick_Notice_04": 1,
+    "VO_Brick_Hurt_Light_01": 1,
+    "VO_Brick_Hurt_Light_02": 1,
+    "VO_Brick_Hurt_Light_03": 1,
+    "VO_Brick_Hurt_Light_04": 1,
+    "VO_Brick_Hurt_Heavy_01": 1,
+    "VO_Brick_Hurt_Heavy_02": 1,
+    "VO_Brick_Hurt_Heavy_03": 1,
+    "VO_Brick_Hurt_Heavy_04": 1,
+    "VO_Brick_Heroic_01": 1,
+    "VO_Brick_Heroic_02": 1,
+    "VO_Brick_Heroic_03": 1,
+    "VO_Brick_Heroic_04": 1,
+    "VO_Brick_Heroic_05": 1,
+    "VO_Brick_Faint_01": 1,
+    "VO_Vivienne_Notice_01": 1,
+    "VO_Vivienne_Notice_02": 1,
+    "VO_Vivienne_Notice_03": 1,
+    "VO_Vivienne_Notice_04": 1,
+    "VO_Vivienne_Hurt_Light_01": 1,
+    "VO_Vivienne_Hurt_Light_02": 1,
+    "VO_Vivienne_Hurt_Light_03": 1,
+    "VO_Vivienne_Hurt_Light_04": 1,
+    "VO_Vivienne_Hurt_Heavy_01": 1,
+    "VO_Vivienne_Hurt_Heavy_02": 1,
+    "VO_Vivienne_Hurt_Heavy_03": 1,
+    "VO_Vivienne_Hurt_Heavy_04": 1,
+    "VO_Vivienne_Faint_01": 1,
+    "VO_Vivienne_Faint_02": 1,
+    "VO_Vivienne_Faint_03": 1,
+    "VO_Vivienne_Faint_04": 1,
+    "VO_Vivienne_Panic_01": 1,
+    "VO_Vivienne_Panic_02": 1,
+    "VO_Vivienne_Panic_03": 1,
+    "VO_Vivienne_Panic_04": 1,
+    "VO_Gus_Notice_01": 1,
+    "VO_Gus_Notice_02": 1,
+    "VO_Gus_Notice_03": 1,
+    "VO_Gus_Notice_04": 1,
+    "VO_Gus_Hurt_Light_01": 1,
+    "VO_Gus_Hurt_Light_02": 1,
+    "VO_Gus_Hurt_Light_03": 1,
+    "VO_Gus_Hurt_Light_04": 1,
+    "VO_Gus_Hurt_Heavy_01": 1,
+    "VO_Gus_Hurt_Heavy_02": 1,
+    "VO_Gus_Hurt_Heavy_03": 1,
+    "VO_Gus_Hurt_Heavy_04": 1,
+    "VO_Gus_Panic_01": 1,
+    "VO_Gus_Panic_02": 1,
+    "VO_Gus_Panic_03": 1,
+    "VO_Gus_Panic_04": 1,
+    "VO_Gus_Panic_05": 1,
+    "VO_Gus_Faint_01": 1,
+    "VO_Gus_Heroic_01": 1,
+    "VO_Director_Action_01": 1,
+    "VO_Director_Action_02": 1,
+    "VO_Director_Action_03": 1,
+    "VO_Director_Cut_01": 1,
+    "VO_Director_Cut_02": 1,
+    "VO_Director_Cut_03": 1,
+    "VO_Director_Cut_04": 1,
+    "VO_Director_Retry_01": 1,
+    "VO_Director_Retry_02": 1,
+    "VO_Director_Retry_03": 1,
+    "VO_Director_Setup_01": 1,
+    "VO_Director_Setup_02": 1,
+    "VO_FirstAD_CallSheet_01": 1,
+    "VO_FirstAD_CallSheet_02": 1,
+    "VO_FirstAD_CallSheet_03": 1,
+    "VO_FirstAD_CallSheet_04": 1,
+    "VO_FirstAD_Damage_01": 1,
+    "VO_FirstAD_Damage_02": 1,
+    "VO_FirstAD_Damage_03": 1
+  }
+}
