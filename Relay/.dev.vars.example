@@ -1,0 +1,6 @@
+# Copy this file to .dev.vars (git ignores it) and paste the keys you have.
+# Leave out a line, or leave it empty, for a provider you have no key for.
+ANTHROPIC_API_KEY=
+OPENAI_API_KEY=
+XAI_API_KEY=
+META_API_KEY=

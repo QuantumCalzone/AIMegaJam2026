@@ -1,0 +1,21 @@
+# The relay for No Humans On Set. See README.md. No keys in this file:
+# production keys are Worker secrets (wrangler secret put), local ones go in .dev.vars.
+name = "nhos-relay"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+
+# Keep vars set in the Cloudflare dashboard (such as the limit overrides) when
+# Workers Builds deploys a new version. Secrets are always kept.
+keep_vars = true
+
+# One global counter object holds the per-session, per-player and daily counts.
+[[durable_objects.bindings]]
+name = "LIMITER"
+class_name = "Limiter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Limiter"]
+
+[observability]
+enabled = true

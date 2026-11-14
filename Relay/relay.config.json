@@ -1,0 +1,62 @@
+{
+	"_readme": "Settings for the relay (see Relay/README.md). Provider and company names live only here and in wrangler secrets, never in text the game shows. A provider serves calls only when its secret is set and its models list is not empty. T16 picks the models and confirms each endpoint and max_tokens_field. Limits can be overridden per deploy or in wrangler dev with the vars SESSION_CALLS, IP_DAILY_CALLS, DAILY_CALLS and DAILY_TOKENS (DAILY_TOKENS applies to every provider).",
+	"max_body_bytes": 65536,
+	"upstream_timeout_ms": 90000,
+	"limits": {
+		"_readme": "A show is about 55 calls of 1,300 to 5,400 input tokens each (Findings in Docs/MVPPlan.md). The day is the UTC day. session_calls is per session id per day, ip_daily_calls per player address per day, daily_calls for everyone together.",
+		"session_calls": 150,
+		"ip_daily_calls": 600,
+		"daily_calls": 5000
+	},
+	"providers": {
+		"anthropic": {
+			"shape": "anthropic",
+			"endpoint": "https://api.anthropic.com/v1/messages",
+			"auth": "x-api-key",
+			"api_version": "2026-10-21",
+			"secret": "ANTHROPIC_API_KEY",
+			"models": ["claude-haiku-5-5"],
+			"max_tokens_field": "max_tokens",
+			"max_tokens_cap": 2000,
+			"daily_tokens": 8000000,
+			"body_keys": ["model", "max_tokens", "system", "messages", "output_config", "temperature"],
+			"roles": ["user", "assistant"]
+		},
+		"openai": {
+			"shape": "chat",
+			"endpoint": "https://api.openai.com/v1/chat/completions",
+			"auth": "bearer",
+			"secret": "OPENAI_API_KEY",
+			"models": [],
+			"max_tokens_field": "max_completion_tokens",
+			"max_tokens_cap": 2000,
+			"daily_tokens": 8000000,
+			"body_keys": ["model", "max_completion_tokens", "messages", "response_format", "temperature", "reasoning_effort", "stream"],
+			"roles": ["system", "developer", "user", "assistant"]
+		},
+		"xai": {
+			"shape": "chat",
+			"endpoint": "https://api.x.ai/v1/chat/completions",
+			"auth": "bearer",
+			"secret": "XAI_API_KEY",
+			"models": [],
+			"max_tokens_field": "max_tokens",
+			"max_tokens_cap": 2000,
+			"daily_tokens": 8000000,
+			"body_keys": ["model", "max_tokens", "messages", "response_format", "temperature", "reasoning_effort", "stream"],
+			"roles": ["system", "user", "assistant"]
+		},
+		"meta": {
+			"shape": "chat",
+			"endpoint": "https://api.llama.com/compat/v1/chat/completions",
+			"auth": "bearer",
+			"secret": "META_API_KEY",
+			"models": [],
+			"max_tokens_field": "max_completion_tokens",
+			"max_tokens_cap": 2000,
+			"daily_tokens": 8000000,
+			"body_keys": ["model", "max_completion_tokens", "messages", "response_format", "temperature", "stream"],
+			"roles": ["system", "user", "assistant"]
+		}
+	}
+}

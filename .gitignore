@@ -36,3 +36,9 @@ Desktop.ini
 # Local secrets and switches: the Claude API key file and local test switches.
 # Never commit these. The example key file is Docs/llm_key.example.json.
 Local/
+
+# Relay (Cloudflare Worker): local keys, packages and wrangler's local state.
+Relay/.dev.vars*
+!Relay/.dev.vars.example
+Relay/node_modules/
+Relay/.wrangler/

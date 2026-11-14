@@ -1,0 +1,14 @@
+{
+	"name": "nhos-relay",
+	"private": true,
+	"description": "The relay for No Humans On Set: holds the provider keys and forwards the game's calls, with limits.",
+	"scripts": {
+		"dev": "wrangler dev",
+		"dev:limits": "wrangler dev --var SESSION_CALLS:2 --var DAILY_CALLS:8",
+		"test": "bash test/curl-tests.sh",
+		"deploy": "wrangler deploy"
+	},
+	"devDependencies": {
+		"wrangler": "4.162.0"
+	}
+}
