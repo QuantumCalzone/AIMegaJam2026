@@ -60,6 +60,7 @@ Everything that happens in one show, from casting to the last cut.
 - Actions: Move, Look, Grab, Throw, Give.
 - Places: Center, Left, Right, Front, Back, Riser and Prop Table, on one bare improv stage. The Riser plays whatever the story needs (a balcony, a throne, a cockpit), and the props come from an improv prop table that fits any story.
 - Speech: words in quotes are spoken as typed, with spelling fixed. Caps, emojis and tags stay.
+- Mentions: type @ and a name you see, like @Meta, to speak to one actor. The AIs read it as that actor’s Player name (@Player 2), and they use the same form to speak to someone. Your screen shows every Player name as the name you know.
 - Every line, AI or human, is capped at 25 words.
 - If a command can’t be understood, the actor just looks around. This applies to AIs too, and no error appears in the log.
 
