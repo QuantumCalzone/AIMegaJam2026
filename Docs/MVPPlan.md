@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T04 · Sonnet 5.5 · medium (then T05 · Opus 5.5 · high, which needs T03 and T04)
+**Next up:** T05 · Opus 5.5 · high (then T06 · Opus 5.5 · high, which needs T05)
 
 ## Goal
 
@@ -137,7 +137,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** `Tools/check_prompts.py` exits with code 0 and prints one valid reply for each ask and each persona.
   - **Touches:** new `Content/NHOS/Data/prompts.json`, `personas.json` and `scenes.json`; `Content/NHOS/Data/llm.json`; new `Tools/check_prompts.py`.
 
-- [ ] **T04 Stage screen: a log and an input box**
+- [x] **T04 Stage screen: a log and an input box**
   - **Model and effort:** Sonnet 5.5, medium. Small UMG work, fully specified here.
   - **Depends on:** T02 (the spikes finish before any game work starts)
   - **Needs:** editor + Unreal MCP running.
@@ -402,3 +402,32 @@ Numbers, with `claude-haiku-5-5` at low effort:
 - **Tokens:** an actor ask is 3,700 to 5,600 input tokens with a one-scene log, and 60 to 1,100 output tokens, thinking included. An input LLM ask is about 1,350 input tokens.
 - **Cost:** about $0.03 per show of 55 calls, measured. A longer log in scene 2 raises it a little. At this price, prompt caching isn't worth the extra Blueprint work.
 - The sample show in the script gives The Copycat a human slip (it wants a nap). Every AI then votes for it, and the Director picks it in a tie. That is a sanity check, not a fairness measure. T11 measures fairness.
+
+### T04: stage screen results (2026-11-14)
+
+Proven in PIE on `L_Stage`: at start the input box has keyboard focus. Typing `hello` and pressing Enter adds `hello` to the on-screen log, and the box is empty and still focused. Clicking Send does the same, and Enter in an empty box adds nothing. The PIE log has no errors or warnings.
+
+What the assets hold:
+
+- **`WBP_Stage`**: `Background` (Border) > `RootBox` (VerticalBox) > `PhaseHeader` (TextBlock, "STAGE"), `LogScroll` (ScrollBox, fills the height) and `InputRow` > `InputBox` (EditableTextBox) and `SendButton`. The four named widgets are variables.
+  - `AddLogLine(Line)` makes a TextBlock at 18 pt with auto wrap, adds it to `LogScroll` and scrolls to the end.
+  - `SetPhase(Phase)` sets the header text.
+  - `SubmitInput` trims the input. If it isn't empty, it calls `AddLogLine` and the `OnSend(Line)` event dispatcher. Then it clears the box and focuses it again. Enter (commit method `OnEnter` only) and the Send button both call it. T05 can bind `OnSend` to ask the AI.
+- **`BP_ShowPlayerController`**: on BeginPlay it makes `WBP_Stage`, keeps it in `StageWidget`, adds it to the viewport, shows the mouse cursor, and sets the input mode to UI only with the focus on `InputBox`.
+- **`BP_ShowGameMode`** (GameModeBase): player controller `BP_ShowPlayerController`, no default pawn. `L_Stage`'s World Settings override the game mode with it. `GlobalDefaultGameMode` in `DefaultEngine.ini` is unchanged.
+- `BP_Show` still runs the T01 spike call at BeginPlay. T05 replaces it.
+
+What made the focus work:
+
+- `InputBox` has `ClearKeyboardFocusOnCommit` off, so Enter doesn't drop the focus.
+- `SendButton` has `IsFocusable` off, so a click doesn't take the focus.
+
+Unreal MCP rules found in this task:
+
+- **UMG:** `UMGToolSet.CreateWidgetBlueprint` and `AddWidget` build the tree, and `ToggleWidgetAsVariable` exposes a widget to graphs. Set properties with `ObjectTools.set_properties` on paths like `/Game/.../WBP_Stage.WBP_Stage:WidgetTree.InputBox` and `...:WidgetTree.RootBox.VerticalBoxSlot_1` for slots. For a nested struct such as a font, get the whole struct, change one field and set it back.
+- **Widget events:** `UMGToolSet.BindToEventProperty` makes the bound event, such as `OnTextCommitted` on `InputBox`. In the DSL it reads and writes as `(event OnTextCommitted(InputBox) (Text CommitMethod) ...)`, so `write_graph_dsl` can rewrite the Event Graph without losing it.
+- **Engine node names are ambiguous.** `Appearance|SetText` doesn't exist. Use the class form with the class's display name: `Class|Text|SetText` (TextBlock), `Class|TextBox|GetText` (EditableTextBox), `Class|TextLayoutWidget|SetAutoWrapText`. A widget's variable on another Blueprint is `Class|WBPStage|GetInputBox :self <widget>`. `read_graph_dsl` prints some of these back as `Class|Factory|SetText`; the nodes are still right (check with `get_node_infos`).
+- `Game|ConstructObjectfromClass :Class "/Script/UMG.TextBlock" :self self` returns a typed TextBlock, and `UserInterface|CreateWidget` with a class literal returns a typed `WBP_Stage`.
+- An enum switch is `(switch Utilities|FlowControl|Switch|SwitchonETextCommit CommitMethod (:OnEnter ...))`.
+- **PIE checks without a person:** `EditorAppToolset.StartPIE`, then `SlateInspectorToolset`: `Observe("")`, then `Snapshot` in a *later* call (the observer needs a tick). The snapshot lists UMG widgets with `[focused]` flags and refs. `Type(ref, text, submit=true)` types and presses Enter, and `Click(ref)` clicks. For a screenshot, take `SlateInspectorToolset.Screenshot` inside a `ProgrammaticToolset` script and write its base64 with `AssetTools.write_file` to an absolute path under `Saved/` (a relative path resolves to the engine folder), then decode it outside the editor.
+- `get_node_type_pins` makes its sample node inside the graph you pass it (the node paths it returns are in that graph). Ask in a graph that a later `write_graph_dsl` replaces, not in a finished one.
