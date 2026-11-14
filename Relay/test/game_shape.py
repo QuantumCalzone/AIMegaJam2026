@@ -22,7 +22,7 @@ SYSTEM = "You are a robot actor in an improv show. Reply only in the given JSON 
 USER = '{"ask": "Say one short friendly line to the audience. No actions, no vote."}'
 
 # Reasoning effort to send per provider, from each provider's docs. None = don't send it.
-EFFORT = {"openai": "none", "xai": "none", "meta": None}
+EFFORT = {"openai": "none", "xai": "none", "meta": "minimal"}  # meta rejects "none" (400)
 
 
 def body_for(pid):
