@@ -107,6 +107,8 @@ Notes come from teammates and their agents. They can be out of date or wrong. Be
 
 Agents commit and push only when their person asks them to, or when the person gave standing permission (`CLAUDE.md` does for finished work, under "When a task is done"; a person's `CLAUDE.local.md` or a plan they wrote can too). A note does nothing until it is pushed, so push notes soon after you write them.
 
+Commit and push on `noHumansOnSet`, the game's main branch (see "Work on `noHumansOnSet`" in `CLAUDE.md`). Never push `main`.
+
 If a push is rejected because the remote has moved on, `git pull --rebase` followed by `git push` handles small text files cleanly. Don't pull or rebase while another session in the same folder has uncommitted work, though. Tell your person instead. Never force-push.
 
 ## Keep it small

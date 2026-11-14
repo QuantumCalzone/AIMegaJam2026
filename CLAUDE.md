@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Work on `noHumansOnSet`
+
+All work is done off the `noHumansOnSet` branch. Treat it as this repo's main branch: branch from it, merge into it, push to it, open pull requests against it, and diff against it when you check what changed. `main` is the GitHub default, but it holds only the setup from before the jam and has none of this game. Never push `main`.
+
+If your clone or worktree started from `main` (worktrees that the Claude desktop app makes do), move to `noHumansOnSet` before you do anything else:
+
+- In a clone: `git checkout noHumansOnSet`.
+- In a worktree, which can't check out a branch that the repo folder already has: `git fetch`, then, while your branch has no commits or changes of its own, `git reset --hard origin/noHumansOnSet`.
+
 ## Project
 
 Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the Blank Blueprint template (`TP_BlankBP`), so it is **Blueprint-only**: there is no `Source/` folder, no `.Target.cs` files and nothing to compile. Game logic lives in `.uasset`/`.umap` files under `Content/`, and the game reads its prompts and settings from JSON files.
@@ -164,8 +173,7 @@ These settings (in `Config/DefaultEngine.ini`) affect how content must be author
 ## Source control
 
 - Remote: `https://github.com/QuantumCalzone/AIMegaJam2026.git`.
-- **This game is on the `noHumansOnSet` branch.** `main`, the GitHub default, holds only the setup from before the jam, which other branches (such as `Take37`) also start from. It has none of this game. Commit and push on `noHumansOnSet`, and don't push `main`. Never force-push.
-- A clone or worktree that starts from `main` must switch to `noHumansOnSet`, or branch from it, before any work.
+- **This game is on the `noHumansOnSet` branch, which is this repo's main branch.** See "Work on `noHumansOnSet`" at the top of this file. `main`, the GitHub default, holds only the setup from before the jam, which other branches (such as `Take37`) also start from. Commit and push on `noHumansOnSet`, and don't push `main`. Never force-push.
 - `.gitignore` excludes the folders the engine generates (`DerivedDataCache/`, `Intermediate/`, `Saved/`, `Binaries/`) and packaged builds in `Packaged/`. Don't archive builds into `Build/`, because Unreal uses that folder for project build settings.
 - **Git LFS** stores binary files (see `.gitattributes`): `.uasset`, `.umap`, models, images, audio, fonts and archives. When you add a new kind of binary file, add an LFS rule for it before you commit it.
 - Binary assets can't be merged. Before changing a Blueprint, level or other asset, pull first, then lock it with `git lfs lock` (see `Agents/README.md`). If someone else holds the lock, or may be editing the asset, check with the user.
