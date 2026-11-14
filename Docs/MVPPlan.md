@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13 and T14 wait only for my playtest; their work is committed. One show I play by hand can check both: T13 needs one Pass in the reactions, and T14 needs me to say every screen is clear. T15 (Opus 5.5 · high) starts once T13's box is checked, and T17 once T14's and T15's are.
+**Next up:** T13 is done. T14 waits only for my verdict on its playtest (every screen is clear). T15 (Opus 5.5 · high) is running, and T17 starts once T14's and T15's boxes are checked.
 
 ## Goal
 
@@ -265,7 +265,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 
 T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run at once: T13, T15 and T16 need no editor (only for a PIE check), while the editor tasks go one at a time, because most of them hold the lock on `BP_Show`.
 
-- [ ] **T13 The AIs talk like a normal chat**
+- [x] **T13 The AIs talk like a normal chat**
   - **Model and effort:** Opus 5.5, high. Prompt design: the voice of every AI changes.
   - **Depends on:** T12
   - **Needs:** my API key, my playtest (one show), and my OK on the new prompt text before the design doc changes. The editor only for the PIE checks, so this can run beside T14.
@@ -283,7 +283,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
     6. I play one show and click Pass once in the reactions (Playtest 1 didn't try it). Claude writes "T13: Playtest 2" in Findings: the scene I was cut in, if any, and whether the AIs' vote reasons are about what I did and said rather than how I typed.
   - **Done when:** `Tools/check_prompts.py` exits with code 0 twice in a row with the legibility check on, no AI line in an autoplay show fails the check, and I played one show and say the AIs read like a normal chat.
   - **Touches:** `Content/NHOS/Data/prompts.json`, `personas.json`, maybe `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc.
-  - **Waiting:** steps 1 to 5 are done and committed (see "T13: plain chat results" in Findings). Left: step 6, my playtest of one show with one Pass in the reactions, then "T13: Playtest 2" in Findings and the checked box.
+  - **Result:** done, confirmed by me on 2026-11-14 after three shows by hand. See "T13: plain chat results" and "T13: Playtest 2" in Findings.
 
 - [ ] **T14 UI/UX polish**
   - **Model and effort:** Opus 5.5, high. UI design judgment on every screen, with many widget parts.
@@ -970,6 +970,28 @@ Steps 1 to 5. Every role still runs `claude-haiku-5-5` at low effort.
   - `--log` checks the AI lines (`NHOS: LOG`, `CLOSING` and `DIRECTOR`) of the last PIE show in the editor log and also fails a line the game cut at 25 words. `--all-shows` checks every show in the file. The old shows in the T12 log fail 390 of 451 lines.
   - `--no-design` skips the word-for-word check, for trying drafts before the design doc changes.
   - The design's persona headings are pun names now, so each persona prompt must match one of the blocks under "Persona prompts".
+
+### T13: Playtest 2 (2026-11-14)
+
+I played three shows by hand in PIE (11:08 PM, 11:31 PM and 11:44 PM PST), with autoplay off, T14's UI in place and every role on `claude-haiku-5-5` at low effort. **My verdict: the AIs read like a normal chat.**
+
+| Show | My seat | Result | Calls | Cost | AI lines legible |
+|---|---|---|---|---|---|
+| 1 | The Overclocker, `cafe_missing_tip_jar` then `cafe_big_decision` | **Win.** The Copycat (AI) was cut in scene 1 and The Visionary (AI) in scene 2, each with 2 votes. | 51 | $0.026 | 38 of 38 |
+| 2 | The Overclocker, `cafe_missing_tip_jar` | Cut in scene 1, 3 votes | 31 | $0.014 | 24 of 24 |
+| 3 | The Worrier, `cafe_missing_tip_jar` | Cut in scene 1, 3 votes | 28 | $0.014 | 17 of 24 (see below) |
+
+- No call failed. The median was 1.7 to 2.0 s per call.
+- **Pass in the reactions works.** In show 3 I clicked it after my cut, and the shared log has "The Worrier | passes".
+- **The vote reasons are about what I did and said, not how I typed.**
+  - Show 1: one AI voted for me because I "walked Backward on turn one" against the note (`never_backward`). The others voted for the AIs that kept repeating themselves.
+  - Show 2: all three voted for me for "standing still for three turns, then saying the game is broken".
+  - Show 3: all three voted for me for wanting "a coffee and a nap", for saying "I am definitely a robot, beep" and for passing twice.
+- **An AI that repeats itself still gets cut.** In show 1, the Copycat opened most lines with "Friends" and talked about its sincerity, and it was cut as "a script". The Worrier's repeated "gentle safety note" drew votes too. That cost the AIs the show. It is a fair way for the human to win, but the repetition rule in the base prompt doesn't fully stop it.
+- **Show 3's 7 failures are not robot-speak.**
+  - 6 of the 7 are AIs quoting my own "beep" ("kept saying beep, which no robot would do"). The `--log` check counts any "beep" as a failure, even one that refers to the human's line.
+  - The 7th is a Free Talk line the game cut off at 25 words. That is the first cut-off line since the 15-word target.
+- **A bug, not about speech:** in show 2, my turns 1 and 3 came back with no action and no speech, so my robot stood still. The input LLM calls succeeded but ran long (337 and 302 output tokens, against 35 to 40 for a plain line). T14 added `NHOS: TYPED` after this show, so the log doesn't have what I typed. I said "The game is broken for me." in Free Talk.
 
 ### T14: UI/UX polish results (2026-11-14)
 
