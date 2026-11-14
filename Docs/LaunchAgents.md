@@ -16,7 +16,7 @@ The dispatcher only starts sessions and keeps track of them. Each task runs in a
 
 - **One editor.** Unreal MCP runs one call at a time on the editor's game thread, so only one session can drive the editor at a time.
 - **`BP_Show.uasset`.** Most editor tasks change it, and binary assets can't be merged.
-- **You.** Most tasks stop for your OK or a playtest, so every extra session is one more thing waiting on you.
+- **You.** Most tasks stop for your OK or a playtest, so every extra session is one more thing waiting on you. Playtests now run in a game window outside the editor (see the plan's build notes), so the editor lane can go on while you play.
 
 So the most that run at the same time are one editor session, one data session and the prep sessions, which touch only new files of their own.
 
@@ -68,7 +68,7 @@ Start these now if the task is still free and its lane is empty:
 You get a note each time a session you started ends a turn. Don't poll. On each note:
 
 1. **Check git, not only the note.** Look for the task's commit in `git log`, its checked box in the plan, and its status file gone.
-2. **Tell me what is waiting on me.** If a session waits for me, tell me in one line what it needs, with a link to the session. When two sessions both wait for a playtest, tell me that one show can answer both.
+2. **Tell me what is waiting on me.** If a session waits for me, tell me in one line what it needs, with a link to the session. When two sessions both wait for a playtest, tell me that one show can answer both. A session that waits only for my playtest doesn't hold the editor lane: I play in a game window, so start the next editor task, and tell me that it doesn't touch `Local/switches.json` while I play.
 3. **Fill free lanes.** When a lane is free, start its next task with the task brief. The next task is the first in the lane's order whose box is unchecked, whose Depends-on tasks are all checked, and that has no claim lock and no status file. Don't start a task whose Touches overlap those of a running session. Also start T23 when T22 is done, and T25 when T23 is done. They are the "Last" row.
 4. **Model and effort.** Every session runs `claude-opus-5-5`, even where the plan names Sonnet or Haiku; that is my choice. Use the effort the plan gives the task. Use `xhigh` only to retry a task that failed once, and never `max`.
 5. **T22 needs the editor closed.** Before you start T22, ask me to close the editor, and wait for my answer.
@@ -89,6 +89,8 @@ End every brief with these lines:
 
 > - Several sessions work in this folder and on this branch at the same time. Stage only your own files, by path (never `git add -A` or `git add .`). Don't switch branches. Don't push unless I ask.
 > - Only the editor-lane session drives the Unreal Editor. If you need the editor only for a PIE check, tell me before you start PIE and wait for my go, so I can pause the editor session between steps.
+> - When you need me to play, follow the "Playtests run in a game window" build note in the plan: save, check that a free autoplay show reaches `SHOW END`, set autoplay off, and give me the game-window command. Don't ask me to play in PIE. If another session's playtest is still open, don't change `Local/switches.json` until I say it's done.
+> - In the editor, read only the graphs you need, keep graph sources in `Graphs/`, and build new systems in their own Blueprints, as the plan's build notes say.
 > - I picked Opus 5.5 for this session on purpose, so don't ask me about the model.
 > - When you finish, or stop to wait for me, end your turn with one line that says which.
 
