@@ -72,7 +72,6 @@
 			"auth": "bearer",
 			"secret": "XAI_API_KEY",
 			"models": [
-				"grok-build-0.1",
 				"grok-4.3"
 			],
 			"max_tokens_field": "max_tokens",
@@ -91,7 +90,10 @@
 				"system",
 				"user",
 				"assistant"
-			]
+			],
+			"force": {
+				"reasoning_effort": "none"
+			}
 		},
 		"meta": {
 			"shape": "chat",
