@@ -1,20 +1,32 @@
 #!/usr/bin/env python3
-"""Check the game's prompt and data files, then try every ask against Claude.
+"""Check the game's prompt and data files, then try every ask against its own provider.
 
 Usage (from anywhere; Python 3.10+, no packages needed):
 
     python Tools/check_prompts.py              # check the files, then send every ask once per persona
     python Tools/check_prompts.py --offline    # check the files only, no API calls
     python Tools/check_prompts.py --ask vote --persona copycat --repeat 3
+    python Tools/check_prompts.py --relay      # send through the relay (its keys), not Local/llm_key.json
+    python Tools/check_prompts.py --relay --free   # through the relay in free mode: shapes only, no tokens
     python Tools/check_prompts.py --log        # check the AI lines of the last show in the editor log
     python Tools/check_prompts.py --log --all-shows Saved/Logs/AIMegaJam2026.log
 
-It reads Content/NHOS/Data/{llm,prompts,personas,scenes}.json and the key in
-Local/llm_key.json, and never prints the key.
+It reads Content/NHOS/Data/{llm,prompts,personas,scenes}.json and the keys in
+Local/llm_key.json, and never prints a key.
+
+Providers (T16): each actor ask goes to its persona's 'provider' (personas.json),
+and the input LLM and Director asks go to their role's provider, as llm.json
+'providers' says: the Messages API for 'anthropic', the Chat Completions shape
+for 'openai_chat'. Direct calls need each provider's key in Local/llm_key.json
+(the field named by key_field). --relay sends {provider, session, body} to the
+relay in llm.json instead, which holds our keys; the body is the same. The
+file check also checks every provider against Relay/relay.config.json (model on
+the allow-list, token field and cap, body fields), so the relay won't refuse
+the game's calls. The summary gives seconds per call and cost for each provider.
 
 Each ask goes out as the same raw HTTP request the game's BPC_LLMClient sends
 (see the _readme in llm.json and prompts.json), built from a sample show in
-this file. That is why it uses urllib and not the Anthropic SDK: the point is
+this file. That is why it uses urllib and not a provider SDK: the point is
 to test the exact body the Blueprint client builds.
 
 Legibility check: every AI line (an actor's speech or reason, and the
@@ -58,19 +70,29 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "Content" / "NHOS" / "Data"
 KEY_FILE = ROOT / "Local" / "llm_key.json"
 DESIGN = ROOT / "Docs" / "GameDesign.md"
+RELAY_CONFIG = ROOT / "Relay" / "relay.config.json"
 
 # Dollars per million input / output tokens, for prompts up to 100K tokens.
+# The three chat models are from Relay/README.md (checked on each provider's docs, 2026-11-14).
 PRICES = {
     "claude-haiku-5-5": (0.10, 0.50),
     "claude-sonnet-5-5": (2.00, 10.00),
     "claude-opus-5-5": (4.00, 20.00),
+    "gpt-6-luna": (0.10, 0.50),
+    "grok-4.3": (1.25, 2.50),
+    "muse-ember-1.0": (0.10, 0.50),
 }
+FORMATS = ["anthropic", "openai_chat"]
+PROVIDER_KEYS = ["format", "endpoint", "key_field", "model", "max_tokens_field", "max_tokens", "effort_field", "effort"]
+# Cloudflare answers 403 to Python's default User-Agent (Relay/README.md).
+USER_AGENT = "nhos-check-prompts/1.0"
 CALLS_PER_SHOW = 90  # a full 3-scene show with 5 actors made 87 calls in T26 (a cast of 4 made 55)
 
 PLACES = ["Center", "Left", "Right", "Front", "Back", "Riser", "Prop Table"]
@@ -179,6 +201,40 @@ def squash(text: str) -> str:
     return " ".join(text.split())
 
 
+def relay_problems(llm, providers) -> list[str]:
+    """Would the relay take the bodies the game builds? Checks Relay/relay.config.json (read only)."""
+    try:
+        relay = json.loads(RELAY_CONFIG.read_text(encoding="utf-8"))["providers"]
+    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+        return [f"Relay/relay.config.json: can't read its providers ({e})"]
+    out = []
+    shapes = {"anthropic": "anthropic", "openai_chat": "chat"}
+    for pid, pv in providers.items():
+        rv = relay.get(pid)
+        if not rv:
+            out.append(f"llm.json: provider {pid!r} is not in Relay/relay.config.json")
+            continue
+        if rv.get("shape") != shapes.get(pv.get("format")):
+            out.append(f"llm.json: providers.{pid}.format {pv.get('format')!r} doesn't match the relay's shape {rv.get('shape')!r}")
+        models = {pv.get("model")}
+        if pv.get("format") == "anthropic":
+            models |= {r.get("model") for name, r in llm.get("roles", {}).items()
+                       if r.get("provider") == pid}
+        for m in sorted(models - set(rv.get("models", []))):
+            out.append(f"llm.json: model {m!r} ({pid}) is not on the relay's allow-list")
+        if pv.get("max_tokens_field") != rv.get("max_tokens_field"):
+            out.append(f"llm.json: providers.{pid}.max_tokens_field differs from the relay's {rv.get('max_tokens_field')!r}")
+        if (pv.get("max_tokens") or 0) > rv.get("max_tokens_cap", 0):
+            out.append(f"llm.json: providers.{pid}.max_tokens is over the relay's cap {rv.get('max_tokens_cap')}")
+        sample = request_body({"llm": llm}, pid, None, "s", {})
+        extra = set(sample) - set(rv.get("body_keys", []))
+        if extra:
+            out.append(f"llm.json: the relay refuses {pid} bodies with {sorted(extra)}")
+        if pv.get("endpoint") != rv.get("endpoint"):
+            out.append(f"llm.json: providers.{pid}.endpoint differs from the relay's {rv.get('endpoint')}")
+    return out
+
+
 def check_files(errors: list[str], design: bool = True):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
@@ -198,6 +254,20 @@ def check_files(errors: list[str], design: bool = True):
     for k in ["endpoint", "api_version"]:
         if not llm.get(k):
             errors.append(f"llm.json: {k} is missing")
+    providers = {k: v for k, v in llm.get("providers", {}).items() if not k.startswith("_")}
+    if not providers:
+        errors.append("llm.json: providers is missing")
+    for pid, pv in providers.items():
+        missing = [k for k in PROVIDER_KEYS if pv.get(k) in (None, "")]
+        if missing:
+            errors.append(f"llm.json: providers.{pid} needs {', '.join(missing)}")
+        if pv.get("format") not in FORMATS:
+            errors.append(f"llm.json: providers.{pid}.format must be one of {FORMATS}")
+        if pv.get("format") == "anthropic" and not pv.get("api_version"):
+            errors.append(f"llm.json: providers.{pid} needs api_version")
+    for role in ["input", "director"]:
+        if llm.get("roles", {}).get(role, {}).get("provider") not in providers:
+            errors.append(f"llm.json: roles.{role}.provider must name an entry in providers")
 
     # prompts.json
     for k in ["game", "base", "input", "director"]:
@@ -223,6 +293,14 @@ def check_files(errors: list[str], design: bool = True):
     for p in plist:
         if not all(isinstance(p.get(k), str) and p[k] for k in ["id", "name", "about"]) or not is_lines(p.get("prompt")):
             errors.append(f"personas.json: {p.get('id')} needs id, name, about and prompt lines")
+        if p.get("provider") not in providers:
+            errors.append(f"personas.json: {p.get('id')}'s provider {p.get('provider')!r} is not in llm.json providers")
+    used = [p.get("provider") for p in plist]
+    if len(set(used)) != len(used):
+        errors.append("personas.json: two personas share a provider (each persona runs on its own)")
+
+    # The relay forwards the game's body unchanged, but only if its allow-list takes it.
+    errors.extend(relay_problems(llm, providers))
 
     # Word for word against the design doc.
     md = DESIGN.read_text(encoding="utf-8")
@@ -276,8 +354,10 @@ def check_files(errors: list[str], design: bool = True):
         if r.search(story_text):
             errors.append(f"a word from a parodied original in the prompt files: {w!r}")
 
-    # No real people or products in anything the actors or the player read.
-    texts = json.dumps([prompts, personas, scenes], ensure_ascii=False)
+    # No real people or products in anything the actors or the player read. A persona's
+    # 'provider' is an id for the code (the relay's id, such as "xai"), never shown or sent.
+    shown = dict(personas, personas=[{k: v for k, v in p.items() if k != "provider"} for p in plist])
+    texts = json.dumps([prompts, shown, scenes], ensure_ascii=False)
     for word in BANNED:
         if re.search(r"\b" + re.escape(word) + r"\b", texts, re.I):
             errors.append(f"banned name in the prompt files: {word!r}")
@@ -612,61 +692,136 @@ def system_text(data, kind, pid=None):
     return join(pr[kind])
 
 
-def request_body(data, role, system, state):
+def providers_of(data):
+    return {k: v for k, v in data["llm"]["providers"].items() if not k.startswith("_")}
+
+
+def provider_for(data, role, pid=None):
+    """The provider id an ask goes to: the persona's for an actor, the role's for the others."""
+    if role == "actor":
+        return next(p for p in data["personas"] if p["id"] == pid)["provider"]
+    return data["llm"]["roles"][role]["provider"]
+
+
+def request_body(data, provider, role, system, state):
+    """The exact body the game sends to this provider. role None or 'actor' takes the provider's
+    model, effort and token limit; 'input' and 'director' take their role's (llm.json _readmes)."""
     llm = data["llm"]
-    r = llm["roles"][role]
-    body = {
-        "model": r["model"],
-        "max_tokens": r["max_tokens"],
-        "system": system,
-        "messages": [{"role": "user", "content": json.dumps(state, ensure_ascii=False)}],
-        "output_config": {"effort": r["effort"], "format": {"type": "json_schema", "schema": llm["reply_schema"]}},
+    pv = llm["providers"][provider]
+    r = llm["roles"].get(role, {}) if role in ("input", "director") else {}
+    model, effort, max_tokens = r.get("model", pv["model"]), r.get("effort", pv["effort"]), r.get("max_tokens", pv["max_tokens"])
+    content = json.dumps(state, ensure_ascii=False)
+    if pv["format"] == "anthropic":
+        body = {
+            "model": model,
+            "max_tokens": max_tokens,
+            "system": system,
+            "messages": [{"role": "user", "content": content}],
+            "output_config": {"effort": effort, "format": {"type": "json_schema", "schema": llm["reply_schema"]}},
+        }
+        if llm.get("fallbacks"):
+            body["fallbacks"] = llm["fallbacks"]
+        return body
+    return {
+        "model": model,
+        pv["max_tokens_field"]: max_tokens,
+        "messages": [{"role": "system", "content": system}, {"role": "user", "content": content}],
+        "response_format": {"type": "json_schema",
+                            "json_schema": {"name": "reply", "schema": llm["reply_schema"], "strict": True}},
+        pv["effort_field"]: effort,
     }
-    if llm.get("fallbacks"):
-        body["fallbacks"] = llm["fallbacks"]
-    return body
 
 
-def send(data, key, body):
-    llm = data["llm"]
-    headers = {"x-api-key": key, "anthropic-version": llm["api_version"], "content-type": "application/json"}
-    if llm.get("beta"):
-        headers["anthropic-beta"] = llm["beta"]
-    raw = json.dumps(body, ensure_ascii=False).encode("utf-8")
-    for attempt in range(3):
-        req = urllib.request.Request(llm["endpoint"], data=raw, headers=headers, method="POST")
-        t0 = time.monotonic()
-        try:
-            with urllib.request.urlopen(req, timeout=120) as resp:
-                return json.loads(resp.read().decode("utf-8")), time.monotonic() - t0
-        except urllib.error.HTTPError as e:
-            text = e.read().decode("utf-8", "replace")
-            if e.code in (429, 500, 529) and attempt < 2:
-                time.sleep(3 * (attempt + 1))
-                continue
+def body_text(body):
+    """Everything the model reads in a body: the system text and every message."""
+    parts = [body["system"]] if isinstance(body.get("system"), str) else []
+    return "\n".join(parts + [m["content"] for m in body["messages"]])
+
+
+class Sender:
+    """Posts bodies to each provider directly (keys from Local/llm_key.json) or through the relay."""
+
+    def __init__(self, data, keys, relay=None, free=False):
+        self.data, self.keys, self.relay, self.free = data, keys, relay, free
+        self.session = "check-" + uuid.uuid4().hex  # one relay session per run
+
+    def request(self, provider, body):
+        pv = self.data["llm"]["providers"][provider]
+        headers = {"content-type": "application/json", "user-agent": USER_AGENT}
+        if self.relay:
+            env = {"provider": provider, "session": self.session, "body": body}
+            if self.free:
+                env["free"] = True
+            return self.relay, headers, env
+        key = self.keys.get(pv["key_field"], "")
+        if pv["format"] == "anthropic":
+            headers |= {"x-api-key": key, "anthropic-version": pv["api_version"]}
+            if self.data["llm"].get("beta"):
+                headers["anthropic-beta"] = self.data["llm"]["beta"]
+        else:
+            headers["authorization"] = f"Bearer {key}"
+        return pv["endpoint"], headers, body
+
+    def send(self, provider, body):
+        url, headers, payload = self.request(provider, body)
+        raw = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        for attempt in range(3):
+            req = urllib.request.Request(url, data=raw, headers=headers, method="POST")
+            t0 = time.monotonic()
             try:
-                return json.loads(text), time.monotonic() - t0
-            except json.JSONDecodeError:
-                return {"type": "error", "error": {"type": f"http_{e.code}", "message": text[:200]}}, time.monotonic() - t0
-        except (urllib.error.URLError, TimeoutError) as e:
-            return {"type": "error", "error": {"type": "network", "message": str(e)}}, time.monotonic() - t0
+                with urllib.request.urlopen(req, timeout=120) as resp:
+                    return json.loads(resp.read().decode("utf-8")), time.monotonic() - t0
+            except urllib.error.HTTPError as e:
+                text = e.read().decode("utf-8", "replace")
+                if e.code in (429, 500, 502, 503, 529) and attempt < 2 and "_limit" not in text and "budget_used_up" not in text:
+                    time.sleep(3 * (attempt + 1))
+                    continue
+                try:
+                    return json.loads(text), time.monotonic() - t0
+                except json.JSONDecodeError:
+                    return {"type": "error", "error": {"type": f"http_{e.code}", "message": text[:200]}}, time.monotonic() - t0
+            except (urllib.error.URLError, TimeoutError) as e:
+                return {"type": "error", "error": {"type": "network", "message": str(e)}}, time.monotonic() - t0
 
 
-def parse(resp):
+def parse(resp, fmt):
     """The game's parse: returns (reply dict or None, failure reason)."""
-    if resp.get("type") == "error":
+    if resp.get("type") == "error":  # Anthropic's errors and every relay error
         err = resp.get("error", {})
         return None, f"API error {err.get('type')}: {err.get('message')}"
-    stop = resp.get("stop_reason")
-    if stop in ("refusal", "max_tokens"):
-        return None, f"stop_reason {stop}"
-    text = next((b.get("text") for b in resp.get("content", []) if b.get("type") == "text"), None)
-    if text is None:
-        return None, "no text block"
+    if fmt == "openai_chat":
+        if isinstance(resp.get("error"), dict) or "choices" not in resp:
+            err = resp.get("error") or {}
+            return None, f"API error {err.get('type') or err.get('code')}: {err.get('message') or str(resp)[:200]}"
+        choice = (resp.get("choices") or [{}])[0]
+        msg = choice.get("message") or {}
+        if choice.get("finish_reason") in ("length", "content_filter"):
+            return None, f"finish_reason {choice.get('finish_reason')}"
+        if msg.get("refusal"):
+            return None, f"refusal: {msg['refusal'][:120]!r}"
+        text = msg.get("content")
+        if not isinstance(text, str):
+            return None, "no message content"
+    else:
+        stop = resp.get("stop_reason")
+        if stop in ("refusal", "max_tokens"):
+            return None, f"stop_reason {stop}"
+        text = next((b.get("text") for b in resp.get("content", []) if b.get("type") == "text"), None)
+        if text is None:
+            return None, "no text block"
     try:
         return json.loads(text), ""
     except json.JSONDecodeError:
         return None, f"reply is not JSON: {text[:120]!r}"
+
+
+def usage_of(resp, fmt):
+    """(input tokens, output tokens, reasoning tokens) from either reply shape."""
+    u = resp.get("usage") or {}
+    if fmt == "openai_chat":
+        reasoning = (u.get("completion_tokens_details") or {}).get("reasoning_tokens") or 0
+        return u.get("prompt_tokens", 0), u.get("completion_tokens", 0), reasoning
+    return u.get("input_tokens", 0), u.get("output_tokens", 0), 0
 
 
 # ---------------------------------------------------------------- reply checks
@@ -873,25 +1028,29 @@ def build_jobs(data, show, asks, personas, repeat):
                 if ask in asks:
                     st = cases[ask]
                     ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": st["options"]}
-                    jobs.append((ask, show.name(pid), request_body(data, "actor", system_text(data, "actor", pid), st), ctx))
+                    pv = provider_for(data, "actor", pid)
+                    jobs.append((ask, show.name(pid), pv, request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
         if "scene_turn" in asks:
             for card_id, pid, role, st in show.card_cases():
                 if pid in personas:
                     ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": []}
-                    jobs.append(("scene_turn", f"{card_id} | {show.name(pid)} as {role}",
-                                 request_body(data, "actor", system_text(data, "actor", pid), st), ctx))
+                    pv = provider_for(data, "actor", pid)
+                    jobs.append(("scene_turn", f"{card_id} | {show.name(pid)} as {role}", pv,
+                                 request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
         if "input" in asks:
             for case in INPUT_CASES:
                 ctx = {"places": places, "props": props, "actors": actors, "me": show.name(HUMAN), "case": case,
                        "providers": providers}
                 label = f"{show.name(HUMAN)}: {case['typed'][:40]}"
-                jobs.append(("input", label, request_body(data, "input", system_text(data, "input"), show.input_state(case)), ctx))
+                pv = provider_for(data, "input")
+                jobs.append(("input", label, pv, request_body(data, pv, "input", system_text(data, "input"), show.input_state(case)), ctx))
         if "tiebreak" in asks:
             for a, b in TIE_PAIRS:
                 if a in personas or b in personas:
                     st = show.tiebreak_state(a, b)
                     ctx = {"places": places, "props": props, "actors": actors, "options": st["options"]}
-                    jobs.append(("tiebreak", " vs ".join(st["options"]), request_body(data, "director", system_text(data, "director"), st), ctx))
+                    pv = provider_for(data, "director")
+                    jobs.append(("tiebreak", " vs ".join(st["options"]), pv, request_body(data, pv, "director", system_text(data, "director"), st), ctx))
     return jobs
 
 
@@ -899,14 +1058,27 @@ def check_leaks(data, jobs) -> int:
     """No provider name in anything an actor or the Director reads. Returns the number of leaks."""
     res = provider_res(data["personas"])
     bad = 0
-    for ask, label, body, _ in jobs:
+    for ask, label, _, body, _ in jobs:
         if ask == "input":
             continue  # the converter gets screen_names on purpose and must not pass them on
-        leaks = provider_leaks(body["system"] + "\n" + body["messages"][0]["content"], res)
+        leaks = provider_leaks(body_text(body), res)
         if leaks:
             bad += 1
             print(f"FAIL leak: {ask} | {label}: {', '.join(leaks)} in what the AI reads")
     return bad
+
+
+def load_keys():
+    try:
+        return json.loads(KEY_FILE.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def shape_fails(reply):
+    """Only the reply's shape: every schema field with the right type (for --free replies)."""
+    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str}
+    return [f"{k} is missing or not a {t.__name__}" for k, t in types.items() if not isinstance(reply.get(k), t)]
 
 
 def main():
@@ -919,11 +1091,19 @@ def main():
     ap.add_argument("--jobs", type=int, default=6, help="calls in flight at once")
     ap.add_argument("--dump", metavar="DIR", help="write every request body and reply to DIR (no key)")
     ap.add_argument("--no-design", action="store_true", help="skip the word-for-word check against Docs/GameDesign.md")
+    ap.add_argument("--relay", nargs="?", const="", metavar="URL",
+                    help="send every ask through the relay (default: 'relay' in llm.json) with our keys there, "
+                         "not the keys in Local/llm_key.json; real calls spend tokens and count against the relay's limits")
+    ap.add_argument("--free", action="store_true",
+                    help="with --relay, ask in free mode: no provider is called and no tokens are spent; "
+                         "only the request shapes and the reply shape are checked")
     ap.add_argument("--log", nargs="?", const=str(LOG_FILE), metavar="FILE",
                     help="legibility check on the AI lines of the last PIE show in an editor log, no API calls "
                          "(default file: Saved/Logs/AIMegaJam2026.log)")
     ap.add_argument("--all-shows", action="store_true", help="with --log, check every show in the file")
     args = ap.parse_args()
+    if args.free and args.relay is None:
+        ap.error("--free needs --relay")
 
     errors: list[str] = []
     data = check_files(errors, design=not args.no_design)
@@ -931,7 +1111,7 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json"
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, and the relay's allow-list"
           + (" (design check skipped)" if args.no_design else ""))
     if args.log:
         return check_log(Path(args.log), data["personas"], args.all_shows)
@@ -945,13 +1125,21 @@ def main():
     if args.offline:
         return 0
 
-    try:
-        key = json.loads(KEY_FILE.read_text(encoding="utf-8")).get("api_key", "")
-    except (FileNotFoundError, json.JSONDecodeError):
-        key = ""
-    if not key:
-        print(f"FAIL no API key in {KEY_FILE.relative_to(ROOT)} (copy Docs/llm_key.example.json)")
-        return 1
+    provs = providers_of(data)
+    keys = {}
+    relay = None
+    if args.relay is not None:
+        relay = (args.relay or data["llm"].get("relay", "")).rstrip("/") + "/"
+        print(f"Through the relay{' in free mode (no tokens)' if args.free else ''}: {relay}")
+    else:
+        keys = load_keys()
+        need = sorted({pv for _, _, pv, _, _ in jobs})
+        missing = [f"{p} ({provs[p]['key_field']})" for p in need if not keys.get(provs[p]["key_field"])]
+        if missing:
+            print(f"FAIL no key in {KEY_FILE.relative_to(ROOT)} for: {', '.join(missing)} "
+                  "(copy the fields from Docs/llm_key.example.json, or use --relay)")
+            return 1
+    sender = Sender(data, keys, relay, args.free)
 
     print(f"Sending {len(jobs)} asks...\n")
 
@@ -960,25 +1148,31 @@ def main():
         dump.mkdir(parents=True, exist_ok=True)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.jobs) as pool:
-        results = list(pool.map(lambda j: send(data, key, j[2]), jobs))
+        results = list(pool.map(lambda j: sender.send(j[2], j[3]), jobs))
 
     n_fail = n_warn = 0
-    tok_in = tok_out = 0
-    cost = 0.0
-    secs = []
-    for i, ((ask, label, body, ctx), (resp, sec)) in enumerate(zip(jobs, results)):
-        secs.append(sec)
-        usage = resp.get("usage", {})
-        ti, to = usage.get("input_tokens", 0), usage.get("output_tokens", 0)
-        tok_in, tok_out = tok_in + ti, tok_out + to
+    stats = {}  # provider -> calls, fails, secs, tokens in, out, reasoning, cost
+    for i, ((ask, label, pv, body, ctx), (resp, sec)) in enumerate(zip(jobs, results)):
+        fmt = provs[pv]["format"]
+        ti, to, tr = usage_of(resp, fmt)
         pin, pout = PRICES.get(body["model"], (0, 0))
-        cost += (ti * pin + to * pout) / 1e6
-        reply, why = parse(resp)
-        fails, warns = ([why], []) if reply is None else check_reply(reply, ask, ctx)
+        st = stats.setdefault(pv, {"model": body["model"], "n": 0, "fail": 0, "secs": [], "in": 0, "out": 0, "reason": 0, "cost": 0.0})
+        st["n"] += 1
+        st["secs"].append(sec)
+        st["in"], st["out"], st["reason"] = st["in"] + ti, st["out"] + to, st["reason"] + tr
+        st["cost"] += (ti * pin + to * pout) / 1e6
+        reply, why = parse(resp, fmt)
+        if reply is None:
+            fails, warns = [why], []
+        elif args.free:
+            fails, warns = shape_fails(reply), []
+        else:
+            fails, warns = check_reply(reply, ask, ctx)
         n_fail += bool(fails)
         n_warn += bool(warns)
+        st["fail"] += bool(fails)
         status = "FAIL" if fails else ("WARN" if warns else "ok")
-        print(f"[{status}] {ask} | {label} | {sec:.1f}s | {ti} in, {to} out")
+        print(f"[{status}] {ask} | {label} | {pv} | {sec:.1f}s | {ti} in, {to} out" + (f" ({tr} reasoning)" if tr else ""))
         if reply is not None:
             print("   ", json.dumps(reply, ensure_ascii=False))
         for f in fails:
@@ -986,16 +1180,24 @@ def main():
         for w in warns:
             print("    WARN:", w)
         if dump:
-            (dump / f"{i:02d}_{ask}.json").write_text(
-                json.dumps({"request": body, "response": resp}, indent=2, ensure_ascii=False), encoding="utf-8")
+            (dump / f"{i:02d}_{ask}_{pv}.json").write_text(
+                json.dumps({"provider": pv, "request": body, "response": resp}, indent=2, ensure_ascii=False), encoding="utf-8")
 
     n = len(jobs)
     print(f"\n{n} asks: {n - n_fail} passed, {n_fail} failed, {n_warn} with warnings.")
     if n:
-        secs.sort()
-        print(f"Seconds per call: median {secs[n // 2]:.1f}, max {secs[-1]:.1f}.")
-        print(f"Tokens: {tok_in} in, {tok_out} out. Cost: ${cost:.4f}, "
-              f"about ${cost / n * CALLS_PER_SHOW:.3f} per show of {CALLS_PER_SHOW} calls.")
+        print(f"\nBy provider ($ per show = $ per call x {CALLS_PER_SHOW}, as if every call of a show ran on it):")
+        total = 0.0
+        for pv, st in sorted(stats.items()):
+            s = sorted(st["secs"])
+            total += st["cost"]
+            print(f"  {pv:<10} {st['model']:<17} {st['n']:>3} calls, {st['fail']} failed | "
+                  f"median {s[len(s) // 2]:.1f}s, max {s[-1]:.1f}s | {st['in']} in, {st['out']} out"
+                  + (f" ({st['reason']} reasoning)" if st["reason"] else "")
+                  + f" | ${st['cost'] / st['n']:.5f}/call, ${st['cost'] / st['n'] * CALLS_PER_SHOW:.3f}/show")
+        secs = sorted(x for st in stats.values() for x in st["secs"])
+        print(f"All: median {secs[n // 2]:.1f}s, max {secs[-1]:.1f}s. Cost ${total:.4f}, "
+              f"about ${total / n * CALLS_PER_SHOW:.3f} per show of {CALLS_PER_SHOW} calls with this mix.")
     return 1 if n_fail else 0
 
 

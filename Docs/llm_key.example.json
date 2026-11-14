@@ -1,4 +1,7 @@
 {
-	"_readme": "Copy this file to Local/llm_key.json (next to AIMegaJam2026.uproject) and paste your Claude API key into api_key. Local/ is git-ignored. In a packaged build, Local/ sits next to the game's Content folder.",
-	"api_key": ""
+	"_readme": "Copy this file to Local/llm_key.json (next to AIMegaJam2026.uproject) and paste one API key per provider. api_key is the Anthropic key (it pays for the Anthropic actor, the input LLM and the Director); openai_api_key, xai_api_key and meta_api_key are the keys for the other actors' providers. Content/NHOS/Data/llm.json 'providers' names the field for each provider (key_field). Leave a key empty if you don't have it: that provider's persona can't take a seat in a direct call. Local/ is git-ignored. In a packaged build, Local/ sits next to the game's Content folder. Delete it before you zip a build.",
+	"api_key": "",
+	"openai_api_key": "",
+	"xai_api_key": "",
+	"meta_api_key": ""
 }

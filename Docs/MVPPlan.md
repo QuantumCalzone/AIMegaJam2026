@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13, T14 and T15 are done. T26 (five actors, Player names for the AIs) is committed and waits only for my playtest. T16 and T17 (both Opus 5.5 · high) can start now. T16 needs no editor, and T17 takes over the locks on `BP_Show` and `L_Stage`.
+**Next up:** T13, T14, T15 and T16 are done. T26 (five actors, Player names for the AIs) is committed and waits only for my playtest. T17 (Opus 5.5 · high) can start now and takes over the locks on `BP_Show` and `L_Stage`; T18 (Opus 5.5 · high) follows it.
 
 ## Goal
 
@@ -331,7 +331,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_Title.uasset` (How to play, line 1), `Content/NHOS/Maps/L_Stage.umap`; `Content/NHOS/Data/prompts.json`, `personas.json`, `scenes.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc. `WBP_EndScreen` needed no change: four cards fit.
   - **Waiting:** the work is done and committed (see "T26: five actors results" in Findings), and the design doc edit is in (my OK on 2026-11-14). Left: I play one show (the four-button vote row hasn't been clicked by hand yet).
 
-- [ ] **T16 One LLM per AI player: prompts and keys**
+- [x] **T16 One LLM per AI player: prompts and keys**
   - **Model and effort:** Opus 5.5, high. New APIs, and prompts that must work on four different models.
   - **Depends on:** T15 (the prompts and the checker settle first), T26 (the same prompts, personas and checker)
   - **Needs:** my API key for every provider in the design's persona table. I paste them into `Local/llm_key.json` myself. No editor.
@@ -341,7 +341,8 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
     3. `Local/llm_key.json` holds one key per provider. Update `Docs/llm_key.example.json`, with no keys in it.
     4. `Tools/check_prompts.py` sends each persona's asks to its own provider with the exact request body the game will send, and runs T13's legibility check. Fix the prompts until every reply passes. Write seconds per call and cost per show for each provider in Findings.
   - **Done when:** `Tools/check_prompts.py` exits with code 0 twice in a row, with every persona on its own provider.
-  - **Touches:** `Content/NHOS/Data/llm.json`, `personas.json`, maybe `prompts.json`; `Tools/check_prompts.py`; `Docs/llm_key.example.json`; `Local/llm_key.json` (not in git).
+  - **Touches:** `Content/NHOS/Data/llm.json`, `personas.json`, maybe `prompts.json`; `Tools/check_prompts.py`; `Docs/llm_key.example.json`; `Local/llm_key.json` (not in git). T16 left `prompts.json` unchanged: every reply passed without a prompt fix.
+  - **Result:** done. `Tools/check_prompts.py --relay` passed 54 of 54 asks twice in a row, each persona on its own provider, and 87 of 87 on a third run of the three new providers' actor asks. The calls went through the relay, which holds our four keys, because only the Anthropic key is in my `Local/llm_key.json`; the bodies are the ones a direct call sends. See "T16: one LLM per AI player results" in Findings.
 
 - [ ] **T17 Stage art and personality**
   - **Model and effort:** Opus 5.5, high. Art direction and level design, plus robot behavior.
@@ -1089,3 +1090,33 @@ Every role still runs `claude-haiku-5-5` at low effort.
 - **Unreal MCP:** a new widget button's `OnClicked` event can't be written by the DSL until `UMGToolSet.BindToEventProperty` creates it. `write_graph_dsl` on an EventGraph keeps the events the code doesn't name. `AssetTools.read_file` can read DSL from `Saved/`, so a `ProgrammaticToolset` script can write many graphs without pasting the code into the call. Some old sources in `Saved/t08` are readbacks whose loops don't round-trip (`ScenePrep`), so T26 left those graphs alone.
 - **Not checked yet:** the four-button vote row by hand (autoplay votes without clicking), and the lose screen with four cards. All four AI seats still run on Claude until T18.
 - **Design doc (after my OK):** Rules, Cast & personas: I have no persona, every persona whose provider has a key takes an AI seat, a new bullet on Player names, and a full show needs 4 personas. The Cut: the reveal stamp shows the provider ("OPENAI: AI", "YOU: HUMAN"). Overview: I'm one more robot among the AIs. Art Inspiration: the open question about The Understudy is gone. `Docs/GameDesign.md` was refreshed from all five tabs. That also brought in edits made in the doc since the last copy: the Overview's new title and layout, and two renamed pun names in Bot Prompts. A second edit, also after my OK: Bot Prompts now says the pun names are for the doc only, the stamp shows the provider, and provider names show only on my screen; Tech & Build's "Add a fifth persona" question is ticked and marked settled.
+
+### T16: one LLM per AI player results (2026-11-14)
+
+- **Models:** the relay prep's picks stay. Each is the cheapest current model its provider documents with strict JSON-schema output (see `Relay/README.md`). The effort is the cheapest each one accepts, the same one the relay forces.
+
+  | Provider id | Persona | Model | `format` | Token field | Effort | $ per 1M in / out |
+  |---|---|---|---|---|---|---|
+  | `anthropic` | worrier | `claude-haiku-5-5` | `anthropic` | `max_tokens` | `output_config.effort` low | 0.10 / 0.50 |
+  | `openai` | visionary | `gpt-6-luna` | `openai_chat` | `max_completion_tokens` | `reasoning_effort` none | 0.10 / 0.50 |
+  | `xai` | overclocker | `grok-4.3` | `openai_chat` | `max_tokens` | `reasoning_effort` none | 1.25 / 2.50 |
+  | `meta` | copycat | `muse-ember-1.0` | `openai_chat` | `max_completion_tokens` | `reasoning_effort` minimal | 0.10 / 0.50 |
+
+- **`llm.json`** has a new `providers` block: `format`, `endpoint`, `api_version` (Anthropic only), `key_field`, `model`, `max_tokens_field`, `max_tokens`, `effort_field` and `effort`. Its `_readme` spells out both request shapes and how to read each reply, for T18. All three Chat Completions providers take JSON as `response_format: {type: json_schema, json_schema: {name: reply, schema: reply_schema, strict: true}}`, and the reply text is `choices[0].message.content`. The provider ids are the relay's, so a relay request is `{provider: <id>, session, body}`. `roles.input` and `roles.director` now name `"provider": "anthropic"`, which answers the design's open question "which key pays for the Director and the input LLM" with Anthropic for now. `roles.actor` says `"persona"`. The change only adds fields: until T18, `BPC_LLMClient` still reads the top-level `endpoint` and the role values and sends every ask to Claude.
+- **`personas.json`:** each persona has a `provider` (openai, anthropic, xai, meta). The checker's banned-name scan skips that field, because the relay's id `xai` is on the banned list. Like `name`, it never reaches the AIs.
+- **Keys:** `Local/llm_key.json` and `Docs/llm_key.example.json` have `api_key` (Anthropic, the same field as before, so the current client still works), `openai_api_key`, `xai_api_key` and `meta_api_key`. `key_field` in `llm.json` names each one. I added the three empty fields to my local file without reading the key.
+- **Checker:** each actor ask goes to its persona's provider and each input and Director ask to Anthropic, with the exact body for its `format`. The parser handles both reply shapes: for chat, `finish_reason` `length` or `content_filter`, a `refusal`, or an `error` object is a failed ask. `--relay [URL]` sends through the relay and `--relay --free` checks only the shapes, with no tokens spent. The file check now fails if a provider or a role's model isn't on the relay's allow-list, or if the token field, the cap, the body fields, the shape or the endpoint differ from `Relay/relay.config.json`. The summary prints seconds, tokens and cost for each provider.
+- **Runs:** a free relay run passed 54 of 54, so the relay takes every body the game will send. Then real calls through the relay: run 1 and run 2 each passed 54 of 54 with exit code 0, and run 3 (the six actor asks of the OpenAI, xAI and Meta personas, 3 times, 87 asks) passed 87 of 87. No prompt needed a fix. Logs and request and reply dumps are in `Saved/T16/`.
+- **Numbers** (runs 1 to 3, about 4,000 input tokens per ask):
+
+  | Provider | Median s | Max s | $ per call | $ per show if all 90 calls ran on it |
+  |---|---|---|---|---|
+  | `anthropic` | 1.9–2.2 | 5.2 | 0.00045 | 0.040 |
+  | `openai` | 1.4–2.2 | 2.8 | 0.00036 | 0.033 |
+  | `xai` | 1.1–1.2 | 2.4 | 0.0045 | 0.41 |
+  | `meta` | 1.0–1.3 | 2.1 | 0.00040 | 0.036 |
+
+  A real show of 90 calls costs about $0.11, against about $0.04 when every call ran on Haiku. That estimate assumes the calls split evenly over the four AI seats plus the input and Director asks (about 18 each). The xAI seat is about $0.08 of it: `grok-4.3` costs 10 times more per call than the others, but it is still the cheapest xAI model in practice (see `Relay/README.md`).
+- **How the models differ:** all four kept to the schema, the 25-word cap, the Player names and the story rules. `grok-4.3` is the fastest and writes the shortest lines (median 10 words, against 14 for Haiku and Meta). `muse-ember-1.0` still spends about 50 to 130 reasoning tokens on an actor ask at `minimal`, adds about 0.3 s, and returns the fields in alphabetical order, which the parser doesn't mind. It says "That is interesting." in 13 of its 55 lines, from its persona's own trait. `gpt-6-luna` writes curly apostrophes (’) and calls Player 3 "he" or "himself" now and then.
+- **For T18:** chat bodies carry no `temperature`, and Meta rejects `reasoning_effort: "none"` (400). An OpenAI-style error comes back as `{"error": {...}}` with no top-level `type`, but a relay error still has `type: "error"`.
+- **Design doc (needs my OK):** Tech & Build, Open questions: tick "Decide which key pays for the Director and the input LLM" (Anthropic, for now) and "Choose between direct provider connections and a router service" (direct, with one key per provider, plus our relay). Not edited yet.
