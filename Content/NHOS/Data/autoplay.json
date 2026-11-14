@@ -1,5 +1,5 @@
 {
-	"_readme": "Canned lines for the human seat. When Local/switches.json has \"autoplay\": true (copy Docs/switches.example.json), the human seat sends these instead of waiting for typed input, so an agent can run a show unattended. They go through the input LLM exactly like typed lines. scene: one line per scene turn, used in order and repeated. Keep them generic: they must fit any persona, role and scene card.",
+	"_readme": "Canned lines for the human seat. When Local/switches.json has \"autoplay\": true (copy Docs/switches.example.json), the human seat sends these instead of waiting for typed input, so an agent can run a show unattended. They go through the input LLM exactly like typed lines, except \"pass\", which passes at once, like the Pass button. scene: one line per scene turn, used in order and repeated. free_talk: one line per Free Talk round (2 per scene), used in order and repeated. Keep them generic: they must fit any persona, role and scene card.",
 	"scene": [
 		"walk to the counter and say \"Morning, everyone! Has anybody seen the tip jar?\"",
 		"grab a cup \"This one is mine. I think. Probably.\"",
@@ -7,5 +7,11 @@
 		"move to the placemat \"Table for one robot, please. Low voltage, extra foam.\"",
 		"grab the napkin and throw it at the counter \"Oops. Muscle memory. I don't have muscles.\"",
 		"look around \"Nobody panic. Everything here is completely normal.\""
+	],
+	"free_talk": [
+		"Somebody here is trying way too hard to sound like a robot. I'm watching you.",
+		"pass",
+		"My circuits are clean. Can everyone else say the same?",
+		"That last scene felt rehearsed. Robots don't rehearse. Who planned their lines?"
 	]
 }

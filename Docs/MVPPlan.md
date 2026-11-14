@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T08 · Sonnet 5.5 · medium (then T09 · Opus 5.5 · high, which needs T08)
+**Next up:** T09 · Opus 5.5 · high (then T10 · Opus 5.5 · high, which needs T09)
 
 ## Goal
 
@@ -186,7 +186,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** with autoplay on, a PIE run prints `NHOS: SCENE 1 TURN 3 DONE` and the on-screen log holds 12 turn lines in mixed order (screenshot). With autoplay off, one turn I type shows up in the same form as the AI lines.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, the local switch file (not in git). T07 left `BPC_LLMClient` unchanged and added `Content/NHOS/Data/autoplay.json` and `Docs/switches.example.json`.
 
-- [ ] **T08 Free Talk**
+- [x] **T08 Free Talk**
   - **Model and effort:** Sonnet 5.5, medium. The same ask-and-log pattern as T07, with one speaker at a time.
   - **Depends on:** T07
   - **Needs:** editor + Unreal MCP running, my API key.
@@ -195,7 +195,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
     2. On my turn I type a line or press Pass. My line goes through the input LLM and into the shared log in the same form as an AI line.
     3. An AI can pass. A pass is logged as a pass.
   - **Done when:** with autoplay on, a PIE run prints `NHOS: FREETALK DONE` after 8 talk entries (lines or passes).
-  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`.
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`. T08 also added a `free_talk` list to `Content/NHOS/Data/autoplay.json`.
 
 - [ ] **T09 The Cut: votes, tiebreak and reveal**
   - **Model and effort:** Opus 5.5, high. Several new parts: the vote screen, the tally and the Director call.
@@ -581,3 +581,47 @@ Also found:
 - **`find_node_types` and `find_nodes` have required arguments** that the docs don't stress: `context_pins` (pass `[]`) and `title` (pass `""` for all nodes).
 - **Hand-made call nodes:** `create_node` with type ID `CallFunction|<Name>` makes a call to the Blueprint's own function or custom event, and `connect_pins` wires it after the last node's `then` pin. This is the safe way to add one call to a graph that has no DSL source.
 - **`AssetTools.write_file` takes only `.csv`, `.html`, `.json`, `.md`, `.py` and `.txt`.** Write a screenshot's base64 to a `.txt` file, then decode it outside the editor.
+
+### T08: free talk results (2026-11-14)
+
+Proven in PIE on `L_Stage`:
+
+- **Autoplay on:** after `NHOS: SCENE 1 TURN 3 DONE`, Free Talk ran 2 rounds of 4, one speaker at a time, in a new random order each round, and printed `NHOS: FREETALK DONE scene=1 entries=8` 14 s later. My canned round 1 line went through the input LLM. My canned round 2 "pass" was logged as `The Overclocker | passes`. No call failed, and the log has no warnings.
+- **Autoplay off:** I typed `Zero glitches means good firmwre, Copycat. Why do you repeat yourself so much?` through the Slate inspector on my turn. It showed up as `The Visionary: "Zero glitches means good firmware, Copycat. ..."`, the same form as the AI lines, with the typo fixed. In round 2 a click on Pass logged `The Visionary passes`. The next AI said "The Visionary passed in round two. Silence is suspicious."
+- The Pass button is disabled during the scene and outside my Free Talk turn, and enabled on my turn. Screenshots: `Saved/Screenshots/T08/` (not in git).
+
+How Free Talk works now (T09 and T10 extend it):
+
+- **`EndScene`** sets `Phase` to "scene done", adds "Cut! That's the scene." and calls `StartFreeTalk`.
+- **`StartFreeTalk`** sets `Phase` to "free talk", `TalkRound` and `TalkCount` to 0 and `TalkSeat` to -1, clears the pending asks, loads `CannedTalk` with autoplay on (`LoadCannedTalk`), then calls `StartTalkRound`.
+- **`StartTalkRound`** adds 1 to `TalkRound`, copies `OnStage` into `TalkOrder` and shuffles it, sets `TalkPos` to 0, the header and a log line, and calls `NextTalker`.
+- **`NextTalker`** starts the next round after the last speaker, or calls `EndFreeTalk` after round 2. Otherwise it sets `TalkSeat` from `TalkOrder[TalkPos]`.
+  - My seat: it clears `HumanSent`, enables Pass and asks for my line. With autoplay on it sends `CannedTalk[((scene-1)*2 + round-1) % count]`.
+  - An AI seat: one `free_talk` ask, with `now` = "free talk, round r of 2" and the shared log so far, so each AI sees the lines before its own. Its tag goes into `PendingTags`, as in T07.
+- **`HandleReply`** sends a reply to `PlayTalk` while `Phase` is "free talk"; otherwise it works as in T07.
+- **`PlayTalk(Seat, Ok, Speech, Pass)`** logs one entry. It counts as a pass when the reply failed, says `pass`, or has no speech after `CapWords`.
+  - The entry is `when` "scene n, free talk round r", `does` "passes" or "stands still" (as `Tools/check_prompts.py` builds them), and `says` the line or "".
+  - The screen shows `<Name>: "<line>"` or `<Name> passes.`, and the editor log gets `NHOS: LOG ...` as in T07. Then it adds 1 to `TalkCount` and `TalkPos` and calls `NextTalker`.
+  - A failed AI reply is a pass. No error goes in the shared log.
+- **`SendHumanTalk(Line)`** disables Pass. A line that is "pass" in any case skips the input LLM and calls `PlayTalk` at once. Any other line shows as `> <line>` (not in the shared log) and goes to the input LLM with `InputState(Line, "free talk")`.
+- **`HandleSend`** takes a typed line in "scene" (as in T07), or in "free talk" when `TalkSeat` is my seat and `HumanSent` is false. Otherwise it shows "(Your turn is in. Waiting for the cast.)" or "(Not your turn yet.)".
+- **`EndFreeTalk`** sets `Phase` to "free talk done", the header to "SCENE n: FREE TALK IS OVER", adds "That's Free Talk. The Cut comes next." and prints `NHOS: FREETALK DONE scene=<n> entries=<n>`. **T09 replaces its body to start The Cut.**
+- **Two functions now add actor lines to the shared log:** `PlayTurn` (scene turns, all four at once) and `PlayTalk` (one Free Talk entry). T11 lights a robot at each.
+- **A pass, or an ask that fails at once inside `Ask`, calls `NextTalker` on the same call stack.** That nests at most 8 calls per Free Talk.
+- **`WBP_Stage`:** `PassButton` (with `PassLabel`) sits after `SendButton`. It isn't focusable and starts disabled. A click calls `OnSend("pass")`, so `BP_Show` needed no new dispatcher binding. `SetPassEnabled(Enabled)` turns it on and off.
+- **Autoplay:** `autoplay.json` has a `free_talk` list, one line per round, with "pass" second, so every scene 1 exercises a pass. A missing or empty list makes my seat pass.
+
+Numbers, with `claude-haiku-5-5` at low effort, over two runs:
+
+- **AI Free Talk asks:** 12 calls, 1.0 to 4.7 s (median 2.0 s), 4,450 to 5,070 input tokens, 81 to 662 output tokens.
+- **Input LLM:** 1.7 s, about 1,345 input tokens.
+- Asks run one after another, so Free Talk takes about 14 s with autoplay, plus my typing time.
+
+Also found:
+
+- **The AIs use Free Talk well.** Almost every line names a suspect and cites the log: a greeting repeated three times, a line "with zero glitches", a pass. In the manual run, two AIs went after my persona by round 2. No AI passed in 12 lines. That is an early sign for the T12 gate, not a fairness measure.
+- **The Slate inspector needs a deeper observer for PIE widgets now.** `Observe("")` and `Snapshot("")` listed only the editor frame. `Observe` on the level editor's splitter ref with `maxDepth` 80, then `Snapshot` on that ref in a later call, lists the UMG textbox and buttons with `[disabled]` flags.
+- **`AssetTools.read_file` reads files under `Saved/` and `Content/`.** A script can keep DSL source in a file and push each graph with `write_graph_dsl`. T08's source is `Saved/T08/src/bp_show_t08.txt` (not in git).
+- **Readback hides `false` bool arguments.** `(Class|WBPStage|SetPassEnabled :self Stage :Enabled false)` reads back as `(Class|WBPStage|SetPassEnabled (Variables|Default|GetStage))`. The widget's `SetPhase` reads back as `Variables|Default|SetPhase` with two arguments, as in T06. Write it as `Class|WBPStage|SetPhase :self ... :Phase ...`.
+- **Compiling `BP_Show` marked `BPC_LLMClient` dirty** with no change to it. It was left unsaved.
+- **Editing `autoplay.json` brought up the editor's Auto Reimport prompt again.** This machine's `Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini` still has the engine's old `AutoReimportDirectorySettings` line, which overrides the project file (see the Config commit). Removing that line with the editor closed should stop it.
