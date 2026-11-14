@@ -8,6 +8,8 @@ Plugins/**/Intermediate/
 
 # Packaged builds (archive directory used in CLAUDE.md)
 Packaged/
+# The cooker rewrites these on every cook. Other files in Build/ are project build settings; keep them.
+Build/*/FileOpenOrder/
 
 # Visual Studio / Rider (only relevant if C++ is added later)
 .vs/

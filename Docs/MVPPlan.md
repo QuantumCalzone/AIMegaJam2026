@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T02 · Opus 5.5 · high
+**Next up:** T03 · Opus 5.5 · high (T04 · Sonnet 5.5 · medium can run beside it)
 
 ## Goal
 
@@ -109,7 +109,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** a PIE run on `L_Stage` prints `NHOS: SPIKE OK <text>` to the editor log, where `<text>` is a field parsed from Claude's JSON reply. With a wrong key it prints `NHOS: SPIKE FAIL` and the API's error message. `git check-ignore` confirms the key file is ignored.
   - **Touches:** `AIMegaJam2026.uproject`, `.gitignore`, `Config/DefaultEngine.ini` (HTTP timeouts, only if needed), new `Content/NHOS/Maps/L_Stage.umap`, new `Content/NHOS/Core/BPC_LLMClient.uasset`, new `Content/NHOS/Core/BP_Show.uasset`, new `Content/NHOS/Data/llm.json`, new `Docs/llm_key.example.json`, the Findings section.
 
-- [ ] **T02 Spike: the same call in a packaged Windows build, and record the decision**
+- [x] **T02 Spike: the same call in a packaged Windows build, and record the decision**
   - **Model and effort:** Opus 5.5, high. Packaging problems need debugging, and the decision affects the whole team.
   - **Depends on:** T01
   - **Needs:** my API key, a Windows machine, the editor closed.
@@ -350,3 +350,27 @@ Also found:
   - An `if` whose body ends in `return` makes the rest of the code its else branch. An `if` without one joins the code after it.
 - **MCP can't create a level.** No tool makes one, and duplicating `/Engine/Maps/Entry` gives a map that can't be saved (it keeps a reference to a private object in the engine map). I made `L_Stage` in the editor with File > New Level > Empty Level.
 - **Call `get_execution_environment` once per session** before you use `ProgrammaticToolset`. It batches many MCP calls into one script, so you approve each batch once instead of each call.
+
+### T02: packaged build results (2026-11-14)
+
+Proven in a packaged Windows Development build: the game's log (`Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`) shows `NHOS: SPIKE OK Good morning, Director, all systems are calibrated and I'm ready for my first take!`, with no errors or ensures. With a fake key it shows `NHOS: SPIKE FAIL API error authentication_error: invalid x-api-key`. The decision note is `Agents/decisions/20261114T0009Z-quantumcalzone-llm-calls.md`.
+
+Answers to the rest of the spike questions:
+
+- **Question 4: yes, packaged too.** `Get Project Content Directory` + `NHOS/Data/llm.json` finds the loose file that `DirectoriesToAlwaysStageAsNonUFS` stages at `Packaged/Windows/AIMegaJam2026/Content/NHOS/Data/`. `Get Project Directory` + `Local/llm_key.json` finds `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`. The same Blueprint path works in PIE and packaged.
+- **Question 7: about 1.5 to 1.8 s per call packaged**, measured from the request line to the reply line in the log, over three runs, with `claude-opus-5-5` at low effort. Each run had 225 input and 37 output tokens. That matches PIE. The cost guess stays about $0.80 per show with that model, before prompt caching, until T05 and T07 measure real prompts.
+- **Question 8: Blueprint-only.** But packaging compiles a game program, so the packager needs a compiler (see below).
+
+Also found:
+
+- **Packaging compiles code.** `HttpBlueprint` and `JsonBlueprintUtilities` have no prebuilt game binaries in the launcher engine, so UAT says the project "is being treated as a code-based project", writes temporary `.Target.cs` files and compiles `AIMegaJam2026.exe`. It took 35 s.
+  - On Windows, this needs Visual Studio 2022 with C++ and the Windows 11 SDK 10.0.22621.0. This machine had no Windows SDK at all: UBT stopped at once with `Sdk: not found`, and we installed it with the Visual Studio Installer.
+  - Without `-nocompileeditor`, UAT also builds a project editor target. That needs the .NET Framework 4.6+ SDK (for `SwarmInterface`), which this machine doesn't have.
+  - `-nocompileeditor` alone makes the cook step fail, because it looks for `Binaries/Win64/AIMegaJam2026Editor.target`. Adding `-unrealexe=<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor-Cmd.exe` fixes that, so the launcher editor does the cook. Both flags are now in the package commands in `CLAUDE.md` and `CLAUDE.local.md`.
+- **Git Bash breaks `RunUAT.bat`** when a second argument is a quoted path with spaces (`-unrealexe="E:/Epic Games/..."`). The error is `'E:\Epic' is not recognized`, because `cmd /c` strips the outer quotes of a line that has more than two. Running the command from a `.bat` file with `cmd //c <file>.bat` works.
+- **HTTPS just works.** The engine's bundled `cacert.pem` is staged without any setting.
+- **The `GameFeatureData` scan caused a handled ensure** at every packaged start: `Failed to load class /Script/GameFeatures.GameFeatureData`. Game Features only comes in through the editor-only `AllToolsets` plugin. `bIsEditorOnly=True` on that entry in `DefaultGame.ini` fixes it, because the asset manager skips editor-only types when `GIsEditor` is false.
+- **Times:** first package run 6.5 min (cook 6.2 min, mostly shaders); after a config change, 1 min 5 s.
+- **Build size:** 968 MB unzipped. That is 317 MB for the exe, 306 MB for the `.pdb`, 229 MB for the pak and 75 MB for the engine folder. Zipped, it is 474 MB, or 387 MB without the `.pdb`. Leave the `.pdb` out of the submission zip.
+- **The archive step doesn't clear `Packaged/`.** A key file copied into `Packaged/Windows/AIMegaJam2026/Local/` stays there through later builds. Delete it before you zip.
+- **Logging works in Development builds.** Print String lines (`LogBlueprintUserMessages`) go to the packaged game's log, so `NHOS:` checks work there.

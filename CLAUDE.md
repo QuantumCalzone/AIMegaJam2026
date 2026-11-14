@@ -57,10 +57,15 @@ Run an editor Python script headless (the editor must be closed if the script sa
 Package a Windows build. This only works on a Windows machine:
 
 ```bash
-"<UE_ROOT>/Engine/Build/BatchFiles/RunUAT.bat" BuildCookRun -project="<PROJECT>" -platform=Win64 -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="<repo root>/Packaged"
+"<UE_ROOT>/Engine/Build/BatchFiles/RunUAT.bat" BuildCookRun -project="<PROJECT>" -platform=Win64 -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="<repo root>/Packaged" -nocompileeditor -unrealexe="<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor-Cmd.exe"
 ```
 
-Package a macOS build. This needs a Mac with Xcode:
+- **Packaging compiles a small game program**, even though the project has no C++. The `HttpBlueprint` and `JsonBlueprintUtilities` plugins have no prebuilt game binaries in the launcher engine, so the packager makes temporary target files and compiles them. On Windows this needs Visual Studio 2022 (17.14) with the C++ desktop workload and the **Windows 11 SDK 10.0.22621.0**. You need neither to edit the project, only to package it.
+- `-nocompileeditor -unrealexe=...` make the launcher editor do the cook. Without them, the packager also builds a project editor, which needs the .NET Framework SDK and adds nothing.
+- From Git Bash, this command fails with `'C:\Program' is not recognized` (or `'E:\Epic'`), because cmd strips the outer quotes from a line that has more than two. Put the command in a `.bat` file and run it with `cmd //c <file>.bat`.
+- The packaged game is in `Packaged/Windows/`. Its log is `Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`. It reads the API key from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`. Delete that file before you zip a build.
+
+Package a macOS build. This needs a Mac with Xcode. It has not been tried yet, and it will also compile a game program:
 
 ```bash
 "<UE_ROOT>/Engine/Build/BatchFiles/RunUAT.sh" BuildCookRun -project="<PROJECT>" -platform=Mac -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="<repo root>/Packaged"
@@ -91,7 +96,7 @@ UE 5.8 includes **Unreal MCP**, the experimental `ModelContextProtocol` plugin. 
 - **How it's set up here** (UE 5.8.4 has both the plugin and auto-start off by default, unlike the docs):
   - `ModelContextProtocol` and `AllToolsets` are enabled in the `.uproject`, limited to the Editor target, so packaged builds don't include the server.
   - Auto-start is on through `Config/DefaultEditorPerProjectUserSettings.ini` (`bAutoStartServer=True`), so the server starts whenever the editor opens.
-  - `AllToolsets` pulls in Game Features, which needs the `GameFeatureData` entry under `AssetManagerSettings` in `DefaultGame.ini`. Without that entry, the editor reports load errors at startup.
+  - `AllToolsets` pulls in Game Features, which needs the `GameFeatureData` entry under `AssetManagerSettings` in `DefaultGame.ini`. Without that entry, the editor reports load errors at startup. The entry has `bIsEditorOnly=True`, because packaged builds don't include Game Features; without it, the packaged game hits an ensure at startup.
   - `.mcp.json` in the project root (written by `ModelContextProtocol.GenerateClientConfig ClaudeCode`) points Claude Code at the server as `unreal-mcp`.
 - **Connecting:** open the editor first, then start Claude Code from the project root. A session that started before the editor won't see the server until it reconnects. Each person approves `unreal-mcp` once, or adds `"enabledMcpjsonServers": ["unreal-mcp"]` to their own `.claude/settings.local.json` (git ignores that file).
 - The server uses tool search. In 5.8.4 it lists three meta-tools, not the four in the docs: `list_toolsets`, `describe_toolset` and `call_tool`. In Claude Code they appear as `mcp__unreal-mcp__<name>`. Start with `list_toolsets`, then `describe_toolset` to get a toolset's tools, then `call_tool` to run one. Every editor action, read or write, goes through `call_tool`.
@@ -108,7 +113,7 @@ These settings (in `Config/DefaultEngine.ini`) affect how content must be author
 - Lumen for global illumination and reflections, Virtual Shadow Maps and hardware ray tracing are on. Static lighting is off (`r.AllowStaticLighting=False`), so do not rely on baked lightmaps.
 - **Substrate** materials are on (`r.Substrate=True`). Build materials with Substrate nodes, not the legacy material model.
 - Windows uses DX12 with SM6, and macOS uses Metal SM6. Target hardware is Desktop with Maximum quality.
-- `GameDefaultMap` points to the engine template `/Engine/Maps/Templates/OpenWorld` (a World Partition map). Change it when the project has its own map.
+- `GameDefaultMap` and `EditorStartupMap` point to `/Game/NHOS/Maps/L_Stage` (not World Partition). `DefaultGame.ini` cooks only that map and stages `Content/NHOS/Data` as loose files next to the pak.
 - Input uses **Enhanced Input** (`EnhancedPlayerInput` / `EnhancedInputComponent`). Make Input Actions and Mapping Contexts, not legacy action or axis mappings.
 - The `ModelingToolsEditorMode` plugin is on (editor only).
 

@@ -67,6 +67,7 @@ If something else on your machine already uses port 8000, change the port in **E
 ## Build the game
 
 - **Windows builds must be packaged on Windows.** In the editor, use **Platforms > Windows > Package Project**. For the command-line version, see [CLAUDE.md](CLAUDE.md).
+- **Packaging compiles a small game program**, because the game's HTTP and JSON plugins have no prebuilt game binaries in the launcher engine. To package on Windows, install Visual Studio 2022 with the "Desktop development with C++" workload and the **Windows 11 SDK (10.0.22621.0)**. You don't need them to work on the game. The command in CLAUDE.md is tested. The editor's Package Project menu is not tested yet; if it stops and asks for the .NET Framework SDK, use the command instead.
 - A Mac can package a macOS build (this needs Xcode), but not a Windows one.
 
 ## Jam rules in short
