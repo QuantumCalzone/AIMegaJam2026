@@ -1,0 +1,22 @@
+{
+  "style": "stylized 3D cartoon character, clean comedic proportions, slightly oversized head and hands but human body proportions (head about one fifth of body height), saturated colors, chunky readable shapes, full body, standing in a neutral A-pose with arms slightly away from the body and legs shoulder width apart, front view, plain light grey studio background, soft even lighting, no shadows on the ground, game character concept art, high detail, clean",
+  "items": {
+    "brick": {
+      "name": "Brick Hardcastle",
+      "role": "Leading Man",
+      "description": "a ridiculously over-the-top 1940s matinee-idol leading man in a plain genre-neutral base outfit that any film genre could reuse: fitted plain white undershirt and plain dark trousers with simple black shoes, no hat, no costume props. Absurdly oversized square cleft chin that takes up a third of his face, enormous glossy swooping pompadour hair, one huge arched eyebrow, gleaming over-sized white teeth in a smug grin, comically over-muscled V-shaped torso with huge arms and tiny legs, handsome in a classic hero way",
+      "description_v1": "a vain, brave, oblivious 1940s Hollywood leading man playing a cowboy hero: huge square jaw, slicked-back glossy hair, thick eyebrows, confident smirk, cream cowboy hat, red neckerchief, tan leather vest with a gold sheriff star, blue jeans, brown cowboy boots, broad muscular build"
+    },
+    "vivienne": {
+      "name": "Dame Vivienne Sterling",
+      "role": "Diva",
+      "description": "a ridiculously over-the-top elderly grand dame diva stage actress in a theatrical evening gown that suits any film genre: absurdly towering silver beehive updo as tall as her torso, enormous dramatic false eyelashes, huge glossy red lips, long swan neck, gigantic pearl necklace with golf-ball sized pearls, an enormous fluffy hot-pink feather boa the size of a sofa, long opera gloves, exaggerated tiny feet in sparkly heels, imperious pose with nose in the air",
+      "description_v1": "an elderly grand dame diva stage actress, imperious and dramatic: tall silver updo hair, dramatic arched eyebrows and red lipstick, pearl necklace, lavish sparkly purple saloon gown with feather boa in hot pink, long opera gloves, high heels, regal posture"
+    },
+    "gus": {
+      "name": "Gus Pickles",
+      "role": "Nervous Production Assistant",
+      "description": "a nervous gangly young film studio production assistant: oversized black headset with microphone, clipboard under one arm, lanyard with badge, green beanie, rumpled grey vest over a white shirt, khaki pants, oversized sneakers, wide anxious eyes, messy ginger hair, apologetic smile"
+    }
+  }
+}

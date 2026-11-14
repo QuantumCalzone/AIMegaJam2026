@@ -1,0 +1,35 @@
+{
+  "style": "stylized 3D cartoon prop, chunky readable shapes, saturated colors, clean comedic design, a single object centered, shown in three-quarter view, plain light grey studio background, soft even lighting, no shadows on the ground, game asset concept art, high detail, clean",
+  "items": {
+    "hero_camera": {
+      "name": "Two Million Dollar Hero Camera",
+      "role": "Hero prop",
+      "description": "a big vintage 1940s Technicolor film camera on a wheeled dolly base, black body with gold trim, big lens with blue glass, large film magazine on top, red record lamp, expensive and shiny"
+    },
+    "chandelier": {
+      "name": "Saloon Chandelier",
+      "role": "Set piece",
+      "description": "an ornate brass wild-west saloon chandelier with eight glowing candles, hanging by a short chain, heavy and gold"
+    },
+    "piano": {
+      "name": "Saloon Piano",
+      "role": "Set piece",
+      "description": "an upright wild-west saloon piano, dark wood, yellowed keys, candle holders on the sides"
+    },
+    "cake": {
+      "name": "Craft Services Cake",
+      "role": "Set piece",
+      "description": "a tall three-tier pink wedding-style cake with white frosting drips and a cherry on top, glossy, cartoon cute"
+    },
+    "light_stand": {
+      "name": "Studio Light Stand",
+      "role": "Set piece",
+      "description": "a tall studio tripod light stand with a big black fresnel lamp head with barn doors and a glowing lens"
+    },
+    "sandbag": {
+      "name": "Sandbag",
+      "role": "Set piece",
+      "description": "a heavy canvas sandbag with a red stripe and a rope loop on top, tan color"
+    }
+  }
+}
