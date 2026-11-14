@@ -1,0 +1,6 @@
+{
+  "name": "task-list",
+  "version": "0.1.0",
+  "description": "A pane with the MVP plan's tasks: done (collapsed, crossed out), in progress (click to open its session) and not started.",
+  "types": "./types/index.d.ts"
+}

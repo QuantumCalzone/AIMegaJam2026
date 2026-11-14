@@ -1,0 +1,6 @@
+{
+  "name": "nhos-mods",
+  "description": "Claude Code mods for working on No Humans On Set.",
+  "owner": { "name": "QuantumCalzone" },
+  "plugins": [{ "name": "task-list", "source": "./task-list" }]
+}
