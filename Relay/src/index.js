@@ -12,6 +12,8 @@
 
 import { DurableObject } from "cloudflare:workers";
 import CONFIG from "../relay.config.json";
+// The game's pre-written free-mode replies (one source for the game and the relay).
+import FREE from "../../Content/NHOS/Data/free_mode.json";
 
 // Text the game may show. No provider or company names here.
 const MESSAGES = {
@@ -164,36 +166,91 @@ function lastUserText(p, body) {
 	return content.map((part) => part.text).join("");
 }
 
-const FREE_LINES = [
-	"This is a free mode line.",
-	"Free mode here, saying something harmless.",
-	"Another free mode line, no tokens spent.",
-	"Free mode says hello to the stage.",
-];
-
 function pick(list) {
-	return list[Math.floor(Math.random() * list.length)];
+	return list.length ? list[Math.floor(Math.random() * list.length)] : "";
 }
 
-// A reply in the game's one reply shape, made up without a model. The vote is a name
-// from "options" when there are any; the input step's "typed" comes back as speech.
+function names(list) {
+	return Array.isArray(list)
+		? list.map((x) => (isObject(x) ? x.name : x)).filter((x) => typeof x === "string" && x)
+		: [];
+}
+
+// Which free_mode.json phase this ask is: a field the state has, or words in its "ask".
+function freePhase(state) {
+	const ask = typeof state.ask === "string" ? state.ask : "";
+	for (const ph of FREE.phases) {
+		if (ph.when_field && ph.when_field in state) return ph;
+		if ((ph.ask_contains ?? []).some((w) => ask.includes(w))) return ph;
+	}
+	return FREE.phases.find((ph) => ph.id === "scene_turn") ?? {};
+}
+
+function fill(text, ctx) {
+	return text
+		.replace(/\{actor\}/g, () => pick(ctx.others) || "someone")
+		.replace(/\{vote\}/g, ctx.vote || "someone")
+		.replace(/\{place\}/g, () => pick(ctx.places) || "Center")
+		.replace(/\{prop\}/g, () => pick(ctx.props) || "prop");
+}
+
+function weighted(list) {
+	const total = list.reduce((n, x) => n + (x.weight ?? 1), 0);
+	let r = Math.random() * total;
+	for (const x of list) {
+		r -= x.weight ?? 1;
+		if (r <= 0) return x;
+	}
+	return list[list.length - 1];
+}
+
+// A reply in the game's one reply shape, made up from free_mode.json without a model.
 function freeReplyObject(p, body) {
 	let state = {};
 	try {
 		const parsed = JSON.parse(lastUserText(p, body));
 		if (isObject(parsed)) state = parsed;
 	} catch {
-		// Not JSON: answer with a canned line.
+		// Not JSON: answer as a scene turn with no names.
 	}
-	const options = Array.isArray(state.options) ? state.options.filter((o) => typeof o === "string" && o) : [];
-	const typed = typeof state.typed === "string" ? state.typed.split(/\s+/).filter(Boolean).slice(0, 25).join(" ") : "";
-	return {
-		actions: [],
-		speech: typed || pick(FREE_LINES),
-		vote: options.length ? pick(options) : "",
-		reason: "Free mode reply.",
-		pass: false,
+	const me = isObject(state.you) ? state.you.name : state.actor;
+	const ctx = {
+		others: names(state.cast).filter((n) => n !== me),
+		places: names(isObject(state.set) ? state.set.places : state.places),
+		props: names(isObject(state.set) ? state.set.props : state.props),
+		vote: "",
 	};
+	const ph = freePhase(state);
+	const reply = { actions: [], speech: "", vote: "", reason: "", pass: false };
+
+	if (ph.echo_typed) {
+		const typed = typeof state.typed === "string" ? state.typed : "";
+		reply.speech = typed.split(/\s+/).filter(Boolean).slice(0, 25).join(" ");
+		return reply;
+	}
+	if (ph.vote) {
+		const options = names(state.options).filter((n) => n !== me);
+		ctx.vote = pick(options.length ? options : names(state.options));
+		reply.vote = ctx.vote;
+		reply.reason = fill(pick(ph.reasons ?? []), ctx);
+		return reply;
+	}
+	if (ph.pass_chance && Math.random() < ph.pass_chance) {
+		reply.pass = true;
+		return reply;
+	}
+	reply.speech = fill(pick(ph.lines ?? []), ctx);
+	const [lo, hi] = ph.actions ?? [0, 0];
+	const count = lo + Math.floor(Math.random() * (hi - lo + 1));
+	for (let i = 0; i < count && FREE.scene_actions?.length; i++) {
+		const a = weighted(FREE.scene_actions);
+		const action = { verb: a.verb, target: fill(a.target, ctx), item: fill(a.item, ctx) };
+		// Skip an action whose names the state doesn't have.
+		if ((a.target.includes("{actor}") && !ctx.others.length) || (a.item.includes("{prop}") && !ctx.props.length)) continue;
+		if (a.target.includes("{place}") && !ctx.places.length) continue;
+		reply.actions.push(action);
+	}
+	return reply;
 }
 
 function freeResponse(p, body) {

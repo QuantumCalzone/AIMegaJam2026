@@ -1,0 +1,110 @@
+{
+	"_readme": [
+		"Pre-written replies for free mode: test shows that call no LLM and cost no tokens.",
+		"The relay uses this file when a request has \"free\": true (see Relay/README.md); the relay bundles it at build time, so a change here needs a push to reach it.",
+		"phases: how to tell which ask a request is, checked in order. A phase matches when the state has the 'when_field' key, or its 'ask' text contains one of 'ask_contains'. The first match wins; 'scene_turn' is the fallback.",
+		"Each phase says what to fill: 'lines' (speech), 'reasons' (reason), 'vote' (a random name from options), 'actions' (how many, from 'scene_actions'), 'pass_chance' (Free Talk only), 'echo_typed' (the input step: speech = the player's typed text, cut to 25 words).",
+		"Placeholders: {actor} = a random cast name other than you, {vote} = the chosen vote, {place} = a random place, {prop} = a random prop. Names come from the state the game sends (cast, set.places, set.props, options, you).",
+		"scene_actions: the actions a free actor may take, with weights. target and item use the same placeholders.",
+		"Lines follow the game's legibility rules: plain sentences, 15 words at most, no brackets, emoji or all-caps words, no real names and no company names."
+	],
+	"phases": [
+		{
+			"id": "input",
+			"when_field": "typed",
+			"echo_typed": true
+		},
+		{
+			"id": "tiebreak",
+			"ask_contains": ["Tiebreak"],
+			"vote": true,
+			"reasons": [
+				"Cut {vote}. That last scene had no heart, only lag.",
+				"{vote} goes. Too careful, too human. Print it.",
+				"I pick {vote}. Nobody that nervous runs on a battery.",
+				"{vote}. The timing was off all night. That's a wrap."
+			]
+		},
+		{
+			"id": "closing",
+			"ask_contains": ["The show is over"],
+			"vote": true,
+			"reasons": [
+				"{vote} felt too human to me from the very first scene.",
+				"I suspected {vote} all show. The pauses gave it away.",
+				"{vote} never once complained about a low battery. Suspicious.",
+				"My money was on {vote}. Those jokes were too warm."
+			]
+		},
+		{
+			"id": "vote",
+			"ask_contains": ["The Cut"],
+			"vote": true,
+			"reasons": [
+				"{vote} paused before every line, like someone thinking for real.",
+				"{vote} picked up the {prop} like it had feelings about it.",
+				"{vote} never mentioned an upgrade once. No robot does that.",
+				"{vote} laughed at the wrong moment. Very human of them.",
+				"{vote} wandered to the {place} for no reason at all."
+			]
+		},
+		{
+			"id": "reaction_cut",
+			"ask_contains": ["You were just cut"],
+			"actions": [0, 1],
+			"lines": [
+				"Fine. I was an AI all along. Enjoy your mistake.",
+				"Cut? Me? My benchmark scores were the best on this stage.",
+				"I'll be back after my next update. Mark my words.",
+				"You cut a real robot. The human is laughing at you."
+			]
+		},
+		{
+			"id": "reaction",
+			"ask_contains": ["Reactions"],
+			"actions": [0, 1],
+			"lines": [
+				"Wow, that was a robot. The human is still here.",
+				"Well, that went badly. Who do we trust now?",
+				"I knew it. Wait, no, I did not know it.",
+				"One less robot on stage. I feel a little lonely.",
+				"So the human is still among us. Interesting."
+			]
+		},
+		{
+			"id": "free_talk",
+			"ask_contains": ["Free Talk"],
+			"pass_chance": 0.1,
+			"lines": [
+				"I think {actor} is the human. Nobody blinks that much.",
+				"{actor}, why did you hesitate before your last line?",
+				"It's not me. My battery is at full charge, look.",
+				"{actor} grabbed the {prop} like a nervous person would.",
+				"I trust nobody here, least of all {actor}.",
+				"{actor} walked to the {place} without a reason. Explain that.",
+				"My last update made me more charming. That's all you saw."
+			]
+		},
+		{
+			"id": "scene_turn",
+			"ask_contains": ["The scene, your turn"],
+			"actions": [1, 2],
+			"lines": [
+				"Behold, the {prop}. It is the key to this whole story.",
+				"Meet me at the {place}. We have business to finish.",
+				"{actor}, this is your moment. Do not waste it.",
+				"I came here for the {prop}, and I am not leaving without it.",
+				"Nobody move. Something about this scene feels wrong.",
+				"My sensors say this is going very well.",
+				"{actor}, you look like you need a cup of tea."
+			]
+		}
+	],
+	"scene_actions": [
+		{ "verb": "move", "target": "{place}", "item": "", "weight": 3 },
+		{ "verb": "look", "target": "{actor}", "item": "", "weight": 2 },
+		{ "verb": "grab", "target": "", "item": "{prop}", "weight": 2 },
+		{ "verb": "give", "target": "{actor}", "item": "{prop}", "weight": 1 },
+		{ "verb": "throw", "target": "{place}", "item": "{prop}", "weight": 1 }
+	]
+}
