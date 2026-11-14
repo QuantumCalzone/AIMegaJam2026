@@ -88,7 +88,22 @@ Each provider entry has:
 - `body_keys`: the only top-level body fields allowed. `stream` is allowed only as `false`.
 - `roles`: the message roles allowed.
 
-**T16 fills in the other providers.** Only Anthropic has a model today. When T16 picks a model for a persona's provider, add the model id to that provider's `models` and check its `endpoint`, `max_tokens_field` and `body_keys` against the provider's docs (the Meta endpoint here is a guess at its Chat Completions URL). Keep `models` in step with the model ids in the game's data files, or the relay will refuse the game's calls.
+### The models (checked against each provider's own docs on 2026-11-14)
+
+Each is the cheapest current model that its provider documents as supporting Structured Outputs (a strict JSON schema) through Chat Completions or the Messages API. T16 may change the picks; keep `models` in step with the model ids in the game's data files, or the relay refuses the game's calls.
+
+| Provider id | Model | Price per 1M tokens (in / out) | Endpoint | Token field | Notes |
+|---|---|---|---|---|---|
+| `anthropic` | `claude-haiku-5-5` | see Findings in `Docs/MVPPlan.md` | `https://api.anthropic.com/v1/messages` | `max_tokens` | JSON through `output_config.format` |
+| `openai` | `gpt-6-luna` | $0.10 / $0.50 | `https://api.openai.com/v1/chat/completions` | `max_completion_tokens` | Reasoning model, default effort `medium`; send `reasoning_effort: "none"` (also `low` … `max`). The token cap includes reasoning tokens. |
+| `xai` | `grok-4.3` | $1.25 / $2.50 | `https://api.x.ai/v1/chat/completions` | `max_tokens` (not stated in the docs; the test confirms it) | Reasoning, default effort `low`; values `none`, `low`, `medium`, `high`, `xhigh`. The company now brands itself SpaceXAI; keys come from `console.x.ai`. |
+| `meta` | `muse-ember-1.0` | $0.10 / $0.50 | `https://api.meta.ai/v1/chat/completions` | `max_completion_tokens` (`max_tokens` is a deprecated alias) | Meta's hosted API is now the "Meta Model API" with Muse models, not Llama (`llama.developer.meta.com` redirects to `dev.meta.ai`). Keys come from `dev.meta.ai`. |
+
+All three Chat Completions providers take structured output as `response_format: {"type": "json_schema", "json_schema": {"name": "reply", "schema": <reply_schema>, "strict": true}}`. The game's `reply_schema` already meets their strict rules (every property required, `additionalProperties: false`, enums allowed). The reply text is `choices[0].message.content`; `finish_reason` is `stop` or `length`; usage is `prompt_tokens` / `completion_tokens` / `total_tokens`.
+
+`test/game_shape.py` sends one request shaped like the game's (system and user messages, the reply schema, the effort above) to every provider the relay has a key for, and checks that the reply parses with every schema field: `python Relay/test/game_shape.py <relay address>`.
+
+Cloudflare answers 403 to Python's default `Python-urllib` User-Agent, so the script sends its own. curl and an Unreal-style User-Agent get through.
 
 ## Deploy (Workers Builds: nothing to install)
 
