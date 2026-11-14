@@ -1,0 +1,7 @@
+(fn KeyCount ()
+  (set KCnt 0)
+  (for _p (V PProv)
+    (bind _k (CallFunction|ProvKey :Prov _p))
+    (if (not (Utilities|String|IsEmpty _k))
+      (set KCnt (+ (V KCnt) 1))))
+  (return (V KCnt)))

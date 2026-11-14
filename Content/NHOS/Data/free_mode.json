@@ -1,7 +1,7 @@
 {
 	"_readme": [
 		"Pre-written replies for free mode: test shows that call no LLM and cost no tokens.",
-		"The relay uses this file when a request has \"free\": true (see Relay/README.md); the relay bundles it at build time, so a change here needs a push to reach it.",
+		"The game reads this file itself in Test for Free (BPC_LLMClient.FreeReply, no network). The relay also uses it when a request has \"free\": true (see Relay/README.md); the relay bundles it at build time, so a change here needs a push to reach the relay.",
 		"phases: how to tell which ask a request is, checked in order. A phase matches when the state has the 'when_field' key, or its 'ask' text contains one of 'ask_contains'. The first match wins; 'scene_turn' is the fallback.",
 		"Each phase says what to fill: 'lines' (speech), 'reasons' (reason), 'vote' (a random name from options), 'actions' (how many, from 'scene_actions'), 'pass_chance' (Free Talk only), 'echo_typed' (the input step: speech = the player's typed text, cut to 25 words).",
 		"Placeholders: {actor} = a random cast name other than you, {vote} = the chosen vote, {place} = a random place, {prop} = a random prop. Names come from the state the game sends (cast, set.places, set.props, options, you).",

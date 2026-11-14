@@ -1,0 +1,27 @@
+(fn FreeFill (Text)
+  (set FillStr Text)
+  (bind _ha (Utilities|String|Contains :SearchIn Text :Substring "{actor}" :bUseCase true))
+  (if _ha
+    (set FillPick "someone")
+    (if (> (len (V FOthers)) 0)
+      (set FillPick (get (V FOthers) (Math|Random|RandomIntegerinRange 0 (- (len (V FOthers)) 1)))))
+    (set FillStr (Utilities|String|Replace :SourceString (V FillStr) :From "{actor}" :To (V FillPick))))
+  (bind _hp (Utilities|String|Contains :SearchIn Text :Substring "{place}" :bUseCase true))
+  (if _hp
+    (set FillPick "Center")
+    (if (> (len (V FPlaces)) 0)
+      (set FillPick (get (V FPlaces) (Math|Random|RandomIntegerinRange 0 (- (len (V FPlaces)) 1)))))
+    (set FillStr (Utilities|String|Replace :SourceString (V FillStr) :From "{place}" :To (V FillPick))))
+  (bind _hr (Utilities|String|Contains :SearchIn Text :Substring "{prop}" :bUseCase true))
+  (if _hr
+    (set FillPick "prop")
+    (if (> (len (V FProps)) 0)
+      (set FillPick (get (V FProps) (Math|Random|RandomIntegerinRange 0 (- (len (V FProps)) 1)))))
+    (set FillStr (Utilities|String|Replace :SourceString (V FillStr) :From "{prop}" :To (V FillPick))))
+  (bind _hv (Utilities|String|Contains :SearchIn Text :Substring "{vote}" :bUseCase true))
+  (if _hv
+    (set FillPick "someone")
+    (if (not (Utilities|String|IsEmpty (V FreeVote)))
+      (set FillPick (V FreeVote)))
+    (set FillStr (Utilities|String|Replace :SourceString (V FillStr) :From "{vote}" :To (V FillPick))))
+  (return (V FillStr)))

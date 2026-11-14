@@ -1,0 +1,6 @@
+(fn CanSeat (Prov)
+  (if (streq (V Mode) "keys")
+    (bind _k (CallFunction|ProvKey :Prov Prov))
+    (return (not (Utilities|String|IsEmpty _k))))
+  (bind _h (Json|HasField (V Providers) Prov))
+  (return _h))

@@ -1,0 +1,36 @@
+(event UserInterface|EventPreConstruct (IsDesignTime))
+
+(event UserInterface|EventConstruct
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _cl (Class|BPShow|GetLLMClient :self _show))
+  (bind _k1 (Class|BPCLLMClient|ProvKey :self _cl :Prov "openai"))
+  (Widget|SetText(TextBox) :self (Variables|WBP_Keys|GetKeyOpenAI) :InText (Utilities|Text|ToText(String) _k1))
+  (bind _k2 (Class|BPCLLMClient|ProvKey :self _cl :Prov "anthropic"))
+  (Widget|SetText(TextBox) :self (Variables|WBP_Keys|GetKeyAnthropic) :InText (Utilities|Text|ToText(String) _k2))
+  (bind _k3 (Class|BPCLLMClient|ProvKey :self _cl :Prov "xai"))
+  (Widget|SetText(TextBox) :self (Variables|WBP_Keys|GetKeySpaceXAI) :InText (Utilities|Text|ToText(String) _k3))
+  (bind _k4 (Class|BPCLLMClient|ProvKey :self _cl :Prov "meta"))
+  (Widget|SetText(TextBox) :self (Variables|WBP_Keys|GetKeyMeta) :InText (Utilities|Text|ToText(String) _k4))
+  (print "NHOS: KEYS shown"))
+
+(event UserInterface|EventTick (MyGeometry InDeltaTime))
+
+(event OnClicked(SaveButton)
+  (print "NHOS: KEYS click save")
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _cl (Class|BPShow|GetLLMClient :self _show))
+  (Class|BPCLLMClient|SetKey :self _cl :Prov "openai" :Key (Utilities|String|ToString(Text) (Widget|GetText(TextBox) :self (Variables|WBP_Keys|GetKeyOpenAI))))
+  (Class|BPCLLMClient|SetKey :self _cl :Prov "anthropic" :Key (Utilities|String|ToString(Text) (Widget|GetText(TextBox) :self (Variables|WBP_Keys|GetKeyAnthropic))))
+  (Class|BPCLLMClient|SetKey :self _cl :Prov "xai" :Key (Utilities|String|ToString(Text) (Widget|GetText(TextBox) :self (Variables|WBP_Keys|GetKeySpaceXAI))))
+  (Class|BPCLLMClient|SetKey :self _cl :Prov "meta" :Key (Utilities|String|ToString(Text) (Widget|GetText(TextBox) :self (Variables|WBP_Keys|GetKeyMeta))))
+  (bind _saved (Class|BPCLLMClient|SaveKeys :self _cl))
+  (bind (_ok _err) (Class|BPCLLMClient|SetMode :self _cl :InMode "keys"))
+  (if _ok
+    (Widget|RemovefromParent :self self)
+    (Class|BPShow|StartfromTitle :self _show)
+    (else
+      (Widget|SetText(Text) :self (Variables|WBP_Keys|GetKeysNote) :InText (Utilities|Text|ToText(String) _err)))))
+
+(event OnClicked(BackButton)
+  (print "NHOS: KEYS click back")
+  (Widget|RemovefromParent :self self))

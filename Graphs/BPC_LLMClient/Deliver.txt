@@ -1,0 +1,8 @@
+(fn Deliver (Tag Ok Error Seconds)
+  (set TmpStr2 (cat " provider=" (V CurProv) " mode=" (V Mode)))
+  (if Ok
+    (print (cat "NHOS: LLM " Tag " ok " Seconds " in=" (V UsageIn) " out=" (V UsageOut) (V TmpStr2)))
+    (else
+      (print (cat "NHOS: LLM " Tag " fail " Error (V TmpStr2)))
+      (CallFunction|ClearReply)))
+  (Default|CallOnAnswer self Tag Ok (V RSpeech) (V RVote) (V RReason) (V RPass) (V RVerbs) (V RTargets) (V RItems) Error))

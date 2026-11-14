@@ -1,0 +1,17 @@
+(fn StartShowSession ()
+  (set Session (Guid|ToString(Guid) (Guid|NewGuid)))
+  (if (not (V Ready))
+    (return false "the AI settings did not load"))
+  (if (not (streq (V Mode) "keys"))
+    (return true ""))
+  (clear (V TmpArr))
+  (set KCnt 0)
+  (for _i (range (len (V PProv)))
+    (bind _c (CallFunction|CanSeat :Prov (get (V PProv) _i)))
+    (if _c
+      (set KCnt (+ (V KCnt) 1))
+      (else
+        (add (V TmpArr) (get (V PNames) _i)))))
+  (if (< (V KCnt) 3)
+    (return false (cat "Play with my own API keys needs keys for at least 3 of the 4 AI providers. Missing: " (Utilities|String|JoinStringArray (V TmpArr) ", ") ".")))
+  (return true ""))

@@ -1,0 +1,28 @@
+(event UserInterface|EventPreConstruct (IsDesignTime))
+
+(event UserInterface|EventConstruct)
+
+(event UserInterface|EventTick (MyGeometry InDeltaTime))
+
+(event OnClicked(PlayButton)
+  (print "NHOS: TITLE click relay")
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind (_ok _err) (Class|BPCLLMClient|SetMode :self (Class|BPShow|GetLLMClient :self _show) :InMode "relay"))
+  (if _ok
+    (Class|BPShow|StartfromTitle :self _show)
+    (else
+      (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) _err)))))
+
+(event OnClicked(FreeButton)
+  (print "NHOS: TITLE click free")
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind (_ok _err) (Class|BPCLLMClient|SetMode :self (Class|BPShow|GetLLMClient :self _show) :InMode "free"))
+  (if _ok
+    (Class|BPShow|StartfromTitle :self _show)
+    (else
+      (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) _err)))))
+
+(event OnClicked(KeysButton)
+  (print "NHOS: TITLE click keys")
+  (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Keys.WBP_Keys_C" (Game|GetPlayerController 0)))
+  (UserInterface|Viewport|AddtoViewport :self _w :ZOrder 30))

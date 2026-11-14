@@ -1,0 +1,7 @@
+(fn SaveKeys ()
+  (bind _p (cat (Utilities|Paths|GetProjectDirectory) "Local/llm_key.json"))
+  (bind _ok (Json|SaveJsontoFile (V KeyObj) (Utilities|Struct|MakeFilePath _p)))
+  (set SaveOk _ok)
+  (bind _n (CallFunction|KeyCount))
+  (print (cat "NHOS: KEYS saved=" (Utilities|String|ToString(Boolean) (V SaveOk)) " count=" (str _n)))
+  (return (V SaveOk)))

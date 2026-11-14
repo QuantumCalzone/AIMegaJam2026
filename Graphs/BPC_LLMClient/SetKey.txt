@@ -1,0 +1,7 @@
+(fn SetKey (Prov Key)
+  (bind _kf (CallFunction|ProvField :Prov Prov :Field "key_field"))
+  (set TmpStr2 _kf)
+  (if (Utilities|String|IsEmpty (V TmpStr2))
+    (return))
+  (set KeyStr (Utilities|String|Trim Key))
+  (Json|SetField (V KeyObj) (V TmpStr2) (V KeyStr)))

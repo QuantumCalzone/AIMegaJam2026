@@ -1,0 +1,16 @@
+(fn RoleProvider (Role)
+  (set RoleProv "anthropic")
+  (bind _r (Json|GetField (V Roles) Role))
+  (set TmpObj2 _r)
+  (bind _h (Json|HasField (V TmpObj2) "provider"))
+  (if _h
+    (bind _v (Json|GetField (V TmpObj2) "provider"))
+    (set RoleProv _v))
+  (bind _c (CallFunction|CanSeat :Prov (V RoleProv)))
+  (if _c
+    (return (V RoleProv)))
+  (for _p (V PProv)
+    (bind _c2 (CallFunction|CanSeat :Prov _p))
+    (if _c2
+      (return _p)))
+  (return ""))
