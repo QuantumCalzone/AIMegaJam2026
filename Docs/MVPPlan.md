@@ -277,7 +277,7 @@ Not planned yet. T11 turns this list into tasks, sized to the time that is left.
 - The 3D café stage and the robots, with Move, Look, Grab, Throw and Give.
 - Audio.
 - A fifth persona and more scene cards and notes.
-- A 30 to 60 second gameplay video, the itch.io page (it must explain the key setup), and the zip named `TeamName_GameName`, under 1 GB.
+- A 30 to 60 second gameplay video, the itch.io page (it must explain the key setup), and the zip named `TeamName_GameName`. The zip must be under 1 GB; the unzipped build can be larger.
 - The lists for the submission form: outside assets with their licenses, tools used, and work made before the jam.
 
 ## Findings
@@ -371,6 +371,6 @@ Also found:
 - **HTTPS just works.** The engine's bundled `cacert.pem` is staged without any setting.
 - **The `GameFeatureData` scan caused a handled ensure** at every packaged start: `Failed to load class /Script/GameFeatures.GameFeatureData`. Game Features only comes in through the editor-only `AllToolsets` plugin. `bIsEditorOnly=True` on that entry in `DefaultGame.ini` fixes it, because the asset manager skips editor-only types when `GIsEditor` is false.
 - **Times:** first package run 6.5 min (cook 6.2 min, mostly shaders); after a config change, 1 min 5 s.
-- **Build size:** 968 MB unzipped. That is 317 MB for the exe, 306 MB for the `.pdb`, 229 MB for the pak and 75 MB for the engine folder. Zipped, it is 474 MB, or 387 MB without the `.pdb`. Leave the `.pdb` out of the submission zip.
+- **Build size:** 968 MB unzipped. That is 317 MB for the exe, 306 MB for the `.pdb`, 229 MB for the pak and 75 MB for the engine folder. Zipped, it is 474 MB, or 387 MB without the `.pdb`. Leave the `.pdb` out of the submission zip. The 1 GB limit is for the zip, so that leaves about 600 MB for assets.
 - **The archive step doesn't clear `Packaged/`.** A key file copied into `Packaged/Windows/AIMegaJam2026/Local/` stays there through later builds. Delete it before you zip.
 - **Logging works in Development builds.** Print String lines (`LogBlueprintUserMessages`) go to the packaged game's log, so `NHOS:` checks work there.
