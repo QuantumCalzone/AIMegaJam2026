@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T11 · Sonnet 5.5 · medium (then T12 · Opus 5.5 · high, the playtest gate, which needs T11)
+**Next up:** T12 · Opus 5.5 · high (the playtest gate: I play 3 shows, then Claude proposes go or no-go)
 
 ## Goal
 
@@ -223,7 +223,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 
 ### The cast on stage
 
-- [ ] **T11 The cast on stage: four box robots**
+- [x] **T11 The cast on stage: four box robots**
   - **Model and effort:** Sonnet 5.5, medium. Simple set dressing and one small actor Blueprint, plus a few calls from `BP_Show` at points that T06 to T10 made.
   - **Depends on:** T10 (it hooks the cut and Restart, and T08 to T10 hold the locks on `BP_Show` and `WBP_Stage` until then)
   - **Needs:** editor + Unreal MCP running, my API key.
@@ -238,7 +238,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
        - **Restart:** every robot stands again, unlit, with the new show's names.
     5. Print `NHOS: STAGE robots=<n>` at setup and `NHOS: STAGE cut <persona>` at each cut.
   - **Done when:** with autoplay on, a PIE run plays a whole show and prints `NHOS: STAGE robots=4`, one `NHOS: STAGE cut ...` per cut, and `NHOS: SHOW END`. Screenshots show Scene Prep with four labelled robots above a readable log, a turn with one robot lit, and a cut robot, gray and tipped over, with its stamp.
-  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Core/BP_ShowPlayerController.uasset` (only if the camera needs it), new `Content/NHOS/Stage/BP_Robot.uasset`, new `Content/NHOS/Stage/M_Robot.uasset`.
+  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Core/BP_ShowPlayerController.uasset` (only if the camera needs it), new `Content/NHOS/Stage/BP_Robot.uasset`, new `Content/NHOS/Stage/M_Robot.uasset`. T11 left `BP_ShowPlayerController` unchanged (the camera uses Auto Activate) and also added `Content/NHOS/Stage/MI_StageFloor.uasset` and `MI_StageWall.uasset`.
 
 ### Gate
 
@@ -715,3 +715,51 @@ Also found:
 - **`StartPIE` needs `options`:** `{"bSimulate": false, "playMode": "PlayMode_InViewPort", "warmupSeconds": 1}`.
 - **Compiling `BP_Show` marked `L_Stage` and `BPC_LLMClient` dirty again** with no change to them. They were left unsaved.
 - **Write times:** most graphs took 4 to 18 s in `write_graph_dsl`. `ShowEndScreen` took 34 s. Batches of 2 to 7 graphs stayed under 60 s.
+
+### T11: the cast on stage results (2026-11-14)
+
+Proven in PIE on `L_Stage`:
+
+- **Autoplay with `spare_human`:** `NHOS: STAGE robots=4` at setup, `NHOS: STAGE cut visionary` and `NHOS: STAGE cut overclocker` at the two cuts, then `NHOS: SHOW END result=win scenes=2`. Restart printed `NHOS: RESTART show=2` and a new `NHOS: STAGE robots=4`. Every robot stood again, unlit, with show 2's names, and show 2 also reached `NHOS: SHOW END`.
+- **Autoplay without `spare_human`:** the human was cut in scene 1 after a tiebreak, and its robot tipped over gray with "HUMAN" on its label.
+- 189 calls in these runs, none failed, and no script warnings. Screenshots: `Saved/Screenshots/T11/` (not in git): `0_sceneprep.png` (four labelled robots above the log), `2_turn.png` (one robot lit), `3_cut.png` (a cut robot, gray, tipped over, stamp "AI") and `4_cut_human.png` (stamp "HUMAN").
+
+What the assets hold:
+
+- **`BP_Robot`** (`Content/NHOS/Stage/`): `DefaultSceneRoot` > `Rig` (SceneComponent) > `Body` (engine Cylinder, 70 × 70 × 110 cm), `Head` (Cube, 55 × 55 × 50) and `Visor` (a thin Cube on the front of the head). Under the root, not the rig: `Spot` (SpotLight 430 cm up, pointing down, 4000 cd, hidden at start) and `Label` (TextRender, 24 cm, centered, at 178 cm). The actor's origin is at its feet.
+  - Variables: `Seat` and `FallDir` (instance editable), `DisplayName`, `BaseColor`, `IsCut`, `TipRoll`, `TipGoal`.
+  - `Setup(Name, Color, IsMe)` sets the name (with " (you)" for my seat) and the color, then calls `ResetLook`.
+  - `ResetLook` stands the robot up, sets its color, a cyan visor and a white label, turns the light off and calls `FaceCamera`, which turns the label toward the level's `CameraActor` (yaw only).
+  - `SetLit(On)` shows or hides `Spot` and sets the `Glow` of body, head and visor.
+  - `SetCut(Stamp)` turns the light off, makes body and head gray and the visor dark, sets the label to the stamp in red, and sets `TipGoal` to 82° × `FallDir`. Event Tick eases `TipRoll` toward `TipGoal` (`FInterpTo`, speed 3) and rolls `Rig`, so the robot tips over in about a second. The label stays upright where the head was, so the stamp floats above the fallen robot.
+  - Colors use `SetVectorParameterValueOnMaterials` and `SetScalarParameterValueOnMaterials` on each mesh. They make a dynamic instance per component, so the robot keeps no MID variables.
+- **`M_Robot`**: one Substrate Slab BSDF. `Color` (vector parameter) drives Diffuse Albedo, `Color` × `Glow` (scalar, default 0) drives Emissive, and roughness is 0.45. `MI_StageFloor` and `MI_StageWall` are dark instances of it.
+- **`L_Stage`**, all in the outliner folder `Stage`:
+  - `StageFloor` (Cube, 40 × 30 m, top at z = 0) and `StageWall` (Cube at x = 600, 10 m high).
+  - `KeyLight` (SpotLight from the front left, 1400 cd, 50° cone) and `FillLight` (PointLight from the front right, 300 cd, cool).
+  - `Robot0` to `Robot3` with `Seat` 0 to 3 at y = −330, −110, 110 and 330 (the outer two 50 cm forward), each turned to face the camera. `FallDir` is −1 for seats 0 and 1 and +1 for seats 2 and 3, so a cut robot falls outward and two cut robots never overlap. Positive roll tips a robot to the camera's right.
+  - `StageCamera` at (−820, 0, 270), pitch −21°, Auto Activate for Player 0.
+- **`WBP_Stage`**: `Background` is now transparent with no padding. `RootBox` holds `HeaderBar` (Border, dark at 85 %, with `PhaseHeader`), `StampText`, `StageGap` (Spacer, Fill 1) and `LowerPanel` (Border, opaque dark, Fill 1) > `LowerBox` > `BodyRow` (Fill), `VoteRow` and `InputRow`. So the 3D stage shows through the top half, and the log keeps its font and its opaque background.
+  - `InfoText` is now inside `InfoScroll` (ScrollBox). The long info text overflowed the half-height panel and drew over the input row.
+  - When the stamp shows, it takes its height from both the stage and the log.
+
+How `BP_Show` drives the robots:
+
+- **`FindRobots`** fills `Robots` (one slot per seat up to `MaxCast`; empty slots stay None) from `GetAllActorsOfClass(BP_Robot)`, by each robot's `Seat`.
+- **`StageSetup`** calls `FindRobots`, then `Setup` on each seat's robot with the seat's name, `SeatColors[seat]` (orange, teal, violet and yellow, set as defaults on `BP_Show`) and whether it is my seat. It prints `NHOS: STAGE robots=<n>`, counting the seats that have a robot.
+  - `StartScene` calls it when `SceneNum` is 1, so a new show and Restart both reset the stage. `StartScene` then calls `LightSeat(-1)`, so every scene starts dark.
+- **`LightSeat(Seat)`** calls `SetLit` on every robot, on for that seat only. A seat with no robot is skipped.
+- **`ActorLine(Seat, Entry)`** is now the one place where an actor's line enters the shared log: it adds the entry and calls `LightSeat`. `PlayTurn`, `PlayTalk`, `Tally` (each vote) and `PlayReact` call it. A scene turn shows its four lines at once, so its last speaker stays lit. The cut actor's last words light its fallen robot.
+- **`StageCut(Seat)`**, called from `CutActor` after the stamp shows, prints `NHOS: STAGE cut <id>` and calls `SetCut` with "AI" or "HUMAN" on that seat's robot.
+- `PlayTurn` had no saved DSL source, so T11 rewrote it from its readback and the T07 notes. The T11 source of every graph it wrote is in `Saved/T11/src/` (not in git).
+
+Unreal MCP rules found in this task:
+
+- **`ActorTools.add_component` works on a Blueprint asset.** It adds a component to the Blueprint (the template is `.../BP_Robot.BP_Robot_C:<Name>_GEN_VARIABLE`), and `set_parent_component` nests it. Set the mesh, transform and light settings on the template with `ObjectTools.set_properties`.
+- **`ObjectTools.set_properties` and `get_properties` take the object as `instance`,** not `object`.
+- **Some node IDs are shared by several functions, and the DSL may pick the wrong one.** `Rendering|Material|SetVectorParameterValue` made the Material Parameter Collection version, and `Rendering|SetMaterial` made a Volumetric Cloud one. Check the `self` pin type with `get_node_type_pins` before you use an ID. `Class|PrimitiveComponent|...` doesn't exist, because those functions sit in other categories.
+- **A tool call that fails inside `execute_tool_script` ends the script, even inside `try`.** Look up only IDs that `find_node_types` returned.
+- **`CameraActor` letterboxes by default** (`bConstrainAspectRatio` on its CameraComponent). Turn it off. The project keeps the vertical field of view: 90° horizontal at 16:9 is only about 70° in the editor's narrower PIE viewport, so frame the stage for the narrow viewport.
+- **UMG `WrapWidgets` wraps several siblings in one new panel and keeps their order, but their old slot settings (fill, padding) are lost.** Set them again on the new slots.
+- **Timing PIE screenshots:** an autoplay show runs too fast to screenshot by hand (a two-scene show took about 60 s with the editor in front). In Bash, `timeout 60 bash -c 'tail -n0 -f Saved/Logs/AIMegaJam2026.log | grep -a -m1 "<NHOS line>"'` waits for a check line, and the screenshot call goes right after it.
+- Compiling `BP_Show` marked `BPC_LLMClient` dirty again, with no change to it. It was left unsaved.
