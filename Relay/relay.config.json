@@ -1,5 +1,5 @@
 {
-	"_readme": "Settings for the relay (see Relay/README.md). Provider and company names live only here and in wrangler secrets, never in text the game shows. A provider serves calls only when its secret is set and its models list is not empty. Models and endpoints were checked against each provider's own docs on 2026-11-14 (see Relay/README.md); T16 may change the picks. Limits can be overridden per deploy or in wrangler dev with the vars SESSION_CALLS, IP_DAILY_CALLS, DAILY_CALLS and DAILY_TOKENS (DAILY_TOKENS applies to every provider).",
+	"_readme": "Settings for the relay (see Relay/README.md). Provider and company names live only here and in wrangler secrets, never in text the game shows. A provider serves calls only when its secret is set and its models list is not empty. Models and endpoints were checked against each provider's own docs on 2026-11-14 (see Relay/README.md); T16 may change the picks. Limits can be overridden per deploy or in wrangler dev with the vars SESSION_CALLS, IP_DAILY_CALLS, DAILY_CALLS and DAILY_TOKENS (DAILY_TOKENS applies to every provider). Each provider's \"force\" fields are set on every request (the cheapest effort that provider accepts), so calls through our keys never run at a higher effort.",
 	"max_body_bytes": 65536,
 	"upstream_timeout_ms": 90000,
 	"limits": {
@@ -32,7 +32,10 @@
 			"roles": [
 				"user",
 				"assistant"
-			]
+			],
+			"force": {
+				"output_config.effort": "low"
+			}
 		},
 		"openai": {
 			"shape": "chat",
@@ -58,7 +61,10 @@
 				"developer",
 				"user",
 				"assistant"
-			]
+			],
+			"force": {
+				"reasoning_effort": "none"
+			}
 		},
 		"xai": {
 			"shape": "chat",
@@ -66,6 +72,7 @@
 			"auth": "bearer",
 			"secret": "XAI_API_KEY",
 			"models": [
+				"grok-build-0.1",
 				"grok-4.3"
 			],
 			"max_tokens_field": "max_tokens",
@@ -110,7 +117,10 @@
 				"system",
 				"user",
 				"assistant"
-			]
+			],
+			"force": {
+				"reasoning_effort": "minimal"
+			}
 		}
 	}
 }

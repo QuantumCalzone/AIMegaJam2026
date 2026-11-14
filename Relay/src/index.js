@@ -1,6 +1,7 @@
 // No Humans On Set: the relay. Holds the provider keys as Worker secrets, checks
 // each request from the game, forwards the body unchanged to the provider and
-// returns the provider's reply. See Relay/README.md.
+// returns the provider's reply. The one change it makes to the body is the
+// "force" fields in relay.config.json (the cheapest effort). See Relay/README.md.
 //
 // Request (POST /):  { "provider": "<id>", "session": "<id>", "body": { ... } }
 // Reply on success:  the provider's reply, unchanged.
@@ -129,6 +130,20 @@ function checkBody(p, body) {
 	return null;
 }
 
+// Set each "force" field from the config (a dotted path, e.g. "output_config.effort"),
+// so calls through our keys always run at the cheapest effort, whatever the game sends.
+function applyForce(p, body) {
+	for (const [path, value] of Object.entries(p.force ?? {})) {
+		const keys = path.split(".");
+		let o = body;
+		for (const k of keys.slice(0, -1)) {
+			if (!isObject(o[k])) o[k] = {};
+			o = o[k];
+		}
+		o[keys[keys.length - 1]] = value;
+	}
+}
+
 function providerHeaders(env, p) {
 	const headers = { "content-type": "application/json" };
 	if (p.auth === "x-api-key") {
@@ -217,6 +232,7 @@ async function handleRelay(request, env, ctx) {
 	});
 	if (!verdict.ok) return fail(verdict.code);
 
+	applyForce(p, body);
 	const bodyText = JSON.stringify(body);
 	let upstream;
 	let replyText;
