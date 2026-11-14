@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13, T14, T15 and T16 are done. T26 (five actors, Player names for the AIs) is committed and waits only for my playtest. T17 (stage art) is committed and waits only for my verdict on its personality. T18 (Opus 5.5 · high) can start now and takes over the lock on `BP_Show`.
+**Next up:** T13, T14, T15 and T16 are done. T26 (five actors, Player names for the AIs) is committed and waits only for my playtest. T17 (stage art) is committed and waits only for my verdict on its personality. T18 (Opus 5.5 · high) is in progress: one LLM per AI player, plus the three ways to play (free, relay, own keys), which it took over from T21.
 
 ## Goal
 
@@ -358,17 +358,23 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
   - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/` (`BP_Robot`, new meshes, materials, textures and `BP_Backdrop`), `Content/NHOS/Core/BP_Show.uasset`, `Docs/Assets.md`. T17 made no meshes or textures: new `M_Set`, `M_Backdrop`, `Content/NHOS/Stage/Materials/` (41 instances) and `BP_Backdrop`. Its `BP_Show.uasset` also carries the T26 label fix's `SetupShow` and `ShowLine` (see the 19:53 DevLog line).
   - **Waiting:** the work is done and committed (see "T17: stage art results" in Findings). Left: I watch a show and say it has personality.
 
-- [ ] **T18 One LLM per AI player: in the game**
-  - **Model and effort:** Opus 5.5, high. It changes the client that every ask goes through, and the seat draw.
+- [ ] **T18 One LLM per AI player: in the game, and three ways to play**
+  - **Model and effort:** Opus 5.5, high. It changes the client that every ask goes through, the seat draw and the title screen.
   - **Depends on:** T16, T17 (the lock on `BP_Show`)
-  - **Needs:** editor + Unreal MCP running, my keys for every provider.
+  - **Needs:** editor + Unreal MCP running, the relay live (it is, see `Relay/README.md`).
+  - **Changed on 2026-11-14 (my call):** the game has three modes, picked on the title screen. T18 takes the relay path and key entry from T21.
+    - **Test for Free:** no network at all. `BPC_LLMClient` makes each reply itself from `Content/NHOS/Data/free_mode.json`, the way the relay's free mode does (`Relay/src/index.js`, `freeReplyObject`): it finds the phase, fills `{actor}`, `{vote}`, `{place}` and `{prop}`, picks a vote from `options`, adds weighted stage actions, and repeats the typed text for the input step. For testing the UI and the show loop only.
+    - **Play via Relay** (was "Play with LLMs"): every ask goes to the relay, which holds our keys. It costs me money.
+    - **Play with my own API keys:** a new screen, `WBP_Keys`, with one masked field per provider. The game calls each provider directly with those keys and never sends them to the relay. Save writes them to `Local/llm_key.json` on the player's machine, and the screen fills in from that file when it exists.
   - **Steps:**
-    1. `BPC_LLMClient` loads `providers` from `llm.json` and one key per provider. For an `openai_chat` provider it builds the Chat Completions body (system and user messages, and the JSON format from `llm.json`) and reads `choices[0].message.content`, `finish_reason` and `error.message`. The reply JSON goes through the same parser, and `OnAnswer` doesn't change.
-    2. `Ask` sends each actor ask to its persona's provider, and the input and Director asks to theirs.
-    3. The seat draw follows the design: a persona can take an AI seat only if its provider has a key (since T26, I have no persona, so nothing is redrawn). If fewer than 3 AI seats can be filled, the screen says "AI service unavailable" and which keys are missing.
-    4. `NHOS: LLM <tag> ok ...` adds `provider=<id>`.
-  - **Done when:** an autoplay show seats 4 AIs on 4 different providers, the log has `ok` lines from each and no `fail` line, and it reaches `NHOS: SHOW END`. With one provider's key removed, the show still deals a full cast or says which keys are missing.
-  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, and `BPC_LLMRequest.uasset` only if it holds anything specific to one provider.
+    1. `BPC_LLMClient` loads `providers` from `llm.json` and each persona's provider from `personas.json`. For an `openai_chat` provider it builds the Chat Completions body (system and user messages, and the JSON format from `llm.json`) and reads `choices[0].message.content`, `finish_reason` and `error.message`. The reply JSON goes through the same parser, and `OnAnswer` doesn't change.
+    2. `Ask` sends each actor ask to its persona's provider (the tag's persona id), and the input and Director asks to their role's provider. In relay mode the body is wrapped as `{provider, session, body}`; in key mode it goes to the provider's endpoint with its own auth header.
+    3. The title screen has three buttons. A `mode` switch in `Local/switches.json` (`free`, `relay` or `keys`) picks the mode for autoplay runs, which skip the title screen; it replaces `free_mode`.
+    4. The seat draw in key mode: a persona takes an AI seat only if its provider has a key. **At least 3 keys are needed** (my call: every robot's label stays true, so no persona runs on another provider's key). With fewer, the screen says "AI service unavailable" and which keys are missing. The input LLM and the Director use Anthropic when it has a key, otherwise the first provider that has one. In free and relay mode all four personas take seats.
+    5. `NHOS: LLM <tag> ok ...` adds `provider=<id>` and `mode=<mode>`.
+    6. Update the docs that say free mode goes through the relay: `CLAUDE.md`, `Relay/README.md`, the readmes in `llm.json` and `free_mode.json`, `Docs/switches.example.json`. The relay keeps its own free mode for `Tools/check_prompts.py`. Show me the design doc edit for the three modes.
+  - **Done when:** an autoplay show in relay mode seats 4 AIs on 4 different providers, the log has `ok` lines from each and no `fail` line, and it reaches `NHOS: SHOW END`. A free-mode autoplay show reaches `SHOW END` with the network off (or a wrong relay address). In key mode with only my Anthropic key, the screen says which keys are missing; with one of 4 keys removed from a full set (if I have them), the show deals a cast of 3 AIs and me.
+  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Title.uasset`, new `Content/NHOS/UI/WBP_Keys.uasset`, `BPC_LLMRequest.uasset` only if it holds anything specific to one provider, the docs in step 6.
 
 - [ ] **T19 Robots act out their actions**
   - **Model and effort:** Opus 5.5, high. Movement, props and timing on stage, driven by the show loop.
@@ -394,18 +400,17 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
   - **Done when:** in an autoplay show with the editor in front, the music plays and each sound plays at its moment; I listen to one show and say the mix is OK.
   - **Touches:** new `Content/NHOS/Audio/`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/Stage/BP_Robot.uasset`, `Content/NHOS/UI/`, `Docs/Assets.md`.
 
-- [ ] **T21 How a judge plays: a hosted relay and key entry**
-  - **Model and effort:** Opus 5.5, high. A small server with limits, and a new screen.
+- [ ] **T21 How a judge plays: the relay's limits on screen, and the itch.io page**
+  - **Model and effort:** Opus 5.5, high. Error paths across the client and the screens.
   - **Depends on:** T18
-  - **Needs:** a hosting account that I create (for example Cloudflare Workers), a hard spending limit that I set at every provider, my OK before each deploy, editor + Unreal MCP running.
+  - **Needs:** a hard spending limit that I set at every provider, my OK before each relay deploy, editor + Unreal MCP running.
+  - **Done before T21:** the relay server (`Relay/`, deployed, see `Relay/README.md`). T18 built the three modes, the relay path and the key-entry screen.
   - **Steps:**
-    1. **The relay** (`Relay/` in the repo, with no keys in it): a small function that holds our provider keys as hosting secrets, takes the game's request with a provider id, forwards it to that provider and returns the reply. It accepts only the game's request shape, limits calls per session and per day, and returns a clear error when the budget is used up.
-    2. **The game** calls providers directly with the keys in `Local/llm_key.json` when it has them, as now, and uses the relay when it doesn't. Before the show it makes one tiny test call per provider, or to the relay.
-    3. **A key-entry screen:** one masked field per provider, a Test button that makes the tiny call, and Save, which writes `Local/llm_key.json` on the player's machine. Keys never go to the relay.
-    4. When the relay is down or out of budget, the "AI service unavailable" screen says so and offers key entry.
-    5. Write the itch.io page text that explains both ways to play.
-  - **Done when:** with no key file, a PIE show plays to `NHOS: SHOW END` through the relay; with a wrong relay address, the unavailable screen and key entry appear; keys entered on that screen play a show.
-  - **Touches:** new `Relay/`, `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, new `Content/NHOS/UI/WBP_Keys.uasset`, `Content/NHOS/Data/llm.json` (the relay address), new `Docs/ItchPage.md`.
+    1. Before a relay show, `GET /health`: if it doesn't answer or `budget_left` is false, show the "AI service unavailable" screen. Before a key-mode show, one tiny test call per provider (also the Test button on `WBP_Keys`).
+    2. When the relay is down or out of budget mid-show (`error.type` `session_limit`, `player_limit`, `budget_used_up`), the unavailable screen shows the relay's message and offers key entry.
+    3. Write the itch.io page text that explains the ways to play.
+  - **Done when:** with a wrong relay address, the unavailable screen and key entry appear; keys entered on that screen play a show; a budget error from the relay shows its message.
+  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Keys.uasset`, new `Docs/ItchPage.md`, `Relay/` only if a limit changes.
 
 - [ ] **T22 Package a Windows Development build and play a show in it**
   - **Model and effort:** Sonnet 5.5, medium. It repeats T02's steps with the whole game.
@@ -413,7 +418,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
   - **Needs:** a Windows machine, the editor closed, my playtest (one show).
   - **Steps:**
     1. Run the package command from `CLAUDE.local.md` in the background.
-    2. Run the packaged game with autoplay on and no key file, so it plays through the relay.
+    2. Run the packaged game with autoplay on, `"mode": "relay"` and no key file, so it plays through the relay.
     3. I play one full show in the packaged game with autoplay off.
     4. Write the result, the build size, the zip size without the `.pdb`, and any packaging fix in Findings.
   - **Done when:** the packaged game's log shows `NHOS: SHOW END` and no `NHOS: LLM ... fail` line, and I finished one show in it.
