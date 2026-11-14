@@ -105,6 +105,7 @@ UE 5.8 includes **Unreal MCP**, the experimental `ModelContextProtocol` plugin. 
 - The server only exists while the editor runs. Commandlets don't start it unless you pass `-ModelContextProtocolStartServer`.
 - Instructions for every connecting agent can be set in Project Settings > Agentic Workflows > Model Context Protocol > Instructions. They are stored in `DefaultGame.ini`.
 - Server logs use the `LogModelContextProtocol` category in the editor log.
+- **Test for free.** When you run your own tests through Unreal MCP (PIE shows, autoplay runs, UI checks), pick **Test for Free** on the start screen, not **Play with LLMs**, unless the test is about LLM behavior (prompts, replies, providers, the relay's real calls). Autoplay runs skip the title screen, so for those set `"free_mode": true` in `Local/switches.json` (see `Docs/switches.example.json`). In free mode no LLM is called and no tokens are spent: every ask goes to the relay with `"free": true`, and the AI players answer with the pre-written lines in `Content/NHOS/Data/free_mode.json`. See `Relay/README.md`.
 
 ## Rendering and project configuration
 
