@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13, T14, T15 and T16 are done. T26 (five actors, Player names for the AIs) is committed and waits only for my playtest. T17 (Opus 5.5 · high) can start now and takes over the locks on `BP_Show` and `L_Stage`; T18 (Opus 5.5 · high) follows it.
+**Next up:** T13, T14, T15 and T16 are done. T26 (five actors, Player names for the AIs) is committed and waits only for my playtest. T17 (stage art) is committed and waits only for my verdict on its personality. T18 (Opus 5.5 · high) can start now and takes over the lock on `BP_Show`.
 
 ## Goal
 
@@ -355,7 +355,8 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
     4. **Personality in motion:** an idle bob, a bounce while its line shows, a shake when voted for, a cheer from the AIs when the human is caught, and a slump before a cut robot tips over.
     5. Record every outside or generated asset in `Docs/Assets.md`.
   - **Done when:** screenshots show the theater with five distinct robots, a different backdrop in scene 1 and scene 2, and a talking bounce; an autoplay show reaches `NHOS: SHOW END`; I say it has personality.
-  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/` (`BP_Robot`, new meshes, materials, textures and `BP_Backdrop`), `Content/NHOS/Core/BP_Show.uasset`, `Docs/Assets.md`.
+  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/` (`BP_Robot`, new meshes, materials, textures and `BP_Backdrop`), `Content/NHOS/Core/BP_Show.uasset`, `Docs/Assets.md`. T17 made no meshes or textures: new `M_Set`, `M_Backdrop`, `Content/NHOS/Stage/Materials/` (41 instances) and `BP_Backdrop`. Its `BP_Show.uasset` also carries the T26 label fix's `SetupShow` and `ShowLine` (see the 19:53 DevLog line).
+  - **Waiting:** the work is done and committed (see "T17: stage art results" in Findings). Left: I watch a show and say it has personality.
 
 - [ ] **T18 One LLM per AI player: in the game**
   - **Model and effort:** Opus 5.5, high. It changes the client that every ask goes through, and the seat draw.
@@ -1121,3 +1122,25 @@ Every role still runs `claude-haiku-5-5` at low effort.
 - **How the models differ:** all four kept to the schema, the 25-word cap, the Player names and the story rules. `grok-4.3` is the fastest and writes the shortest lines (median 10 words, against 14 for Haiku and Meta). `muse-ember-1.0` still spends about 50 to 130 reasoning tokens on an actor ask at `minimal`, adds about 0.3 s, and returns the fields in alphabetical order, which the parser doesn't mind. It says "That is interesting." in 13 of its 55 lines, from its persona's own trait. `gpt-6-luna` writes curly apostrophes (’) and calls Player 3 "he" or "himself" now and then.
 - **For T18:** chat bodies carry no `temperature`, and Meta rejects `reasoning_effort: "none"` (400). An OpenAI-style error comes back as `{"error": {...}}` with no top-level `type`, but a relay error still has `type: "error"`.
 - **Design doc (needs my OK):** Tech & Build, Open questions: tick "Decide which key pays for the Director and the input LLM" (Anthropic, for now) and "Choose between direct provider connections and a router service" (direct, with one key per provider, plus our relay). Not edited yet.
+
+### T17: stage art results (2026-11-14)
+
+- **The theater (`L_Stage`, outliner folders `Stage/Theater`, `Stage/Places`, `Stage/Lights`):** a wooden plank stage (the old `StageFloor`, now 9 × 20 m with its front edge at x = −260) with a gold apron trim, nine footlights, a gold proscenium (columns at y = ±640), seven velvet pleats a side, a valance with a gold fringe, black masking, a gun-metal truss with five spotlight cans, a riser (300, −300) with a step, and a cloth-covered prop table (300, 300). `StageWall` is now black, behind the backdrop.
+- **Camera and light:** `StageCamera` moved back to (−1050, 0, 230), pitch −12, so the proscenium frames the stage in the band above the log. A new unbound `StagePost` volume sets manual exposure (bias 6); without it, auto exposure brightened the dark theater until every robot looked white. New lights: `FrontWash`, `RimPink` and `RimCyan` behind the cast, three low `FootGlow` points and two `BackdropWash` spots. `KeyLight` is warmer.
+- **Materials:** `M_Set` is one Substrate slab with `Color`, `Metal`, `Rough`, `Glow`, `Fuzz` (velvet) and `Planks`; a Custom HLSL node draws the plank pattern from world position. All set and accessory colors are its instances in `Content/NHOS/Stage/Materials/`. `M_Backdrop` paints a two-color sky (`Top`, `Bottom`, set at runtime).
+- **Robots (`BP_Robot`):** every robot now has battery bands, a terminal nub, a dark face screen (`Visor`) with LED eyes (`EyeL`, `EyeR`), arms on pivots (`ArmPivotL/R`) with mitten hands, rubber feet and a charge meter. Persona parts carry the component tags `acc` + the persona id and start hidden: a halo (visionary), a blinking warning light, hazard stripes and worried brows (worrier), a lightning antenna, a decal and angry brows (overclocker), a headset and a fixed smile (copycat), and a scarf, a teal panel, a bent nub and big eyes (human, The Understudy). The label sits at 228 cm.
+  - `SetPersona(Id)` shows that persona's parts, sets the body color (pearl, copper, gunmetal, blue, primer grey) and the idle bob speed and height. Event Tick runs the motion: an idle bob, a bounce and waving arms for 2.6 s after `SetLit(true)`, `Shake` (0.8 s yaw wobble), `Cheer` (2.8 s of jumps with arms up), and on `SetCut` a 0.9 s slump forward before the old tip-over.
+  - `Setup` shows the name as-is (no " (you)"), for the T26 label fix.
+  - `PreviewPersona` (instance editable) runs `SetPersona` in the construction script, so the level shows the looks in the editor; `StageSetup` overrides it at runtime.
+- **Backdrops (`BP_Backdrop`, placed at (520, 0, 0)):** a 13 × 6.2 m flat with cardboard cutouts for each card's `backdrop.id` (tags `bd` + id): `verona_garden`, `castle_courtyard`, `manor_study`, `desert_planet`, `ship_deck` and `jungle_park`. `ShowBackdrop(Id)` shows that set's cutouts and the sky colors; an unknown id gives a plain dark flat. `PreviewBackdrop` works like `PreviewPersona`.
+- **`BP_Show`:** a new `StagePrep` runs first in `ShowPrep`. It sets `SeatColors` from the new `PersonaColor(Id)`, so a speaker's name in the log matches its robot (OpenAI soft blue, Anthropic copper, SpaceXAI neon yellow, Meta blue, me teal), then looks up the card's backdrop id and calls `ShowBackdrop`. It prints `NHOS: STAGE backdrop <id>`. `StageSetup` calls `SetPersona` with each seat's id and passes `SeatLabel` as the name. `StageCut` shakes every robot that got a vote, makes the AIs cheer when the cut seat is human, then cuts. The source is `Saved/T17/src/` (not in git).
+- **PIE (free mode, autoplay):** show 1 with `spare_human` played `ship_deck`, `desert_planet` and `verona_garden` to `SHOW END result=win scenes=3`. Show 2 played `ship_deck`, then `manor_study`, and the human was cut in scene 2 (`SHOW END result=lose`). Both printed `STAGE robots=5`; no `fail` lines, no script errors. Screenshots in `Saved/T17/shots/` (not in git): `first_look_full.png`, `pie_scene1_ship.png`, `pie_talk_cut.png` (a lit robot bouncing, a cut robot gray and tipped over), `pie_scene2_study.png` (the HUMAN stamp). The castle and Verona sets were checked in editor captures.
+- **Unreal MCP rules found:**
+  - **Template edits don't reach placed instances.** After `add_component` and `set_properties` on a Blueprint's `_GEN_VARIABLE` templates, the robots already in the level kept zero transforms and the old values, even after a compile. Delete and re-place the instances (keep `Seat`, `FallDir` and the transform).
+  - **`set_actor_transform` with only a location resets the scale to 1.** Always pass location, rotation and scale.
+  - **`set_properties` takes `values` as a JSON string.** A Custom material node's `Inputs` grows one element per call, each given in full (`inputName` plus the `input` struct).
+  - **Manual exposure: a higher `AutoExposureBias` is brighter.** Bias 3 was nearly black; 6 fits these lights.
+  - **The `ProgrammaticToolset` sandbox has no `exec`,** but a script can read a JSON parts list with `AssetTools.read_file` (`file_path`), so long lists stay out of the call.
+  - **`JsonObjectWrapper` is `/Script/JsonUtilities.JsonObjectWrapper`** for `add_struct_variable`.
+  - **`CaptureViewport` captures the editor world even during PIE.** Use `CaptureEditorImage` for PIE shots. A free-mode show runs in about 20 s at the editor's 3 fps in the background, so take several captures in a row.
+- **Not checked yet:** my verdict on the personality, and the cheer (the capture after the human's cut came before it showed).

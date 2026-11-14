@@ -13,7 +13,10 @@ Neither font draws emoji or pictographs. `WBP_Stage.CleanText` removes them, and
 
 ## Art
 
-None yet. The robots and the stage use engine basic shapes and our own Substrate materials (T11).
+No outside or generated art. Everything on stage is built in the editor from the engine's basic shapes (`/Engine/BasicShapes/` Cube, Cylinder, Sphere, Cone) with our own Substrate materials:
+
+- T11: the robots' first look (`M_Robot`, `MI_StageFloor`, `MI_StageWall`).
+- T17: the improv theater, the persona robots' parts and the six scene backdrops. `M_Set` (one material for the set and the robots' accessories; its wood planks are drawn by a small HLSL node, not a texture), `M_Backdrop` (a two-color painted sky) and the instances in `Content/NHOS/Stage/Materials/`. No textures.
 
 ## Audio
 
