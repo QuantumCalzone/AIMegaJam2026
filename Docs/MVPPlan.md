@@ -263,7 +263,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 
 ### After the gate
 
-T12 wrote T13 to T24 from Playtest 1. Two lanes can run at once: T13, T15 and T16 need no editor (only for a PIE check), while the editor tasks go one at a time, because most of them hold the lock on `BP_Show`.
+T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run at once: T13, T15 and T16 need no editor (only for a PIE check), while the editor tasks go one at a time, because most of them hold the lock on `BP_Show`.
 
 - [ ] **T13 The AIs talk like a normal chat**
   - **Model and effort:** Opus 5.5, high. Prompt design: the voice of every AI changes.
@@ -422,6 +422,20 @@ T12 wrote T13 to T24 from Playtest 1. Two lanes can run at once: T13, T15 and T1
     4. No times go in the shared log.
   - **Done when:** in PIE with autoplay off, letting the scene timer run out prints `NHOS: TIMEOUT scene`, and my actor looks around in the log.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Data/scenes.json`.
+
+### Wrap-up
+
+- [ ] **T25 The design docs point to the Claude Doc**
+  - **Model and effort:** Haiku 5.5, low. Docs and one small script edit.
+  - **Depends on:** T23, the last task (T24 is done or cut by then). It changes nothing in the build, so it can run after the submission.
+  - **Needs:** the Claude Docs connector on my account, to read the doc. No editor, no API key.
+  - **Steps:**
+    1. Read all four tabs of the Claude Doc with the connector and compare them with `Docs/GameDesign.md`. If the copy has text the doc doesn't, show me and ask before it goes.
+    2. Replace `Docs/GameDesign.md` with a short pointer: the doc's title, its link (<https://claude.ai/artifact/XKrsACU5w4kHFwhztXCoTA>), a line that says the doc is private, so ask me for access, and a link to this plan. No copy of the design stays in the repo.
+    3. `Tools/check_prompts.py` stops reading `GameDesign.md`: remove the word-for-word design check and the `--no-design` flag, and keep every other check. Fix every `_readme` in `Content/NHOS/Data/` that says the prompts are checked against `GameDesign.md` (`personas.json` has one).
+    4. Every other mention of the design points to the Claude Doc, not to a copy: `CLAUDE.md` ("a copy of a private Claude Doc"), `README.md`, the top of this file, and the build note "The design doc follows the game" (a design change is an edit to the Claude Doc only, with no refresh step). Leave finished tasks, Findings and `DevLog.md` as they are; they are history.
+  - **Done when:** `Docs/GameDesign.md` is a few lines that link the Claude Doc, `grep -rn GameDesign` finds only links to that pointer and history, and `python Tools/check_prompts.py --offline` exits with code 0.
+  - **Touches:** `Docs/GameDesign.md`, `Tools/check_prompts.py`, the `_readme` fields in `Content/NHOS/Data/`, `CLAUDE.md`, `README.md`, `Docs/MVPPlan.md`.
 
 ## After the MVP
 
