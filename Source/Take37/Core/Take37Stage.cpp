@@ -451,6 +451,8 @@ void ATake37Stage::BuildCast()
 
 	FStageActorSpec Brick;
 	Brick.Id = TEXT("brick");
+	Brick.BarkId = TEXT("Brick");
+	Brick.Traits = { 0.9f, 0.6f, 0.1f, 0.3f, 0.4f, 1.0f, TEXT("Dame Vivienne Sterling"), 0.8f };
 	Brick.Name = TEXT("Brick Hardcastle");
 	Brick.Role = TEXT("Leading Man");
 	Brick.Color = FLinearColor(0.3f, 0.45f, 0.8f);
@@ -461,6 +463,8 @@ void ATake37Stage::BuildCast()
 
 	FStageActorSpec Viv;
 	Viv.Id = TEXT("vivienne");
+	Viv.BarkId = TEXT("Vivienne");
+	Viv.Traits = { 0.3f, 1.0f, 0.5f, 0.0f, 0.3f, 0.8f, TEXT("Brick Hardcastle"), 0.6f };
 	Viv.Name = TEXT("Dame Vivienne Sterling");
 	Viv.Role = TEXT("Diva");
 	Viv.Color = FLinearColor(0.45f, 0.1f, 0.6f);
@@ -471,6 +475,8 @@ void ATake37Stage::BuildCast()
 
 	FStageActorSpec Gus;
 	Gus.Id = TEXT("gus");
+	Gus.BarkId = TEXT("Gus");
+	Gus.Traits = { 0.1f, 0.3f, 0.9f, 0.9f, 0.8f, 0.0f, TEXT(""), 0.f };
 	Gus.Name = TEXT("Gus Pickles");
 	Gus.Role = TEXT("Production Assistant");
 	Gus.Color = FLinearColor(0.35f, 0.38f, 0.42f);

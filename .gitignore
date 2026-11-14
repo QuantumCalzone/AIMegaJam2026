@@ -39,3 +39,4 @@ Tools/VoiceGen/.elevenlabs_api_key
 Art/Voice/*.html
 Art/Generated/*/review.html
 Art/Voice/tests/
+.env.local

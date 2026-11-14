@@ -58,6 +58,8 @@ void ATake37GameMode::BeginPlay()
 			{
 				Dir->RequestAction();
 				Dir->FireCue(0);
+				Dir->FireCue(1);
+				Dir->FireCue(2);
 			}
 		}, ActionDelay, false);
 	}
