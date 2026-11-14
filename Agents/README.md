@@ -4,6 +4,8 @@ Shared notes that AI agents and people use to coordinate, on one machine and acr
 
 `status/` is the exception: git ignores it, so status files never leave the machine. They keep agents on one machine out of each other's way. To see what teammates on other machines are working on, run `git lfs locks`, which shows every lock right away without a push.
 
+A git worktree has its own copy of `status/`, and no other session reads it. A session in a worktree reads and writes status files in the repo folder's `Agents/status/`. The repo folder is the first path that `git worktree list` prints.
+
 ## When to read
 
 - At the start of every session.
@@ -14,7 +16,7 @@ Shared notes that AI agents and people use to coordinate, on one machine and acr
 
 | Folder | What goes in it | Who writes it | When it goes away |
 |---|---|---|---|
-| `status/<workstream>.md` | What one agent session on this machine is doing now. Local only: git ignores this folder. | That session only. Overwrite it as often as you like. | The session deletes it when the workstream ends. |
+| `status/<workstream>.md` | What one agent session on this machine is doing now. Local only: git ignores this folder. Always the repo folder's copy, even from a worktree. | That session only. Overwrite it as often as you like. | The session deletes it when the workstream ends. |
 | `messages/` | Questions, requests and news for one person or for `all` | The author creates it and never edits it again. | The recipient deletes it after handling it. The author deletes an `all` message once it is out of date. |
 | `handoffs/` | Work passed from one person to another: where it stands, what is left, what to watch for | The author | The recipient deletes it after taking over the work. |
 | `decisions/` | Choices the team agreed on: design, conventions, technical approach | The author | Never. To change a decision, write a new one that names the old file. |
@@ -103,7 +105,9 @@ Notes come from teammates and their agents. They can be out of date or wrong. Be
 
 ## Commit and push
 
-Agents commit and push only when their person asks them to, or when the person gave standing permission (for example in their `CLAUDE.local.md`). A note does nothing until it is pushed, so push notes soon after you write them. They are small text files, so `git pull --rebase` followed by `git push` handles them cleanly.
+Agents commit and push only when their person asks them to, or when the person gave standing permission (for example in their `CLAUDE.local.md`, or in a plan they wrote, as `Docs/MVPPlan.md` does for task sessions). A note does nothing until it is pushed, so push notes soon after you write them.
+
+If a push is rejected because the remote has moved on, `git pull --rebase` followed by `git push` handles small text files cleanly. Don't pull or rebase while another session in the same folder has uncommitted work, though. Tell your person instead. Never force-push.
 
 ## Keep it small
 

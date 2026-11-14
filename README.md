@@ -27,6 +27,16 @@ git lfs install
 git clone https://github.com/QuantumCalzone/AIMegaJam2026.git
 ```
 
+The game is on the `noHumansOnSet` branch. `main` holds only the setup from before the jam. Switch to the game's branch in the repo folder:
+
+```bash
+cd AIMegaJam2026
+```
+
+```bash
+git checkout noHumansOnSet
+```
+
 If `.uasset` files are only a few hundred bytes after cloning, LFS wasn't set up. Run `git lfs install`, then `git lfs pull` in the repo folder.
 
 ## Open the project
@@ -61,7 +71,7 @@ If something else on your machine already uses port 8000, change the port in **E
 
   After you push your change, release it with `git lfs unlock <path>`. `git lfs locks` shows who holds what. Git refuses to push changes to a file someone else has locked. Unreal's editor doesn't take these locks for you, so run the commands yourself or ask your agent to.
 - **Agent notes:** [Agents/](Agents/README.md) holds notes that Claude Code agents and people use to coordinate: messages, handoffs and decisions. To see who is working on what, run `git lfs locks`. Agents read it at the start of each session. Put your GitHub username in your own `CLAUDE.local.md` so your agents know which notes are yours.
-- **Outside assets** (Fab and others) must be listed in the jam submission. Note the source and license when you add one.
+- **Outside assets** (Fab and others) must be listed in the jam submission. Add the source and license to [Docs/Assets.md](Docs/Assets.md) when you add one.
 - **Git LFS storage and bandwidth** count against the GitHub account's limits. Avoid committing large source files you don't need.
 
 ## Build the game

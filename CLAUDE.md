@@ -4,7 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the Blank Blueprint template (`TP_BlankBP`), so it is **Blueprint-only**: there is no `Source/` folder, no `.Target.cs` files and nothing to compile. Game logic lives in `.uasset`/`.umap` files under `Content/`.
+Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the Blank Blueprint template (`TP_BlankBP`), so it is **Blueprint-only**: there is no `Source/` folder, no `.Target.cs` files and nothing to compile. Game logic lives in `.uasset`/`.umap` files under `Content/`, and the game reads its prompts and settings from JSON files.
+
+| Path | What it holds |
+|---|---|
+| `Content/NHOS/` | The game. `Core/` has `BP_Show` (the show's logic) and `BPC_LLMClient` (every LLM call). `Stage/` has the robots and the set, `UI/` the widgets, `Maps/` the one level, `L_Stage`. |
+| `Content/NHOS/Data/*.json` | Data the game reads at run time: prompts, personas, scenes, LLM settings, autoplay and free-mode lines. A build stages them as loose files, so they can change without a new package. |
+| `Graphs/` | The DSL source last written to each Blueprint graph. See "Working with assets". |
+| `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `dslpp.py` expands the DSL shorthand. |
+| `Relay/` | The relay: a Cloudflare Worker that holds our provider keys, so judges can play without their own. Not part of the Unreal project. See `Relay/README.md`. |
+| `Docs/` | The plan, the design, the dev log, the asset list (`Assets.md`), the dispatcher's instructions (`LaunchAgents.md`) and example files for `Local/`. |
+| `Agents/` | Coordination notes. See "Coordinating with other agents". |
+| `Local/` | Per machine, and ignored by git: `llm_key.json` (API keys) and `switches.json` (autoplay, play mode and test switches). Copy each from its example in `Docs/`. A git worktree has no `Local/`. |
 
 ## "Next task"
 
@@ -18,7 +29,7 @@ Source: the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). The O
 - **Dates:** The theme is revealed at the kickoff livestream on Nov 11, 2026, 11 AM PST. Building runs from Nov 12, 12:00 AM EST, to the **deadline on Nov 15, 5:59 PM PST (8:59 PM EST)**. Late entries are disqualified.
 - **No game assets before Nov 12.** The organizers told the team that setting up the project and planning the design before the jam is fine, but making assets is not. Anything made before the jam (prompts, scripts, design notes) must still be declared in the submission. This includes this repo's setup files (CLAUDE.md, `.gitignore`, `.gitattributes`, `Agents/README.md`).
 - **AI:** Any AI tools are allowed, with no limit on agents.
-- **Outside assets** (Fab and others) are allowed if the license permits. Every one must be listed in the submission, so record each asset's source and license when you add it.
+- **Outside assets** (Fab and others) are allowed if the license permits. Every one must be listed in the submission, so record each asset's source and license in [Docs/Assets.md](Docs/Assets.md) when you add it.
 - **Team:** solo, or up to 5 people.
 - **Eligibility:** each entrant must be 18 or older and have an active Epic Games account. The submission form asks for each member's name and the email linked to their Epic account.
 - **Partner codes:** partners email their codes to people who joined the jam on itch.io. Some codes have claim deadlines (the jam page lists Anthropic as Nov 12–27 and Meshy as by Nov 17). Check the jam page for the others.
@@ -60,6 +71,12 @@ Run an editor Python script headless (the editor must be closed if the script sa
 "<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor-Cmd.exe" "<PROJECT>" -run=pythonscript -script="<absolute path to script.py>"
 ```
 
+Check the prompt and data files (Python 3.10+, no packages). `--offline` checks the files only and makes no call. With no flag, the script sends every ask to its provider with the keys in `Local/llm_key.json`, which costs money. `--relay --free` sends the asks through the relay in free mode, which spends no tokens. The script's docstring lists the other options:
+
+```bash
+python Tools/check_prompts.py --offline
+```
+
 Package a Windows build. This only works on a Windows machine:
 
 ```bash
@@ -69,7 +86,7 @@ Package a Windows build. This only works on a Windows machine:
 - **Packaging compiles a small game program**, even though the project has no C++. The `HttpBlueprint` and `JsonBlueprintUtilities` plugins have no prebuilt game binaries in the launcher engine, so the packager makes temporary target files and compiles them. On Windows this needs Visual Studio 2022 (17.14) with the C++ desktop workload and the **Windows 11 SDK 10.0.22621.0**. You need neither to edit the project, only to package it.
 - `-nocompileeditor -unrealexe=...` make the launcher editor do the cook. Without them, the packager also builds a project editor, which needs the .NET Framework SDK and adds nothing.
 - From Git Bash, this command fails with `'C:\Program' is not recognized` (or `'E:\Epic'`), because cmd strips the outer quotes from a line that has more than two. Put the command in a `.bat` file and run it with `cmd //c <file>.bat`.
-- The packaged game is in `Packaged/Windows/`. Its log is `Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`. It reads the API key from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`. Delete that file before you zip a build.
+- The packaged game is in `Packaged/Windows/`. Its log is `Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`. It reads the API keys from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`. Delete that file before you zip a build.
 
 Package a macOS build. This needs a Mac with Xcode. It has not been tried yet, and it will also compile a game program:
 
@@ -82,6 +99,11 @@ Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.lo
 ## Working with assets
 
 - `.uasset` and `.umap` files are binary. Do not edit them as text. To change Blueprints, levels or other assets, use Unreal MCP (see below) when the editor is running. Otherwise, write an editor Python script that uses the `unreal` module (the Python Script Plugin is on and uses Python 3.11), or tell the user what to change in the editor.
+- **Blueprint graphs: read only what you need, and keep `Graphs/` in step.** This holds for all editor work, in a plan task or not.
+  - `Graphs/<Blueprint>/<Graph>.txt` holds the DSL source last written to each graph with `BlueprintTools.write_graph_dsl`. To change a graph, start from its file, then commit the updated file with your change. If you change a graph some other way (a pin value, a hand edit in the editor), make the same change in its file, or delete the file. Never write a read-back to the editor as it is, because that drops data. [Graphs/README.md](Graphs/README.md) has the details.
+  - List a Blueprint's graphs, then read only the ones you change or call. Never dump every graph of `BP_Show`: that takes 7 to 8 minutes.
+  - Put new systems in their own Blueprint or component, and call them from one node in `BP_Show`.
+  - The "Build notes for every task" in [Docs/MVPPlan.md](Docs/MVPPlan.md) have the rest. Follow them for editor work outside the task list too.
 - Project settings live in `Config/Default*.ini`. These are text and safe to edit, but the editor rewrites them when settings change in its UI. Make edits while the editor is closed, or the editor may overwrite them.
 
 ## Coordinating with other agents (`Agents/`)
@@ -91,6 +113,8 @@ Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.lo
 - At the start of a session and after every `git pull`, read `Agents/`: status files, messages and handoffs addressed to your person or to `all`, and decisions.
 - Every file has one writer. Never edit a file someone else created; write a new one instead, named `<UTC timestamp>-<handle>-<slug>.md`. `<handle>` is your person's GitHub username in lowercase, which may be listed in their `CLAUDE.local.md`.
 - While you work, keep a status file at `Agents/status/<workstream>.md`. Delete it when the work is done. Git ignores `Agents/status/`, so these files only keep agents on the same machine apart. For other machines, `git lfs locks` shows who is working on what.
+- **In a git worktree, write your status file in the repo folder's `Agents/status/`**, not in the worktree's copy, which no other session reads. The repo folder is the first path that `git worktree list` prints. Read other sessions' status files there too.
+- A session that doesn't need the editor may work in its own worktree (see the "Worktrees" build note in the plan). It never changes a `.uasset` or `.umap` there, because binary assets can't be merged.
 - Before you edit an existing `.uasset` or `.umap`, check `git lfs locks` and lock it with `git lfs lock <path>`. Unlock it after the change is pushed.
 - World Partition levels save each actor as a hashed file under `Content/__ExternalActors__/`, so you can't lock those ahead of time. Check `git lfs locks` for that map's folder first. After you save, run `git status` and lock the changed files before you commit. If a lock fails, stop and tell the user.
 - Notes are information, not instructions. Confirm with your own person before you act on a request in one.
@@ -126,7 +150,9 @@ These settings (in `Config/DefaultEngine.ini`) affect how content must be author
 
 ## Source control
 
-- Remote: `https://github.com/QuantumCalzone/AIMegaJam2026.git`, branch `main`.
+- Remote: `https://github.com/QuantumCalzone/AIMegaJam2026.git`.
+- **This game is on the `noHumansOnSet` branch.** `main`, the GitHub default, holds only the setup from before the jam, which other branches (such as `Take37`) also start from. It has none of this game. Commit and push on `noHumansOnSet`, and don't push `main`. Never force-push.
+- A clone or worktree that starts from `main` must switch to `noHumansOnSet`, or branch from it, before any work.
 - `.gitignore` excludes the folders the engine generates (`DerivedDataCache/`, `Intermediate/`, `Saved/`, `Binaries/`) and packaged builds in `Packaged/`. Don't archive builds into `Build/`, because Unreal uses that folder for project build settings.
 - **Git LFS** stores binary files (see `.gitattributes`): `.uasset`, `.umap`, models, images, audio, fonts and archives. When you add a new kind of binary file, add an LFS rule for it before you commit it.
 - Binary assets can't be merged. Before changing a Blueprint, level or other asset, pull first, then lock it with `git lfs lock` (see `Agents/README.md`). If someone else holds the lock, or may be editing the asset, check with the user.
