@@ -33,6 +33,8 @@ There are no keys in this folder, and none may ever go in git. Players who enter
 
 **On success** the reply is the provider's reply, unchanged, so the game parses it the same way as a direct call.
 
+**Free mode** costs nothing, for local testing. Add `"free": true` to the request. The relay runs every check (the request shape, the model allow-list, `max_tokens`, the limits) but calls no provider and needs no key. It answers with a canned reply in that provider's exact response shape (a Messages reply or a Chat Completions reply), with `"relay_free": true` at the top and zero usage. The reply text is a valid game reply: `actions` empty, `speech` a short canned line (or, for the input step, the player's `typed` text cut to 25 words), `vote` a random name from the ask's `options` when it has any, `reason` "Free mode reply.", `pass` false. Free calls are counted apart from real ones (`limits.free`), so they never use up the real budget. `GET /health` says `"free_mode": true`.
+
 **On failure** the reply is always this shape (which matches Anthropic's error shape, so the existing `type: "error"` check in `BPC_LLMClient` already catches it):
 
 ```json
@@ -138,18 +140,23 @@ Cloudflare builds and deploys the relay from GitHub on its own machines, so nobo
 
 ## Test it
 
-Test a deploy with low limits so the tests can trip them:
+**Free mode, the default: no tokens.** From the repo root (Git Bash, or any shell with curl, bash and Python):
 
-1. In **Settings > Variables and Secrets**, add two **Text** vars: `SESSION_CALLS` = `2` and `DAILY_CALLS` = `8`. Saving them makes a new version at once.
-2. From the repo, run the tests against the address (Git Bash, or any shell with curl, bash and Python):
+```bash
+bash Relay/test/curl-tests.sh https://nhos-relay.<account subdomain>.workers.dev
+```
 
-   ```bash
-   bash Relay/test/curl-tests.sh https://nhos-relay.<your-subdomain>.workers.dev
-   ```
+```bash
+python Relay/test/game_shape.py https://nhos-relay.<account subdomain>.workers.dev
+```
 
-3. Delete the two vars, so the limits in `relay.config.json` apply again. The day's count stays (8 calls), which is nothing against 5000.
+The curl tests check `/health`, one free call per provider in the config, eleven bad request shapes, an unknown provider, that no error text names a provider, the free session limit (151 calls, a few seconds) and that a free vote picks a name from `options`. `game_shape.py` sends a request shaped like the game's to every provider and checks that the reply parses with every schema field.
 
-The tests check `/health`, one tiny call (16 tokens at most) for each provider that has a key, ten bad request shapes, an unknown provider, providers with no key, that no error text names a provider, the session limit and the daily limit. A run makes up to 8 real calls. To run them again on the same UTC day, raise `DAILY_CALLS` above the day's count plus 8 first.
+**Real mode: spends tokens.** Add `--real` to either script. `game_shape.py --real` makes one call per provider that has a key. `curl-tests.sh --real` also trips the real limits, so first lower them:
+
+1. In **Settings > Variables and Secrets**, add two **Text** vars: `SESSION_CALLS` = `2` and `DAILY_CALLS` = `8`, with **Add variable and deploy**.
+2. Run `bash Relay/test/curl-tests.sh <address> --real`. It makes up to 8 real calls of at most 16 tokens each.
+3. Delete the two vars, so the limits in `relay.config.json` apply again. To run it again on the same UTC day, raise `DAILY_CALLS` above the day's count plus 8 first.
 
 ## Run it locally (optional)
 

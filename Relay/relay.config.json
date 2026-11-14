@@ -6,7 +6,13 @@
 		"_readme": "A show is about 55 calls of 1,300 to 5,400 input tokens each (Findings in Docs/MVPPlan.md). The day is the UTC day. session_calls is per session id per day, ip_daily_calls per player address per day, daily_calls for everyone together.",
 		"session_calls": 150,
 		"ip_daily_calls": 600,
-		"daily_calls": 5000
+		"daily_calls": 5000,
+		"free": {
+			"_readme": "Free mode (\"free\": true) counts calls apart from real calls, so tests never use up the real budget. No tokens are counted.",
+			"session_calls": 150,
+			"ip_daily_calls": 20000,
+			"daily_calls": 50000
+		}
 	},
 	"providers": {
 		"anthropic": {

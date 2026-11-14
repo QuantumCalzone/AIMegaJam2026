@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
-# Curl tests for the relay. Start it first with low limits:
-#   npx wrangler dev --var SESSION_CALLS:2 --var DAILY_CALLS:8
-# then run:  bash test/curl-tests.sh [relay URL, default http://127.0.0.1:8787]
-# Each good call asks for at most 16 tokens. A run makes up to 8 real calls.
-# Restart wrangler dev (or wait for the next UTC day) before running it again,
-# because the daily count carries over.
+# Curl tests for the relay.
+#   bash test/curl-tests.sh <relay URL>            free mode (default): no provider is called, no tokens
+#   bash test/curl-tests.sh <relay URL> --real     real calls: start the relay with low limits first
+#                                                  (SESSION_CALLS=2, DAILY_CALLS=8; see README)
+# Free mode trips the free session limit (limits.free.session_calls + 1 calls, a few seconds)
+# and skips the daily budget test, which only real mode can trip without using up the day.
+# A real run makes up to 8 calls of at most 16 tokens each.
 
 URL="${1:-http://127.0.0.1:8787}"
+MODE="free"
+[ "$2" = "--real" ] && MODE="real"
+FREE=""
+[ "$MODE" = "free" ] && FREE=',"free":true'
+# What a good reply looks like in each mode.
+GOOD='"usage"'
+[ "$MODE" = "free" ] && GOOD='"relay_free":true'
+echo "mode: $MODE"
 PASS=0
 FAIL=0
 RUN="t$(date +%s)"
@@ -46,11 +55,17 @@ expect "health answers" "$HEALTH" '"ok":true'
 READY=$(printf '%s' "$HEALTH" | python -c "import json,sys;print(' '.join(json.load(sys.stdin)['providers']))")
 [ -n "$READY" ] || echo "      no provider has a key; put keys in .dev.vars"
 
-echo "== one good call per provider with a key"
+if [ "$MODE" = "free" ]; then
+	# Free mode needs no key, so test every provider in the config.
+	READY=$(python -c "import json;print(' '.join(json.load(open('relay.config.json'))['providers']))")
+	echo "== one free call per provider"
+else
+	echo "== one good call per provider with a key"
+fi
 for P in $READY; do
 	M=$(model_for "$P")
-	R=$(post "{\"provider\":\"$P\",\"session\":\"${RUN}-good-$P\",\"body\":$(tiny_body "$P" "$M")}")
-	expect "good call: $P" "$R" '"usage"'
+	R=$(post "{\"provider\":\"$P\",\"session\":\"${RUN}-good-$P\",\"body\":$(tiny_body "$P" "$M")$FREE}")
+	expect "good call: $P" "$R" "$GOOD"
 done
 
 FIRST=$(echo "$READY" | cut -d' ' -f1)
@@ -71,7 +86,8 @@ expect "image content" "$(post "{\"provider\":\"anthropic\",\"session\":\"${RUN}
 expect "tools field" "$(post "{\"provider\":\"anthropic\",\"session\":\"${RUN}-bad\",\"body\":{\"model\":\"claude-haiku-5-5\",\"max_tokens\":16,\"tools\":[],\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}}")" '"type":"bad_request"'
 expect "unknown provider" "$(post "{\"provider\":\"nobody\",\"session\":\"${RUN}-bad\",\"body\":$GOOD_BODY}")" '"type":"unknown_provider"'
 expect "unknown path" "$(curl -s "$URL/v2/anything")" '"type":"not_found"'
-for P in anthropic openai xai meta; do
+expect "free is not true or false" "$(post "{\"provider\":\"$FIRST\",\"session\":\"${RUN}-bad\",\"body\":$GOOD_BODY,\"free\":\"yes\"}")" '"type":"bad_request"'
+[ "$MODE" = "real" ] && for P in anthropic openai xai meta; do
 	case " $READY " in *" $P "*) ;; *)
 		expect "provider with no key: $P" "$(post "{\"provider\":\"$P\",\"session\":\"${RUN}-bad\",\"body\":$GOOD_BODY}")" '"type":"provider_unavailable"' ;;
 	esac
@@ -83,8 +99,27 @@ else
 	PASS=$((PASS + 1)); echo "PASS  error text names no provider"
 fi
 
-echo "== session limit (needs SESSION_CALLS:2)"
 S="${RUN}-limit"
+if [ "$MODE" = "free" ]; then
+	N=$(python -c "import json;l=json.load(open('relay.config.json'))['limits'];print(l.get('free',{}).get('session_calls',l['session_calls']))")
+	echo "== free session limit ($N calls, then one more)"
+	OKS=0
+	for i in $(seq 1 "$N"); do
+		R=$(post "{\"provider\":\"$FIRST\",\"session\":\"$S\",\"body\":$GOOD_BODY$FREE}")
+		printf '%s' "$R" | grep -q '"relay_free":true' && OKS=$((OKS + 1))
+	done
+	expect "the first $N free calls pass" "$OKS" "^$N\$"
+	expect "free call $((N + 1)) trips the limit" "$(post "{\"provider\":\"$FIRST\",\"session\":\"$S\",\"body\":$GOOD_BODY$FREE}")" '"type":"session_limit"'
+	VOTE_REQ=$(python -c "import json,sys;c=json.load(open('relay.config.json'))['providers'][sys.argv[1]];b={'model':c['models'][0],c['max_tokens_field']:16,'messages':[{'role':'user','content':json.dumps({'options':['Robot A','Robot B'],'ask':'Vote.'})}]};print(json.dumps({'provider':sys.argv[1],'session':sys.argv[2],'body':b,'free':True}))" "$FIRST" "${RUN}-vote")
+	free_reply=$(post "$VOTE_REQ")
+	expect "free vote picks a name from options" "$free_reply" 'vote\\":\\"Robot [AB]'
+	echo
+	echo "$PASS passed, $FAIL failed"
+	[ "$FAIL" -eq 0 ]
+	exit $?
+fi
+
+echo "== session limit (needs SESSION_CALLS:2)"
 expect "session call 1" "$(post "{\"provider\":\"$FIRST\",\"session\":\"$S\",\"body\":$GOOD_BODY}")" '"usage"'
 expect "session call 2" "$(post "{\"provider\":\"$FIRST\",\"session\":\"$S\",\"body\":$GOOD_BODY}")" '"usage"'
 expect "session call 3 trips the limit" "$(post "{\"provider\":\"$FIRST\",\"session\":\"$S\",\"body\":$GOOD_BODY}")" '"type":"session_limit"'

@@ -3,10 +3,12 @@
 // returns the provider's reply. The one change it makes to the body is the
 // "force" fields in relay.config.json (the cheapest effort). See Relay/README.md.
 //
-// Request (POST /):  { "provider": "<id>", "session": "<id>", "body": { ... } }
+// Request (POST /):  { "provider": "<id>", "session": "<id>", "body": { ... }, "free": true (optional) }
+// Free mode ("free": true): every check runs, but no provider is called. The reply is a
+// canned one in the provider's exact response shape, with "relay_free": true. No tokens.
 // Reply on success:  the provider's reply, unchanged.
 // Reply on failure:  { "type": "error", "error": { "type": <code>, "message": <text the game can show>, "source": "relay" } }
-// GET /health:       { "ok": true, "providers": [<ids that can serve calls>], "budget_left": true|false }
+// GET /health:       { "ok": true, "providers": [<ids that can serve calls>], "budget_left": true|false, "free_mode": true }
 
 import { DurableObject } from "cloudflare:workers";
 import CONFIG from "../relay.config.json";
@@ -57,6 +59,16 @@ function utcDay() {
 function intVar(value, fallback) {
 	const n = Number.parseInt(value ?? "", 10);
 	return Number.isFinite(n) && n >= 0 ? n : fallback;
+}
+
+function freeLimits() {
+	const f = CONFIG.limits.free ?? {};
+	return {
+		session_calls: f.session_calls ?? CONFIG.limits.session_calls,
+		ip_daily_calls: f.ip_daily_calls ?? CONFIG.limits.ip_daily_calls,
+		daily_calls: f.daily_calls ?? CONFIG.limits.daily_calls,
+		daily_tokens: Number.MAX_SAFE_INTEGER,
+	};
 }
 
 function limitsFor(env, provider) {
@@ -144,6 +156,73 @@ function applyForce(p, body) {
 	}
 }
 
+// The text of the last user message: the state JSON the game sends.
+function lastUserText(p, body) {
+	const users = body.messages.filter((m) => m.role === "user");
+	const content = users.length ? users[users.length - 1].content : "";
+	if (typeof content === "string") return content;
+	return content.map((part) => part.text).join("");
+}
+
+const FREE_LINES = [
+	"This is a free mode line.",
+	"Free mode here, saying something harmless.",
+	"Another free mode line, no tokens spent.",
+	"Free mode says hello to the stage.",
+];
+
+function pick(list) {
+	return list[Math.floor(Math.random() * list.length)];
+}
+
+// A reply in the game's one reply shape, made up without a model. The vote is a name
+// from "options" when there are any; the input step's "typed" comes back as speech.
+function freeReplyObject(p, body) {
+	let state = {};
+	try {
+		const parsed = JSON.parse(lastUserText(p, body));
+		if (isObject(parsed)) state = parsed;
+	} catch {
+		// Not JSON: answer with a canned line.
+	}
+	const options = Array.isArray(state.options) ? state.options.filter((o) => typeof o === "string" && o) : [];
+	const typed = typeof state.typed === "string" ? state.typed.split(/\s+/).filter(Boolean).slice(0, 25).join(" ") : "";
+	return {
+		actions: [],
+		speech: typed || pick(FREE_LINES),
+		vote: options.length ? pick(options) : "",
+		reason: "Free mode reply.",
+		pass: false,
+	};
+}
+
+function freeResponse(p, body) {
+	const text = JSON.stringify(freeReplyObject(p, body));
+	const id = crypto.randomUUID().replace(/-/g, "");
+	if (p.shape === "anthropic") {
+		return json({
+			id: `msg_free_${id}`,
+			type: "message",
+			role: "assistant",
+			model: body.model,
+			content: [{ type: "text", text }],
+			stop_reason: "end_turn",
+			stop_sequence: null,
+			usage: { input_tokens: 0, output_tokens: 0 },
+			relay_free: true,
+		});
+	}
+	return json({
+		id: `chatcmpl-free-${id}`,
+		object: "chat.completion",
+		created: Math.floor(Date.now() / 1000),
+		model: body.model,
+		choices: [{ index: 0, message: { role: "assistant", content: text, refusal: null }, finish_reason: "stop" }],
+		usage: { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 },
+		relay_free: true,
+	});
+}
+
 function providerHeaders(env, p) {
 	const headers = { "content-type": "application/json" };
 	if (p.auth === "x-api-key") {
@@ -203,12 +282,14 @@ async function handleRelay(request, env, ctx) {
 	}
 	if (!isObject(envelope)) return fail("bad_request", "request must be a JSON object");
 	for (const key of Object.keys(envelope)) {
-		if (!["provider", "session", "body"].includes(key)) {
+		if (!["provider", "session", "body", "free"].includes(key)) {
 			return fail("bad_request", `request field "${key}" is not allowed`);
 		}
 	}
 
 	const { provider: id, session, body } = envelope;
+	if ("free" in envelope && typeof envelope.free !== "boolean") return fail("bad_request", "free must be true or false");
+	const free = envelope.free === true;
 	if (typeof session !== "string" || !/^[A-Za-z0-9_-]{8,64}$/.test(session)) {
 		return fail("bad_request", "session must be 8 to 64 letters, digits, - or _");
 	}
@@ -216,7 +297,10 @@ async function handleRelay(request, env, ctx) {
 		return fail("unknown_provider");
 	}
 	const p = CONFIG.providers[id];
-	if (!providerReady(env, p)) return fail("provider_unavailable");
+	// Free mode needs no key, only an allow-list to check the body against.
+	if (free ? !(Array.isArray(p.models) && p.models.length) : !providerReady(env, p)) {
+		return fail("provider_unavailable");
+	}
 
 	const reason = checkBody(p, body);
 	if (reason) return fail("bad_request", reason);
@@ -228,9 +312,11 @@ async function handleRelay(request, env, ctx) {
 		session,
 		provider: id,
 		ipHash: await hashIp(ip, day),
-		limits: limitsFor(env, p),
+		limits: free ? freeLimits() : limitsFor(env, p),
+		free,
 	});
 	if (!verdict.ok) return fail(verdict.code);
+	if (free) return freeResponse(p, body);
 
 	applyForce(p, body);
 	const bodyText = JSON.stringify(body);
@@ -268,7 +354,7 @@ async function handleHealth(env) {
 		.filter(([, p]) => providerReady(env, p))
 		.map(([id]) => id);
 	const status = await limiter(env).status({ day: utcDay(), limits: limitsFor(env, null) });
-	return json({ ok: true, providers, budget_left: status.budget_left });
+	return json({ ok: true, providers, budget_left: status.budget_left, free_mode: true });
 }
 
 export default {
@@ -295,10 +381,17 @@ export class Limiter extends DurableObject {
 		}
 	}
 
-	async reserve({ day, session, provider, ipHash, limits }) {
+	// Free-mode calls use their own counters ("free:" keys), so tests never use up the real budget.
+	async reserve({ day, session, provider, ipHash, limits, free = false }) {
 		await this.rollDay(day);
 		const s = this.ctx.storage;
-		const keys = { calls: "calls", tokens: `tokens:${provider}`, session: `session:${session}`, ip: `ip:${ipHash}` };
+		const pre = free ? "free:" : "";
+		const keys = {
+			calls: `${pre}calls`,
+			tokens: `${pre}tokens:${provider}`,
+			session: `${pre}session:${session}`,
+			ip: `${pre}ip:${ipHash}`,
+		};
 		const got = await s.get(Object.values(keys));
 		const n = (k) => got.get(keys[k]) ?? 0;
 

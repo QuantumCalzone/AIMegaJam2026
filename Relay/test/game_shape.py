@@ -1,8 +1,12 @@
 """Send one request shaped like the game's to each provider the relay has a key for.
 
-Usage:  python Relay/test/game_shape.py <relay URL>
+Usage:  python Relay/test/game_shape.py <relay URL> [--real]
 
-For each provider listed by /health it sends a system prompt, one user message and
+Free mode (the default) costs nothing: the relay runs every check and answers with a
+canned reply in the provider's shape, for every provider in the config. --real calls the
+providers that have a key (listed by /health) and spends tokens.
+
+It sends a system prompt, one user message and
 the game's reply schema (from Content/NHOS/Data/llm.json) as strict JSON output,
 then checks that the reply text parses as JSON with the schema's fields.
 Exit code 0 when every provider passes. Each call asks for at most 2000 tokens.
@@ -76,13 +80,21 @@ def post(url, payload):
 
 def main():
     url = sys.argv[1].rstrip("/")
-    with urllib.request.urlopen(urllib.request.Request(url + "/health", headers=UA), timeout=30) as r:
-        ready = json.loads(r.read())["providers"]
-    print("providers with a key:", ", ".join(ready) or "none")
+    real = "--real" in sys.argv[2:]
+    if real:
+        with urllib.request.urlopen(urllib.request.Request(url + "/health", headers=UA), timeout=30) as r:
+            ready = json.loads(r.read())["providers"]
+        print("real mode, providers with a key:", ", ".join(ready) or "none")
+    else:
+        ready = list(CONFIG["providers"])
+        print("free mode (no tokens), providers:", ", ".join(ready))
     failed = 0
     for pid in ready:
         start = time.time()
-        reply = post(url + "/", {"provider": pid, "session": f"gameshape-{pid}-{int(start)}", "body": body_for(pid)})
+        envelope = {"provider": pid, "session": f"gameshape-{pid}-{int(start)}", "body": body_for(pid)}
+        if not real:
+            envelope["free"] = True
+        reply = post(url + "/", envelope)
         secs = time.time() - start
         if reply.get("type") == "error":
             failed += 1
@@ -94,7 +106,7 @@ def main():
             missing = [k for k in SCHEMA["required"] if k not in data]
         except json.JSONDecodeError:
             data, missing = None, ["(not JSON)"]
-        ok = data is not None and not missing
+        ok = data is not None and not missing and (real or reply.get("relay_free") is True)
         failed += 0 if ok else 1
         print(f"{'PASS' if ok else 'FAIL'}  {pid} ({CONFIG['providers'][pid]['models'][0]}): {secs:.1f} s, stop={stop}, usage={json.dumps(usage)}")
         print(f"      {text}")
