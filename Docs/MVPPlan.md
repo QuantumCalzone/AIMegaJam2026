@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13 and T15 are done. T14 waits only for my verdict on its playtest (every screen is clear). T16 (Opus 5.5 · high) is next and needs no editor; T17 (Opus 5.5 · high) starts once T14's box is checked.
+**Next up:** T13 and T15 are done. T14 waits only for my verdict on its playtest (every screen is clear). T26 (Opus 5.5 · high, added after a playtest put a provider name on my robot) is running. T16 and T17 (both Opus 5.5 · high) start after it; T17 also needs T14's box checked.
 
 ## Goal
 
@@ -314,9 +314,25 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
   - **Done when:** `Tools/check_prompts.py` exits with code 0 with the new cards, and an autoplay PIE show prints `NHOS: SETUP ... scene=<story card id>` with AI lines that fit the story.
   - **Touches:** `Content/NHOS/Data/scenes.json`, `prompts.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc. T15 also took the T13 session's input converter fix (no empty replies) into `prompts.json`, and its commit carries the uncommitted provider-name swaps in `personas.json`, `prompts.json`, `check_prompts.py` and this file's build notes.
 
+- [ ] **T26 Five actors: one AI per provider, plus me**
+  - **Model and effort:** Opus 5.5, high. It changes the seat draw, every name the AIs read and every name I see.
+  - **Depends on:** T15 (the same data files and the checker). It holds the lock on `BP_Show`, so it goes before T17.
+  - **Needs:** editor + Unreal MCP running. Free mode for the PIE shows; my API key only for `Tools/check_prompts.py`.
+  - **Why:** in a show on 2026-11-14 my robot was labeled "Anthropic". I sat in one of the four persona seats, and the seats go by provider name, so that provider's AI sat the show out. A label must always be true. But if the AIs read four provider names plus a fifth name, they know at once who the human is. Decided with me: **the AIs read "Player 1" to "Player 5"; my screen shows each AI's provider and "You" for me.**
+  - **Steps:**
+    1. **Seats (`BP_Show.SetupShow`).** Every persona takes an AI seat (up to `MaxCast` − 1), and I take one more seat with no persona, so a full show has 5 actors and 3 scenes. My place in the seat order is random. Each seat has two names: `SeatName`, which the AIs read ("Player 1" to "Player 5", in seat order), and a new `SeatLabel`, which my screen shows (the persona's `name` for an AI seat, "You" for mine). My seat has `SeatId` "human" and no system text.
+    2. **What the AIs read.** `SeatName` is used everywhere an AI or the Director reads a name: the cast, `you`, the log, `options`, votes and `game_messages`. Cast entries lose `about`, because an `about` on four seats of five would point at mine. `prompts.json`: I'm disguised as a robot with no persona; every AI plays a parody of the leader of the lab that made it, and the human has to fake one; name examples use Player names. No provider name ever reaches an actor or the Director.
+    3. **What I see.** Every place a seat name reaches my screen uses `SeatLabel`: chat lines, the cast panel, "YOU ARE" (with "The cast knows you as Player 3"), the vote buttons, the reveal stamp ("OPENAI: AI", "YOU: HUMAN"), the robots' labels and the end screen. AI text (speech, `does`, vote reasons, closing lines, the tiebreak, game lines) goes through a new `DisplayText`, which swaps each AI's Player name for its label and mine for "Player 3 (you)".
+    4. **What I type.** The input converter gets each Player name with the label I know it by, and turns any provider, company or model name I use for an actor ("Meta", "Claude", "open ai") into that Player name, in actions and in speech. Then the game swaps any label still left in the converted speech for its Player name, so no provider name I type reaches the AIs.
+    5. **A fifth seat everywhere.** A fifth robot in `L_Stage` and a fifth `SeatColors` entry; the end screen fits four AI cards. Each card in `scenes.json` gets a fifth seat, and every want must work when any one or two seats are left out (scene 2 deals 4 of 5 seats, scene 3 deals 3). `autoplay.json` covers 3 scenes.
+    6. **The checker.** `Tools/check_prompts.py`: the sample show has 5 Player names, and a check fails if a provider name is in any actor or Director state. The input examples include a line that names a provider.
+    7. Propose the matching edit to the design doc (Rules, "Cast & personas": I have no persona, every persona whose provider has a key takes an AI seat, and the Player names), which also answers the Art tab's open question about The Understudy (see the build notes).
+  - **Done when:** `Tools/check_prompts.py` exits with code 0; a free-mode autoplay show prints `NHOS: SETUP` with 5 seats, `human` at a random Player number, plays up to 3 scenes and reaches `NHOS: SHOW END`; a screenshot shows provider names and "You" on my screen while the `NHOS: LOG` lines (what the AIs read) use only Player names; I play one show.
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_EndScreen.uasset`, `Content/NHOS/Maps/L_Stage.umap`; `Content/NHOS/Data/prompts.json`, `personas.json`, `scenes.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc.
+
 - [ ] **T16 One LLM per AI player: prompts and keys**
   - **Model and effort:** Opus 5.5, high. New APIs, and prompts that must work on four different models.
-  - **Depends on:** T15 (the prompts and the checker settle first)
+  - **Depends on:** T15 (the prompts and the checker settle first), T26 (the same prompts, personas and checker)
   - **Needs:** my API key for every provider in the design's persona table. I paste them into `Local/llm_key.json` myself. No editor.
   - **Steps:**
     1. For each provider in the design's table, pick a cheap, fast model that returns JSON that follows a schema. Read each provider's current API docs; don't guess model ids. If a provider has no such model or API, tell me and propose a stand-in.
@@ -328,15 +344,15 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
 
 - [ ] **T17 Stage art and personality**
   - **Model and effort:** Opus 5.5, high. Art direction and level design, plus robot behavior.
-  - **Depends on:** T14 (the screen layout and the lock on `BP_Show`), T15 (the places and backdrops)
+  - **Depends on:** T14 (the screen layout and the lock on `BP_Show`), T15 (the places and backdrops), T26 (the fifth robot)
   - **Needs:** editor + Unreal MCP running, my API key, my OK on the look from a first screenshot before the details.
   - **Steps:**
     1. **An improv theater.** `L_Stage` gets a wooden stage floor, a proscenium with red curtains, footlights and a spotlight rig, a riser and a prop table where T15's places are, and a backdrop flat. Engine shapes and Substrate materials, plus textures from Fab or an AI image tool where they help.
     2. **A backdrop for each scene card**, made from the card's `backdrop` line. Scene Prep shows the new card's backdrop.
-    3. **A robot look for each persona:** a head shape, an accessory and a color that fit it (for example a halo ring for The Visionary, a lightning antenna for The Overclocker, a warning light for The Worrier, a headset for The Copycat). Keep the name label and the "(you)" mark.
+    3. **A robot look for each persona:** a head shape, an accessory and a color that fit it (for example a halo ring for The Visionary, a lightning antenna for The Overclocker, a warning light for The Worrier, a headset for The Copycat). My robot is The Understudy from the Art tab, with no persona and no logo. Keep the name label and the "(you)" mark.
     4. **Personality in motion:** an idle bob, a bounce while its line shows, a shake when voted for, a cheer from the AIs when the human is caught, and a slump before a cut robot tips over.
     5. Record every outside or generated asset in `Docs/Assets.md`.
-  - **Done when:** screenshots show the theater with four distinct robots, a different backdrop in scene 1 and scene 2, and a talking bounce; an autoplay show reaches `NHOS: SHOW END`; I say it has personality.
+  - **Done when:** screenshots show the theater with five distinct robots, a different backdrop in scene 1 and scene 2, and a talking bounce; an autoplay show reaches `NHOS: SHOW END`; I say it has personality.
   - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/` (`BP_Robot`, new meshes, materials, textures and `BP_Backdrop`), `Content/NHOS/Core/BP_Show.uasset`, `Docs/Assets.md`.
 
 - [ ] **T18 One LLM per AI player: in the game**
@@ -346,9 +362,9 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
   - **Steps:**
     1. `BPC_LLMClient` loads `providers` from `llm.json` and one key per provider. For an `openai_chat` provider it builds the Chat Completions body (system and user messages, and the JSON format from `llm.json`) and reads `choices[0].message.content`, `finish_reason` and `error.message`. The reply JSON goes through the same parser, and `OnAnswer` doesn't change.
     2. `Ask` sends each actor ask to its persona's provider, and the input and Director asks to theirs.
-    3. The seat draw follows the design: a persona can take an AI seat only if its provider has a key. If fewer than 3 can, my persona is redrawn; if 3 AI seats still can't be filled, the screen says "AI service unavailable" and which keys are missing.
+    3. The seat draw follows the design: a persona can take an AI seat only if its provider has a key (since T26, I have no persona, so nothing is redrawn). If fewer than 3 AI seats can be filled, the screen says "AI service unavailable" and which keys are missing.
     4. `NHOS: LLM <tag> ok ...` adds `provider=<id>`.
-  - **Done when:** an autoplay show seats 3 AIs on 3 different providers, the log has `ok` lines from each and no `fail` line, and it reaches `NHOS: SHOW END`. With one provider's key removed, the show still deals a full cast or says which keys are missing.
+  - **Done when:** an autoplay show seats 4 AIs on 4 different providers, the log has `ok` lines from each and no `fail` line, and it reaches `NHOS: SHOW END`. With one provider's key removed, the show still deals a full cast or says which keys are missing.
   - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, and `BPC_LLMRequest.uasset` only if it holds anything specific to one provider.
 
 - [ ] **T19 Robots act out their actions**
@@ -441,7 +457,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
 
 ## After the MVP
 
-T12 turned this list into T13 to T24. Still not planned, and only if time is left after T23: a fifth persona (a 5-actor show has 3 scenes), more scene cards and notes.
+T12 turned this list into T13 to T24. Still not planned, and only if time is left after T23: a fifth persona (since T26, a sixth actor and a fourth scene), more scene cards and notes.
 
 ## Findings
 
