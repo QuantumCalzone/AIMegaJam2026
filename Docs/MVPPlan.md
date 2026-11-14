@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T10 · Opus 5.5 · high (then T11 · Sonnet 5.5 · medium, which needs T10)
+**Next up:** T11 · Sonnet 5.5 · medium (then T12 · Opus 5.5 · high, the playtest gate, which needs T11)
 
 ## Goal
 
@@ -209,7 +209,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** with autoplay on, a PIE run prints `NHOS: CUT <persona> tiebreak=<yes|no>` and the stamp shows (screenshot). With the local `force_tie` switch on, the Director's line appears.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`. T09 also added a `vote` list to `Content/NHOS/Data/autoplay.json` and `force_tie` to `Docs/switches.example.json`.
 
-- [ ] **T10 Reactions, the final two, end screens and restart**
+- [x] **T10 Reactions, the final two, end screens and restart**
   - **Model and effort:** Opus 5.5, high. Many parts, and the first run of the whole loop usually needs debugging.
   - **Depends on:** T09
   - **Needs:** editor + Unreal MCP running, my API key.
@@ -219,7 +219,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
     3. `WBP_EndScreen`: win or lose, each AI's vote reasons from the show, and one closing line from each AI on who it thought was human.
     4. A Restart button starts a new show without leaving PIE.
   - **Done when:** with autoplay on, a PIE run plays a whole show and prints `NHOS: SHOW END result=<win|lose> scenes=<n>`. Restart starts a second show that also reaches `NHOS: SHOW END` (screenshots of the end screen).
-  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, new `Content/NHOS/UI/WBP_EndScreen.uasset`.
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, new `Content/NHOS/UI/WBP_EndScreen.uasset`. T10 also added a `reaction` list to `Content/NHOS/Data/autoplay.json`, the `spare_human` switch to `Docs/switches.example.json`, and `Tools/dslpp.py`.
 
 ### The cast on stage
 
@@ -670,3 +670,48 @@ Also found:
 - **Big graphs are slow to write.** `Tally` took 36 s in `write_graph_dsl`. A batch of 9 or 10 graph writes took 65 to 90 s, close to the client's limit, so keep batches smaller.
 - **Script tools return strict dicts:** `.get(key, default)` raises inside `execute_tool_script`; use `[key]`.
 - **The Slate inspector's level editor splitter** was `sp4` this time. Find it in `Snapshot("", 14)` as the splitter as wide as the viewport area, then `Observe` it with `maxDepth` 80.
+
+### T10: reactions, end screens and restart results (2026-11-14)
+
+Proven in PIE on `L_Stage`, three shows with autoplay on:
+
+- **Show 1 (lose):** after the cut, the reactions ran in order: my seat first (I was cut, so my canned line was my last words, through the input LLM), then the three AIs one at a time, gloating. `NHOS: REACTIONS DONE scene=1 entries=4`, then three `NHOS: CLOSING <id> vote=visionary | ...` lines and `NHOS: SHOW END result=lose scenes=1 human=visionary show=1`. The end screen came up over the stage: "YOU'RE CUT" in red, "You were The Visionary. The AIs caught you in scene 1 of 2.", each AI's votes with their reasons and its closing line, and a Restart button.
+- **Restart:** a click on Restart through the Slate inspector printed `NHOS: RESTART show=2` and a new `NHOS: SETUP`, and the info panel showed show 2's card and roles. The first asks of show 2 had the same input size as show 1's (about 3,375 tokens), so the shared log and game messages were cleared. `RestartShow` also calls `WBP_Stage.ClearLog` on the on-screen log, but no screenshot checked the top of the log after a restart. Show 2 also reached `NHOS: SHOW END result=lose scenes=1 ... show=2`.
+- **Show 3 (win, with the new `spare_human` switch):** an AI was cut in scene 1, the reactions ran with my seat last, and `ScenePrep` dealt scene 2 with the other card and a new note. Scene 2 had 3 actors (Free Talk `entries=6`, reactions `entries=3`). After the second cut, two actors were left: `NHOS: SHOW END result=win scenes=2 human=overclocker show=1`, and the end screen said "YOU WIN" in green.
+- No call failed, and the log has no script warnings. Screenshots: `Saved/Screenshots/T10/` (not in git).
+- **Not tested by hand:** a typed reaction and the Pass button in the reactions. They use the same routing as Free Talk (`HandleSend` → `SendHumanReact`), and autoplay sends its canned reaction through the same function. T12's playtest exercises them.
+
+How the end of a scene works now (T11 hooks into it):
+
+- **`EndCut`** sets `Phase` to "cut done" and calls `StartReactions`.
+- **`StartReactions`** sets `Phase` to "reactions". If the human was cut, it adds "The human is caught. The AIs win the show." to `GameMsgs`. It builds `ReactOrder`: the cut seat first, then the AI seats that aren't cut in a random order, then my seat if I wasn't cut. Then it calls `NextReactor`.
+- **`NextReactor`** works like `NextTalker`. My seat: Pass is enabled, and with autoplay it sends `CannedReact[(scene-1) % count]`. An AI seat gets the `reaction_cut` ask if it is the cut seat, otherwise `reaction`, with `now` = "the cut, reactions" and the shared log so far. After the last seat it calls `EndReactions`.
+- **`PlayReact(Seat, Ok, Speech, Pass, Verbs, Targets, Items)`** adds one entry to the shared log: `when` "scene n, reactions", `does` from `BuildDoes` (or "passes"), `says` the capped speech. The screen shows `<Name>: "<line>"`, `<Name> <does>. "<line>"` or `<Name> stays silent.`, and the editor log gets `NHOS: LOG`. A failed reply counts as a pass.
+- **`SendHumanReact(Line)`**: "pass" skips the input LLM; any other line goes to the input LLM with `InputState(Line, "reaction")`. `HandleSend` routes a typed line to it while `Phase` is "reactions" and `ReactSeat` is my seat.
+- **`EndReactions`** prints `NHOS: REACTIONS DONE scene=<n> entries=<n>` and branches: my seat cut → `EndShow(false)`; two or fewer seats left → `EndShow(true)`; otherwise it adds a log line and calls `ScenePrep` for the next scene.
+- **`EndShow(Win)`** sets `Phase` to "closing", adds "The show is over. The human was <NAME>..." to `GameMsgs`, and asks every AI seat at once, cut or not, for the `closing` ask, with `options` = every other name and `now` = "show over" (`AskClosing`).
+- **`StoreClosing`** matches the vote to any seat (`FindAnySeat`, which searches all seats, not just `OnStage`), cleans the reason, prints `NHOS: CLOSING <id> vote=<id|none> | <reason>`, and calls `ShowEndScreen` when the last answer is in. A closing ask isn't asked again; a bad one shows "(no answer)".
+- **`ShowEndScreen`** sets `Phase` to "end", builds the body from the vote history and the closing answers, creates `WBP_EndScreen`, calls its `Setup(Title, Sub, Body, Win)`, adds it to the viewport at Z order 10, and prints `NHOS: SHOW END result=<win|lose> scenes=<n> human=<id> show=<n>`. A vote for my seat is marked "(you)".
+- **Vote history:** `CutActor` now calls `RecordVotes` first, which appends this scene's votes to `HistScene`, `HistVoter`, `HistTarget` and `HistReason`, and it sets `CutScene[seat]` to the scene number. `StartScene` clears them when `SceneNum` is 1, like `GameMsgs`.
+- **`RestartShow`** works only in "end": it removes the end screen, adds 1 to `ShowNum`, prints `NHOS: RESTART show=<n>`, clears the on-screen log (`WBP_Stage.ClearLog`), the stamp and Pass, puts the keyboard focus back in the input box, and calls `SetupShow`. `SetupShow` already resets the seats, the shared log and `SceneNum`.
+- **`WBP_EndScreen`:** `Background` (opaque dark Border) > `RootBox` > `TitleText` (56 pt), `SubText` (22 pt), `BodyScroll` > `BodyText` (17 pt, wrapped) and `RestartButton` (not focusable). Its Restart click calls `GetActorOfClass(BP_Show).RestartShow`, so `BP_Show` needs no dispatcher binding.
+- **For T11:** actor lines now enter the shared log in four functions: `PlayTurn` (scene turns), `PlayTalk` (Free Talk), `Tally` (votes) and `PlayReact` (reactions). The cut is `CutActor`, and Restart is `RestartShow`.
+- **Switches:** `spare_human` in `Local/switches.json` (read in `LoadCutSwitches`) makes `SpareHumanVotes`, called from `VoteIn` before `Tally`, move every vote for my seat to a random other actor on stage, so the human is never cut and an unattended show plays all its scenes. A moved vote keeps its old reason, so the shown reason can name someone else. It is a test switch only. `autoplay.json` has a `reaction` list, one line per scene.
+- The DSL source is `Saved/T10/src/bp_show_t10.pp.txt` (not in git), written with shorthand macros and expanded by the new `Tools/dslpp.py` into `bp_show_t10.txt`, which the push script reads with `AssetTools.read_file`.
+
+Numbers, with `claude-haiku-5-5` at low effort:
+
+- **A show that ends in scene 1:** 30 calls, about 122,000 input and 5,000 output tokens, 32 to 40 s with autoplay.
+- **A two-scene show:** 51 calls, 230,000 input and 6,100 output tokens, 52 s with autoplay. That is close to T03's estimate of 55 calls.
+- **Reactions:** 1.3 to 2.0 s per AI call, 5,500 to 7,900 input tokens (the whole log so far). They run one at a time, so the reactions take about 6 to 8 s.
+- **Closing:** 1.0 to 2.0 s, about 6,000 to 8,000 input tokens. They run at once.
+
+Also found:
+
+- **The AIs caught the human in scene 1 in both shows without `spare_human`,** with 2 and 3 of 3 votes. They cite the canned lines ("I think. Probably.", a silent pass, no robot tags). That is a sign about the canned lines, not about fairness; T12 measures fairness with a person playing.
+- **In their reactions after the human is caught, the AIs gloat and claim credit** ("I detected it first"), and the closing lines all name the human with a reason from the log. The end screen reads well as an explanation of how you were caught.
+- **A preprocessor tokenizer must keep `Name(Arg)` as one token.** Node names such as `Utilities|String|ToString(Boolean)`, `Math|Integer|%(Integer)` and `OnClicked(RestartButton)` hold parentheses. When one was split, `write_graph_dsl` failed with "Boolean does not exist", and the error aborted the whole `execute_tool_script` even inside a `try`.
+- **A Border at alpha 0.97 still let the stage text show through** in PIE. Alpha 1.0 is opaque.
+- **`StartPIE` needs `options`:** `{"bSimulate": false, "playMode": "PlayMode_InViewPort", "warmupSeconds": 1}`.
+- **Compiling `BP_Show` marked `L_Stage` and `BPC_LLMClient` dirty again** with no change to them. They were left unsaved.
+- **Write times:** most graphs took 4 to 18 s in `write_graph_dsl`. `ShowEndScreen` took 34 s. Batches of 2 to 7 graphs stayed under 60 s.

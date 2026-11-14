@@ -1,5 +1,5 @@
 {
-	"_readme": "Canned lines for the human seat. When Local/switches.json has \"autoplay\": true (copy Docs/switches.example.json), the human seat sends these instead of waiting for typed input, so an agent can run a show unattended. They go through the input LLM exactly like typed lines, except \"pass\", which passes at once, like the Pass button. scene: one line per scene turn, used in order and repeated. free_talk: one line per Free Talk round (2 per scene), used in order and repeated. vote: one reason per scene for the human seat's vote in The Cut, which goes to a random valid name. Keep them generic: they must fit any persona, role and scene card.",
+	"_readme": "Canned lines for the human seat. When Local/switches.json has \"autoplay\": true (copy Docs/switches.example.json), the human seat sends these instead of waiting for typed input, so an agent can run a show unattended. They go through the input LLM exactly like typed lines, except \"pass\", which passes at once, like the Pass button. scene: one line per scene turn, used in order and repeated. free_talk: one line per Free Talk round (2 per scene), used in order and repeated. vote: one reason per scene for the human seat's vote in The Cut, which goes to a random valid name. reaction: one line per scene for the human seat's reaction after the cut (its last words if it was cut); \"pass\" stays silent. Keep them generic: they must fit any persona, role and scene card.",
 	"scene": [
 		"walk to the counter and say \"Morning, everyone! Has anybody seen the tip jar?\"",
 		"grab a cup \"This one is mine. I think. Probably.\"",
@@ -17,5 +17,9 @@
 	"vote": [
 		"They keep dodging the questions. A real robot would just answer.",
 		"Too many beeps. Nobody beeps that much unless they are hiding something."
+	],
+	"reaction": [
+		"Well. Nobody saw that coming. My circuits are still processing it.",
+		"Right. Deep breath. Robots breathe, right? Let's keep going."
 	]
 }

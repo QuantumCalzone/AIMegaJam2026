@@ -1,5 +1,6 @@
 {
-	"_readme": "Local switches for testing. Copy this file to Local/switches.json (git ignores Local/). The game reads it at the start of each scene and each Cut; a missing file means every switch is off. autoplay: the human seat sends the canned lines in Content/NHOS/Data/autoplay.json instead of waiting for typed input. force_tie: The Cut rewrites the vote targets into a cycle, so every actor on stage gets one vote and the Director breaks the tie.",
+	"_readme": "Local switches for testing. Copy this file to Local/switches.json (git ignores Local/). The game reads it at the start of each scene and each Cut; a missing file means every switch is off. autoplay: the human seat sends the canned lines in Content/NHOS/Data/autoplay.json instead of waiting for typed input. force_tie: The Cut rewrites the vote targets into a cycle, so every actor on stage gets one vote and the Director breaks the tie. spare_human: The Cut moves every vote for the human to another actor on stage, so the human is never cut and a show plays all its scenes (for testing the scene 2 path and the win screen; a moved vote keeps its old reason).",
 	"autoplay": false,
-	"force_tie": false
+	"force_tie": false,
+	"spare_human": false
 }
