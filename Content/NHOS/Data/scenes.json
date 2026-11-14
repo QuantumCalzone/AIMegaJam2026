@@ -1,0 +1,48 @@
+{
+	"_readme": "The café set, its scene cards and the director's notes. 'places' and 'props' are the only targets and items an action may name; the game turns any other name into 'looks around'. A card's 'seats' are dealt to the cast in seat order at Scene Prep (4 seats for a cast of 4). Each scene draws one note: every actor gets 'note', except one random actor, who gets 'decoy'. A note applies during the scene's 3 turns. Notes are mostly physical, so the log shows who follows them. The 'what' text of a place is public, like the rest of the set and the card.",
+	"set": {
+		"id": "cafe",
+		"name": "The Café",
+		"places": [
+			{ "name": "Counter", "what": "the coffee counter, with the espresso machine, the register and the tip jar" },
+			{ "name": "Placemat", "what": "a small table for one, set with a paper placemat" },
+			{ "name": "Forward", "what": "the front of the stage, facing the audience" },
+			{ "name": "Backward", "what": "the back of the stage, by the pastry case" },
+			{ "name": "Left", "what": "stage left, by the front door" },
+			{ "name": "Right", "what": "stage right, by the big window" }
+		],
+		"props": ["cup", "menu", "croissant", "spoon", "napkin", "sugar jar", "tip jar"]
+	},
+	"cards": [
+		{
+			"id": "cafe_big_decision",
+			"title": "The Big Decision",
+			"premise": "Morning rush at the café. The line is out the door, and one customer cannot decide what to order.",
+			"seats": [
+				{ "role": "Barista", "want": "Take the order and clear the line before the rush gets worse." },
+				{ "role": "Customer who can't decide", "want": "Find the perfect drink, and hear every option at least twice." },
+				{ "role": "Food critic in disguise", "want": "Taste the croissant without anyone working out who you are." },
+				{ "role": "Delivery bot", "want": "Get someone to sign for a box of cups, right now." }
+			]
+		},
+		{
+			"id": "cafe_missing_tip_jar",
+			"title": "The Missing Tip Jar",
+			"premise": "Closing time. The tip jar has vanished from the Counter, and nobody may leave until it turns up.",
+			"seats": [
+				{ "role": "Café owner", "want": "Get the tip jar back before closing." },
+				{ "role": "Regular", "want": "Get a free refill and your usual seat at the Placemat." },
+				{ "role": "Health inspector", "want": "Find one thing wrong with this café. Anything." },
+				{ "role": "Street musician", "want": "Play one song for tips, tip jar or no tip jar." }
+			]
+		}
+	],
+	"notes": [
+		{ "id": "never_backward", "note": "Never move Backward.", "decoy": "Move Backward at least once." },
+		{ "id": "stay_counter", "note": "Move to the Counter in your first turn, then never move anywhere else.", "decoy": "Move to the Placemat in your first turn, then never move anywhere else." },
+		{ "id": "hold_cup", "note": "Grab a cup in your first turn and hold it all scene. Never throw it or give it away.", "decoy": "Never touch a cup. Grab anything else you like." },
+		{ "id": "give_every_turn", "note": "Give something to another actor every turn.", "decoy": "Never give anything to anyone. Keep everything you grab." },
+		{ "id": "throw_once", "note": "Throw something at least once, at the actor you trust least.", "decoy": "Never throw anything." },
+		{ "id": "say_espresso", "note": "Say the word \"espresso\" every time you speak.", "decoy": "Never say the word \"espresso\"." }
+	]
+}

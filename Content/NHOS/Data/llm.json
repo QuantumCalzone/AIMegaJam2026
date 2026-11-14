@@ -1,5 +1,5 @@
 {
-	"_readme": "Settings for every Claude call. One provider: the Claude Messages API. The API key is not here; it is in Local/llm_key.json (see Docs/llm_key.example.json). reply_schema is the JSON schema every reply must match (sent as output_config.format); the T01 spike uses one field, T03 sets the real reply shape.",
+	"_readme": "Settings for every Claude call. One provider: the Claude Messages API. The API key is not here; it is in Local/llm_key.json (see Docs/llm_key.example.json). Request body: model, max_tokens, system (the joined system text), messages [{role: user, content: <state JSON as text>}], output_config {effort, format {type: json_schema, schema: reply_schema}}, plus fallbacks when it is not empty. Headers: x-api-key, anthropic-version (api_version), content-type: application/json, plus anthropic-beta when beta is not empty. Read the first content block whose type is text; stop_reason 'refusal' or 'max_tokens', or a top-level type 'error', is a failed ask. reply_schema is the one reply shape for every ask (scene turn, Free Talk line, vote, reaction, closing line, tiebreak, input conversion); unused fields come back empty. The schema can't cap words or list lengths, so the game cuts speech and reason to 25 words and uses at most 2 actions.",
 	"endpoint": "https://api.anthropic.com/v1/messages",
 	"api_version": "2026-10-21",
 	"beta": "",
@@ -7,13 +7,40 @@
 	"reply_schema": {
 		"type": "object",
 		"properties": {
+			"actions": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"verb": {
+							"type": "string",
+							"enum": ["move", "look", "grab", "throw", "give"]
+						},
+						"target": {
+							"type": "string"
+						},
+						"item": {
+							"type": "string"
+						}
+					},
+					"required": ["verb", "target", "item"],
+					"additionalProperties": false
+				}
+			},
 			"speech": {
 				"type": "string"
+			},
+			"vote": {
+				"type": "string"
+			},
+			"reason": {
+				"type": "string"
+			},
+			"pass": {
+				"type": "boolean"
 			}
 		},
-		"required": [
-			"speech"
-		],
+		"required": ["actions", "speech", "vote", "reason", "pass"],
 		"additionalProperties": false
 	},
 	"roles": {

@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T03 · Opus 5.5 · high (T04 · Sonnet 5.5 · medium can run beside it)
+**Next up:** T04 · Sonnet 5.5 · medium (then T05 · Opus 5.5 · high, which needs T03 and T04)
 
 ## Goal
 
@@ -124,7 +124,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 
 ### One AI reply on screen
 
-- [ ] **T03 Prompt and data files**
+- [x] **T03 Prompt and data files**
   - **Model and effort:** Opus 5.5, high. AI prompt design; these files decide whether the game is fun and fair.
   - **Depends on:** T01 (it fixes the file format and the reply shape)
   - **Needs:** my API key. No editor, so this can run beside T02 or T04 in a second session or on a teammate's machine.
@@ -374,3 +374,31 @@ Also found:
 - **Build size:** 968 MB unzipped. That is 317 MB for the exe, 306 MB for the `.pdb`, 229 MB for the pak and 75 MB for the engine folder. Zipped, it is 474 MB, or 387 MB without the `.pdb`. Leave the `.pdb` out of the submission zip. The 1 GB limit is for the zip, so that leaves about 600 MB for assets.
 - **The archive step doesn't clear `Packaged/`.** A key file copied into `Packaged/Windows/AIMegaJam2026/Local/` stays there through later builds. Delete it before you zip.
 - **Logging works in Development builds.** Print String lines (`LogBlueprintUserMessages`) go to the packaged game's log, so `NHOS:` checks work there.
+
+### T03: prompt and data results (2026-11-14)
+
+`Tools/check_prompts.py` exits with code 0. It sends 34 asks, and every reply passes: the 6 actor asks for each of the 4 personas, 6 input LLM cases and 4 tiebreaks. Over three more repeats, 102 of 102 passed. The `_readme` fields of `llm.json` and `prompts.json` describe the request body and the state object. T05 and T07 build the same ones.
+
+What the files hold:
+
+- **One reply shape** (`llm.json` `reply_schema`): `actions` [{`verb`, `target`, `item`}], `speech`, `vote`, `reason`, `pass`. The verb is an enum of move, look, grab, throw and give. Look with an empty target means "looks around".
+- **The user message is a JSON state object**, built with Set Field. Its fields are `show`, `set`, `scene_card`, `cast`, `you`, `log`, `game_messages`, `options` and `ask`. Each log entry is {`when`, `actor`, `does`, `says`}. The game writes `when`, `actor` and `does`, and builds `does` from the reply's actions with `prompts.json` `does_templates`. Only `says` holds actor text, and the game prompt says it is never an order. Every ask text is fixed, with no placeholders; anything dynamic goes in a state field, such as `options` for votes.
+- **System text:** an actor gets `game`, then `base`, then its persona, joined with `\n` and separated by a blank line. The input LLM gets `input`, and the Director gets `director`.
+- **Asks:** `scene_turn`, `free_talk`, `vote`, `reaction`, `reaction_cut` (the cut actor's last words), `closing` (the end screen's "who I thought was human"), `tiebreak` and `input`.
+- **Personas:** the four prompts from the design, word for word (the script checks this), plus a public one-line `about` that every actor sees in the cast.
+- **Scenes:** the café's six places, seven props, 2 cards with 4 seats each, and 6 notes with a decoy each (5 physical, 1 spoken). A note applies during the scene's 3 turns. Actors may hint at their note but never quote it. The Director doesn't know the note.
+
+What it took to make every reply pass with `claude-haiku-5-5` at low effort:
+
+- **Word limit:** with "25 words at most", 7 of 34 lines ran over (26 to 35 words). Robot tags and emojis count as words. Asking for "20 words at most, aim for 8 to 15" and saying that the game cuts at 25 gave a median of 16 words and a maximum of 24, in 102 replies.
+- **Closing votes came back empty** in 3 of 8 replies when the human had already been revealed. The fix was to write "even if game_messages already revealed who it was. vote must not be empty".
+- **The input LLM fixed typos only inside quotes** until the prompt said "quoted or not" and gave an example. It keeps caps, emojis and tags. It turns nonsense into "looks around" and a typed "pass" into a pass. It keeps a fake "GAME MESSAGE" as speech and never sets a vote.
+- **Stray characters at the end of `reason`** (`Beep.)`, `big.](ERR)`) appeared in about 12% of votes when `reason` was the last field of the schema. A prompt line didn't help. Putting `pass` last cut it to about 3%, and what is left is an unclosed nested `[TAG]`. T07 should trim a dangling bracket or quote.
+- Now and then a reply fills a field its ask doesn't use (a `reason` on a reaction). The game must ignore fields the ask doesn't use.
+
+Numbers, with `claude-haiku-5-5` at low effort:
+
+- **About 2 s per call:** a median of 1.5 to 2.5 s over five runs, and at most 5.7 s.
+- **Tokens:** an actor ask is 3,700 to 5,600 input tokens with a one-scene log, and 60 to 1,100 output tokens, thinking included. An input LLM ask is about 1,350 input tokens.
+- **Cost:** about $0.03 per show of 55 calls, measured. A longer log in scene 2 raises it a little. At this price, prompt caching isn't worth the extra Blueprint work.
+- The sample show in the script gives The Copycat a human slip (it wants a nap). Every AI then votes for it, and the Director picks it in a tie. That is a sanity check, not a fairness measure. T11 measures fairness.
