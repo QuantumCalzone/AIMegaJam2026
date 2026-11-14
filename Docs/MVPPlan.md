@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13 · Opus 5.5 · high (the AIs talk like a normal chat: no glitch speak, no brackets, no emoji). T14 (UI/UX polish, Opus 5.5 · high) can run beside it in a second session.
+**Next up:** T13 waits only for my playtest (step 6); its prompts, checker and design doc edit are committed. T14 (UI/UX polish, Opus 5.5 · high) is running in the editor lane. T15 (Opus 5.5 · high) starts once T13's box is checked.
 
 ## Goal
 
@@ -283,6 +283,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
     6. I play one show and click Pass once in the reactions (Playtest 1 didn't try it). Claude writes "T13: Playtest 2" in Findings: the scene I was cut in, if any, and whether the AIs' vote reasons are about what I did and said rather than how I typed.
   - **Done when:** `Tools/check_prompts.py` exits with code 0 twice in a row with the legibility check on, no AI line in an autoplay show fails the check, and I played one show and say the AIs read like a normal chat.
   - **Touches:** `Content/NHOS/Data/prompts.json`, `personas.json`, maybe `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc.
+  - **Waiting:** steps 1 to 5 are done and committed (see "T13: plain chat results" in Findings). Left: step 6, my playtest of one show with one Pass in the reactions, then "T13: Playtest 2" in Findings and the checked box.
 
 - [ ] **T14 UI/UX polish**
   - **Model and effort:** Opus 5.5, high. UI design judgment on every screen, with many widget parts.
@@ -931,3 +932,40 @@ I played one show by hand in PIE, with autoplay off and every role on `claude-ha
   - **A hosted relay with a spending cap, plus a key-entry screen,** so judges can play at once (T21). This is the design's default.
 - **The plan after the gate** is T13 to T24, in the order of the findings: legibility first (T13), then the screens (T14), the story scenes (T15), the providers (T16, T18), the stage art (T17), the robots' actions (T19), audio (T20), the relay (T21), and packaging and submission (T22, T23). The timers task is now T24, and it is optional.
 - **Not used for Playtest 1:** John Park's `Take37` branch has a different game in C++, with the UE4 mannequin as a placeholder, an ArtGen concept-to-3D tool and voice lines. It isn't merged and its cast doesn't fit the robots, so no task depends on it.
+
+### T13: plain chat results (2026-11-14)
+
+Steps 1 to 5. Every role still runs `claude-haiku-5-5` at low effort.
+
+- **The design doc had moved on since the 2026-11-13 snapshot.** Personas are now unnamed in play, and each has a pun name that shows only on its cut stamp ("Sam Botman: AI"). The prompts never name a persona. The base prompt opens "You are an AI actor... that created your model". A new Art Inspiration tab has an opera-house stage and "The Understudy", a persona-less player bot (an open question in the doc). I chose to merge: T13's rules and trait wording went on top of the doc's newer version, which keeps the pun-name headings and the unnamed prompts. `GameDesign.md` now copies all five tabs.
+  - **The game still names personas in play** ("The Visionary" in the cast list, the log and the robot labels), and T14, T15 and T17 assume names and an improv stage. A plan change should settle this.
+- **What changed:**
+  - **Base prompt:** plain chat sentences, with no brackets, tags, sound effects, `//`, asterisks, emoji or all-caps words. A battery joke now and then is fine. The persona quotes are examples, not catchphrases, and a bot shouldn't reuse its own earlier lines. Lines are about 10 words, never more than 15.
+  - **Persona prompts:** traits in plain words, with the long quoted lines turned into descriptions. The personas are "it". The Copycat copies trending features, not lines.
+  - **Game prompt:** "Spotting the human" judges by the note, the scene card, the persona's traits and human slips (hunger, sleep, feelings, dodging, echoing), and how a line is typed is never evidence. A vote reason names the one thing the actor did or said. The show name, the headers and the asks are in normal case, and names stay in normal case even where game messages use capitals. Free Talk asks for one actor and one piece of evidence.
+  - **Director:** plain sentences, and it ignores how a line is typed.
+  - **`autoplay.json`:** two canned human lines were about beeps and sounding like a robot.
+- **What the tests found:**
+  - **The no-brackets rules held from the first draft.** Not one reply in about 370 checker asks and 5 autoplay shows had a bracket, `//`, `*`, an emoji, "beep" or an all-caps word.
+  - **Plain sentences run longer than glitch fragments.** With "20 words at most, aim for 8 to 15", 4 of 34 replies passed 25 words. In a PIE show, the game cut 3 of 14 Free Talk lines mid-sentence at 25 words. "15 words at most, aim for about 10" and "accuse one actor, with one piece of evidence" fixed it: the checker's replies run 15 words at the median and 23 at most, and no line was cut in the last three shows.
+  - **The model repeats quoted examples.** With the long quotes in the traits, the Worrier opened 6 of 8 lines with "Just a gentle reminder", the Visionary used "Something big is coming" in 5 of 7, and the Copycat opened 14 of 15 with "Fellow battery-consumers". "Now and then" in the trait didn't help; turning the quotes into descriptions did. Short quotes ("Sigh. Fine.", "the best one yet", "That is interesting.") still come back, but as a tic, not every line.
+  - **A persona trait can look like a human tell.** The Copycat copying "whatever is trending" made it echo other actors' phrases, which the game prompt lists as a human slip, and two AIs voted it as the human. "Whichever feature is trending" fixed it.
+  - **An AI that repeats itself gets voted out.** In the first show, the Visionary's repeated croissant lines read as "a script", and it was cut by mistake. The no-repeat rule came from that.
+- **Autoplay shows** (PIE, autoplay on; the human seat plays the canned lines):
+
+| Show | Prompts | Result | AI lines legible | Calls |
+|---|---|---|---|---|
+| 1 | first draft | AI cut by mistake in scene 1; human cut in scene 2 | 35 of 38 (3 cut off at 25 words) | 51 |
+| 2 | no-repeat rule, Free Talk on one actor | human cut in scene 1, 3 votes | 22 of 24 (2 cut off) | 30 |
+| 3 | quotes became descriptions, 15-word cap | AI cut on a tiebreak in scene 1; human cut on a tiebreak in scene 2 | 39 of 39 | 53 |
+| 4 | Copycat traits reworded | AI cut in scene 1; human cut in scene 2 | 38 of 38 | 51 |
+| 5 | final, merged with the doc | human cut in scene 1, 2 votes | 24 of 24 | 30 |
+
+- No call failed. The AIs caught the canned human every time, mostly on its canned lines ("I think. Probably.", "Oops. Muscle memory. I don't have muscles.") and on the note. That says more about the canned lines than about fairness; Playtest 2 measures that with me playing. The vote and closing reasons now cite actions and words ("threw a napkin at the Counter, then joked about having no muscles"), not typing style.
+- **The checker:** the final text passed `python Tools/check_prompts.py` twice in a row: 34 of 34 asks, a median of 1.7 s per call, and about $0.026 per show by its 55-call estimate.
+- **`Tools/check_prompts.py` now:**
+  - A reply fails the legibility check on a bracket, `//`, `*`, an emoji or pictograph, "beep" or "boop", or a word of 4 or more capitals. The input LLM's replies are skipped, because it keeps the player's own words.
+  - The sample show is in plain chat.
+  - `--log` checks the AI lines (`NHOS: LOG`, `CLOSING` and `DIRECTOR`) of the last PIE show in the editor log and also fails a line the game cut at 25 words. `--all-shows` checks every show in the file. The old shows in the T12 log fail 390 of 451 lines.
+  - `--no-design` skips the word-for-word check, for trying drafts before the design doc changes.
+  - The design's persona headings are pun names now, so each persona prompt must match one of the blocks under "Persona prompts".

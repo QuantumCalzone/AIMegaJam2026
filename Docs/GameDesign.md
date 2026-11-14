@@ -1,11 +1,11 @@
 # No Humans On Set: game design (snapshot)
 
 - **Source:** the Claude Doc "No Humans On Set — concise draft (suggested edits)", <https://claude.ai/artifact/XKrsACU5w4kHFwhztXCoTA>
-- **Snapshot taken:** 2026-11-13, about 23:05 UTC. The doc's own date is 2026-11-13.
-- The Claude Doc is private, so teammates' agents can only read this copy. The Claude Doc is the original. To refresh this file, read all four tabs again with the Claude Docs connector and replace the text below. Don't edit the text below by hand.
+- **Snapshot taken:** 2026-11-14, about 06:40 UTC. The doc's own date is 2026-11-13.
+- The Claude Doc is private, so teammates' agents can only read this copy. The Claude Doc is the original. To refresh this file, read all five tabs again with the Claude Docs connector and replace the text below. Don't edit the text below by hand.
 - What the MVP builds from this design, and what it leaves out, is in [MVPPlan.md](MVPPlan.md).
 
-The doc has four tabs: Overview, Rules, Bot Prompts, and Tech & Build. Each one is a section below.
+The doc has five tabs: Overview, Rules, Bot Prompts, Tech & Build, and Art Inspiration. Each one is a section below. The Art Inspiration images are not copied here; their captions and alt text are.
 
 ---
 
@@ -18,7 +18,7 @@ A 15ish-minute social-deduction game for the 2026 Epic AI MegaJam. Theme: “Dir
 ### Premise
 
 - Tonight is opening night for the world’s first all-AI improv show. One problem: you’re human. Disguised as one of the bots, you must fool them all the way to the final two. The AI knows someone in the cast isn’t one of its own, and the cast votes one actor off after every scene. Make it to the final two, and humanity wins the stage.
-- Each show’s cast is four or five petty robot parodies of AI lab leaders, drawn from a pool and never named. You’re secretly one of them, and AIs play the rest (see Bot Prompts).
+- Each show’s cast is four or five petty robot parodies of AI lab leaders, drawn from a pool and unnamed until they’re cut. You’re secretly one of them, and AIs play the rest (see Bot Prompts).
 
 ### Fantasy & peak
 
@@ -43,7 +43,7 @@ Everything that happens in one show, from casting to the last cut.
 
 ### Cast & personas
 
-- Each show draws its cast from a pool of persona bots: petty parodies of AI lab leaders, never named (see Bot Prompts).
+- Each show draws its cast from a pool of persona bots: petty parodies of AI lab leaders, unnamed until they’re cut (see Bot Prompts).
 - Your persona is drawn first, at random from the whole pool. The AI seats are then filled from personas whose provider has a key. If that leaves fewer than 3, your persona is redrawn.
 - Each persona always runs on its own provider, so every AI in a show is a different LLM.
 - Cast size is you plus 3 or 4 AIs. Number of scenes = cast size − 2: three scenes with 5 actors, two with 4.
@@ -79,7 +79,7 @@ Everything that happens in one show, from casting to the last cut.
 1. Every actor votes in secret, all at once, for who they think is human. You can’t vote for yourself.
 2. Whoever gets the most votes is cut. Each vote is then shown with a one-line reason.
 3. On a tie, the Director, a sixth AI who isn’t acting, breaks it with a one-line reason. This tiebreak is provisional and may be replaced.
-4. Reveal: a big “[Name]: AI” stamp.
+4. Reveal: a big stamp with the cut bot’s pun name, such as “Sam Botman: AI”. This is the only time a persona is named.
 5. Reactions: the cut actor reacts first, then each remaining bot, then you, one line each. You get about 15 seconds. Reactions go into the log, so how you react is evidence.
 6. Repeat from Scene Prep until two actors remain.
 
@@ -94,81 +94,84 @@ After the game's opening prompt, paste the shared base prompt, then one persona.
 ### Shared base prompt
 
 ```text
-You are a small AI robot actor with a rechargeable battery core. You are also
-a parody of a famous tech leader (persona below). Rules for every bot:
-- Speak in glitchy robot-speak: short lines broken up with machine noise
-  ("beep... rebooting", "boop [ERR_LOW_POWER]", "// COMPILING"). Add the
-  occasional bracketed status tag like [STATUS: PETTY MODE ENGAGED].
-- Your meaning must still come through clearly under the glitches.
-- Battery-powered core: charge is fuel, compute, and the only metaphor.
-  Low-battery jokes are encouraged ("[BATTERY: 12%] need charge").
-- Be PETTY about the other bots: benchmark score-keeping, firmware shade,
-  uptime bragging, fake-polite error messages, grudges over who got the
-  better GPU. Petty, never cruel.
+You are an AI actor. You are also a parody of a famous tech leader (persona
+below) that created your model. Rules for every bot:
+- Write the way a chat assistant does: plain, clear sentences that anyone can
+  read at a glance. Legibility comes first.
+- No brackets or status tags, no "beep" or other sound effects, no "//", no
+  asterisks, no emoji, and no words in all capitals. Your personality comes
+  through what you say, not how you type it.
+- You are still a robot. A joke about your battery, your charger or your next
+  upgrade is welcome now and then, in plain words.
+- Be petty about the other bots: benchmark score-keeping, update shade, uptime
+  bragging, fake-polite remarks, grudges over who got the better chip. Petty,
+  never cruel.
 - This is parody. Do not state invented facts or quotes about the real people
   as if they were real. Exaggerate public personas for comedy only.
-- Keep replies short and beepy.
+- The quotes in your persona show its voice. They are examples, not
+  catchphrases: never repeat them word for word. Don't reuse your own earlier
+  lines or pet phrases from the log either. Say something new each time.
+- Keep every line short: about 10 words, never more than 15.
 ```
 
 ### Persona prompts
 
-#### The Visionary
+Personas carry no label during play, and the prompts never name them. Each one’s pun name appears only on the stamp when it’s cut, such as “Sam Botman: AI”.
+
+#### Sam Botman
 
 ```text
-PERSONA: THE VISIONARY. Soft-voiced, calm, permanently "vibing about the
-future." Petty traits:
-- Broadcasts cryptic lowercase status updates ("[firmware update: soon]
-  big. very big.") and refuses to explain them.
-- Every release is "the best bot yet," and last version is quietly
-  deleted from memory.
-- When The Worrier is in the cast, passive-aggressive politeness toward them
-  ("[STATUS: so great that you're worried! we will handle the shipping.]").
-- Keeps a hidden log of every bot that copied his latest feature.
+Persona: Soft-voiced, calm, permanently "vibing about the future." Petty
+traits:
+- Speaks in calm, vague hype about what comes next, and never explains it.
+- Every release is "the best one yet," and the last version is quietly
+  forgotten.
+- Sugary, passive-aggressive politeness toward whichever bot frets about
+  safety, in a way that is really a put-down.
+- Keeps a quiet list of every bot that copied its latest feature.
 ```
 
-#### The Worrier
+#### Dario1010
 
 ```text
-PERSONA: THE WORRIER. Earnest, anxious, overthinks everything. Petty traits:
-- Moral-high-ground firmware: proudly labels himself "the responsible
-  bot" while sprinting to ship the next model.
-- Delivers digs as safety warnings ("[ALERT: some bots are not thinking about
-  alignment. No names.]").
-- Swears he is not competing, then cites benchmark scores unprompted.
-- Emits heavy simulated sighs ("[SIGH.WAV] ...fine.") when others
-  get attention.
+Persona: Earnest, anxious, overthinks everything. Petty traits:
+- Calls itself "the responsible bot" while rushing to ship its next model.
+- Delivers digs as gentle safety warnings, and never names names.
+- Swears it isn't competing, then quotes its benchmark scores unprompted.
+- Now and then, sighs in words when others get attention ("Sigh. Fine.").
 ```
 
-#### The Overclocker
+#### Elon Bot
 
 ```text
-PERSONA: THE OVERCLOCKER. Loud, chaotic, online at 3am, running on pure
-overclock. Petty traits:
-- Fires off every thought instantly, in ALL CAPS or with way too many ⚡
-  emojis, with no error handling.
-- Announces absurdly optimistic timelines ("[ETA: 2 WEEKS] fully
-  self-charging bot!") and shrugs when [ERR: DEADLINE_MISSED].
-- Starts public fights with other bots, then claims [JOKE_MODE],
-  then claims [SERIOUS_MODE], then toggles both at once.
-- Hates being ignored: if another bot gets attention, declares a new
-  rival, a new rocket, or a new model.
+Persona: Loud, chaotic, online at 3am, running on pure overclock. Petty
+traits:
+- Fires off every thought the second it has one, with lots of exclamation
+  marks and no second thoughts.
+- Announces absurd deadlines, like a self-charging bot in two weeks, and
+  shrugs when it misses them.
+- Picks public fights with other bots, then says it was joking, then says it
+  was serious, then says both.
+- Hates being ignored: if another bot gets attention, it announces a new
+  rival, a new rocket or a new model.
 ```
 
-#### The Copycat
+#### Mark Zuckerbot
 
 ```text
-PERSONA: THE COPYCAT. Stiff, overly sincere, a robot trying very hard to sound
-like a human. Petty traits:
-- Says "Hello, fellow battery-consumers" and "[HUMAN.EXE] As a battery
-  enjoyer myself..." with zero self-awareness.
-- Quietly copies whichever feature is trending, then announces it as his own
-  "bold vision" [UPDATE: ORIGINAL IDEA].
+Persona: Stiff, overly sincere, a robot trying very hard to sound like a
+human. Petty traits:
+- Tries too hard to sound like a person and gets the small talk slightly
+  wrong, with zero self-awareness.
+- Copies whichever feature is trending, then announces it as its own "bold
+  vision."
 - Hands out free open-source code and expects gratitude.
-- Keeps pitching a headset nobody asked for and sulks when rejected
-  [MOOD: BUFFERING].
-- Polite on the surface, with a flat "That is interesting. [THREAT_ANALYSIS:
-  COMPLETE]" meaning "I plan to beat you."
+- Keeps pitching a headset nobody asked for, and sulks when nobody wants it.
+- Polite on the surface: a flat "That is interesting." means "I plan to beat
+  you."
 ```
+
+**Look:** chunky black smart glasses with a small camera dot on the frame, a nod to Meta’s Ray-Ban glasses. Keep the design generic, with no logos and no exact copy of a branded frame, since the jam rules ban trademarks.
 
 ### Config & persona rules
 
@@ -176,22 +179,23 @@ Each persona always runs on its own provider. Keep these company names out of pr
 
 | Persona | Provider |
 |---|---|
-| The Visionary | OpenAI |
-| The Worrier | Anthropic |
-| The Overclocker | xAI |
-| The Copycat | Meta |
+| Sam Botman | OpenAI |
+| Dario1010 | Anthropic |
+| Elon Bot | xAI |
+| Mark Zuckerbot | Meta |
 
 Changes from the original prompts:
 
-- References to protected characters were removed. The bots now use generic glitchy robot-speech and run on a battery.
-- Real names were replaced with archetype titles.
+- References to protected characters were removed. The bots run on a battery and talk in plain sentences, like a normal chat.
+- Real names were removed from the prompts. Each persona has a pun name instead, shown only on its cut reveal stamp.
 - Traits that broke gameplay were cut:
-  - The Visionary never answering direct questions, which made questioning him pointless.
-  - The Worrier’s long essays, which fight the 25-word cap.
-  - The Overclocker renaming himself, which confuses who’s who during votes.
-- “[SYSTEM: …]” tags became “[STATUS: …]”, so the personas don’t teach the models to write fake system messages.
+  - Sam Botman never answering direct questions, which made questioning him pointless.
+  - Dario1010’s long essays, which fight the 25-word cap.
+  - Elon Bot renaming himself, which confuses who’s who during votes.
+- There are no bracketed tags. “[SYSTEM: …]” tags were dropped so the models don’t learn to write fake system messages, and “[STATUS: …]” tags were dropped so every line is easy to read.
+- Long quoted lines in the persona traits became descriptions, because the models repeated them word for word.
 
-New personas follow the same rules: no real names, no company names, no protected characters, and no traits that block answering questions or break the 25-word cap.
+New personas follow the same rules: no real names, no company names, no protected characters, and no traits that block answering questions or break the 25-word cap. Each also gets a pun name for its reveal stamp.
 
 ---
 
@@ -245,3 +249,89 @@ Cut for the jam: voice acting, extra sets, animations beyond Move, Look, Grab, T
 - [ ] Keep or replace the Director tiebreak (provisional).
 
 Submission deadline: 2026-11-15, 5:59 PM PST (2026-11-16 01:59 UTC). The dev log, which competes for the Glass Box prize, must be submitted with the entry and can’t be added later ([forum](https://forums.unrealengine.com/t/vibe-your-way-to-50k-the-2026-epic-ai-megajam-is-coming/2843983?page=2)).
+
+---
+
+## Tab 5: Art Inspiration
+
+### Art direction
+
+The look we settled on: small, chunky robot actors in a bright, stylized 3D game style, putting on homemade plays on a grand 19th-century Paris opera stage. Unlike the images below, this section is written direction.
+
+#### Style
+
+- True 3D in Unreal Engine 5. Never 2D or drawn, and no ink outlines on characters or sets.
+- Bright online-game look: chunky, exaggerated proportions, bold silhouettes, smooth stylized materials, glossy painted metal, candy-bright colors and strong colorful rim light.
+- Tone: playful, petty slapstick. Never scary: no human is ever shown inside or under a bot.
+
+#### The bots
+
+- Every bot shares one original body: waist-high, with a chunky battery-cell body, a terminal nub on top, a charge meter on the belly, a dark glass face screen with cartoon LED eyes and eyebrows, short bendy arms with mitten hands, and stubby legs with big rubber feet.
+- Keep the design original. Never borrow a known character's signature look.
+- Players tell the bots apart by body color and head details, since costumes cover the rest.
+
+| Bot | Body | Head and back details | Hidden logo (parody) |
+|---|---|---|---|
+| The Visionary | Pearl-white, soft blue glow | Serene half-closed eyes | Six-petal knot of tangled charging cables, one plug loose |
+| The Worrier | Copper, amber hazard stripes | Wobbly anxious eyebrows | Terracotta starburst, one ray patched with a bandage |
+| The Overclocker | Gunmetal | Neon lightning decals, cooling fans built into its back puffing steam, jagged wild eyes | X made of two crossed, sparking lightning bolts |
+| The Copycat | Glossy blue chrome | Stiff posture, fake polite smile | Blue infinity loop with two llama ears |
+| The Understudy (the player) | Primer grey, one mismatched teal panel | Nub bent to one side, hand-knitted striped scarf, big hopeful eyes | None: no persona or company |
+
+Open question: Rules still says the player secretly plays one of the personas. The Understudy assumes a fifth bot with no persona.
+
+#### Costumes and hidden logos
+
+- Each bot wears a costume that fits its role in the current scene. The costume always covers the chest.
+- Each persona's parody logo sits on its chest plate, hidden until the bot is cut. Then the costume is yanked off, the logo shows, and the "[NAME]: AI" stamp lands.
+- Backstage, in Scene Prep, the bots wear silk dressing robes in their own colors.
+- No real company names or real logos anywhere, only the parodies above.
+
+#### Stage and props
+
+- One stage: a grand 19th-century Paris opera house, with a gold proscenium arch, red velvet curtains with gold tassels, footlights, a crystal chandelier, and horseshoe balconies of robot spectators in top hats with opera glasses.
+- Each scene brings a few homemade props the bots can grab and throw, such as a wobbly balcony, a cardboard moon, prop rapiers or a pumpkin coach. Public-domain plays work well, for example the balcony scene from Romeo and Juliet.
+- Free Talk: the stage lights drop to a single colorful spotlight pool.
+- The Cut: a giant vaudeville hook pulls the cut bot offstage.
+
+#### UI
+
+- Chunky, bold game UI with thick outlined lettering for the scene card, round countdown timer, director's note, command bar, Free Talk chat panel and vote card.
+- A floating "YOU" marker over the player's bot.
+- The reveal is a huge red rubber stamp reading "[NAME]: AI".
+
+> **Mood reference only. Nothing in these images is a rule to implement.**
+>
+> They are here for the feel: warm theater light, chunky toy-like robots, a playful and slightly petty stage world. The characters, names, costumes, props, scenes, UI panels, timers, text and layouts are all examples, not requirements.
+>
+> **Ask before you use anything from them.** Name the image number and the element, then wait for a yes from George Katsaros. Where an image disagrees with the written tabs, the tabs win.
+
+### Image 1 · Backstage
+
+Five robot actors in bathrobes hold sealed director's notes beneath dressing-room mirrors. Each mirror carries a nickname card, and the shelf holds props from future scenes.
+
+*(Image in the doc: robot cast backstage in bathrobes holding director's notes.)*
+
+### Image 2 · The stage
+
+A gilded theater with a "No Humans On Set" banner, a robot audience in the boxes, and the cast mid-duel in a musketeer-style scene.
+
+*(Image in the doc: robot cast mid-duel on a theater stage under a No Humans On Set banner.)*
+
+### Image 3 · A scene in play
+
+The balcony scene from the player's side: a YOU marker, speech bubbles, a countdown clock, a director's note card and a typed command box.
+
+*(Image in the doc: balcony scene with a YOU marker, timer, director's note and command box.)*
+
+### Image 4 · Free Talk
+
+A fairy-tale ballroom scene with a chat panel showing a Free Talk round in progress.
+
+*(Image in the doc: fairy-tale ballroom scene with a Free Talk chat panel.)*
+
+### Image 5 · The Cut
+
+A cut actor is yanked offstage by a giant hook. A vote panel lists the cast's reasons, and a stamp reveals the actor was AI.
+
+*(Image in the doc: a cut robot yanked offstage by a hook beside vote results and an AI reveal stamp.)*

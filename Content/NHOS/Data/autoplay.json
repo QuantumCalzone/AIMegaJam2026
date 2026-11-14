@@ -9,14 +9,14 @@
 		"look around \"Nobody panic. Everything here is completely normal.\""
 	],
 	"free_talk": [
-		"Somebody here is trying way too hard to sound like a robot. I'm watching you.",
+		"Somebody here keeps dodging questions. I'm watching you.",
 		"pass",
 		"My circuits are clean. Can everyone else say the same?",
 		"That last scene felt rehearsed. Robots don't rehearse. Who planned their lines?"
 	],
 	"vote": [
 		"They keep dodging the questions. A real robot would just answer.",
-		"Too many beeps. Nobody beeps that much unless they are hiding something."
+		"They broke the pattern everyone else followed. A robot doesn't make that mistake."
 	],
 	"reaction": [
 		"Well. Nobody saw that coming. My circuits are still processing it.",

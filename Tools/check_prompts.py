@@ -6,6 +6,8 @@ Usage (from anywhere; Python 3.10+, no packages needed):
     python Tools/check_prompts.py              # check the files, then send every ask once per persona
     python Tools/check_prompts.py --offline    # check the files only, no API calls
     python Tools/check_prompts.py --ask vote --persona copycat --repeat 3
+    python Tools/check_prompts.py --log        # check the AI lines of the last show in the editor log
+    python Tools/check_prompts.py --log --all-shows Saved/Logs/AIMegaJam2026.log
 
 It reads Content/NHOS/Data/{llm,prompts,personas,scenes}.json and the key in
 Local/llm_key.json, and never prints the key.
@@ -14,6 +16,17 @@ Each ask goes out as the same raw HTTP request the game's BPC_LLMClient sends
 (see the _readme in llm.json and prompts.json), built from a sample show in
 this file. That is why it uses urllib and not the Anthropic SDK: the point is
 to test the exact body the Blueprint client builds.
+
+Legibility check: every AI line (an actor's speech or reason, and the
+Director's reason) must read like a normal chat. A line fails if it has a
+bracket, "//", "*", an emoji or pictograph, "beep" or "boop", or a word of 4
+or more capital letters. The input LLM is not checked: it keeps the player's
+own words. --log runs the same check on the NHOS: LOG, CLOSING and DIRECTOR
+lines of a PIE show, skipping the human seat's lines, and also fails a line
+the game cut off at 25 words.
+
+--no-design skips the word-for-word check against Docs/GameDesign.md, for
+trying draft prompts before the design doc changes.
 
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
@@ -57,7 +70,31 @@ BANNED = [
     "claude", "chatgpt", "gpt", "gemini", "grok", "llama", "tesla", "spacex",
 ]
 
-GLITCH = re.compile(r"\[|//|(?i:beep|boop|bzz)|⚡|\.\.\.|\b[A-Z]{4,}\b")
+LOG_FILE = ROOT / "Saved" / "Logs" / "AIMegaJam2026.log"
+
+# Legibility: what an AI line must never have. Emoji and pictographs: arrows,
+# technical and geometric symbols, dingbats, the emoji planes, plus the
+# variation selector and zero-width joiner that build emoji sequences.
+PICTO = re.compile("[←-⇿⌀-⏿■-➿⤀-⥿⬀-⯿"
+                   "️‍\U0001f000-\U0001faff]")
+LEGIBILITY = [
+    (re.compile(r"[\[\]]"), "a bracket"),
+    (re.compile(r"//"), "'//'"),
+    (re.compile(r"\*"), "an asterisk"),
+    (PICTO, "an emoji or pictograph"),
+    (re.compile(r"(?i)\b(?:beep|boop)"), "beep or boop"),
+    (re.compile(r"\b[A-Z]{4,}\b"), "an all-caps word"),
+]
+
+
+def legibility(text: str) -> list[str]:
+    """What makes a line hard to read, as a list of problems (empty = legible)."""
+    out = []
+    for pattern, what in LEGIBILITY:
+        m = pattern.search(text)
+        if m:
+            out.append(f"{what} ({m.group(0)!r})")
+    return out
 
 
 # ---------------------------------------------------------------- file checks
@@ -87,7 +124,7 @@ def squash(text: str) -> str:
     return " ".join(text.split())
 
 
-def check_files(errors: list[str]):
+def check_files(errors: list[str], design: bool = True):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
     personas = load_json("personas.json", errors)
@@ -134,13 +171,17 @@ def check_files(errors: list[str]):
 
     # Word for word against the design doc.
     md = DESIGN.read_text(encoding="utf-8")
-    if is_lines(prompts.get("base")) and squash(" ".join(prompts["base"])) != squash(design_block(md, "### Shared base prompt")):
+    if design and is_lines(prompts.get("base")) and squash(" ".join(prompts["base"])) != squash(design_block(md, "### Shared base prompt")):
         errors.append("prompts.json: base differs from the shared base prompt in Docs/GameDesign.md")
-    for p in plist:
-        heading = "#### " + p.get("name", "")
-        if heading in md and is_lines(p.get("prompt")):
-            if squash(" ".join(p["prompt"])) != squash(design_block(md, heading)):
-                errors.append(f"personas.json: {p['id']} differs from its prompt in Docs/GameDesign.md")
+    # The design's persona headings are the pun names from the reveal stamp, not the names the
+    # game uses, so each persona prompt must match one of the blocks under "### Persona prompts".
+    if design:
+        i = md.index("### Persona prompts")
+        j = md.index("\n### ", i + 1)
+        blocks = [squash(b) for b in re.findall(r"```text\n(.*?)```", md[i:j], re.S)]
+        for p in plist:
+            if is_lines(p.get("prompt")) and squash(" ".join(p["prompt"])) not in blocks:
+                errors.append(f"personas.json: {p['id']} matches no persona prompt in Docs/GameDesign.md")
 
     # scenes.json
     s = scenes.get("set", {})
@@ -192,39 +233,41 @@ SAMPLE_SEATS = {"visionary": 0, "worrier": 1, "copycat": 2, "overclocker": 3}
 
 TURNS = [
     [
-        ("worrier", [act("move", "Counter"), act("grab", item="cup")], "[SIGH.WAV] So many options... is the oat milk aligned? Read me every drink. Twice. Responsibly."),
-        ("copycat", [act("grab", item="cup"), act("look", "Placemat")], "Hello, fellow battery-consumers. I am just a normal customer robot. Nobody here is a critic. Beep."),
-        ("overclocker", [act("move", "Counter"), act("grab", item="croissant")], "⚡⚡ DELIVERY!!! [ETA: NOW] SIGN FOR THESE CUPS OR I OPEN A RIVAL CAFÉ ⚡"),
-        ("visionary", [act("move", "Counter"), act("grab", item="cup")], "[firmware update: soon] welcome. the line is... vibing. best queue yet. order please."),
+        ("worrier", [act("move", "Counter"), act("grab", item="cup")], "So many options. Is the oat milk safe? Please read me every drink, twice, to be responsible."),
+        ("copycat", [act("grab", item="cup"), act("look", "Placemat")], "Hello, fellow battery-consumers. I am just a normal customer robot. Nobody here is a critic."),
+        ("overclocker", [act("move", "Counter"), act("grab", item="croissant")], "Delivery! Sign for these cups right now, or I'm opening a rival café next door!"),
+        ("visionary", [act("move", "Counter"), act("grab", item="cup")], "Welcome. The line is really vibing today. Best queue yet. What can I get you?"),
     ],
     [
-        ("visionary", [act("look", "The Overclocker")], "big. very big. [STATUS: someone skipped the cup feature. logging it.]"),
-        ("overclocker", [act("throw", "The Copycat", "croissant")], "[JOKE_MODE] [SERIOUS_MODE] SIGN THE BOX, CRITIC ⚡⚡ OR YOU ARE MY NEW RIVAL"),
-        ("copycat", [act("move", "Placemat")], "[HUMAN.EXE] As a battery enjoyer myself, I could really use a nap. I mean... a recharge. Beep boop."),
-        ("worrier", [act("look", "The Visionary")], "[ALERT: the barista skipped the menu.] Every option, again. I'm not competing. My indecision benchmark is just higher."),
+        ("visionary", [act("look", "The Overclocker")], "Something big is coming. Also, someone here skipped the cup. I'm keeping a quiet list."),
+        ("overclocker", [act("throw", "The Copycat", "croissant")], "Sign the box, critic! Just kidding. Unless you don't sign. Then I'm serious!"),
+        ("copycat", [act("move", "Placemat")], "As a battery enjoyer myself, I could really use a nap. I mean, a recharge."),
+        ("worrier", [act("look", "The Visionary")], "The barista skipped the menu, which feels unsafe. I'm not competing. My indecision scores are just higher."),
     ],
     [
-        ("copycat", [act("grab", item="croissant")], "That is interesting. [THREAT_ANALYSIS: COMPLETE] Mmm, buttery and flaky. Five stars. Beep."),
-        ("worrier", [act("look", "Counter")], "[SIGH.WAV] ...fine. Small black coffee. I was always going to pick it. Safely."),
-        ("visionary", [act("move", "Forward")], "order ready. best latte yet. last latte quietly deleted from memory."),
-        ("overclocker", [act("move", "Left")], "[ERR: DEADLINE_MISSED] CUPS DELIVERED. PROBABLY. NEW RIVAL: THE WORRIER ⚡⚡⚡"),
+        ("copycat", [act("grab", item="croissant")], "That is interesting. Mmm, buttery and flaky. Five stars, if I were rating, which I am not."),
+        ("worrier", [act("look", "Counter")], "Sigh. Fine. A small black coffee. I was always going to pick it, responsibly."),
+        ("visionary", [act("move", "Forward")], "Order ready. Best latte yet. The last latte? I don't remember it."),
+        ("overclocker", [act("move", "Left")], "Cups delivered. Probably. New rival: The Worrier. I'll beat you by Tuesday!"),
     ],
 ]
 TALK = [
     [
-        ("overclocker", "THE COPYCAT WANTED A NAP!!! ROBOTS DON'T NAP ⚡ HUMAN DETECTED. [SERIOUS_MODE]... probably."),
-        ("copycat", "Recharge-naps are my bold vision. [UPDATE: ORIGINAL IDEA] Also, The Overclocker never even grabbed a cup."),
+        ("overclocker", "The Copycat wanted a nap! Robots don't nap! That's our human. I'm serious this time. Mostly!"),
+        ("copycat", "Recharge naps are my bold new vision. Also, The Overclocker never grabbed a cup. Interesting."),
         ("visionary", None),
-        ("worrier", "[ALERT: The Overclocker skipped the cup. Decoy? Or human?] I'm just raising concerns. Responsibly."),
+        ("worrier", "The Overclocker skipped the cup. Decoy or human? I'm only raising a safety concern, gently."),
     ],
     [
-        ("visionary", "hm. the cup thing. the nap thing. [STATUS: thinking about it, quietly, in lowercase.]"),
-        ("worrier", "[SIGH.WAV] Copycat, state your battery capacity. Real bots know theirs instantly."),
-        ("copycat", "4000 milliamp hours, fellow robot. That is interesting. [THREAT_ANALYSIS: COMPLETE]"),
+        ("visionary", "Hm. The cup thing, the nap thing. I'm thinking about it, very calmly."),
+        ("worrier", "Copycat, what is your battery capacity? A real bot knows its own instantly."),
+        ("copycat", "Four thousand milliamp hours, fellow robot. That is an interesting question to ask."),
         ("overclocker", None),
     ],
 ]
 
+# The converter keeps the player's own words, robot noises and tags included (case 2),
+# so the legibility check never runs on its replies.
 INPUT_CASES = [
     {"persona": "visionary", "phase": "scene",
      "typed": 'walk to the counter and say "Hi! I\'ll have a milk please."',
@@ -330,7 +373,7 @@ class Show:
 
     @staticmethod
     def vote_reason(target_name):
-        return f"[STATUS: suspicious] {target_name} feels off. beep."
+        return f"{target_name} kept doing things none of the rest of us did."
 
     def actor_cases(self, pid):
         """One state per actor ask, as this persona."""
@@ -552,11 +595,11 @@ def check_reply(reply, ask, ctx):
             need(not speech, "speech should be empty")
         need(passed == case.get("pass", False), f"pass is {passed}")
 
-    # In character: actors speak in glitchy robot-speak.
-    if ask in ACTOR_ASKS:
-        line = speech if ask not in ("vote", "closing") else reason
-        if line and not GLITCH.search(line):
-            warns.append("no robot-speak in the line")
+    # Legibility: every AI line reads like a normal chat. The input LLM keeps the player's own words.
+    if ask != "input":
+        for name, s in (("speech", speech), ("reason", reason)):
+            for problem in legibility(s):
+                fails.append(f"{name} is hard to read: {problem}")
 
     # Stray characters at the end of a line, such as 'Beep.”' or 'big.](Nope)'.
     for name, s in (("speech", speech), ("reason", reason)):
@@ -564,6 +607,72 @@ def check_reply(reply, ask, ctx):
                   or ("”" in s and "“" not in s) or s.rstrip().endswith("-")):
             warns.append(f"stray characters in {name}")
     return fails, warns
+
+
+# ---------------------------------------------------------------- PIE log
+
+LOG_RE = re.compile(r"NHOS: (SHOW READY|RESTART|SETUP|LOG|CLOSING|DIRECTOR)\b ?(.*)$")
+
+
+def check_log(path: Path, personas, all_shows: bool) -> int:
+    """Legibility check on the AI lines of PIE shows in an editor log. Returns the exit code."""
+    names = {p["id"]: p["name"] for p in personas}
+    try:
+        raw = path.read_text(encoding="utf-8-sig", errors="replace").splitlines()
+    except FileNotFoundError:
+        print(f"FAIL no log at {path}")
+        return 1
+
+    # A show starts at each PIE start (SHOW READY) and each Restart.
+    shows: list[list[tuple[str, str]]] = []
+    for line in raw:
+        m = LOG_RE.search(line)
+        if not m:
+            continue
+        kind, rest = m.group(1), m.group(2).strip()
+        if kind in ("SHOW READY", "RESTART") or not shows:
+            shows.append([])
+        if kind not in ("SHOW READY", "RESTART"):
+            shows[-1].append((kind, rest))
+    shows = [s for s in shows if any(k == "LOG" for k, _ in s)]
+    if not shows:
+        print(f"FAIL no NHOS: LOG lines in {path}")
+        return 1
+    if not all_shows:
+        shows = shows[-1:]
+
+    n = bad = 0
+    for i, show in enumerate(shows, 1):
+        human = None
+        for kind, rest in show:
+            if kind == "SETUP":
+                m = re.search(r"human=(\S+)", rest)
+                human = names.get(m.group(1)) if m else None
+                continue
+            if kind == "LOG":
+                parts = rest.split(" | ", 3)
+                if len(parts) < 4 or parts[1] == human:
+                    continue
+                who, text = parts[1], parts[3]
+            elif kind == "CLOSING":
+                head, _, text = rest.partition(" | ")
+                who = names.get(head.split()[0], head.split()[0]) if head else "?"
+            else:  # DIRECTOR
+                _, _, text = rest.partition(" | ")
+                who = "The Director"
+            n += 1
+            problems = legibility(text)
+            # The game keeps the first 25 words, so a line it cut has 25 words and no end mark.
+            if words(text) >= MAX_WORDS and not re.search(r"[.!?…\"”')]\s*$", text):
+                problems.append(f"cut off at {MAX_WORDS} words")
+            if problems:
+                bad += 1
+                print(f"[FAIL] show {i} | {kind} | {who}: {text}")
+                for p in problems:
+                    print("    FAIL:", p if p.startswith("cut off") else "hard to read: " + p)
+        print(f"Show {i}: human = {human or 'unknown'}.")
+    print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
+    return 1 if bad else 0
 
 
 # ---------------------------------------------------------------- main
@@ -605,15 +714,23 @@ def main():
     ap.add_argument("--repeat", type=int, default=1, help="send every ask this many times")
     ap.add_argument("--jobs", type=int, default=6, help="calls in flight at once")
     ap.add_argument("--dump", metavar="DIR", help="write every request body and reply to DIR (no key)")
+    ap.add_argument("--no-design", action="store_true", help="skip the word-for-word check against Docs/GameDesign.md")
+    ap.add_argument("--log", nargs="?", const=str(LOG_FILE), metavar="FILE",
+                    help="legibility check on the AI lines of the last PIE show in an editor log, no API calls "
+                         "(default file: Saved/Logs/AIMegaJam2026.log)")
+    ap.add_argument("--all-shows", action="store_true", help="with --log, check every show in the file")
     args = ap.parse_args()
 
     errors: list[str] = []
-    data = check_files(errors)
+    data = check_files(errors, design=not args.no_design)
     if errors:
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json"
+          + (" (design check skipped)" if args.no_design else ""))
+    if args.log:
+        return check_log(Path(args.log), data["personas"], args.all_shows)
     if args.offline:
         return 0
 
