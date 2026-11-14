@@ -21,6 +21,19 @@ Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the
 
 The game is **No Humans On Set**. [Docs/MVPPlan.md](Docs/MVPPlan.md) is the living plan for its MVP: the task list, the model and effort for each task, and how to claim one. When the user says "Next task" or "Next ask", follow "How to run a task" in that file. The design is in [Docs/GameDesign.md](Docs/GameDesign.md), a copy of a private Claude Doc. Each task's commit adds one line to [Docs/DevLog.md](Docs/DevLog.md).
 
+## Asking for input
+
+When you need your person to decide something, ask with the multiple-choice question tool (`AskUserQuestion`), not in prose. Put the option you recommend first, mark it "(Recommended)", and say in one line why you recommend it. If you need several answers, ask one question per call, all in this same format, and wait for each answer before you ask the next. The goal is to avoid choice overload: only one decision is on screen at a time. If the tool isn't available, ask the same way in text: one question, numbered options, your recommendation first.
+
+## When a task is done
+
+When you believe your task is done, tell your person in one line that it is done, and name anything you couldn't check. Then commit and push without asking:
+
+- Commit only your own files, staged by path (never `git add -A` or `git add .`). Other sessions work in the same folder.
+- A plan task's commit holds what "How to run a task" in the plan lists. Other work gets a message that says what changed, plus a line in [Docs/DevLog.md](Docs/DevLog.md) if it changes the game or the plan.
+- Push with `git push` on `noHumansOnSet`. Never push `main`, and never force-push. If the push is rejected, don't pull or rebase while another session in the folder has uncommitted work. Tell your person instead.
+- Don't commit work that is half done or fails its check. Say what is left instead.
+
 ## Game jam rules (2026 Epic AI MegaJam)
 
 Source: the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). The Official Rules PDF linked there is the final authority.
