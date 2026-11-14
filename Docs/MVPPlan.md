@@ -15,13 +15,13 @@ Answer one question as fast as possible: **is it fun to fool an all-AI cast, and
 **In:**
 
 - One café scene set.
-- A text-only stage: a UMG log and an input box. No 3D.
+- A text stage: a UMG log and an input box. Above it, a bare 3D stage with four box robots that show who is speaking and who was cut (T11).
 - One human player plus 3 AI personas. That is a cast of 4, so a show has 2 scenes.
 - The full show loop from the Rules tab: Scene Prep, The Scene, Free Talk, The Cut with reveal and reactions, repeat to the final two, win and lose screens with the AIs' reasoning, restart.
 
 **Out:**
 
-- 3D staging and animation, audio, polish, extra sets.
+- The 3D café set, moving robots and animation, audio, polish, extra sets.
 - More than one LLM provider. Every persona, the input LLM and the Director run on **Anthropic (Claude)** for now.
 - The relay and the key-entry screen. The key comes from a file on the developer's machine.
 
@@ -34,12 +34,12 @@ Written Fri Nov 13, 2026, about 3:20 PM PST. The deadline is Sun Nov 15, 5:59 PM
 | Target | When (PST) |
 |---|---|
 | Spikes done (T01, T02) | Fri Nov 13, evening |
-| Loop runs end to end (T10) and the playtest gate (T11) | Sat Nov 14, morning |
-| MVP packaged (T14) | Sat Nov 14, about 3 PM |
+| Loop runs end to end (T10), robots on stage (T11) and the playtest gate (T12) | Sat Nov 14, morning |
+| MVP packaged (T15) | Sat Nov 14, about 3 PM |
 | Everything the judges score that the MVP leaves out (see "After the MVP") | Sat 3 PM to Sun 2 PM |
 | Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
 
-14 tasks at up to an hour each is about 14 hours of agent time, plus your time on checks and playtests. If we fall behind, cut T13 first, then hold T12 to one hour.
+15 tasks at up to an hour each is about 15 hours of agent time, plus your time on checks and playtests. If we fall behind, cut T14 first, then hold T13 to one hour. T11 can also move after the gate.
 
 ## How to run a task
 
@@ -81,7 +81,7 @@ Never edit the claim files. They exist only to be locked.
 These hold unless T01 or T02 finds otherwise. If one changes, change it here in a `Plan:` commit.
 
 - **Blueprint-only.** No C++ unless the spikes show it is needed. The choice goes in `Agents/decisions/`.
-- **Where things live.** Assets go under `Content/NHOS/` (`Maps/`, `Core/`, `UI/`). Files the game reads at runtime go in `Content/NHOS/Data/` as `.json`. The API key and local switches go in `Local/` in the project root, which git ignores. The key file is `Local/llm_key.json`; copy it from `Docs/llm_key.example.json`. Blueprint reads it at `Get Project Directory` + `Local/llm_key.json`.
+- **Where things live.** Assets go under `Content/NHOS/` (`Maps/`, `Core/`, `UI/`, and `Stage/` for the 3D set from T11 on). Files the game reads at runtime go in `Content/NHOS/Data/` as `.json`. The API key and local switches go in `Local/` in the project root, which git ignores. The key file is `Local/llm_key.json`; copy it from `Docs/llm_key.example.json`. Blueprint reads it at `Get Project Directory` + `Local/llm_key.json`.
 - **API keys never go in git, and never into chat.** I paste my key into the key file myself.
 - **Prompts are files, not Blueprint strings.** The opening game prompt, the base prompt, the personas, the input LLM prompt and the scene cards live in `Content/NHOS/Data/`, so they diff in git. Store long text as an array of lines.
 - **One provider.** All calls go to the Claude Messages API. The model, effort and token limit for each role (actor, input LLM, Director) are values in `Content/NHOS/Data/llm.json`. T01 and T02 ran `claude-opus-5-5` at low effort. Since 2026-11-13 every role runs `claude-haiku-5-5` at low effort, the cheapest model at its lowest level. Haiku 5.5 has no server-side fallback, so `beta` and `fallbacks` in `llm.json` are empty; a refusal comes back as `stop_reason: "refusal"`.
@@ -221,33 +221,52 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** with autoplay on, a PIE run plays a whole show and prints `NHOS: SHOW END result=<win|lose> scenes=<n>`. Restart starts a second show that also reaches `NHOS: SHOW END` (screenshots of the end screen).
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, new `Content/NHOS/UI/WBP_EndScreen.uasset`.
 
+### The cast on stage
+
+- [ ] **T11 The cast on stage: four box robots**
+  - **Model and effort:** Sonnet 5.5, medium. Simple set dressing and one small actor Blueprint, plus a few calls from `BP_Show` at points that T06 to T10 made.
+  - **Depends on:** T10 (it hooks the cut and Restart, and T08 to T10 hold the locks on `BP_Show` and `WBP_Stage` until then)
+  - **Needs:** editor + Unreal MCP running, my API key.
+  - **Steps:**
+    1. `BP_Robot` in `Content/NHOS/Stage/`: a cylinder body, a cube head, a spotlight above it (off at start), and a `TextRender` name label above the head, turned to face the camera. The meshes come from `/Engine/BasicShapes/`. `M_Robot` is one Substrate material with a `Color` parameter, and each robot makes its own dynamic instance. Functions: `Setup(Name, Color, IsMe)`, `SetLit(On)`, `SetCut(Stamp)` and `ResetLook`.
+    2. `L_Stage`: a floor, a back wall, a key light and a fill light (nothing baked), four `BP_Robot` in a shallow arc facing the camera with `Seat` 0 to 3, and a `CameraActor` that frames all four. Make it the view target with its Auto Activate for Player 0 setting, or with `SetViewTargetWithBlend` in `BP_ShowPlayerController`. No café props yet: the 3D café after the MVP builds on this set.
+    3. `WBP_Stage`: the 3D stage shows through the top part of the screen, about half. The log, the info panel and the input row sit below it on their own dark panel, and the header stays on top. The log must stay as easy to read as it is now.
+    4. `BP_Show` finds the robots by `Seat` at start and drives them. A seat with no robot is skipped, so the show still runs.
+       - **Setup:** each robot gets its seat's persona name and a color of its own. My robot's label adds "(you)", and nothing else about it differs.
+       - **Lines:** wherever an actor's line enters the shared log (make that one function if T08 to T10 left several), that actor's robot is lit and the others go dark. A scene turn shows its four lines at once, so its last speaker stays lit.
+       - **The Cut:** the cut robot turns gray and tips over, and its label shows the stamp, `AI` or `HUMAN`.
+       - **Restart:** every robot stands again, unlit, with the new show's names.
+    5. Print `NHOS: STAGE robots=<n>` at setup and `NHOS: STAGE cut <persona>` at each cut.
+  - **Done when:** with autoplay on, a PIE run plays a whole show and prints `NHOS: STAGE robots=4`, one `NHOS: STAGE cut ...` per cut, and `NHOS: SHOW END`. Screenshots show Scene Prep with four labelled robots above a readable log, a turn with one robot lit, and a cut robot, gray and tipped over, with its stamp.
+  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Core/BP_ShowPlayerController.uasset` (only if the camera needs it), new `Content/NHOS/Stage/BP_Robot.uasset`, new `Content/NHOS/Stage/M_Robot.uasset`.
+
 ### Gate
 
-- [ ] **T11 Go/no-go gate: I play 3 shows**
+- [ ] **T12 Go/no-go gate: I play 3 shows**
   - **Model and effort:** Opus 5.5, high. It judges the design from evidence and reshapes the plan.
-  - **Depends on:** T10
+  - **Depends on:** T11
   - **Needs:** my playtest, my API key, editor running.
   - **Steps:**
-    1. I play 3 full shows in PIE with autoplay off, and give notes: was it fun, where it dragged, were the AIs' suspicions fair, how each show ended.
+    1. I play 3 full shows in PIE with autoplay off, and give notes: was it fun, where it dragged, were the AIs' suspicions fair, did the robots on stage help, how each show ended.
     2. Claude reads the `NHOS:` lines of the three shows and writes "Playtest 1" in Findings: how often and in which scene I was cut, AIs cut by mistake, seconds per call, cost per show, and my notes.
-    3. Claude proposes go or no-go, with plan changes: the steps of T12, any task to add, drop or reorder, and a task list for the time after the MVP.
+    3. Claude proposes go or no-go, with plan changes: the steps of T13, any task to add, drop or reorder, and a task list for the time after the MVP.
     4. After I agree, Claude commits the changes as `Plan: ...`.
-  - **Done when:** Findings has a "Playtest 1" entry with the three results and a go/no-go decision I confirmed, and T12's steps are filled in.
+  - **Done when:** Findings has a "Playtest 1" entry with the three results and a go/no-go decision I confirmed, and T13's steps are filled in.
   - **Touches:** `Docs/MVPPlan.md`, `Docs/DevLog.md`.
 
 ### After the gate
 
-- [ ] **T12 Fix what the playtest found**
+- [ ] **T13 Fix what the playtest found**
   - **Model and effort:** Opus 5.5, high. Prompt tuning and rule changes, with debugging.
-  - **Depends on:** T11
+  - **Depends on:** T12
   - **Needs:** my API key, my playtest (one show). Editor + Unreal MCP running if a Blueprint changes.
-  - **Steps:** T11 writes them. Expect prompt changes checked with `Tools/check_prompts.py`, rule changes (rounds, votes, the tiebreak) and the model choice in `llm.json`.
-  - **Done when:** T11 writes the check. At the least: I play one more full show, and the top finding from Playtest 1 is fixed.
-  - **Touches:** T11 lists them. Likely `Content/NHOS/Data/*.json` and `Content/NHOS/Core/BP_Show.uasset`.
+  - **Steps:** T12 writes them. Expect prompt changes checked with `Tools/check_prompts.py`, rule changes (rounds, votes, the tiebreak) and the model choice in `llm.json`.
+  - **Done when:** T12 writes the check. At the least: I play one more full show, and the top finding from Playtest 1 is fixed.
+  - **Touches:** T12 lists them. Likely `Content/NHOS/Data/*.json` and `Content/NHOS/Core/BP_Show.uasset`.
 
-- [ ] **T13 Timers and typing delay**
+- [ ] **T14 Timers and typing delay**
   - **Model and effort:** Sonnet 5.5, medium. Small additions to phases that already work.
-  - **Depends on:** T11
+  - **Depends on:** T12
   - **Needs:** editor + Unreal MCP running, my API key.
   - **Steps:**
     1. Add a countdown to my input: 30 seconds for a scene turn, 45 for a Free Talk line, 15 for a reaction. The values come from a data file.
@@ -257,9 +276,9 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** in PIE with autoplay off, letting the scene timer run out prints `NHOS: TIMEOUT scene`, and my actor looks around in the log.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Data/scenes.json`.
 
-- [ ] **T14 Package a Windows Development build and play a show in it**
+- [ ] **T15 Package a Windows Development build and play a show in it**
   - **Model and effort:** Sonnet 5.5, medium. It repeats T02's steps with the whole game.
-  - **Depends on:** T12, T13
+  - **Depends on:** T13, T14
   - **Needs:** my API key, my playtest (one show), a Windows machine, the editor closed.
   - **Steps:**
     1. Run the package command from `CLAUDE.local.md` in the background.
@@ -271,10 +290,10 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 
 ## After the MVP
 
-Not planned yet. T11 turns this list into tasks, sized to the time that is left. The judges score visuals, audio and level design as much as fun, and the submission has fixed parts.
+Not planned yet. T12 turns this list into tasks, sized to the time that is left. The judges score visuals, audio and level design as much as fun, and the submission has fixed parts.
 
 - **How a judge plays.** The MVP reads a key from a developer's file. A judge has no such file. Before we submit, the game needs the key-entry screen or the relay from the design doc.
-- The 3D café stage and the robots, with Move, Look, Grab, Throw and Give.
+- The 3D café stage, built on T11's set and robots, with Move, Look, Grab, Throw and Give.
 - Audio.
 - A fifth persona and more scene cards and notes.
 - A 30 to 60 second gameplay video, the itch.io page (it must explain the key setup), and the zip named `TeamName_GameName`. The zip must be under 1 GB; the unzipped build can be larger.
@@ -401,7 +420,7 @@ Numbers, with `claude-haiku-5-5` at low effort:
 - **About 2 s per call:** a median of 1.5 to 2.5 s over five runs, and at most 5.7 s.
 - **Tokens:** an actor ask is 3,700 to 5,600 input tokens with a one-scene log, and 60 to 1,100 output tokens, thinking included. An input LLM ask is about 1,350 input tokens.
 - **Cost:** about $0.03 per show of 55 calls, measured. A longer log in scene 2 raises it a little. At this price, prompt caching isn't worth the extra Blueprint work.
-- The sample show in the script gives The Copycat a human slip (it wants a nap). Every AI then votes for it, and the Director picks it in a tie. That is a sanity check, not a fairness measure. T11 measures fairness.
+- The sample show in the script gives The Copycat a human slip (it wants a nap). Every AI then votes for it, and the Director picks it in a tie. That is a sanity check, not a fairness measure. T12 measures fairness.
 
 ### T04: stage screen results (2026-11-14)
 
@@ -447,7 +466,7 @@ How the client works now (later tasks call this):
 - **`BPC_LLMClient.LoadConfig()` → (Ok, Error)** reads the key and `llm.json`, keeps all of `roles`, builds the HTTP headers once and sets `Ready`.
 - **`BPC_LLMClient.Ask(Tag, Role, System, User)`.** The plan said `Ask(Tag, System, User)`. `Role` (`actor`, `input` or `director`) picks the model, effort and token limit from `llm.json`, so T07 and T09 don't have to change the signature.
 - **`OnAnswer(Tag, Ok, Speech, Vote, Reason, Pass, Verbs, Targets, Items, Error)`**, an event dispatcher. The actions come as three string arrays of the same length (verb, target, item), so no struct asset is needed. `Ok` is false for: not ready, unknown role, no reply (`transport ...`), an API error, `stop_reason` refusal or max_tokens, no text block, and a reply that isn't JSON. When the client isn't ready or the role is unknown, `OnAnswer` fires at once, inside `Ask`.
-- **Every call prints** `NHOS: LLM <tag> ok <seconds> in=<input tokens> out=<output tokens>` or `NHOS: LLM <tag> fail <reason>`. Seconds come from `UtcNow` at send and at reply. The token counts let T11 work out the cost per show.
+- **Every call prints** `NHOS: LLM <tag> ok <seconds> in=<input tokens> out=<output tokens>` or `NHOS: LLM <tag> fail <reason>`. Seconds come from `UtcNow` at send and at reply. The token counts let T12 work out the cost per show.
 - **`BPC_LLMRequest`**, new: one component per ask. `Ask` adds it to the owner actor with `Add Component by Class`, calls `Setup` and then `Send`. `Send` fires the Http Request node; both its outputs call `Finish`, which hands the reply to the client's `HandleHttp` and destroys the component.
   - Why: in one shared Event Graph, a second ask overwrites the first one's tag before its reply arrives. The node's outputs and the graph's variables exist once per Blueprint instance. A component per ask keeps each tag with its own request.
   - Its Http Request node is wired by hand, as in T01. Don't rewrite `BPC_LLMRequest`'s Event Graph with the DSL, or wire the node again afterwards.
@@ -487,7 +506,7 @@ Proven in PIE on `L_Stage`, two runs in a row:
 - Run 1: `NHOS: SETUP human=worrier decoy=visionary scene=cafe_missing_tip_jar note=give_every_turn`.
 - Run 2: `NHOS: SETUP human=overclocker decoy=worrier scene=cafe_big_decision note=hold_cup`.
 - The screen shows the scene card, my persona, role, want and note, the cast with each role and want, and the set's places and props. It never says who has the decoy. Screenshots: `Saved/Screenshots/T06/` (not in git).
-- The SETUP line names personas by `id`, so it splits on spaces, and it adds `note=<id>` for T11's analysis.
+- The SETUP line names personas by `id`, so it splits on spaces, and it adds `note=<id>` for T12's analysis.
 - In run 2, a typed line got an answer from The Worrier with the full state object: `NHOS: LLM worrier-1 ok 2.33 in=3404 out=80`.
 
 How the show state works now (T07 to T10 extend it):
@@ -557,7 +576,7 @@ Also found:
 - **`ScrollToEnd` right after `AddChild` stops short.** An auto-wrapped TextBlock reports a one-line height until it has been laid out once, and the editor in the background runs at about 3 frames per second. A 0.05 s delay was less than one frame and didn't help. Calling `ScrollToEnd` on the next 5 ticks does.
 - **The ⚡ emoji shows as a box.** Roboto has no glyph for U+26A1, and the editor log warns "Could not find Glyph Index 0 with codepoint U+26a1" at every redraw. The Overclocker uses it in most lines. Fix it in polish: a font with emoji fallback, or strip the character for display only.
 - **Canned lines must use names the input LLM can map.** "look at the window" became "stands still", because no place is called window. "look at the counter" maps to Counter.
-- **Actors reuse a tag from the prompt's example.** `prompts.json` gives "[STATUS: PETTY MODE ENGAGED]" as an example. It came back 6 times in four runs, from three personas, mostly in turn 1, and twice from two actors in the same turn. That is a prompt-tuning item for T12 if the playtest finds it blurs the personas.
+- **Actors reuse a tag from the prompt's example.** `prompts.json` gives "[STATUS: PETTY MODE ENGAGED]" as an example. It came back 6 times in four runs, from three personas, mostly in turn 1, and twice from two actors in the same turn. That is a prompt-tuning item for T13 if the playtest finds it blurs the personas.
 - **`write_graph_dsl` on a new function fails until the Blueprint compiles** after `add_function_param`: "Unknown input pin "Tag" on CallFunction|HandleReply". Compile once after adding all params.
 - **`find_node_types` and `find_nodes` have required arguments** that the docs don't stress: `context_pins` (pass `[]`) and `title` (pass `""` for all nodes).
 - **Hand-made call nodes:** `create_node` with type ID `CallFunction|<Name>` makes a call to the Blueprint's own function or custom event, and `connect_pins` wires it after the last node's `then` pin. This is the safe way to add one call to a graph that has no DSL source.
