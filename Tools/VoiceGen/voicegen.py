@@ -189,6 +189,8 @@ def voice_settings(intensity):
 
 def tts_text(text, delivery):
     """eleven_v3 treats [bracketed] text as a performance direction, not speech. Other models would read it aloud."""
+    if delivery == "none":
+        return text
     if S.get("use_delivery_tags") and S["tts_model"] == "eleven_v3" and delivery:
         direction = delivery.split(";")[0].strip().lower()
         return f"[{direction}] {text}"
@@ -364,22 +366,23 @@ def write_review(st):
     (OUT / "review.html").write_text(page, encoding="utf-8")
 
 
-def write_takes_page(show_all=False):
+def write_takes_page(show_all=False, speaker=None):
     """Audition page: pick the best take per line, then copy one short string and paste it back."""
     st = load_state()
     rows = [r for r in read_lines() if take_dir(r["Name"]).exists() and (show_all or r["Name"] not in st["picked"])]
     parts = []
-    for name in CFG["speakers"]:
+    for name in ([speaker] if speaker else CFG["speakers"]):
         mine = [r for r in rows if r["Actor"] == name]
         if not mine:
             continue
         parts.append(f"<h2>{html.escape(CFG['speakers'][name]['label'])}</h2>")
         for r in mine:
-            takes = sorted(take_dir(r["Name"]).glob("take_*.wav"))
+            first = st.get("redone", {}).get(r["Name"], 1)
+            takes = [t for t in sorted(take_dir(r["Name"]).glob("take_*.wav")) if int(t.stem.split("_")[1]) >= first]
             opts = ""
             for t in takes:
                 k = t.stem.split("_")[1]
-                opts += (f"<label class='t'><input type='radio' name='{r['Name']}' value='{k}'{' checked' if k == '1' else ''}> "
+                opts += (f"<label class='t'><input type='radio' name='{r['Name']}' data-default='{first}' value='{k}'{' checked' if int(k) == first else ''}> "
                          f"take {k}</label>{audio_tag(t)}")
             opts += f"<label class='t regen'><input type='radio' name='{r['Name']}' value='regen'> redo this line</label>"
             parts.append(f"<div class='line'><b>{html.escape(r['Subtitle'])}</b> "
@@ -390,24 +393,30 @@ def write_takes_page(show_all=False):
             ".t{white-space:nowrap}.regen{color:#b3261e}small{color:#7a6f55}audio{height:32px}"
             "#bar{position:sticky;top:0;background:#1c1a1f;color:#fbf4de;padding:10px 14px;margin:0 0 14px;z-index:9;display:flex;gap:12px;align-items:center}"
             "button{font:inherit;padding:6px 14px;cursor:pointer}</style>"
-            "<div id='bar'><button onclick='copyChoices()'>Copy my choices</button><span id='msg'>Everything defaults to take 1. "
+            "<div id='bar'><button onclick='copyChoices()'>Copy my choices</button><span id='msg'>Every line is preset to its first take. "
             "Change only the ones you want, then click Copy and paste the text to Claude.</span></div>"
             "<h1>Take 37 takes</h1>" + "".join(parts) +
             "<script>function copyChoices(){const out=[];const seen=new Set();document.querySelectorAll('input[type=radio]').forEach(i=>{"
             "if(seen.has(i.name))return;seen.add(i.name);const v=document.querySelector('input[name=\"'+i.name+'\"]:checked').value;"
-            "if(v!=='1')out.push(i.name+'='+v);});const text=out.length?out.join(' '):'all-take-1';navigator.clipboard.writeText(text).then(()=>{"
+            "if(v!==i.dataset.default)out.push(i.name+'='+v);});const text=out.length?out.join(' '):'all-take-1';navigator.clipboard.writeText(text).then(()=>{"
             "document.getElementById('msg').textContent='Copied: '+text;},()=>{prompt('Copy this:',text);});}</script>")
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "takes.html").write_text(page, encoding="utf-8")
-    return OUT / "takes.html"
+    out = OUT / (f"takes_{speaker}.html" if speaker else "takes.html")
+    out.write_text(page, encoding="utf-8")
+    return out
 
 
 def cmd_takes(a):
-    print("saved", write_takes_page(a.all))
+    if a.split:
+        for n in CFG["speakers"]:
+            if any(take_dir(r["Name"]).exists() and (a.all or r["Name"] not in load_state()["picked"]) for r in read_lines() if r["Actor"] == n):
+                print("saved", write_takes_page(a.all, n))
+    else:
+        print("saved", write_takes_page(a.all))
 
 
 def cmd_apply(a):
-    """Apply the string copied from takes.html: 'VO_X_Y_01=2 VO_Z=regen', or 'all-take-1'. Unlisted lines get take 1."""
+    """Apply the string copied from takes.html: 'VO_X_Y_01=2 VO_Z=regen', or 'all-take-1'. Unlisted lines get their first take (the first new take for redone lines)."""
     st = load_state()
     choices = {} if a.choices.strip() == "all-take-1" else dict(t.split("=", 1) for t in a.choices.split())
     regen = [n for n, v in choices.items() if v == "regen"]
@@ -416,7 +425,7 @@ def cmd_apply(a):
         n = r["Name"]
         if n in st["picked"] or not take_dir(n).exists() or n in regen:
             continue
-        take = choices.get(n, "1")
+        take = choices.get(n, str(st.get("redone", {}).get(n, 1)))
         if take.isdigit() and (take_dir(n) / f"take_{take}.wav").exists():
             pick(n, int(take), st)
             picked += 1
@@ -442,9 +451,10 @@ def cmd_redo(a):
         d = take_dir(n)
         k = len(list(d.glob("take_*.wav"))) + 1 if d.exists() else 1
         for j in range(k, k + a.takes):
-            pcm_to_wav(speak(approved_voice(st, r["Actor"]), tts_text(r["Subtitle"], r["Delivery"]), r["Intensity"]), d / f"take_{j}.wav", out_rate())
+            pcm_to_wav(speak(approved_voice(st, r["Actor"]), tts_text(r["Subtitle"], a.delivery or r["Delivery"]), r["Intensity"]), d / f"take_{j}.wav", out_rate())
             print(f"  {n} take {j}")
         st["picked"].pop(n, None)
+        st.setdefault("redone", {})[n] = k
     save_state(st)
     print("New takes added. Run 'takes' to audition them.")
 
@@ -465,9 +475,11 @@ def main():
     sp.add_argument("--dry-run", action="store_true"); sp.add_argument("--yes", action="store_true"); sp.set_defaults(fn=cmd_batch)
     sp = sub.add_parser("pick"); sp.add_argument("name"); sp.add_argument("take", type=int); sp.set_defaults(fn=cmd_pick)
     sp = sub.add_parser("pick-all"); sp.add_argument("take", type=int); sp.set_defaults(fn=cmd_pick_all)
-    sp = sub.add_parser("takes"); sp.add_argument("--all", action="store_true", help="include lines already picked"); sp.set_defaults(fn=cmd_takes)
+    sp = sub.add_parser("takes"); sp.add_argument("--all", action="store_true", help="include lines already picked")
+    sp.add_argument("--split", action="store_true", help="one page per speaker (smaller files)"); sp.set_defaults(fn=cmd_takes)
     sp = sub.add_parser("apply"); sp.add_argument("choices", help="the string copied from takes.html"); sp.set_defaults(fn=cmd_apply)
     sp = sub.add_parser("redo"); sp.add_argument("names", nargs="+"); sp.add_argument("--takes", type=int, default=2)
+    sp.add_argument("--delivery", default="", help="use this performance note instead of the CSV one")
     sp.add_argument("--yes", action="store_true"); sp.set_defaults(fn=cmd_redo)
     sp = sub.add_parser("status"); sp.set_defaults(fn=cmd_status)
     a = ap.parse_args()
