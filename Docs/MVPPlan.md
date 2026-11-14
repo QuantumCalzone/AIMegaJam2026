@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T09 · Opus 5.5 · high (then T10 · Opus 5.5 · high, which needs T09)
+**Next up:** T10 · Opus 5.5 · high (then T11 · Sonnet 5.5 · medium, which needs T10)
 
 ## Goal
 
@@ -197,7 +197,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** with autoplay on, a PIE run prints `NHOS: FREETALK DONE` after 8 talk entries (lines or passes).
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`. T08 also added a `free_talk` list to `Content/NHOS/Data/autoplay.json`.
 
-- [ ] **T09 The Cut: votes, tiebreak and reveal**
+- [x] **T09 The Cut: votes, tiebreak and reveal**
   - **Model and effort:** Opus 5.5, high. Several new parts: the vote screen, the tally and the Director call.
   - **Depends on:** T08
   - **Needs:** editor + Unreal MCP running, my API key.
@@ -207,7 +207,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
     3. On a tie, ask the Director, who is not an actor, to choose among the tied actors with a one-line reason.
     4. Show the stamp, `<NAME>: AI` or `<NAME>: HUMAN`, and mark that seat as cut.
   - **Done when:** with autoplay on, a PIE run prints `NHOS: CUT <persona> tiebreak=<yes|no>` and the stamp shows (screenshot). With the local `force_tie` switch on, the Director's line appears.
-  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`.
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`. T09 also added a `vote` list to `Content/NHOS/Data/autoplay.json` and `force_tie` to `Docs/switches.example.json`.
 
 - [ ] **T10 Reactions, the final two, end screens and restart**
   - **Model and effort:** Opus 5.5, high. Many parts, and the first run of the whole loop usually needs debugging.
@@ -625,3 +625,48 @@ Also found:
 - **Readback hides `false` bool arguments.** `(Class|WBPStage|SetPassEnabled :self Stage :Enabled false)` reads back as `(Class|WBPStage|SetPassEnabled (Variables|Default|GetStage))`. The widget's `SetPhase` reads back as `Variables|Default|SetPhase` with two arguments, as in T06. Write it as `Class|WBPStage|SetPhase :self ... :Phase ...`.
 - **Compiling `BP_Show` marked `BPC_LLMClient` dirty** with no change to it. It was left unsaved.
 - **Editing `autoplay.json` brought up the editor's Auto Reimport prompt again.** This machine's `Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini` still has the engine's old `AutoReimportDirectorySettings` line, which overrides the project file (see the Config commit). Removing that line with the editor closed should stop it.
+
+### T09: the cut results (2026-11-14)
+
+Proven in PIE on `L_Stage`:
+
+- **Autoplay on:** after `NHOS: FREETALK DONE`, the three AIs and my seat voted, the votes showed with their reasons, and the log printed `NHOS: TALLY The Visionary 2, The Copycat 1, The Overclocker 1` and `NHOS: CUT visionary tiebreak=no votes=2 reveal=HUMAN`. The stamp "THE VISIONARY: HUMAN" shows in large red text under the header. The Cut took about 3 s.
+- **`force_tie` on:** the four votes were rewritten into a cycle, so all four tied at 1 vote. The Director's line showed as `The Director breaks the tie and cuts The Overclocker: "Hedged answers, a passed round, and 'I think. Probably.' Too unsure for a machine. Cut."`, and the log printed `NHOS: CUT overclocker tiebreak=yes votes=1 reveal=HUMAN`.
+- **Autoplay off:** I played the scene and Free Talk through the Slate inspector. In The Cut, a reason typed before a pick got "(Click a name first, then type your reason.)". The vote row listed the three other actors. A click picked a name, a second click changed the pick, and the picked button showed as `> The Worrier <`. My typed reason went through the input LLM ("Thats" and "argu" fixed) and showed as `The Copycat votes for The Worrier. "..."`. All three AIs voted for me, because I had passed twice: `NHOS: CUT copycat tiebreak=no votes=3 reveal=HUMAN`.
+- No call failed, and the log has no script warnings. Screenshots: `Saved/Screenshots/T09/` (not in git).
+
+How The Cut works now (T10 extends it):
+
+- **`EndFreeTalk`** ends by calling `StartCut`.
+- **`StartCut`** sets `Phase` to "the cut", clears the pending asks and the stamp, calls `LoadCutSwitches`, resets the per-seat arrays `VoteTarget` (-1), `VoteReason` and `VoteTries`, and sets `VoteLeft` to the number of seats on stage. It fills `PickSeats` (the seats on stage except mine) and shows them as vote buttons (`ShowVotePick`), then asks every AI on stage at once (`AskVote`). With autoplay on, my seat picks a random name from `PickSeats` and sends `CannedVote[(scene-1) % count]` as the reason.
+- **`AskVote(Seat)`** sets `AskOpts` to the names on stage except the voter's, calls `ActorState` with the `vote` ask and `now` = "the cut, voting", clears `AskOpts`, and sends the ask under a `<persona id>-<n>` tag.
+- **`ActorState`** now sends `game_messages` from `GameMsgs` and `options` from `AskOpts`. Both stay empty in the scene and Free Talk. To give an ask options (T10's closing vote), fill `AskOpts` before `ActorState` and clear it after.
+- **`GameMsgs`** holds the show's game messages: the tie, the Director's pick and the reveal, such as `The Visionary is cut with 2 votes. Reveal: THE VISIONARY: HUMAN.` `StartScene` clears it only when `SceneNum` is 1, so scene 2's asks still see scene 1's reveal. `StartScene` also hides the stamp and the vote row.
+- **The human seat:** each vote button sends `OnSend("#vote <i>")`. `HandleSend` sends a line that starts with `#vote ` to `PickVote(Index)`, which sets `HumanPick` and shows the pick. A typed line in "the cut" goes to `SendHumanVote` only after a pick. `SendHumanVote` disables the vote row, shows `> You vote for <name>: <line>` (not in the shared log), and sends the line to the input LLM with `InputState(Line, "free talk")`, so the reason comes back as cleaned speech.
+- **`OnAnswer`** now stores `Vote` and `Reason` in `RVote` and `RReason` before it calls `HandleReply`, so `HandleReply` kept its signature. `HandleReply` sends a reply to `StoreVote` in "the cut" and to `PlayTiebreak` in "tiebreak".
+- **`StoreVote(Seat, Ok, Vote, Reason, Speech)`:** my seat votes for `HumanPick`, with the input LLM's speech as the reason. An AI vote counts when `FindVoteSeat` matches it to a seat on stage that isn't the voter, case-insensitively, with or without a leading "The". Otherwise the AI is asked again once (`NHOS: VOTE retry <id> vote=<vote>`), then given a random valid target with an empty reason (`NHOS: VOTE random <id> -> <id>`). Each counted vote calls `VoteIn`, which calls `Tally` when `VoteLeft` reaches 0.
+- **`CleanReason`** runs `CapWords`, then trims up to three dangling closers at the end: a `)` or `]` with more closers than openers, or an odd `"`.
+- **`Tally`** hides the vote row. With `force_tie` it rewrites the targets into a shuffled cycle. It counts the votes into `VoteCount` and, in `OnStage` order, adds each vote to the shared log (`when` "scene n, the cut", `does` from `does_templates.vote`, `says` the reason), shows `<Name> votes for <Target>. "<reason>"` and prints `NHOS: LOG`. Then it prints `NHOS: TALLY ...`. One top seat goes to `CutActor`. A tie sets `Tiebreak`, adds the tie message to `GameMsgs`, prints `NHOS: TIE ...` and calls `AskDirector`.
+- **`AskDirector`** sets `Phase` to "tiebreak" and sends `DirectorState` (show, cast, log, game_messages, options = `TiedNames`, the `tiebreak` ask) with the `director` prompt under a `director-<n>` tag. **`PlayTiebreak`** accepts a vote for a tied seat, asks again once, then picks a random tied seat. **`DirectorCut`** adds the Director's line to `GameMsgs` and the screen, prints `NHOS: DIRECTOR <id> | <reason>` and calls `CutActor`. The Director's line goes to `GameMsgs`, not the shared log, because the Director is not an actor.
+- **`CutActor(Seat)`** sets `CutSeat` and `SeatCut`, adds the reveal to `GameMsgs`, calls `BuildCast`, shows the stamp, sets the header to "THE CUT: <STAMP>", prints `NHOS: CUT <id> tiebreak=<yes|no> votes=<n> reveal=<AI|HUMAN>` and calls `EndCut`. The info panel still shows the old cast until the next `ScenePrep`.
+- **`EndCut`** sets `Phase` to "cut done" and adds "That's the cut. Reactions come next." **T10 replaces its body to start the reactions.**
+- **`WBP_Stage`:** `StampText` (44 pt, red, collapsed) sits under the header. `VoteRow` sits between the log and the input row: a "Vote to cut:" label and `VoteBtn0` to `VoteBtn2` (not focusable) with `VoteLbl0` to `VoteLbl2`. `SetVoteOptions(Names)` shows one button per name and hides the row for an empty list. `SetVoteEnabled(Enabled)` and `SetStamp(Stamp)` ("" hides it) are new too.
+- **Switches:** `LoadCutSwitches` reads `force_tie` from `Local/switches.json` at each Cut and prints `NHOS: SWITCHES force_tie=<true|false>`. `autoplay.json` has a `vote` list, one reason per scene.
+- The DSL source is `Saved/T09/src/bp_show_t09.txt` and `wbp_stage_t09.txt` (not in git).
+
+Numbers, with `claude-haiku-5-5` at low effort:
+
+- **AI votes:** 8 of the 9 calls measured, 1.3 to 3.3 s, 5,060 to 5,370 input tokens, 82 to 377 output tokens. They run at once, so the votes take as long as the slowest call.
+- **Input LLM for my reason:** 1.7 to 3.0 s, about 1,340 input tokens.
+- **Director:** 3.7 s, 3,498 input tokens, 412 output tokens.
+- No vote needed a retry or a random target: 9 AI votes and 1 Director pick all named a valid option.
+
+Also found:
+
+- **The human was cut in scene 1 in every run.** The canned lines read as human ("This one is mine. I think. Probably."), and in the manual run I passed twice. The Director also picked the human out of a four-way tie. That is an early sign, not a fairness measure: T12 measures it. **T10 heads-up:** with autoplay, most shows will end in scene 1, so the branch back to Scene Prep for scene 2 may need a test switch to run unattended.
+- **`force_tie` rewrites only the targets,** so a shown reason can name someone other than the vote. It is a test switch only.
+- **In a widget Blueprint, `Class|Text|SetText` makes a `VariableSet` node on `TextBlock.Text`.** Its pins are `Text`, then `self`, so positional arguments put the widget into the text pin ("Could not connect pin ReturnValue to self"). Write it as `(Class|Text|SetText :self <widget> :Text <text>)`. `Class|Factory|SetText`, the name `read_graph_dsl` prints, is a different node (it sets `Factory.bText`); never write it.
+- **Enum pins take quoted value names:** `(Widget|SetVisibility :self <widget> :InVisibility "Collapsed")`.
+- **Big graphs are slow to write.** `Tally` took 36 s in `write_graph_dsl`. A batch of 9 or 10 graph writes took 65 to 90 s, close to the client's limit, so keep batches smaller.
+- **Script tools return strict dicts:** `.get(key, default)` raises inside `execute_tool_script`; use `[key]`.
+- **The Slate inspector's level editor splitter** was `sp4` this time. Find it in `Snapshot("", 14)` as the splitter as wide as the viewport area, then `Observe` it with `maxDepth` 80.
