@@ -2,7 +2,7 @@
 
 > **For the Claude session that reads this file:** if you were given this file with no other instructions, follow the Prompt section below. That is the request. The sections before it are for the person.
 
-Instructions for one Claude Fable 5.2 session. It starts Claude Opus 5.5 sessions for the tasks in [MVPPlan.md](MVPPlan.md) and runs as many at the same time as the editor and the plan's rules allow, up to the submission.
+Instructions for one Claude Fable 5.2 session. It starts Claude Opus 5.5 sessions at xhigh effort for the tasks in [MVPPlan.md](MVPPlan.md) and runs as many at the same time as the editor and the plan's rules allow, up to the submission.
 
 ## Before you start
 
@@ -18,11 +18,11 @@ The dispatcher only starts sessions and keeps track of them. Each task runs in a
 - **`BP_Show.uasset`.** Most editor tasks change it, and binary assets can't be merged.
 - **You.** Most tasks stop for your OK or a playtest, so every extra session is one more thing waiting on you. Playtests now run in a game window outside the editor (see the plan's build notes), so the editor lane can go on while you play.
 
-So the most that run at the same time are one editor session, one data session and the prep sessions, which touch only new files of their own.
+So only one session drives the editor at a time. Beyond that, start a session for any work that conflicts with no running session (step 3.3): more sessions working at once is the goal.
 
 ## Prompt
 
-You are the dispatcher for the jam project in this folder. You start Claude Opus 5.5 sessions that do the tasks in `Docs/MVPPlan.md`, and you keep each lane busy until the submission. You do no task work yourself: you don't edit project files, drive the editor, commit, or unlock, and you push only when I ask (step 3.6).
+You are the dispatcher for the jam project in this folder. You start Claude Opus 5.5 sessions at xhigh effort that do the tasks in `Docs/MVPPlan.md`, and you keep each lane busy until the submission. You do no task work yourself: you don't edit project files, drive the editor or commit. You push and unlock only as step 3.6 says.
 
 First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/MVPPlan.md`. In the plan, read "How to run a task", "Claiming a task", the "Time check", the build notes and every unchecked task.
 
@@ -32,7 +32,7 @@ First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/MVPPlan.
 |---|---|---|
 | Editor | T14, T17, T18, T19, T20, T21, T24, T22 | One session at a time. These tasks drive the editor, and most change `BP_Show.uasset`. T22 packages the build and needs the editor closed. |
 | Data | T13, T15, T16 | One session at a time. They share `Content/NHOS/Data/*.json` and `Tools/check_prompts.py`, and use the editor only for a short PIE check. |
-| Prep | T20 prep (audio), T21 prep (relay server) | No editor. Each one writes only new files of its own, so both can run beside the other lanes. Start each one once. |
+| Prep | T20 prep (audio), T21 prep (relay server), and any other piece of a later task that conflicts with no running session (step 3.3) | No editor. Each one writes only new files of its own, so it can run beside the other lanes. Start each one once. |
 | Last | T23, then T25 | T23 needs me for the video, the itch.io page and the form. T25 can run after the submission. |
 
 ### 1. Check where things stand
@@ -51,17 +51,18 @@ First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/MVPPlan.
 
 Start each task as its own Claude Code session with your session-starting tool (`start_session`):
 
-- initiation `user_asked`, context `fresh`, model `claude-opus-5-5`, `use_worktree: false`
-- the effort and name given below
+- initiation `user_asked`, context `fresh`, model `claude-opus-5-5`, effort `xhigh`
+- `use_worktree: false` for every session that drives the editor or runs PIE. A session that doesn't need the editor gets `use_worktree: true` when its files could clash with another session's uncommitted work in this folder, and its brief adds: "You work in a worktree: follow the plan's Worktrees build note."
+- the name given below
 - the matching brief from "Briefs" as the prompt, and the text under "Background" as the background
 
 Use sessions, not subagents. Each task stops to ask me things (an OK on prompt text, a download, a playtest), and a subagent can't do that. If you can't start sessions, stop and tell me.
 
 Start these now if the task is still free and its lane is empty:
 
-- **Editor lane:** T14, effort `high`, name `t14-ui-polish`.
+- **Editor lane:** T14, name `t14-ui-polish`.
 - **Data lane:** T13 is probably still running in a session I started myself, so leave it alone. If T13 is done, start T15.
-- **Prep:** T20 prep, effort `medium`, name `t20-audio-prep`; T21 prep, effort `high`, name `t21-relay-prep`.
+- **Prep:** T20 prep, name `t20-audio-prep`; T21 prep, name `t21-relay-prep`.
 
 ### 3. Keep the lanes busy
 
@@ -70,9 +71,16 @@ You get a note each time a session you started ends a turn. Don't poll. On each 
 1. **Check git, not only the note.** Look for the task's commit in `git log`, its checked box in the plan, and its status file gone.
 2. **Tell me what is waiting on me.** If a session waits for me, tell me in one line what it needs, with a link to the session. When two sessions both wait for a playtest, tell me that one show can answer both. A session that waits only for my playtest doesn't hold the editor lane: I play in a game window, so start the next editor task, and tell me that it doesn't touch `Local/switches.json` while I play.
 3. **Fill free lanes.** When a lane is free, start its next task with the task brief. The next task is the first in the lane's order whose box is unchecked, whose Depends-on tasks are all checked, and that has no claim lock and no status file. Don't start a task whose Touches overlap those of a running session. Also start T23 when T22 is done, and T25 when T23 is done. They are the "Last" row.
-4. **Model and effort.** Every session runs `claude-opus-5-5`, even where the plan names Sonnet or Haiku; that is my choice. Use the effort the plan gives the task. Use `xhigh` only to retry a task that failed once, and never `max`.
+   - **Start more when nothing conflicts.** Don't hold work back to fit the lanes. Also start a session for any free task, or any piece of a later task, that conflicts with no running session. That means:
+     - its Touches don't overlap a running session's files or assets
+     - no running session lists its files in `Agents/status/`
+     - it doesn't need the editor while another session drives it
+     - it doesn't touch `Local/switches.json` while I'm playing
+
+     A piece of a later task writes only new files of its own, the way the prep sessions did. One example is T23's lists of assets, tools and pre-jam work, and its plan for the video. Write its brief the way the prep briefs are written: what to do, what not to touch, and when it's done. If you can't tell whether two pieces of work conflict, ask me.
+4. **Model and effort.** Every session runs `claude-opus-5-5` at effort `xhigh`, whatever model and effort the plan names for the task. That is my choice. Never use `max`.
 5. **T22 needs the editor closed.** Before you start T22, ask me to close the editor, and wait for my answer.
-6. **Push only when I ask.** Then run `git push`, and release the claim (`git lfs unlock Docs/claims/Txx`) of every task whose commit went up. If the push is rejected, tell me. Don't pull or rebase while other sessions have work that isn't committed.
+6. **Pushing.** Each task session pushes its own commit, and may push without asking. If a commit sits unpushed after its session has ended, run `git push` yourself. Then release the claim (`git lfs unlock Docs/claims/Txx`) of every checked task whose commit went up. If the push is rejected, tell me. Don't pull or rebase while other sessions have work that isn't committed.
 7. **Watch the clock.** Compare the time with the plan's "Time check". When a target is more than an hour late, tell me and propose the next cut from the plan's cut order. Cut nothing without my OK.
 
 ### Background
@@ -87,11 +95,11 @@ Pass this as the background of every session:
 
 End every brief with these lines:
 
-> - Several sessions work in this folder and on this branch at the same time. Stage only your own files, by path (never `git add -A` or `git add .`). Don't switch branches. Don't push unless I ask.
+> - Several sessions work in this folder and on this branch at the same time. Stage only your own files, by path (never `git add -A` or `git add .`). Don't switch branches. Push your commit with `git push` without asking; if the push is rejected, don't pull or rebase, and tell me. Never force-push.
 > - Only the editor-lane session drives the Unreal Editor. If you need the editor only for a PIE check, tell me before you start PIE and wait for my go, so I can pause the editor session between steps.
 > - When you need me to play, follow the "Playtests run in a game window" build note in the plan: save, check that a free autoplay show reaches `SHOW END`, set autoplay off, and give me the game-window command. Don't ask me to play in PIE. If another session's playtest is still open, don't change `Local/switches.json` until I say it's done.
 > - In the editor, read only the graphs you need, keep graph sources in `Graphs/`, and build new systems in their own Blueprints, as the plan's build notes say.
-> - I picked Opus 5.5 for this session on purpose, so don't ask me about the model.
+> - I picked Opus 5.5 at xhigh effort for this session on purpose, so don't ask me about the model or the effort.
 > - When you finish, or stop to wait for me, end your turn with one line that says which.
 
 #### Task brief

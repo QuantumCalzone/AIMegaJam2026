@@ -52,8 +52,8 @@ When I say **"Next task"** or **"Next ask"**:
 3. Check its Needs. If something is missing (for example, Unreal MCP is not connected), tell me what to do and stop.
 4. Claim the task (see "Claiming a task"). Write a status file, `Agents/status/mvp-T07.md`, and lock assets as `Agents/README.md` says.
 5. Do the work, then run the Done-when check. If the check fails, do not mark the task done: write what blocks it under the task (a `Blocked:` line) and tell me.
-6. Make one commit that holds the work, the checked box, the updated "Next up" line, and one line in [DevLog.md](DevLog.md) (the jam's Glass Box category needs a dev log). Message: `T07: <title>`. Do not push unless I ask.
-7. Delete the status file. Keep the claim until the commit is pushed. End by naming the next task with its model and effort, so I can switch before I send "Next task".
+6. Make one commit that holds the work, the checked box, the updated "Next up" line, and one line in [DevLog.md](DevLog.md) (the jam's Glass Box category needs a dev log). Message: `T07: <title>`. Then push it with `git push`. You don't need to ask. If the push is rejected, don't pull or rebase while other sessions have uncommitted work in this folder; tell me.
+7. Delete the status file. Once the commit that checks the box is pushed, release the claim. Unlock the assets the task changed too, unless another running session still has uncommitted changes in them (`git status`, `Agents/status/`). End by naming the next task with its model and effort, so I can switch before I send "Next task".
 
 Changes to the plan are commits too (`Plan: <what changed>`), for example when a spike or a playtest changes the design. A plan change that adds a task also adds its claim file.
 
@@ -63,7 +63,7 @@ A claim is an LFS lock on the task's claim file. Everyone sees it at once, on ev
 
 - **Claim:** `git lfs lock Docs/claims/T07`
 - **See all claims:** `git lfs locks`
-- **Release:** `git lfs unlock Docs/claims/T07`, after the task's commit is pushed. Until the push, other machines see neither the work nor the checked box, so the lock is what tells them the task is taken. When I ask you to push, release the claims of every task that went up.
+- **Release:** `git lfs unlock Docs/claims/T07`, after the commit that checks the task's box is pushed. Until the push, other machines see neither the work nor the checked box, so the lock is what tells them the task is taken. A task that waits for my playtest or verdict keeps its claim until its box is checked. Whoever pushes releases the claims of every checked task that went up.
 - A task is free when its box is unchecked here and `git lfs locks` shows no lock on its claim file.
 - If the lock fails because a teammate holds it, take the next free task.
 - If my own account holds the lock on an unchecked task and there is no status file for it in `Agents/status/`, an earlier session may have stopped halfway. Ask me before taking it.
@@ -76,7 +76,8 @@ Never edit the claim files. They exist only to be locked.
 - **Opus 5.5, high:** the spike, architecture, AI prompt design, Blueprint systems with many parts, debugging.
 - **Sonnet 5.5, medium:** well-specified Blueprint or UMG work that follows a pattern already in the project.
 - **Haiku 5.5, low:** docs, config and small mechanical edits.
-- Use **xhigh** only to retry a task that failed once. Never use **max**.
+- **Since 2026-11-14, every task runs on Opus 5.5 at xhigh**, whatever its own "Model and effort" line says. That is my choice. Never use **max**.
+- Start a session for any work that conflicts with no running session, rather than leave it waiting (see `Docs/LaunchAgents.md`, step 3).
 
 ## Build notes for every task
 
@@ -98,6 +99,10 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 - **Unreal MCP.** Do editor work through Unreal MCP. One call at a time, each under about 100 seconds (the client stops waiting at about 120). Split long work, and save after each step. Write graphs with `BlueprintTools.write_graph_dsl`, and batch calls with `ProgrammaticToolset.execute_tool_script`. Read "T01: spike results" in Findings first: it lists the DSL rules that cost time to find. MCP can't create a level, so a person makes new levels in the editor (File > New Level > Empty Level).
 - **Read only the graphs you need.** List a Blueprint's graphs, then read only the ones the task changes or calls, at about 6 s each. Never dump every graph of `BP_Show`: a full dump took 7 to 8 minutes in T18 and T26, and one was too big for a tool result.
 - **Graph sources live in `Graphs/`.** `Graphs/<Blueprint>/<Graph>.txt` holds the DSL source last written to each graph, one file per graph, as written (shorthand, before `Tools/dslpp.py`). To change a graph, start from its file and push it. If it has no file yet, read the graph from the editor and write your source from that. Commit the updated files with the task. A read-back is for reading only, because writing one back drops data (T06). If you change a graph some other way, like a pin value or a hand edit in the editor, make the same change in its file, or delete the file. The per-task copies in `Saved/Txx/src/` from before 2026-11-14 may be out of date.
+- **Worktrees, for sessions that don't need the editor.** The editor has the repo folder open, so a session that drives the editor or runs PIE works there. A session that doesn't need the editor may work in its own git worktree, on its own branch, when its files could clash with another session's uncommitted work in the repo folder (for example `Content/NHOS/Data/*.json` or `Docs/`).
+  - Never change a `.uasset` or `.umap` in a worktree, because binary assets can't be merged.
+  - A worktree has no `Local/` folder, and nothing gets copied into it, the key file least of all. Run `Tools/check_prompts.py` there with `--offline`, `--free` or `--relay`. A run that calls the providers with direct keys waits until after the merge, in the repo folder.
+  - When the work is committed, merge `noHumansOnSet` into your branch and fix any conflicts there. Then merge your branch into the repo folder with `git -C <repo folder> merge --no-ff <branch>`, and push. If that merge stops because it would overwrite uncommitted changes in the repo folder, leave it and tell me.
 - **New systems get their own Blueprint.** Put new logic in a new Blueprint or component, or in the actor it belongs to (such as `BP_Robot`), and have `BP_Show` call it from one node. Scripts that wrote `BP_Show` graphs took about 43 s each, and every editor task so far has needed the `BP_Show` lock.
 - **Playtests run in a game window, not PIE.** When a task needs me to play, it saves every asset it changed, checks that the saved game runs (a free autoplay show reaches `SHOW END`), sets `autoplay` to false in `Local/switches.json`, and gives me the game-window command from `CLAUDE.md`. The game window plays what is saved on disk, so the editor stays free and the next task can start while I play. Until I say I'm done, no session changes `Local/switches.json`, because the game window reads it too. Its log is a second file in `Saved/Logs/`. This hasn't been tried yet. The first task that uses it writes the result in Findings.
 - **Each task leaves the game runnable.** One task = one session = one commit, about an hour of agent work at most.
