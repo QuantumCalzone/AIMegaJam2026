@@ -30,3 +30,12 @@ Agents/status/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Art pipeline secrets
+Tools/ArtGen/.comfy_api_key
+Tools/VoiceGen/.elevenlabs_api_key
+# Local secrets written by `elevenlabs onboard`
+/.env.local
+Art/Voice/*.html
+Art/Generated/*/review.html
+Art/Voice/tests/

@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the Blank Blueprint template (`TP_BlankBP`), so it is **Blueprint-only**: there is no `Source/` folder, no `.Target.cs` files and nothing to compile. Game logic lives in `.uasset`/`.umap` files under `Content/`.
+Unreal Engine 5.8 game project for the AI Mega Jam 2026. It started from the Blank Blueprint template (`TP_BlankBP`). On the `Take37` branch it gained a C++ module, **`Take37`** (`Source/Take37/`), plus `AIMegaJam2026.Target.cs` and `AIMegaJam2026Editor.Target.cs`, for the game "TAKE 37!". The design is in `.claude/Take37/TAKE37_GDD.md` (local, untracked). Gameplay logic is C++; Blueprints and data assets are for wiring and tuning only.
+
+**Building C++ needs a toolchain:** Windows needs Visual Studio 2022 with the "Game development with C++" workload and a Windows 10/11 SDK (10.0.19041 or newer); macOS needs Xcode. Compile the editor with `<UE_ROOT>/Engine/Build/BatchFiles/Build.bat AIMegaJam2026Editor Win64 Development -Project="<PROJECT>"`. First-time content setup (greybox material, `DT_Barks`, stage map) is `Tools/Editor/setup_take37.py`; UI fonts are imported by `Tools/Editor/import_fonts.py` (needs the full editor); their headers say how to run them. Art production (concept images, then Meshy/Rodin/Tripo 3D models through ComfyUI) is `Tools/ArtGen/artgen.py`; its docstring has the commands. Voice lines go through `Tools/VoiceGen/voicegen.py` (ElevenLabs voice design, approval, batch generation; its docstring has the commands) and `Tools/Editor/import_vo.py`. Outside assets are listed in `Art/ASSETS.md`.
 
 ## Game jam rules (2026 Epic AI MegaJam)
 
