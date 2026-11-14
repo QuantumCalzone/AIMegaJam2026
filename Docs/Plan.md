@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T26 (five actors), T17 (stage art) and T19 (the robots act out their actions) are built and committed, and each waits for me: its `Waiting:` line says what is left. T20 (audio) waits for T19's box. The first task that is free to start is T21 (Opus 5.5 · high): how a judge plays.
+**Next up:** T26 (five actors), T17 (stage art) and T19 (the robots act out their actions) are built and committed, and each waits for me: its `Waiting:` line says what is left. T20 (audio) waits for T19's box. T27 to T31, the UI fixes from my playtest on 2026-11-14, wait for all three boxes, because those tasks still hold the locks on `WBP_Stage`, `BP_Show` and `L_Stage`. The first task that is free to start is T21 (Opus 5.5 · high): how a judge plays.
 
 ## Goal
 
@@ -20,11 +20,11 @@ First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), 
 |---|---|
 | Plain speech (T13), UI/UX polish (T14) and story scenes (T15) | Sat Nov 14, by noon |
 | One LLM per AI player (T16, T18) and the stage art (T17) | Sat Nov 14, by 6 PM |
-| Robots act out their actions (T19), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
+| Robots act out their actions (T19), the UI fixes from my playtest (T27 to T31), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
 | Packaged and played (T22), submission ready (T23) | Sun Nov 15, by 2 PM |
 | Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
 
-12 tasks at up to an hour each is about 12 hours of agent time, plus your time on checks and playtests. Two lanes can run at once: tasks that need no editor (T13, T15, T16, and finding audio files for T20) beside the editor tasks (T14, T17, T18 to T21), which go one at a time. If we fall behind, cut in this order: T24 (timers), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
+12 tasks at up to an hour each is about 12 hours of agent time, plus your time on checks and playtests. Two lanes can run at once: tasks that need no editor (T13, T15, T16, and finding audio files for T20) beside the editor tasks (T14, T17, T18 to T21), which go one at a time. If we fall behind, cut in this order: T24 (timers), then T31 (Tab completion), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
 
 ## How to run a task
 
@@ -160,6 +160,65 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset`, new `Content/NHOS/Stage/BP_Prop.uasset` and place markers, `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Core/BP_Show.uasset`. T19 also added `BP_PlaceMark`, `BP_StageDirector`, five `M_Set` instances and `Graphs/BP_Prop/`, `BP_PlaceMark/`, `BP_StageDirector/`, `BP_Robot/`, `BP_Show/ActorLine.txt` and `StagePrep.txt`.
   - **Waiting:** the work is done, saved and committed (see "T19: robots act out their actions" in Findings; handoff in `Agents/handoffs/`). Left: the free autoplay check (needs `autoplay: true` in `Local/switches.json`, then back to false), then I play one show in a game window and see a throw land.
 
+- [ ] **T27 The screen floats over the stage**
+  - **Model and effort:** Opus 5.5, high. A new layout for the main screen, with many widget parts, plus the camera.
+  - **Depends on:** T26 (the vote row and labels in `WBP_Stage`, and its lock), T17 (the camera in `L_Stage`), T19 (the lock on `L_Stage`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
+  - **Why:** my playtest on 2026-11-14. The panels take up almost half the screen. The UI should float on top of the game, not block it. The input box, its hint and the text I type are too light to read.
+  - **Steps:**
+    1. **The stage fills the window.** Move `StageCamera` so the theater fills the whole 16:9 frame, not only the band above the log. Check at 1600 × 900, the game-window size.
+    2. **Panels float over the stage.** No full-width band. The chat sits at the bottom left, about a third of the width and 40% of the height, on a dark panel at about 75% opacity, newest line at the bottom. The input row and its controls (Send, Pass, the vote buttons, See the results) sit under the chat. My info card is a small panel at the top right (T28 decides what it shows in each phase). The header is a slim strip at the top left. The rest of the window is the stage, and the reveal stamp stays centered on it. The title, keys and end screens don't change.
+    3. **Nothing important is hidden.** No robot, robot label, held prop or the reveal stamp sits behind a panel. If the chat covers a robot at Left, move the camera or the chat, not the robots.
+    4. **Text that reads.** Chat and card text stays 18 pt or larger, on a backing dark enough to read over the brightest part of the stage.
+    5. **The input box reads clearly:** a dark fill, the text I type in white, the hint in a gray that still reads easily on that fill (about 4.5:1 contrast), and a visible caret. Off my turn, the disabled box still looks different from the enabled one.
+  - **Done when:** screenshots at 1600 × 900 of Scene Prep, a scene turn, my Free Talk turn and the vote show the stage in the whole window, all five robots and their labels clear of the panels, and input text that is easy to read; a free autoplay show reaches `NHOS: SHOW END`; I play one show and say the screen no longer feels blocked.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, maybe `WBP_ChatLine.uasset`, `Content/NHOS/Maps/L_Stage.umap` (the camera), and a `Graphs/WBP_Stage/` file for each graph it writes.
+
+- [ ] **T28 Scene Prep shows the whole card, the scene shows only mine**
+  - **Model and effort:** Opus 5.5, high. It adds a pause to the show loop and splits the info card by phase.
+  - **Depends on:** T27 (the card's place and size), T19 (the lock on `BP_Show`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
+  - **Why:** my playtest on 2026-11-14. I don't need to see the cast's wants all the time: in the scene they take too much space. In Scene Prep and in the scene I do need my role, my want and my secret director's note. Today Scene Prep goes straight into turn 1 (`ScenePrep` ends by calling `StartScene`), so there is no prep moment to show the rest in.
+  - **Steps:**
+    1. **My card, always:** my role, my want and my director's note, in every phase from Scene Prep to the end of the scene's reactions. Large enough to read at a glance, small enough to stay in T27's top-right panel.
+    2. **Scene Prep becomes a real pause.** `ScenePrep` no longer calls `StartScene` itself. It shows the full card: the scene's title and premise, my card, the cast as colored names with their roles and wants, and the places and props. A "Start the scene" button in the input row (styled like See the results) calls `StartScene`. With autoplay on, the scene starts at once. Print `NHOS: PREP shown scene=<n>` and `NHOS: PREP start scene=<n>`.
+    3. **In the scene, only my card.** `StartScene` hides the cast, the premise and the set lines. A cut still updates the cast list for the next Scene Prep (`CutActor` calls `ShowCast`).
+    4. Propose the matching edit to the design doc's Rules tab (Scene Prep: the full card shows until I start the scene; in the scene only my role, want and note show), as the build notes say.
+  - **Done when:** screenshots of Scene Prep (the full card and the Start button) and of turn 1 (only my card); a free autoplay show reaches `NHOS: SHOW END` with a `NHOS: PREP start` line for each scene; I play one show and say the card shows what I need when I need it.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ScenePrep`, the Start button's call, `ShowPrep` if the card's fill changes), `Graphs/` files for the graphs it writes, `Docs/GameDesign.md`, the design doc.
+
+- [ ] **T29 The chat holds only chat**
+  - **Model and effort:** Opus 5.5, high. It reroutes every game line in `BP_Show` without reading every graph.
+  - **Depends on:** T28 (the same widgets and `BP_Show`; the Scene Prep lines move into its card)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
+  - **Why:** my playtest on 2026-11-14. The chat should hold only the chat: what the actors say and do. Today it also carries the game's own lines (phase changes, the tie, the reveal, hints) and echoes of what I typed, so the talk is hard to follow.
+  - **Steps:**
+    1. **List every game line.** Find each `WBP_Stage.AddLogLine` call in `BP_Show` with `find_nodes` (don't dump every graph), and write the list in Findings with where each line goes now.
+    2. **Each one goes to its place:**
+       - Phase and turn changes leave the chat: the header already says them (`PhaseHeader`, `TurnText`).
+       - Moments worth a look (a new scene, the tie and the Director's tiebreak, the vote tally, who was cut, "Read the last reactions..."): a new banner across the top of the stage (`EventBanner` in `StageArea`) that holds for about 4 s and fades, one at a time. The reveal stays on the stamp.
+       - My typed echo (`> ...`) goes away: my line already shows as my own chat line once the input LLM has turned it into actions and speech. Hints (`(...)`) go to the turn line or the input hint.
+       - Scene Prep text ("The cast knows you as Player 3.") goes on T28's card.
+    3. **The chat keeps** every actor line (the name in its color, the short action, the speech), mine marked, in every phase: scene turns, Free Talk, votes with their reasons, and reactions.
+    4. Only my screen changes. The shared log the AIs read, `game_messages` and every `NHOS:` line stay as they are.
+  - **Done when:** screenshots of a scene turn, Free Talk, the vote and a cut show only actor lines in the chat and the moments on the banner; a free autoplay show reaches `NHOS: SHOW END`, and its `NHOS: LOG` lines have the same form as before; I play one show and say the chat reads as a chat.
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Graphs/` files for the graphs it writes, the Findings section.
+
+- [ ] **T30 The lines play one at a time**
+  - **Model and effort:** Opus 5.5, high. Timing across the show loop, the chat and the stage.
+  - **Depends on:** T19 (the stage acts out each line), T29 (only actor lines and the banner are left to pace)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
+  - **Why:** my playtest on 2026-11-14. The AIs' lines all happen at once, and that is hard to follow. A scene turn drops five lines into the chat in one frame while five robots act at the same time.
+  - **Steps:**
+    1. **A line queue in its own component** (`BPC_LinePlayer` on `BP_Show`, as the build notes say). `ShowLine` adds each line to the queue instead of putting it on screen. The queue plays one line at a time: the chat line appears, its robot lights up and bounces (`SetLit`), and its stage actions play. Move the `BP_StageDirector.PlayLine` call from `ActorLine` to this moment, so the stage and the chat match. Then the queue waits a time that grows with the line's length (for example 1.2 s plus 0.25 s per word, about 2 to 5 s) and plays the next line. Print `NHOS: LINE <seat id>` as each line plays.
+    2. **Free Talk and reactions feel like a chat:** before each AI line, "<name> is typing..." shows for a short random time. This is T24's typing delay, moved here.
+    3. **The show waits for the queue.** The asks for the next step may go out while lines play, which hides the wait for the LLMs. Anything that changes the screen next (my turn, a new phase in the header, the vote, a banner, the end screen) waits until the queue is empty.
+    4. **The values live in a data file** (a `pacing` block in `Content/NHOS/Data/`). A `fast_lines` switch in `Local/switches.json` cuts every wait to a tenth for autoplay checks; add it to `Docs/switches.example.json`.
+    5. The shared log the AIs read doesn't change: it still gets each turn's lines at once, in random order. `ShowLine` stays the one place a line reaches my screen, so T20's talk blip can hook in there.
+    6. Propose the matching edit to the design doc's Rules tab (The Scene & acting: the turns play out one at a time, in random order), as the build notes say.
+  - **Done when:** a free autoplay show with `fast_lines` reaches `NHOS: SHOW END`; a free autoplay show without it plays a scene turn's lines at least 1 s apart (the times on its `NHOS: LINE` lines); a screenshot shows one robot acting while its line is the newest in the chat; I play one show and say the lines are easy to follow.
+  - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, `Docs/GameDesign.md`, the design doc.
+
 - [ ] **T20 Audio**
   - **Model and effort:** Sonnet 5.5, medium. Finding sounds and playing them at points the show loop already has.
   - **Depends on:** T19 (the locks on `BP_Show` and `BP_Robot`). Finding and choosing the files needs no editor and can start any time.
@@ -184,9 +243,24 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Done when:** with a wrong relay address, the unavailable screen and key entry appear; keys entered on that screen play a show; a budget error from the relay shows its message.
   - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Keys.uasset`, new `Docs/ItchPage.md`, `Relay/` only if a limit changes.
 
+- [ ] **T31 Tab completes names, places and props (cut if we fall behind)**
+  - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
+  - **Depends on:** T27 (the input row), T30 (the lock on `WBP_Stage`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
+  - **Why:** my playtest on 2026-11-14. Completion for players, places and props would help, even just suggestions I take with Tab.
+  - **Steps:**
+    1. **Suggestions as I type.** A small row just above the input box lists up to 4 matches for the word at the caret:
+       - Right after "@", and as I type letters after it: the actors still in the show, by the names I see (the AIs' labels, such as "@Meta"), without me.
+       - Any other word of 2 or more letters: the places and props of the current set (from `scenes.json`, as the info card lists them) that start with it, in any case.
+    2. **Tab takes the first match.** It replaces the word, adds a space and leaves the caret at the end, so I can keep typing (check this by typing on after a completion). Tab again cycles to the next match. With no match Tab does nothing, and it never moves the focus off the input box: catch it in `WBP_Stage`'s `OnPreviewKeyDown` and return Handled, because by default Tab moves the focus to the next widget.
+    3. Enter still sends. A completed "@Meta" still goes through `ResolveMentions`, so the AIs read "@Player 5".
+    4. Propose the matching edit to the design doc's Rules tab (Mentions: Tab completes a name, a place or a prop), as the build notes say.
+  - **Done when:** in PIE with autoplay off, "@" shows the AI names; "@me" then Tab gives "@Meta "; "ris" then Tab gives "Riser "; "rub" then Tab gives "rubber chicken "; the sent line shows completed in its `NHOS: TYPED` line; I play one show and say the completion helps.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (the input box's keys and the suggestion row), maybe `Content/NHOS/Core/BP_Show.uasset` (to hand the names, places and props to the widget), `Graphs/` files for the graphs it writes, `Docs/GameDesign.md`, the design doc.
+
 - [ ] **T22 Package a Windows Development build and play a show in it**
   - **Model and effort:** Sonnet 5.5, medium. It repeats T02's steps with the whole game.
-  - **Depends on:** T19, T20, T21, and T24 if it is done
+  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T24 if it is done, and T31 if it is done
   - **Needs:** a Windows machine, the editor closed, my playtest (one show).
   - **Steps:**
     1. Run the package command from `CLAUDE.local.md` in the background.
@@ -209,15 +283,14 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Done when:** the zip is under 1 GB with no key in it, and every field of the submission form has its text in `Docs/Submission.md`.
   - **Touches:** `Docs/ItchPage.md`, new `Docs/Submission.md`, `Packaged/` (not in git).
 
-- [ ] **T24 Timers and typing delay (only if time allows)**
+- [ ] **T24 Timers (only if time allows)**
   - **Model and effort:** Sonnet 5.5, medium. Small additions to phases that already work.
-  - **Depends on:** T19. Cut it first if we fall behind.
+  - **Depends on:** T19, T30 (the input row and the line queue; it took over this task's AI typing delay on 2026-11-14). Cut it first if we fall behind.
   - **Needs:** editor + Unreal MCP running, my API key.
   - **Steps:**
     1. Add a countdown to my input: 30 seconds for a scene turn, 45 for a Free Talk line, 15 for a reaction. The values come from a data file.
     2. When time runs out: a scene turn becomes "looks around", a Free Talk line becomes a pass, a reaction stays silent.
-    3. AI lines in Free Talk and in reactions appear after a short random typing delay.
-    4. No times go in the shared log.
+    3. No times go in the shared log.
   - **Done when:** in PIE with autoplay off, letting the scene timer run out prints `NHOS: TIMEOUT scene`, and my actor looks around in the log.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Data/scenes.json`.
 
