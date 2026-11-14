@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13 is done. T14 waits only for my verdict on its playtest (every screen is clear). T15 (Opus 5.5 · high) is running, and T17 starts once T14's and T15's boxes are checked.
+**Next up:** T13 and T15 are done. T14 waits only for my verdict on its playtest (every screen is clear). T16 (Opus 5.5 · high) is next and needs no editor; T17 (Opus 5.5 · high) starts once T14's box is checked.
 
 ## Goal
 
@@ -87,7 +87,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
 - **API keys never go in git, and never into chat.** I paste my key into the key file myself.
 - **Prompts are files, not Blueprint strings.** The opening game prompt, the base prompt, the personas, the input LLM prompt and the scene cards live in `Content/NHOS/Data/`, so they diff in git. Store long text as an array of lines.
 - **One provider.** All calls go to the Claude Messages API. The model, effort and token limit for each role (actor, input LLM, Director) are values in `Content/NHOS/Data/llm.json`. T01 and T02 ran `claude-opus-5-5` at low effort. Since 2026-11-13 every role runs `claude-haiku-5-5` at low effort, the cheapest model at its lowest level. Haiku 5.5 has no server-side fallback, so `beta` and `fallbacks` in `llm.json` are empty; a refusal comes back as `stop_reason: "refusal"`.
-- **One provider per persona, from T16 and T18 on.** Each persona runs on its own provider, as in the design's table, with a key per provider (no router). T16 sets up the prompts and the keys; T18 makes the game call them. Provider and company names stay in config files only, never in prompts or on screen.
+- **One provider per persona, from T16 and T18 on.** Each persona runs on its own provider, as in the design's table, with a key per provider (no router). T16 sets up the prompts and the keys; T18 makes the game call them. Since 2026-11-14 each bot goes by its provider's name on screen, in the log and in the cast list the AIs read (OpenAI, Anthropic, SpaceXAI, Meta: the `name` fields in `personas.json`), not by a persona name such as "The Worrier". Persona ids (`worrier`) stay as they are in files and `NHOS:` lines. Real people's names and product names stay out of prompts and off the screen.
 - **The design doc follows the game.** When a task changes the design (the speech style, the sets, the providers), it shows me the matching edit to the Claude Doc. After my OK, it makes the edit with the Claude Docs connector and refreshes `Docs/GameDesign.md` from the doc. `Tools/check_prompts.py` checks the prompts against `GameDesign.md` word for word, so the refresh comes before the check.
 - **Legibility first.** Everything an AI says reads like a normal chat, the way Claude or ChatGPT write: plain sentences, no brackets or tags, no beeps or sound effects, no emoji, no ALL-CAPS words. Each persona's personality comes through what it says, not how it is typed.
 - **Outside and generated assets.** Record every art, audio or font asset in `Docs/Assets.md` when you add it: what it is, where it came from (a Fab link, a site, or the AI tool and prompt) and its license. The submission form needs the list.
@@ -300,7 +300,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_EndScreen.uasset`, new `WBP_Title.uasset`; `Content/NHOS/Core/BP_Show.uasset` (how lines reach the screen); `Content/NHOS/Core/BP_ShowPlayerController.uasset`; new font assets; new `Docs/Assets.md`. T14 left `BP_ShowPlayerController` unchanged and also added `Content/NHOS/UI/WBP_ChatLine.uasset`, `WBP_EndCard.uasset` and `Fonts/F_UI.uasset`.
   - **Waiting:** the screenshots and the autoplay show are done and committed (see "T14: UI/UX polish results" in Findings). Left: I play one show and say every screen is clear, then the checked box.
 
-- [ ] **T15 Story scenes on an improv stage**
+- [x] **T15 Story scenes on an improv stage**
   - **Model and effort:** Opus 5.5, high. Writing and prompt design: the scenes decide much of the fun.
   - **Depends on:** T13 (the same data files and the checker)
   - **Needs:** my API key. The editor only for the PIE check.
@@ -312,7 +312,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
     5. Update everything that names the café or its places: the game and input prompts, `does_templates`, `autoplay.json` and the sample show in `Tools/check_prompts.py`.
     6. Propose the matching edits to the design doc's Rules and Tech & Build tabs (see the build notes).
   - **Done when:** `Tools/check_prompts.py` exits with code 0 with the new cards, and an autoplay PIE show prints `NHOS: SETUP ... scene=<story card id>` with AI lines that fit the story.
-  - **Touches:** `Content/NHOS/Data/scenes.json`, `prompts.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc.
+  - **Touches:** `Content/NHOS/Data/scenes.json`, `prompts.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc. T15 also took the T13 session's input converter fix (no empty replies) into `prompts.json`, and its commit carries the uncommitted provider-name swaps in `personas.json`, `prompts.json`, `check_prompts.py` and this file's build notes.
 
 - [ ] **T16 One LLM per AI player: prompts and keys**
   - **Model and effort:** Opus 5.5, high. New APIs, and prompts that must work on four different models.
@@ -1029,3 +1029,32 @@ After my first playtest of T14 (one show, cut in scene 1; I said "It's better"):
 
 - **The end screen covered the last reactions.** Now `ShowEndScreen` builds the end screen but doesn't show it: the log says "Read the last reactions, then press See the results.", and a gold `ContinueButton` appears in the input row (`WBP_Stage.SetContinue`). Its click calls `BP_Show.RevealEnd`, which hides the button, adds the end screen and prints `NHOS: END screen shown`. With autoplay on, `RevealEnd` runs at once. `NHOS: SHOW END` still prints when the end screen is built. Checked in PIE: a hand-played show where I was cut, then the button, then the end screen. The autoplay path wasn't run again.
 - **Two of my scene turns reached the stage empty** ("stands still", no speech), though I typed things to say and do. The input LLM got them (`NHOS: LLM input-4 ok`) and returned no actions and no speech, with an unusually long reply (337 and 302 output tokens, against about 40 for most). Not reproduced: the same request from a script turned 28 of 28 typical lines into the right actions and speech, in the plain, quoted, `*action*` and `(action)` forms. The game didn't log typed text, so `WBP_Stage.SubmitInput` now prints `NHOS: TYPED <line>` for every line I send. If it happens again, the TYPED line next to the `NHOS: LOG` line shows what went in.
+
+### T15: story scenes results (2026-11-14)
+
+Every role still runs `claude-haiku-5-5` at low effort.
+
+- **The set** is "The Improv Stage": Center, Left, Right, Front, Back, Riser and Prop Table, each with a public `what` line. The Riser plays whatever the story needs. The props are a cardboard sword, a paper crown, a plastic rose, a toy ray gun, a teacup, a cape, a rubber chicken and a scroll.
+- **6 cards**, each with a title, a premise that says what the Riser plays, a `backdrop` {id, what} for T17, and 4 seats whose wants still work when any one seat is left out:
+
+| Card id | Title | Story | Riser |
+|---|---|---|---|
+| `star_crossed` | Wherefore Art Thou, Robot? | Romeo and Juliet (public domain) | the balcony |
+| `sword_stone` | The Sword in the Stone, Some Assembly Required | Arthur and the sword (public domain) | the stone |
+| `rubber_chicken_case` | The Case of the Stolen Rubber Chicken | a Sherlock Holmes mystery, with Sherlock Ohms and Doctor Watt-son | the Duchess's armchair |
+| `space_father` | My Father, the Heavy Breather | parody: a desert-planet farm kid and a masked villain with family news | the space truck's cockpit |
+| `unsinkable` | The Unsinkable, Probably | parody: a 1912 liner, an iceberg, an artist and an heiress | the ship's bow |
+| `dino_island` | Welcome to Dino Island, Mostly Safe | parody: a theme park of cloned dinosaurs | the lookout tower |
+
+- **10 notes**, 8 physical and 2 spoken, each with a decoy: `never_back`, `stay_center`, `hold_prop`, `give_every_turn`, `throw_once`, `riser_once`, `keep_moving`, `look_first`, `say_chicken`, `ask_question`. None asks everyone to grab the same single prop, so T19's props don't fight over one item.
+- **Game prompt:** a new "The stage and the story" section. Places and props stand in for what the story needs; play the card's version, use only the names on the card, and never quote the original or use its names, made-up words or famous lines.
+- **Input prompt:** examples on the new places, and anything raised that the player names (a balcony, a throne, a cockpit, a bow) is the Riser. Also the T13 session's fix for empty turns: an action on something unlisted becomes a look at the closest listed place or actor, or a look around, and the converter never sends an empty reply. Before the fix, 11 of 18 unmappable café lines came back empty; after it, 0 of 15 stage lines did. Those turns take 250 to 450 output tokens instead of about 50.
+- **`Tools/check_prompts.py`:**
+  - Checks the 7 places, 6 to 10 props, at least 6 cards and 10 notes, a backdrop on each card, and a premise that names the Riser.
+  - The sample show is scene 1 of `star_crossed` with the `hold_prop` note.
+  - A card sweep sends a scene-turn ask for every card in a 3-actor scene 2, with a different seat left out each time (18 asks).
+  - A story check fails any file or AI line with a name, a made-up word or a famous line from the parodied films (`STORY_TERMS`), or a real name (`BANNED`). `--log` runs it on PIE shows too and prints each show's card ids.
+  - A new input case: "inspect the magic mirror and frown" must give exactly one look.
+- **Checks:** `python Tools/check_prompts.py` passed 53 of 53 asks (median 1.8 s, about $0.029 per show). Scene turns alone, 3 times: 66 of 66. Input asks, 3 times: 24 of 24. No reply used a word from a parodied original; the lines play the stories ("Iceberg? That's just a fluffy cloud with ambition! Ship is absolutely fine!").
+- **Autoplay PIE show:** `NHOS: SETUP human=worrier decoy=overclocker scene=rubber_chicken_case note=throw_once`, then `scene=star_crossed` with 3 actors. An AI was cut in scene 1, the human in scene 2: `NHOS: SHOW END result=lose scenes=2`. 51 calls, none failed. `check_prompts.py --log`: 38 of 38 AI lines legible, none with a story word. The AIs played the detective, the butler, Juliet and Romeo ("Hark! I hold court from this balcony, and suitors bring gifts!").
+- **Design doc:** the Rules tab (scene card, note example, typing example, places) and the Tech & Build build list (scene cards, notes) now describe the improv stage and the story cards. `Docs/GameDesign.md` got the same edits; both tabs matched the copy before the edit. The Art Inspiration tab still describes an opera-house stage; T17 should settle that with the improv theater.

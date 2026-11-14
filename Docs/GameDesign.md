@@ -1,7 +1,7 @@
 # No Humans On Set: game design (snapshot)
 
 - **Source:** the Claude Doc "No Humans On Set — concise draft (suggested edits)", <https://claude.ai/artifact/XKrsACU5w4kHFwhztXCoTA>
-- **Snapshot taken:** 2026-11-14, about 06:40 UTC. The doc's own date is 2026-11-13.
+- **Snapshot taken:** 2026-11-14, about 06:40 UTC. The doc's own date is 2026-11-13. The Rules and Tech & Build tabs were read again at about 08:00 UTC, after T15's edits (the improv stage and the story cards).
 - The Claude Doc is private, so teammates' agents can only read this copy. The Claude Doc is the original. To refresh this file, read all five tabs again with the Claude Docs connector and replace the text below. Don't edit the text below by hand.
 - What the MVP builds from this design, and what it leaves out, is in [MVPPlan.md](MVPPlan.md).
 
@@ -51,18 +51,18 @@ Everything that happens in one show, from casting to the last cut.
 
 ### Scene Prep
 
-- Every actor gets the same scene card: where the scene happens, who each bot plays, and what each one wants. Example: a café, with a barista and a customer who can’t decide.
+- Every actor gets the same scene card: a comedy version of a famous story, who each bot plays, and what each one wants. Example: Romeo and Juliet, with Romeo below the balcony and Tybalt hunting for a duel. Public-domain stories can stay close; modern films and books are parodied only, with new names and no quotes.
 - Everyone gets the same secret director’s note, except one random actor, who gets a decoy note instead. It could be you. Nobody is told who, including the actor with the decoy.
-- Notes are mostly physical, so they show on stage and the game can check them against the log. Examples: “throw something whenever someone lies,” “never turn your back to the counter.”
+- Notes are mostly physical, so they show on stage and the game can check them against the log. Examples: “throw something whenever someone lies,” “climb onto the Riser at least once.”
 
 ### The Scene & acting
 
 - Each scene has 3 turns, with a 30-second timer on yours.
 - Every actor submits a turn, then all turns play out at once. The log records them in random order, so you’re never always last.
 - You type what to do and what to say into a terminal. An input LLM turns it into actions, the same kind the AI actors send.
-  - Example: Walk to the counter and say “Hi! I’ll have a milk please.”
+  - Example: Climb onto the riser and say “Hello down there!”
 - Actions: Move, Look, Grab, Throw, Give.
-- Places: Forward, Backward, Left, Right, Counter, Placemat.
+- Places: Center, Left, Right, Front, Back, Riser and Prop Table, on one bare improv stage. The Riser plays whatever the story needs (a balcony, a throne, a cockpit), and the props come from an improv prop table that fits any story.
 - Speech: words in quotes are spoken as typed, with spelling fixed. Caps, emojis and tags stay.
 - Every line, AI or human, is capped at 25 words.
 - If a command can’t be understood, the actor just looks around. This applies to AIs too, and no error appears in the log.
@@ -230,8 +230,8 @@ How the LLMs plug into the game, how players reach them, and what to build befor
 - [ ] Provider connections (or a router), the key-entry screen and a test call per key
 - [ ] Input LLM: spelling fixes and the 25-word cap
 - [ ] Shared log data structure and the opening game prompt
-- [ ] Scene cards: start with 3, on one café set
-- [ ] Director’s notes: about 12, mostly physical, plus one decoy per scene
+- [ ] Scene cards: 6 story parodies on one improv stage, each with its own backdrop
+- [ ] Director’s notes: 10, mostly physical, each with a decoy
 - [ ] Simultaneous turns, logged in random order
 - [ ] Round-the-table Free Talk
 - [ ] Vote and the Director tiebreak

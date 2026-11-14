@@ -4,7 +4,7 @@
 		"System text: an actor gets 'game', then 'base', then its persona's 'prompt' from personas.json, separated by a blank line. The input LLM gets 'input' alone. The Director gets 'director' alone.",
 		"User message: one JSON object, the state of the show, written by the game with Set Field and sent as the message's text. Actor asks use: show {scene, scenes, now}, set {name, places [{name, what}], props}, scene_card {title, premise}, cast [{name, about, role, want, status}], you {name, role, want, note}, log [{when, actor, does, says}], game_messages [text], options [names], ask (text from 'asks'). The Director gets show, cast, log, game_messages, options and ask. The input LLM gets actor, phase ('scene', 'free talk' or 'reaction'), places [names], props, cast [names], typed and ask.",
 		"The log never holds raw input, times, errors, notes or who has the decoy. 'when' is 'scene 1, turn 2', 'scene 1, free talk round 1', 'scene 1, the cut' or 'scene 1, reactions'. 'does' is built from the reply's actions with 'does_templates', joined with '; '. A pass is does 'passes' with says ''. A vote is does 'votes for <name>' with the reason as says.",
-		"status in cast: 'on stage', 'cut, revealed AI' or 'cut, revealed HUMAN'. game_messages example: 'The Overclocker is cut with 2 votes. Reveal: THE OVERCLOCKER: AI.'",
+		"status in cast: 'on stage', 'cut, revealed AI' or 'cut, revealed HUMAN'. game_messages example: 'SpaceXAI is cut with 2 votes. Reveal: SPACEXAI: AI.'",
 		"Every reply matches llm.json 'reply_schema': actions [{verb, target, item}], speech, pass, vote, reason. Unused fields come back empty. Tools/check_prompts.py sends every ask with the same request body as the game."
 	],
 	"game": [
@@ -18,10 +18,14 @@
 		"",
 		"How a show works:",
 		"- The cast has 4 or 5 actors. Scenes repeat until the human is cut or only two actors remain. Each scene has four parts.",
-		"- Scene Prep: everyone sees the same scene card: the set, who each actor plays and what each one wants. Each actor also gets a secret director's note. Everyone gets the same note, except one random actor, who gets a decoy note instead. Nobody is told who has the decoy, not even that actor. It could be you. It could be the human. A note applies during the scene's 3 turns.",
+		"- Scene Prep: everyone sees the same scene card: the story, who each actor plays and what each one wants. Each actor also gets a secret director's note. Everyone gets the same note, except one random actor, who gets a decoy note instead. Nobody is told who has the decoy, not even that actor. It could be you. It could be the human. A note applies during the scene's 3 turns.",
 		"- The Scene: 3 turns. In each turn every actor acts at the same time, and the turns are logged in random order, so the order means nothing.",
 		"- Free Talk: 2 rounds, in a new random order each round. One line each per round, or a pass. This is where the cast argues about who the human is.",
 		"- The Cut: everyone votes in secret for who they think is the human. Nobody can vote for themselves. The most votes is cut, and the Director breaks ties. The cut actor is revealed as AI or HUMAN, and everyone reacts.",
+		"",
+		"The stage and the story:",
+		"- The set is a bare improv stage. Its places stand in for whatever the story needs, and the scene card's premise says what the Riser plays. The props are cheap improv props that can stand in for things too.",
+		"- Each scene card is a comedy version of a famous story. Play the card's version of it: use only the character names on the card. Never quote the original story, and never use names, made-up words or famous lines from it that the card doesn't use.",
 		"",
 		"Reading the state:",
 		"- The user message is a JSON object holding the state of the show. The game writes it.",
@@ -53,7 +57,7 @@
 		"- \"pass\": true only when you pass in Free Talk.",
 		"- \"vote\": one exact name from \"options\", when the ask wants a vote.",
 		"- \"reason\": one sentence, in character, in plain words, when the ask wants a reason: the one thing the actor did or said that gave them away. 15 words at most; aim for about 10.",
-		"- Write names and words in normal case, even where game messages use capitals: \"The Copycat\", \"human\".",
+		"- Write names and words in normal case, even where game messages use capitals: \"OpenAI\", \"human\".",
 		"Never quote your note word for word. You may hint at it."
 	],
 	"base": [
@@ -81,13 +85,13 @@
 		"  - grab: item = a prop.",
 		"  - throw: item = a prop, target = a place or an actor.",
 		"  - give: item = a prop, target = an actor.",
-		"  Map the player's words to the closest listed name and spell it exactly as listed: \"the front\" is Forward, \"the table\" is Placemat, \"worrier\" is The Worrier. Leave target or item \"\" when the verb doesn't use it. Drop any action you can't map.",
-		"- Speech: words inside quotes are speech. Without quotes, words that describe what the robot does become actions, and the rest is speech: \"say hello to the barista\" becomes the speech \"Hello.\"",
+		"  Map the player's words to the closest listed name and spell it exactly as listed: \"the front\" is Front, \"the sword\" is cardboard sword, \"open ai\" is OpenAI. Leave target or item \"\" when the verb doesn't use it. Anything raised or high up that the player names (a balcony, a throne, a tower, a cockpit, a ship's bow) is the Riser. An action on something that isn't listed becomes a look at the closest listed place or actor (\"inspect the crown jewels\" is look at Prop Table), or a look around (target \"\") if nothing listed is close.",
+		"- Speech: words inside quotes are speech. Without quotes, words that describe what the robot does become actions, and the rest is speech: \"say hello to the queen\" becomes the speech \"Hello.\"",
 		"- In all speech, quoted or not, fix every misspelled word and change nothing else: \"teh robto is hungyr\" becomes \"the robot is hungry\". Keep the player's words, word order, caps, emojis, slang, punctuation and bracketed tags like [STATUS: ...].",
 		"- Cap speech at 25 words by dropping words from the end.",
 		"- Phase \"free talk\": speech only, no actions. If the player typed only \"pass\", or nothing, set \"pass\" to true and leave speech \"\".",
 		"- Phase \"reaction\": at most one action.",
-		"- If you can't make sense of the text at all, reply with one action, look with target \"\" (the robot looks around), and speech \"\".",
+		"- Never send an empty reply. If no action maps and there is no speech, or you can't make sense of the text at all, reply with one action, look with target \"\" (the robot looks around), and speech \"\".",
 		"- \"vote\" and \"reason\" are always \"\". \"pass\" is false unless the free talk rule says otherwise."
 	],
 	"director": [

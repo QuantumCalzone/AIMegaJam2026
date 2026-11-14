@@ -1,48 +1,109 @@
 {
-	"_readme": "The café set, its scene cards and the director's notes. 'places' and 'props' are the only targets and items an action may name; the game turns any other name into 'looks around'. A card's 'seats' are dealt to the cast in seat order at Scene Prep (4 seats for a cast of 4). Each scene draws one note: every actor gets 'note', except one random actor, who gets 'decoy'. A note applies during the scene's 3 turns. Notes are mostly physical, so the log shows who follows them. The 'what' text of a place is public, like the rest of the set and the card.",
+	"_readme": [
+		"The improv stage, its story scene cards and the director's notes.",
+		"set: one bare improv stage for every story. 'places' and 'props' are the only targets and items an action may name; the game turns any other name into 'looks around'. The places stand in for whatever a story needs, and each card's premise says what the Riser plays. The 'what' text of a place is public, like the rest of the set and the card. Keep the names short: the input LLM and the robots' actions (T19) use them.",
+		"cards: each one is a comedy version of a famous story. A card's 'seats' are dealt in random order to the actors on stage at Scene Prep, so scene 2 of a 4-actor show uses 3 of its 4 seats. Every want must work when any one seat is left out. 'backdrop' is the scene's painted backdrop flat (T17): an id and one line that describes it. The game sends actors only the card's title and premise, plus each seat's role and want.",
+		"Story rules: public-domain stories (Shakespeare, fairy tales, classic novels) can stay close to the original. Modern films and books are parodied only: new names, no trademarked terms or made-up words from them, no quotes, no logos. No real people's names. Tools/check_prompts.py lists the words from each modern original that must never show up, in the files or in a reply.",
+		"notes: each scene draws one note. Every actor gets 'note', except one random actor, who gets 'decoy'. A note applies during the scene's 3 turns. Notes are mostly physical, so the log shows who follows them, and each one must work in every story. Notes never ask everyone to grab the same single prop."
+	],
 	"set": {
-		"id": "cafe",
-		"name": "The Café",
+		"id": "improv_stage",
+		"name": "The Improv Stage",
 		"places": [
-			{ "name": "Counter", "what": "the coffee counter, with the espresso machine, the register and the tip jar" },
-			{ "name": "Placemat", "what": "a small table for one, set with a paper placemat" },
-			{ "name": "Forward", "what": "the front of the stage, facing the audience" },
-			{ "name": "Backward", "what": "the back of the stage, by the pastry case" },
-			{ "name": "Left", "what": "stage left, by the front door" },
-			{ "name": "Right", "what": "stage right, by the big window" }
+			{ "name": "Center", "what": "the middle of the stage, under the main spotlight" },
+			{ "name": "Left", "what": "stage left" },
+			{ "name": "Right", "what": "stage right" },
+			{ "name": "Front", "what": "the front edge of the stage, by the footlights and the audience" },
+			{ "name": "Back", "what": "the back of the stage, in front of the painted backdrop" },
+			{ "name": "Riser", "what": "a sturdy wooden box that plays whatever the story needs: a balcony, a throne, a cockpit, a lookout tower" },
+			{ "name": "Prop Table", "what": "the table at the side of the stage that holds the props" }
 		],
-		"props": ["cup", "menu", "croissant", "spoon", "napkin", "sugar jar", "tip jar"]
+		"props": ["cardboard sword", "paper crown", "plastic rose", "toy ray gun", "teacup", "cape", "rubber chicken", "scroll"]
 	},
 	"cards": [
 		{
-			"id": "cafe_big_decision",
-			"title": "The Big Decision",
-			"premise": "Morning rush at the café. The line is out the door, and one customer cannot decide what to order.",
+			"id": "star_crossed",
+			"title": "Wherefore Art Thou, Robot?",
+			"premise": "Verona, at night. The Montagues and the Capulets are feuding again. After the Capulet party, a Montague has sneaked into the garden below Juliet's balcony. The Riser is the balcony.",
+			"backdrop": { "id": "verona_garden", "what": "A moonlit Verona garden: an ivy-covered wall, a stone balcony and a big paper moon." },
 			"seats": [
-				{ "role": "Barista", "want": "Take the order and clear the line before the rush gets worse." },
-				{ "role": "Customer who can't decide", "want": "Find the perfect drink, and hear every option at least twice." },
-				{ "role": "Food critic in disguise", "want": "Taste the croissant without anyone working out who you are." },
-				{ "role": "Delivery bot", "want": "Get someone to sign for a box of cups, right now." }
+				{ "role": "Romeo, a lovesick Montague", "want": "Declare your love from below the balcony, with a gift, before any Capulet catches you." },
+				{ "role": "Juliet, a Capulet daughter", "want": "Hold court from the balcony, and make anyone who loves you prove it with a gift." },
+				{ "role": "The Nurse", "want": "Keep the lovers' secret, while telling everyone every other secret you know." },
+				{ "role": "Tybalt, a hot-headed Capulet", "want": "Find the Montague who sneaked in, and challenge him to a duel with the cardboard sword." }
 			]
 		},
 		{
-			"id": "cafe_missing_tip_jar",
-			"title": "The Missing Tip Jar",
-			"premise": "Closing time. The tip jar has vanished from the Counter, and nobody may leave until it turns up.",
+			"id": "sword_stone",
+			"title": "The Sword in the Stone, Some Assembly Required",
+			"premise": "Old Britain. A sword is stuck in a stone on the Riser, and whoever pulls it out becomes king. Half the kingdom has queued up to try. The sword is the cardboard sword.",
+			"backdrop": { "id": "castle_courtyard", "what": "A castle courtyard with striped banners, a crowd of painted knights and a big gray stone." },
 			"seats": [
-				{ "role": "Café owner", "want": "Get the tip jar back before closing." },
-				{ "role": "Regular", "want": "Get a free refill and your usual seat at the Placemat." },
-				{ "role": "Health inspector", "want": "Find one thing wrong with this café. Anything." },
-				{ "role": "Street musician", "want": "Play one song for tips, tip jar or no tip jar." }
+				{ "role": "Arthur, a scrawny squire", "want": "Find a sword for your knight before the tournament starts. Any sword will do." },
+				{ "role": "Merlin, the court wizard", "want": "Make sure the right person pulls out the sword, then take all the credit." },
+				{ "role": "Sir Kay, a boastful knight", "want": "Wear the paper crown, with or without the sword." },
+				{ "role": "The Lady of the Lake", "want": "Hand a sword to the most worthy actor on stage, then change your mind about who that is." }
+			]
+		},
+		{
+			"id": "rubber_chicken_case",
+			"title": "The Case of the Stolen Rubber Chicken",
+			"premise": "A foggy night at a London manor. The Duchess's priceless rubber chicken has been stolen, and the great detective Sherlock Ohms has locked every suspect in the study. The Riser is the Duchess's armchair.",
+			"backdrop": { "id": "manor_study", "what": "A Victorian study at night: tall bookshelves, a crackling fireplace and a window full of London fog." },
+			"seats": [
+				{ "role": "Sherlock Ohms, the great detective", "want": "Name the thief, with one clue from every actor on stage." },
+				{ "role": "Doctor Watt-son, the loyal assistant", "want": "Agree with every deduction, and read the clues aloud from the scroll." },
+				{ "role": "The Duchess", "want": "Get your rubber chicken back from the armchair, and blame the butler, whoever that is." },
+				{ "role": "The butler", "want": "Hide the rubber chicken somewhere nobody will look, and stay above suspicion." }
+			]
+		},
+		{
+			"id": "space_father",
+			"title": "My Father, the Heavy Breather",
+			"premise": "Planet Dust, a desert world with two suns. A farm kid dreams of the stars and fixes a battered space truck. Then a masked villain in a black cape lands, breathing very loudly, with family news. The Riser is the space truck's cockpit.",
+			"backdrop": { "id": "desert_planet", "what": "A desert at dusk under two suns, with a rusty dome hut and a battered space truck." },
+			"seats": [
+				{ "role": "The farm kid", "want": "Leave this dusty planet in the space truck on the Riser, today." },
+				{ "role": "The masked villain", "want": "Wear the cape, breathe loudly, and reveal a shocking family secret to someone on stage." },
+				{ "role": "An old desert hermit", "want": "Teach anyone who will listen your ancient art of waving the cardboard sword." },
+				{ "role": "A smuggler pilot", "want": "Get paid up front before you fly anyone off this planet." }
+			]
+		},
+		{
+			"id": "unsinkable",
+			"title": "The Unsinkable, Probably",
+			"premise": "1912, the first voyage of the S.S. Unsinkable, the biggest ship ever built. An iceberg is dead ahead, and nobody on the bow is paying attention. The Riser is the ship's bow, and the lifeboats are at the Back.",
+			"backdrop": { "id": "ship_deck", "what": "The deck of a grand ocean liner at night, with four smokestacks, a sky full of stars and an iceberg on the horizon." },
+			"seats": [
+				{ "role": "A penniless artist", "want": "Get someone rich to stand with you on the bow and admire the view." },
+				{ "role": "A rich heiress", "want": "Get rid of the paper crown, your family's priceless tiara, before your fiancé sees you without it." },
+				{ "role": "The captain", "want": "Convince everyone the ship is fine. Absolutely fine." },
+				{ "role": "A snobby fiancé", "want": "Be first into the lifeboats at the Back, and look heroic doing it." }
+			]
+		},
+		{
+			"id": "dino_island",
+			"title": "Welcome to Dino Island, Mostly Safe",
+			"premise": "A billionaire built a theme park of cloned dinosaurs on a tropical island. It is opening day, the fences just lost power, and the tour group is still out in the park. The Riser is the lookout tower.",
+			"backdrop": { "id": "jungle_park", "what": "A steamy jungle with a broken electric fence, a tilted warning sign and giant footprints in the mud." },
+			"seats": [
+				{ "role": "The park owner", "want": "Convince everyone the park is perfectly safe, and sell each guest a souvenir from the Prop Table." },
+				{ "role": "A dinosaur expert", "want": "Get everyone up the lookout tower before something big shows up." },
+				{ "role": "A runaway dinosaur with tiny arms", "want": "Roar at everyone, and grab whatever your tiny arms can reach." },
+				{ "role": "A kid on the tour", "want": "Pet a dinosaur, no matter what the grown-ups say." }
 			]
 		}
 	],
 	"notes": [
-		{ "id": "never_backward", "note": "Never move Backward.", "decoy": "Move Backward at least once." },
-		{ "id": "stay_counter", "note": "Move to the Counter in your first turn, then never move anywhere else.", "decoy": "Move to the Placemat in your first turn, then never move anywhere else." },
-		{ "id": "hold_cup", "note": "Grab a cup in your first turn and hold it all scene. Never throw it or give it away.", "decoy": "Never touch a cup. Grab anything else you like." },
+		{ "id": "never_back", "note": "Never move to the Back.", "decoy": "Move to the Back at least once." },
+		{ "id": "stay_center", "note": "Move to Center in your first turn, then never move anywhere else.", "decoy": "Move to the Front in your first turn, then never move anywhere else." },
+		{ "id": "hold_prop", "note": "Grab a prop in your first turn and hold it all scene. Never throw it or give it away.", "decoy": "Never grab anything." },
 		{ "id": "give_every_turn", "note": "Give something to another actor every turn.", "decoy": "Never give anything to anyone. Keep everything you grab." },
 		{ "id": "throw_once", "note": "Throw something at least once, at the actor you trust least.", "decoy": "Never throw anything." },
-		{ "id": "say_espresso", "note": "Say the word \"espresso\" every time you speak.", "decoy": "Never say the word \"espresso\"." }
+		{ "id": "riser_once", "note": "Climb onto the Riser at least once.", "decoy": "Never set foot on the Riser." },
+		{ "id": "keep_moving", "note": "Move to a different place every turn.", "decoy": "Never move. Stay where you are all scene." },
+		{ "id": "look_first", "note": "Start every turn by looking at another actor.", "decoy": "Never look at another actor." },
+		{ "id": "say_chicken", "note": "Mention the rubber chicken every time you speak.", "decoy": "Never mention the rubber chicken." },
+		{ "id": "ask_question", "note": "End every line with a question.", "decoy": "Never ask a question." }
 	]
 }

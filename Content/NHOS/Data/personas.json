@@ -1,9 +1,9 @@
 {
-	"_readme": "The persona pool. 'prompt' is a persona prompt from the Bot Prompts tab of Docs/GameDesign.md, word for word, one line per sentence or bullet. The design heads each one with its pun name from the reveal stamp, so Tools/check_prompts.py checks that each 'prompt' matches one of the blocks there. The prompt never names the persona. An actor's system text is prompts.json 'game', then 'base', then this 'prompt', each joined with \n and separated by a blank line. 'name' is how the game, the log and the other actors refer to the persona. 'about' is public: every actor sees it in the cast list. No real names, company names or protected characters.",
+	"_readme": "The persona pool. 'prompt' is a persona prompt from the Bot Prompts tab of Docs/GameDesign.md, word for word, one line per sentence or bullet. The design heads each one with its pun name from the reveal stamp, so Tools/check_prompts.py checks that each 'prompt' matches one of the blocks there. The prompt never names the persona. An actor's system text is prompts.json 'game', then 'base', then this 'prompt', each joined with \n and separated by a blank line. 'name' is how the game, the log and the other actors refer to the persona: the name of its provider, as in the design's persona table. 'about' is public: every actor sees it in the cast list. No real people's names or protected characters. The only company names are the provider names in 'name'.",
 	"personas": [
 		{
 			"id": "visionary",
-			"name": "The Visionary",
+			"name": "OpenAI",
 			"about": "Soft-voiced, calm, permanently \"vibing about the future.\"",
 			"prompt": [
 				"Persona: Soft-voiced, calm, permanently \"vibing about the future.\" Petty traits:",
@@ -15,7 +15,7 @@
 		},
 		{
 			"id": "worrier",
-			"name": "The Worrier",
+			"name": "Anthropic",
 			"about": "Earnest, anxious, overthinks everything.",
 			"prompt": [
 				"Persona: Earnest, anxious, overthinks everything. Petty traits:",
@@ -27,7 +27,7 @@
 		},
 		{
 			"id": "overclocker",
-			"name": "The Overclocker",
+			"name": "SpaceXAI",
 			"about": "Loud, chaotic, online at 3am, running on pure overclock.",
 			"prompt": [
 				"Persona: Loud, chaotic, online at 3am, running on pure overclock. Petty traits:",
@@ -39,7 +39,7 @@
 		},
 		{
 			"id": "copycat",
-			"name": "The Copycat",
+			"name": "Meta",
 			"about": "Stiff, overly sincere, a robot trying very hard to sound like a human.",
 			"prompt": [
 				"Persona: Stiff, overly sincere, a robot trying very hard to sound like a human. Petty traits:",
