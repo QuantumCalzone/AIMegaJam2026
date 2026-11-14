@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13 waits only for my playtest (step 6); its prompts, checker and design doc edit are committed. T14 (UI/UX polish, Opus 5.5 · high) is running in the editor lane. T15 (Opus 5.5 · high) starts once T13's box is checked.
+**Next up:** T13 and T14 wait only for my playtest; their work is committed. One show I play by hand can check both: T13 needs one Pass in the reactions, and T14 needs me to say every screen is clear. T15 (Opus 5.5 · high) starts once T13's box is checked, and T17 once T14's and T15's are.
 
 ## Goal
 
@@ -297,7 +297,8 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
     5. **A title screen** (the game's name, Play, and How to play in about 5 lines) before the first show, and a cleaner end screen: the result, each AI's votes and closing line, then Restart and Quit.
     6. **One UI font** with a free license (for example a Google Font under the OFL), plus a fallback that draws every character an actor may type, or strip the characters it can't draw before display. Record it in `Docs/Assets.md`.
   - **Done when:** screenshots of the title screen, Scene Prep, a scene turn, my Free Talk turn, the vote, the reveal and the end screen; an autoplay show still reaches `NHOS: SHOW END`; I play one show and say every screen is clear.
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_EndScreen.uasset`, new `WBP_Title.uasset`; `Content/NHOS/Core/BP_Show.uasset` (how lines reach the screen); `Content/NHOS/Core/BP_ShowPlayerController.uasset`; new font assets; new `Docs/Assets.md`.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_EndScreen.uasset`, new `WBP_Title.uasset`; `Content/NHOS/Core/BP_Show.uasset` (how lines reach the screen); `Content/NHOS/Core/BP_ShowPlayerController.uasset`; new font assets; new `Docs/Assets.md`. T14 left `BP_ShowPlayerController` unchanged and also added `Content/NHOS/UI/WBP_ChatLine.uasset`, `WBP_EndCard.uasset` and `Fonts/F_UI.uasset`.
+  - **Waiting:** the screenshots and the autoplay show are done and committed (see "T14: UI/UX polish results" in Findings). Left: I play one show and say every screen is clear, then the checked box.
 
 - [ ] **T15 Story scenes on an improv stage**
   - **Model and effort:** Opus 5.5, high. Writing and prompt design: the scenes decide much of the fun.
@@ -969,3 +970,35 @@ Steps 1 to 5. Every role still runs `claude-haiku-5-5` at low effort.
   - `--log` checks the AI lines (`NHOS: LOG`, `CLOSING` and `DIRECTOR`) of the last PIE show in the editor log and also fails a line the game cut at 25 words. `--all-shows` checks every show in the file. The old shows in the T12 log fail 390 of 451 lines.
   - `--no-design` skips the word-for-word check, for trying drafts before the design doc changes.
   - The design's persona headings are pun names now, so each persona prompt must match one of the blocks under "Persona prompts".
+
+### T14: UI/UX polish results (2026-11-14)
+
+Proven in PIE on `L_Stage`:
+
+- **A show played by hand through the Slate inspector, autoplay off:** the title screen, Play, two scenes as The Overclocker (typed turns, one Free Talk line, one Pass, a vote picked by click with a typed reason, a typed reaction), then the win screen: `NHOS: SHOW END result=win scenes=2 human=overclocker show=1`. 53 calls, none failed.
+- **Autoplay on:** the title is skipped, and the show reached `NHOS: SHOW END result=lose scenes=1` with 30 calls, none failed, and no script warnings. Play Again printed `NHOS: RESTART show=2` and a new `NHOS: SETUP`.
+- Screenshots: `Saved/Screenshots/T14/` (not in git): `0_title`, `1_sceneprep` (turn 1, my move), `2_turn`, `3_freetalk_myturn`, `4_vote` and `4b_vote_picked`, `5_reveal`, `6_scene2_prep`, `7_end` (win) and `8_autoplay_after_cut` (lose).
+- **Not checked yet:** my playtest (the last Done-when item), and the stamp's fade-out, which was added after the manual run.
+
+What the screens do now:
+
+- **The log reads like a chat.** Each entry is a `WBP_ChatLine`: a color bar and the speaker's name in their robot's color (`SeatColors`), then the action in quiet gray italics, then the speech in plain 20 pt text. My lines add "(you)" and a light tint. Game lines are gold on a faint gold band, and my typed echoes (`> ...`) and hints (`(...)`) are small gray notes.
+  - `BP_Show.ShowLine(Seat, Does, Says)` is the one place an actor line reaches the screen. `PlayTurn`, `PlayTalk`, `Tally` and `PlayReact` call it right after `ActorLine`. It hides "stands still" outside the scene turns, so Free Talk lines show only the speech.
+  - `WBP_Stage.AddLogLine(Line)` still takes every game line. `AddChatLine(Name, Color, Action, Speech, IsMe)` is new.
+- **Always says what to do now.** `HeaderBar` holds `PhaseHeader` and a new `TurnText` line. `BP_Show.UpdatePrompt` runs on Event Tick: `ComputePrompt` turns `Phase`, `HumanSent`, `TalkSeat`, `ReactSeat` and `HumanPick` into the turn line, the input hint and whether I can type, and `WBP_Stage.SetPrompt` applies them only when they change. Off my turn the input box and Send are disabled. On my turn the turn line turns gold and the input box gets the keyboard focus again.
+- **The info panel** (`InfoBox` in `InfoScroll`): "YOU ARE", my name in my color, my role and want in large text, the director's note in an amber box, the scene, the cast as colored `WBP_ChatLine` rows with roles and the others' wants (a cut actor turns gray and shows its reveal), and the places and props on one line each. `ShowPrep` fills it with `SetInfoTop`, `ShowCast` and `SetStageInfo`. `CutActor` calls `ShowCast` again, so the cast updates at each cut. The old `InfoText` and `SetInfo` are gone.
+- **Controls:** the vote buttons are big and red, and after a pick the other buttons dim (`SetVotePick`). `ShowVotePick` no longer wraps the pick in "> <". Send and Pass are colored buttons, and every button has a visible disabled look (the engine's default draws nothing when disabled).
+- **The reveal stamp** sits in a new `StageArea` overlay over the 3D stage, in `StampFrame`, a tilted box that is red for HUMAN and amber for AI. `SetStamp` starts `StampAnim`, and Event Tick scales the stamp in from 3.2 times its size. It holds for 3.5 s, then fades out over 1 s, so it doesn't hide the fallen robot for the rest of the scene.
+- **Title screen:** `WBP_Title` with the name, a tagline, five How-to-play lines and a Play button. `Begin` ends with `ShowTitle`, which runs `LoadSwitches` and, with autoplay on, calls `SetupShow` at once. Otherwise it adds the title at Z order 20 and prints `NHOS: TITLE shown`. Play calls `BP_Show.StartFromTitle` (`NHOS: TITLE click`, `NHOS: TITLE play`), which removes the title and calls `SetupShow`. Restart doesn't show the title again.
+- **End screen:** the result, then one `WBP_EndCard` per AI in a `UniformGridPanel`: name and color bar, AI and when it was cut, its votes per scene, and who it thought was human with its reason. Then Play Again and Quit (`QuitGame`; in PIE it ends PIE). `WBP_EndScreen.Setup` kept its signature; `ShowEndScreen` passes an empty body and calls `AddCard` per AI.
+- **Font:** `Content/NHOS/UI/Fonts/F_UI` is a copy of the engine's Roboto composite font (Apache 2.0), with Droid Sans Fallback as its fallback typeface. Every text in the four widgets uses it. `WBP_Stage.CleanText` drops everything from U+2190 up except CJK and full-width forms, plus zero-width joiners, so emoji never reach the screen. It runs on every log line and on the end-screen cards. `Docs/Assets.md` records both fonts.
+
+Unreal MCP rules found in this task:
+
+- **Unreal MCP can't import a file** (no import tool in `AssetTools`), so a downloaded font can't come in this way. `AssetTools.duplicate` of an engine asset into `/Game` works, and the copy still uses the engine's font faces.
+- **The first PIE ran a stale `WBP_Title`.** The Play button's click never fired, though the bound event was in the graph. Recompiling `WBP_Title` with a change fixed it. If a new widget's event doesn't fire in PIE, recompile it, and add a print to prove the event runs.
+- **In `write_graph_dsl`, a bare widget name is not a variable.** "Undefined variable NameText" means you must use the getter, `(Variables|WBP_ChatLine|GetNameText)`. `Saved/T14/src/mk.sh` turns `@Name` into that getter before `Tools/dslpp.py` runs.
+- **UMG property sets in the DSL call the setter.** `Class|Text|SetColorandOpacity`, `Class|Border|SetBrushColor`, `Class|TextBox|SetHintText` and `Class|Button|SetBackgroundColor` are `VariableSet` nodes on properties that have a Blueprint setter, so the widget updates. Their value pin has the property's name (`ColorAndOpacity`, `BrushColor`).
+- **Slate inspector screenshots of `sp4` include the Outliner and the Content Browser.** `Saved/T14/crop.ps1` crops them to the viewport with `System.Drawing`. Run it with `powershell -ExecutionPolicy Bypass -File`, because this machine blocks scripts. `Snapshot` output stops at 8,191 characters, so search it with a regex in the script instead of reading it.
+- `UMGToolSet.WrapWidgets` returns the new panel, and `RenameWidget` renames it. `AddWidget` with `childIndex` puts a widget at that index, which is how `StageArea` replaced `StageGap`.
+- The DSL source is `Saved/T14/src/` (not in git).
