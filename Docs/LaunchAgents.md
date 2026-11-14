@@ -1,12 +1,14 @@
 # Launch the agents: a dispatcher session
 
+> **For the Claude session that reads this file:** if you were given this file with no other instructions, follow the Prompt section below. That is the request. The sections before it are for the person.
+
 Instructions for one Claude Fable 5.2 session. It starts Claude Opus 5.5 sessions for the tasks in [MVPPlan.md](MVPPlan.md) and runs as many at the same time as the editor and the plan's rules allow, up to the submission.
 
 ## Before you start
 
 1. Open the Unreal Editor on this project (the command is in `CLAUDE.local.md`), so that Unreal MCP is up for the editor lane.
 2. In the Claude desktop app's Code tab, start a new session on the repo folder itself, with no worktree, and pick Fable 5.2 as its model. The sessions it starts share that folder, because that is the folder the editor has open.
-3. Send it: `Follow the Prompt section of Docs/LaunchAgents.md.`
+3. Drag this file into the chat and send it. You don't need to type anything else. Typing `Follow the Prompt section of Docs/LaunchAgents.md.` works too.
 
 The dispatcher only starts sessions and keeps track of them. Each task runs in a normal session in the sidebar. Open that session to answer its questions, approve downloads and play your playtests.
 
@@ -35,6 +37,7 @@ First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/MVPPlan.
 
 ### 1. Check where things stand
 
+- First check that you run in the repo folder itself and not in a git worktree. Run `git rev-parse --git-dir`: it must print `.git`, or a path that ends in `/.git`. If it prints a path with `/.git/worktrees/` in it, stop and tell me to start you again on the repo folder with no worktree. The sessions you start share your folder, and they must work in the folder that the editor has open.
 - Don't run `git pull`. Each task session pulls when it starts, and other sessions in this folder may have work that isn't committed yet.
 - Run `git lfs locks`, list `Agents/status/`, and read `Agents/messages/` and `Agents/handoffs/`.
 - Put each task from T13 to T25 in one of four states:
