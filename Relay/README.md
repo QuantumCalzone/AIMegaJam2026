@@ -94,18 +94,22 @@ Each provider entry has:
 
 Cloudflare builds and deploys the relay from GitHub on its own machines, so nobody needs Node.js or wrangler on their computer. You need a Cloudflare account (the free Workers plan is enough: it includes Durable Objects with SQLite storage). Each deploy needs the person's OK, because every push to the connected branch deploys.
 
-**Once, in the Cloudflare dashboard:**
+**Status:** deployed on 2026-11-14 as `nhos-relay` in our Cloudflare account, built from `noHumansOnSet`, with `ANTHROPIC_API_KEY` set. The curl tests passed against it (23 of 23), and a request with the game's exact body shape (system text, `output_config` with the reply schema) came back as a normal reply. The address is on the Worker's page in the dashboard.
 
-1. **Workers & Pages > Create > Import a repository.** Connect GitHub and pick `QuantumCalzone/AIMegaJam2026`.
-2. Set:
+**How it was set up (to do it again, for example in another account):**
+
+1. **Workers & Pages > Create > Connect GitHub.** Authorize the "Cloudflare Workers and Pages" GitHub app and install it on **Only select repositories**: `QuantumCalzone/AIMegaJam2026`.
+2. Pick the repository, then set:
    - **Project name:** `nhos-relay` (it must match `name` in `wrangler.toml`).
-   - **Production branch:** the branch the relay is on (`noHumansOnSet` now, `main` after the merge).
-   - **Root directory:** `Relay`
    - **Build command:** empty. **Deploy command:** `npx wrangler deploy` (the default).
-   - Under **Build watch paths**, include `Relay/*` only, so pushes that touch only the game don't redeploy.
-3. Save and deploy. The first build fails or the relay answers `provider_unavailable` until a key is set; that is fine.
-4. **Settings > Variables and Secrets:** add `ANTHROPIC_API_KEY` as a **Secret** (type Secret, not Text) and paste the key there. Do the same for `OPENAI_API_KEY`, `XAI_API_KEY` and `META_API_KEY` when T16 adds those providers. Keys never go in chat, git or a command line.
-5. The address is on the Worker's page, something like `https://nhos-relay.<your-subdomain>.workers.dev`. Put it in `Content/NHOS/Data/llm.json` (T21's game side).
+   - **Enable Preview builds:** off.
+   - **Advanced settings > Path:** `Relay`
+3. Click Deploy. The create form has no branch choice, so this first build runs on `main` and fails if `main` has no `Relay/` folder yet. That is fine.
+4. **Settings > Builds > Production branch:** pick the branch the relay is on (`noHumansOnSet` now, `main` after the merge) and save. "Retry build" rebuilds the old commit, so start a new build with a push to that branch, or add a **Deploy Hook** for the branch, `curl -X POST` its URL once, and delete the hook.
+5. **Settings > Variables and secrets > Add variable:** `ANTHROPIC_API_KEY`, tick **Secret**, paste the key, "Add variable and deploy". Do the same for `OPENAI_API_KEY`, `XAI_API_KEY` and `META_API_KEY` when T16 adds those providers. Keys never go in chat, git or a command line.
+6. The address is on the Worker's page, `https://nhos-relay.<account subdomain>.workers.dev`. Put it in `Content/NHOS/Data/llm.json` (T21's game side).
+
+**Every push to the production branch redeploys** (the build watch path is `*`). That is harmless, because the code only changes when `Relay/` does. The build log shows a warning that the local config differs from the dashboard (vars, compatibility date); with `keep_vars = true` the dashboard vars and secrets stay, as the limit tests showed.
 
 `wrangler.toml` has `keep_vars = true`, so vars and secrets set in the dashboard survive every deploy. `.node-version` asks the build for Node 22, which wrangler 4.162 needs.
 

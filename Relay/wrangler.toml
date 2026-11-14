@@ -8,6 +8,10 @@ compatibility_date = "2026-06-01"
 # Workers Builds deploys a new version. Secrets are always kept.
 keep_vars = true
 
+# Serve only at the workers.dev address. No per-version preview URLs.
+workers_dev = true
+preview_urls = false
+
 # One global counter object holds the per-session, per-player and daily counts.
 [[durable_objects.bindings]]
 name = "LIMITER"
