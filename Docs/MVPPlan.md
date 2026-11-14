@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T13, T14 and T15 are done. T26 (five actors, Player names for the AIs) is committed and waits only for my playtest and my OK on its design doc edit. T16 and T17 (both Opus 5.5 · high) can start now. T16 needs no editor, and T17 takes over the locks on `BP_Show` and `L_Stage`.
+**Next up:** T13, T14 and T15 are done. T26 (five actors, Player names for the AIs) is committed and waits only for my playtest. T16 and T17 (both Opus 5.5 · high) can start now. T16 needs no editor, and T17 takes over the locks on `BP_Show` and `L_Stage`.
 
 ## Goal
 
@@ -329,7 +329,7 @@ T12 wrote T13 to T24 from Playtest 1, and I added T25 later. Two lanes can run a
     7. Propose the matching edit to the design doc (Rules, "Cast & personas": I have no persona, every persona whose provider has a key takes an AI seat, and the Player names), which also answers the Art tab's open question about The Understudy (see the build notes).
   - **Done when:** `Tools/check_prompts.py` exits with code 0; a free-mode autoplay show prints `NHOS: SEATS` with 5 seats, `human` at a random Player number, plays up to 3 scenes and reaches `NHOS: SHOW END`; a screenshot shows provider names and "you" on my screen while the `NHOS: LOG` lines (what the AIs read) use only Player names; I play one show.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_Title.uasset` (How to play, line 1), `Content/NHOS/Maps/L_Stage.umap`; `Content/NHOS/Data/prompts.json`, `personas.json`, `scenes.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc. `WBP_EndScreen` needed no change: four cards fit.
-  - **Waiting:** the work is done and committed (see "T26: five actors results" in Findings). Left: I play one show (the four-button vote row hasn't been clicked by hand yet), and my OK on the design doc edit.
+  - **Waiting:** the work is done and committed (see "T26: five actors results" in Findings), and the design doc edit is in (my OK on 2026-11-14). Left: I play one show (the four-button vote row hasn't been clicked by hand yet).
 
 - [ ] **T16 One LLM per AI player: prompts and keys**
   - **Model and effort:** Opus 5.5, high. New APIs, and prompts that must work on four different models.
@@ -1088,3 +1088,4 @@ Every role still runs `claude-haiku-5-5` at low effort.
 - **Stage and UI:** robots now stand at y = −330, −165, 0, 165, 330, facing (−820, 0). Seat 5 is pink. `WBP_Stage` has a fourth vote button (`VoteBtn3`, `VoteLbl3`). Title screen, line 1: a cast of five, four AIs from different labs, who see only Player names.
 - **Unreal MCP:** a new widget button's `OnClicked` event can't be written by the DSL until `UMGToolSet.BindToEventProperty` creates it. `write_graph_dsl` on an EventGraph keeps the events the code doesn't name. `AssetTools.read_file` can read DSL from `Saved/`, so a `ProgrammaticToolset` script can write many graphs without pasting the code into the call. Some old sources in `Saved/t08` are readbacks whose loops don't round-trip (`ScenePrep`), so T26 left those graphs alone.
 - **Not checked yet:** the four-button vote row by hand (autoplay votes without clicking), and the lose screen with four cards. All four AI seats still run on Claude until T18.
+- **Design doc (after my OK):** Rules, Cast & personas: I have no persona, every persona whose provider has a key takes an AI seat, a new bullet on Player names, and a full show needs 4 personas. The Cut: the reveal stamp shows the provider ("OPENAI: AI", "YOU: HUMAN"). Overview: I'm one more robot among the AIs. Art Inspiration: the open question about The Understudy is gone. `Docs/GameDesign.md` was refreshed from all five tabs. That also brought in edits made in the doc since the last copy: the Overview's new title and layout, and two renamed pun names in Bot Prompts. Still out of step with the game, and not part of this edit: Bot Prompts says pun names show on the stamp and company names stay off screen, and Tech & Build still lists "Add a fifth persona" as an open question.

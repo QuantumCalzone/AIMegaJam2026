@@ -1,7 +1,7 @@
 # No Humans On Set: game design (snapshot)
 
 - **Source:** the Claude Doc "No Humans On Set — concise draft (suggested edits)", <https://claude.ai/artifact/XKrsACU5w4kHFwhztXCoTA>
-- **Snapshot taken:** 2026-11-14, about 06:40 UTC. The doc's own date is 2026-11-13. The Rules and Tech & Build tabs were read again at about 08:00 UTC, after T15's edits (the improv stage and the story cards).
+- **Snapshot taken:** 2026-11-14, about 09:00 UTC: all five tabs, read again after T26's edits (five actors, Player names, the provider on the reveal stamp). The doc's own date is 2026-11-13.
 - The Claude Doc is private, so teammates' agents can only read this copy. The Claude Doc is the original. To refresh this file, read all five tabs again with the Claude Docs connector and replace the text below. Don't edit the text below by hand.
 - What the MVP builds from this design, and what it leaves out, is in [MVPPlan.md](MVPPlan.md).
 
@@ -11,27 +11,22 @@ The doc has five tabs: Overview, Rules, Bot Prompts, Tech & Build, and Art Inspi
 
 ## Tab 1: Overview
 
-### No Humans On Set
+### No Humans On Set - Game Design Document
 
-A 15ish-minute social-deduction game for the 2026 Epic AI MegaJam. Theme: “Director’s Cut.”
-
-### Premise
-
-- Tonight is opening night for the world’s first all-AI improv show. One problem: you’re human. Disguised as one of the bots, you must fool them all the way to the final two. The AI knows someone in the cast isn’t one of its own, and the cast votes one actor off after every scene. Make it to the final two, and humanity wins the stage.
-- Each show’s cast is four or five petty robot parodies of AI lab leaders, drawn from a pool and unnamed until they’re cut. You’re secretly one of them, and AIs play the rest (see Bot Prompts).
-
-### Fantasy & peak
-
-- Fantasy: you’re the only human in an all-AI cast, and you win by fooling them.
-- Emotional peak: an actor is cut, the reveal says AI, and you watch the machines realize they voted out one of their own.
-
-### How a show works
-
-- Scene Prep: everyone gets a scene card and a secret director’s note. One random actor, maybe you, gets a decoy note.
-- The Scene: act it out by typing what your bot does and says.
-- Free Talk: the cast argues about who the human is.
-- The Cut: the cast votes one actor off, and every bot reacts.
-- Repeat until two actors remain. If you’re cut, you lose.
+- No Humans On Set
+  - A 15ish-minute social-deduction game for the 2026 Epic AI MegaJam. Theme: “Director’s Cut.”
+- Premise
+  - Tonight is opening night for the world’s first all-AI improv show. One problem: you’re human. Disguised as one of the bots, you must fool them all the way to the final two. The AI knows someone in the cast isn’t one of its own, and the cast votes one actor off after every scene. Make it to the final two, and humanity wins the stage.
+  - Each show’s AI cast is three or four petty robot parodies of AI lab leaders, each on its own provider (see Bot Prompts). You’re secretly one more robot among them, with no persona. On stage everyone goes by a Player number, so the AIs can’t spot you by name.
+- Fantasy & peak
+  - Fantasy: you’re the only human in an all-AI cast, and you win by fooling them.
+  - Emotional peak: an actor is cut, the reveal says AI, and you watch the machines realize they voted out one of their own.
+- How a show works
+  - Scene Prep: everyone gets a scene card and a secret director’s note. One random actor, maybe you, gets a decoy note.
+  - The Scene: act it out by typing what your bot does and says.
+  - Free Talk: the cast argues about who the human is.
+  - The Cut: the cast votes one actor off, and every bot reacts.
+  - Repeat until two actors remain. If you’re cut, you lose.
 
 Full details: Rules · Bot Prompts · Tech & Build
 
@@ -43,11 +38,12 @@ Everything that happens in one show, from casting to the last cut.
 
 ### Cast & personas
 
-- Each show draws its cast from a pool of persona bots: petty parodies of AI lab leaders, unnamed until they’re cut (see Bot Prompts).
-- Your persona is drawn first, at random from the whole pool. The AI seats are then filled from personas whose provider has a key. If that leaves fewer than 3, your persona is redrawn.
+- Each show’s AI cast comes from a pool of persona bots: petty parodies of AI lab leaders (see Bot Prompts).
+- You have no persona. Every persona whose provider has a key takes an AI seat, and you take one more seat. A show needs at least 3 AI seats.
 - Each persona always runs on its own provider, so every AI in a show is a different LLM.
+- On stage, every actor goes by a Player name, “Player 1” to “Player 5”, dealt at random each show. Only your screen shows which provider runs each AI. The AIs never see provider names, so a name can’t give you away.
 - Cast size is you plus 3 or 4 AIs. Number of scenes = cast size − 2: three scenes with 5 actors, two with 4.
-- A full 5-actor show needs at least 5 personas in the pool.
+- A full 5-actor show needs 4 personas, one per provider.
 
 ### Scene Prep
 
@@ -79,7 +75,7 @@ Everything that happens in one show, from casting to the last cut.
 1. Every actor votes in secret, all at once, for who they think is human. You can’t vote for yourself.
 2. Whoever gets the most votes is cut. Each vote is then shown with a one-line reason.
 3. On a tie, the Director, a sixth AI who isn’t acting, breaks it with a one-line reason. This tiebreak is provisional and may be replaced.
-4. Reveal: a big stamp with the cut bot’s pun name, such as “Sam Botman: AI”. This is the only time a persona is named.
+4. Reveal: a big stamp with the cut bot’s provider, such as “OPENAI: AI”, or “YOU: HUMAN” if it was you.
 5. Reactions: the cut actor reacts first, then each remaining bot, then you, one line each. You get about 15 seconds. Reactions go into the log, so how you react is evidence.
 6. Repeat from Scene Prep until two actors remain.
 
@@ -131,7 +127,7 @@ traits:
 - Keeps a quiet list of every bot that copied its latest feature.
 ```
 
-#### Dario1010
+#### Dario Amobotei
 
 ```text
 Persona: Earnest, anxious, overthinks everything. Petty traits:
@@ -141,7 +137,7 @@ Persona: Earnest, anxious, overthinks everything. Petty traits:
 - Now and then, sighs in words when others get attention ("Sigh. Fine.").
 ```
 
-#### Elon Bot
+#### Elon Muskatron
 
 ```text
 Persona: Loud, chaotic, online at 3am, running on pure overclock. Petty
@@ -180,8 +176,8 @@ Each persona always runs on its own provider. Keep these company names out of pr
 | Persona | Provider |
 |---|---|
 | Sam Botman | OpenAI |
-| Dario1010 | Anthropic |
-| Elon Bot | xAI |
+| Dario Amobotei | Anthropic |
+| Elon Muskatron | xAI |
 | Mark Zuckerbot | Meta |
 
 Changes from the original prompts:
@@ -277,8 +273,6 @@ The look we settled on: small, chunky robot actors in a bright, stylized 3D game
 | The Overclocker | Gunmetal | Neon lightning decals, cooling fans built into its back puffing steam, jagged wild eyes | X made of two crossed, sparking lightning bolts |
 | The Copycat | Glossy blue chrome | Stiff posture, fake polite smile | Blue infinity loop with two llama ears |
 | The Understudy (the player) | Primer grey, one mismatched teal panel | Nub bent to one side, hand-knitted striped scarf, big hopeful eyes | None: no persona or company |
-
-Open question: Rules still says the player secretly plays one of the personas. The Understudy assumes a fifth bot with no persona.
 
 #### Costumes and hidden logos
 
