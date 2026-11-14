@@ -1,0 +1,5 @@
+(fn Enq (Verb Loc Prop Bot)
+  (add (V QVerb) Verb)
+  (add (V QLoc) Loc)
+  (add (V QProp) Prop)
+  (add (V QBot) Bot))

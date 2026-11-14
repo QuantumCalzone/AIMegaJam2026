@@ -1,0 +1,6 @@
+(fn ToTable ()
+  (bind _all (Actor|GetAllActorsOfClass :ActorClass "/Game/NHOS/Stage/BP_Prop.BP_Prop_C"))
+  (for _p _all
+    (bind _s (Class|BPProp|SlotFor :self _p :A self))
+    (if (>= _s 0)
+      (Class|BPProp|GoTable :self _p :Dur 0.8))))

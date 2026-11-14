@@ -1,0 +1,2 @@
+(fn LookAt (Target)
+  (CallFunction|Enq :Verb "look" :Loc Target :Prop (V NullProp) :Bot (V NullBot)))

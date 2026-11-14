@@ -1,0 +1,3 @@
+(fn YawTo (Target)
+  (bind _l (Transformation|GetActorLocation))
+  (return (Math|Trig|Atan2(Degrees) :Y (- (.y Target) (.y _l)) :X (- (.x Target) (.x _l)))))

@@ -1,0 +1,4 @@
+(fn Setup (Name Color IsMe)
+  (Variables|Default|SetDisplayName Name)
+  (Variables|Default|SetBaseColor Color)
+  (CallFunction|ResetLook))

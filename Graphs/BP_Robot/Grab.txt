@@ -1,0 +1,2 @@
+(fn Grab (Prop)
+  (CallFunction|Enq :Verb "grab" :Loc (Transformation|GetActorLocation) :Prop Prop :Bot (V NullBot)))

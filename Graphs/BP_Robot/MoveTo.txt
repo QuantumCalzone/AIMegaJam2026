@@ -1,0 +1,4 @@
+(fn MoveTo (Dest)
+  (CallFunction|InitHome)
+  (set GoalLoc Dest)
+  (CallFunction|Enq :Verb "move" :Loc Dest :Prop (V NullProp) :Bot (V NullBot)))

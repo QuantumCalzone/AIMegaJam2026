@@ -1,0 +1,3 @@
+(fn Shake ()
+  (if (not (Variables|Default|GetIsCut))
+    (Variables|Default|SetShakeUntil (+ (Variables|Default|GetClock) 0.8))))

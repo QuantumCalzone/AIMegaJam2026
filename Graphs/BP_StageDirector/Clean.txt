@@ -1,0 +1,6 @@
+(fn Clean (S)
+  (bind _t (Utilities|String|TrimTrailing (Utilities|String|Trim S)))
+  (bind _a (select (Utilities|String|StartsWith :SourceString _t :InPrefix "@") (Utilities|String|RightChop :SourceString _t :Count 1) _t))
+  (if (Utilities|String|StartsWith :SourceString _a :InPrefix "the ")
+    (return (Utilities|String|RightChop :SourceString _a :Count 4)))
+  (return _a))

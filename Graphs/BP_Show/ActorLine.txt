@@ -1,0 +1,8 @@
+(fn ActorLine (Seat Entry)
+  (Utilities|Array|Add (Variables|Default|GetSharedLog) Entry)
+  (CallFunction|LightSeat :Seat Seat)
+  (bind _dir (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Stage/BP_StageDirector.BP_StageDirector_C"))
+  (Utilities|IsValid _dir
+    (:"Is Valid"
+      (Class|BPStageDirector|PlayLine :self _dir :Seat Seat :Entry Entry :Robots (Variables|Default|GetRobots) :SeatNames (Variables|Default|GetSeatName) :Ids (Variables|Default|GetSeatId)))
+    (:"Is Not Valid")))

@@ -1,0 +1,3 @@
+(fn FrontYaw ()
+  (bind _y (CallFunction|YawTo :Target (V CamLoc)))
+  (return _y))

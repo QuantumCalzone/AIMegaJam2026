@@ -1,0 +1,3 @@
+(fn Give (Prop Bot)
+  (bind _g (CallFunction|GetGoal :self Bot))
+  (CallFunction|Enq :Verb "give" :Loc _g :Prop Prop :Bot Bot))

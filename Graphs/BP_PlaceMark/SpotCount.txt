@@ -1,0 +1,2 @@
+(fn SpotCount ()
+  (return (len (V Spots))))

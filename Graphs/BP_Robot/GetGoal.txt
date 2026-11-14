@@ -1,0 +1,4 @@
+(fn GetGoal ()
+  (if (V HasHome)
+    (return (V GoalLoc)))
+  (return (Transformation|GetActorLocation)))

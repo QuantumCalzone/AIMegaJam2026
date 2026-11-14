@@ -1,0 +1,3 @@
+(fn Fallback (Part Why)
+  (Class|BPRobot|LookAround :self (V CurBot))
+  (print (cat "NHOS: ACT " (V Id) " look around - (" Why ": " Part ")")))

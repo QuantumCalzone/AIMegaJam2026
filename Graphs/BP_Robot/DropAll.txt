@@ -1,0 +1,7 @@
+(fn DropAll ()
+  (bind _all (Actor|GetAllActorsOfClass :ActorClass "/Game/NHOS/Stage/BP_Prop.BP_Prop_C"))
+  (for _p _all
+    (bind _s (Class|BPProp|SlotFor :self _p :A self))
+    (if (>= _s 0)
+      (bind _feet (CallFunction|FeetSpot))
+      (Class|BPProp|ThrowTo :self _p :Loc _feet :Dur 0.5 :Height 40.0 :Spin 0.5))))

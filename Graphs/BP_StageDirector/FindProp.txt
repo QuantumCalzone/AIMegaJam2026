@@ -1,0 +1,7 @@
+(fn FindProp (Name)
+  (for _p (V Props)
+    (bind _is (Class|BPProp|NameIs :self _p :Name Name))
+    (if _is
+      (set TgtProp _p)
+      (return true)))
+  (return false))

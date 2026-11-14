@@ -1,0 +1,2 @@
+(fn IsHeld ()
+  (return (>= (V Slot) 0)))

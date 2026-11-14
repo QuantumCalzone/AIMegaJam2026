@@ -1,0 +1,6 @@
+(fn NameIs (Name)
+  (if (Utilities|String|IsEmpty Name)
+    (return false))
+  (if (Utilities|String|Equal,CaseInsensitive(String) :A (V PropName) :B Name)
+    (return true))
+  (return (Utilities|String|EndsWith :SourceString (V PropName) :InSuffix (cat " " Name))))

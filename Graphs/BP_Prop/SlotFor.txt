@@ -1,0 +1,4 @@
+(fn SlotFor (A)
+  (if (and (>= (V Slot) 0) (== (V Holder) A))
+    (return (V Slot)))
+  (return -1))

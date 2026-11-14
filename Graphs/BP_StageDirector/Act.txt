@@ -1,0 +1,2 @@
+(fn Act (Verb Target Item Note)
+  (print (cat "NHOS: ACT " (V Id) " " Verb " " (select (Utilities|String|IsEmpty Target) "-" Target) " " (select (Utilities|String|IsEmpty Item) "-" Item) Note)))

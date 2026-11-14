@@ -1,0 +1,2 @@
+(fn SpotAt (I)
+  (return (+ (Transformation|GetActorLocation) (get (V Spots) I))))

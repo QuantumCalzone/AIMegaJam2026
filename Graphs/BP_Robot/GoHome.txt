@@ -1,0 +1,4 @@
+(fn GoHome ()
+  (CallFunction|InitHome)
+  (set GoalLoc (V HomeLoc))
+  (CallFunction|Enq :Verb "home" :Loc (V HomeLoc) :Prop (V NullProp) :Bot (V NullBot)))

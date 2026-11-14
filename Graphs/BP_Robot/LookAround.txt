@@ -1,0 +1,2 @@
+(fn LookAround ()
+  (CallFunction|Enq :Verb "around" :Loc (Transformation|GetActorLocation) :Prop (V NullProp) :Bot (V NullBot)))

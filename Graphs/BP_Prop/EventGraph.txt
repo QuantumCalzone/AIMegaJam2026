@@ -1,0 +1,8 @@
+(event EventBeginPlay
+  (CallFunction|SetProp :Name (V PropName))
+  (set HomeLoc (Transformation|GetActorLocation))
+  (set HomeRot (Transformation|GetActorRotation))
+  (set Slot -1))
+
+(event EventTick (DeltaSeconds)
+  (CallFunction|TickFly :Delta DeltaSeconds))

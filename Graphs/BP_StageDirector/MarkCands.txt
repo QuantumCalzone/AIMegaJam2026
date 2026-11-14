@@ -1,0 +1,6 @@
+(fn MarkCands ()
+  (clear (V Cands))
+  (bind _n (Class|BPPlaceMark|SpotCount :self (V TgtMark)))
+  (for _i (range _n)
+    (bind _s (Class|BPPlaceMark|SpotAt :self (V TgtMark) :I _i))
+    (add (V Cands) _s)))

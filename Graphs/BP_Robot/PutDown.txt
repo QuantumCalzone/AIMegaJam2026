@@ -1,0 +1,2 @@
+(fn PutDown (Prop Target)
+  (CallFunction|Enq :Verb "put" :Loc Target :Prop Prop :Bot (V NullBot)))

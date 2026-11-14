@@ -1,0 +1,2 @@
+(fn Throw (Prop Target Hit)
+  (CallFunction|Enq :Verb "throw" :Loc Target :Prop Prop :Bot Hit))
