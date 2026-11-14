@@ -4,7 +4,7 @@ The living plan for the MVP prototype of our jam game. The design is in [GameDes
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T05 · Opus 5.5 · high (then T06 · Opus 5.5 · high, which needs T05)
+**Next up:** T06 · Opus 5.5 · high (then T07 · Opus 5.5 · high, which needs T06)
 
 ## Goal
 
@@ -148,7 +148,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
   - **Done when:** in PIE, typing `hello` and pressing Enter adds the line to the on-screen log (screenshot), and the input box is empty and focused again.
   - **Touches:** new `Content/NHOS/UI/WBP_Stage.uasset`, new `Content/NHOS/Core/BP_ShowGameMode.uasset`, new `Content/NHOS/Core/BP_ShowPlayerController.uasset`, `Content/NHOS/Maps/L_Stage.umap`.
 
-- [ ] **T05 One AI reply on screen**
+- [x] **T05 One AI reply on screen**
   - **Model and effort:** Opus 5.5, high. It turns the spike into the client that every later task calls.
   - **Depends on:** T03, T04
   - **Needs:** editor + Unreal MCP running, my API key.
@@ -158,7 +158,7 @@ These hold unless T01 or T02 finds otherwise. If one changes, change it here in 
     3. On Send, ask one persona (The Worrier) with the game prompt, the base prompt and the persona as the system text, and show the reply's speech in the log under the persona's name.
     4. Print `NHOS: LLM <tag> ok <seconds>` or `NHOS: LLM <tag> fail <reason>` for every call.
   - **Done when:** in PIE, a typed question gets an in-character answer in the on-screen log within about 15 seconds, and the editor log shows `NHOS: LLM ... ok`. With the key file renamed, the screen shows "AI service unavailable".
-  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`.
+  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`. T05 also added `Content/NHOS/Core/BPC_LLMRequest.uasset` and left `WBP_Stage` unchanged.
 
 ### The show loop
 
@@ -431,3 +431,51 @@ Unreal MCP rules found in this task:
 - An enum switch is `(switch Utilities|FlowControl|Switch|SwitchonETextCommit CommitMethod (:OnEnter ...))`.
 - **PIE checks without a person:** `EditorAppToolset.StartPIE`, then `SlateInspectorToolset`: `Observe("")`, then `Snapshot` in a *later* call (the observer needs a tick). The snapshot lists UMG widgets with `[focused]` flags and refs. `Type(ref, text, submit=true)` types and presses Enter, and `Click(ref)` clicks. For a screenshot, take `SlateInspectorToolset.Screenshot` inside a `ProgrammaticToolset` script and write its base64 with `AssetTools.write_file` to an absolute path under `Saved/` (a relative path resolves to the engine folder), then decode it outside the editor.
 - `get_node_type_pins` makes its sample node inside the graph you pass it (the node paths it returns are in that graph). Ask in a graph that a later `write_graph_dsl` replaces, not in a finished one.
+
+### T05: one AI reply results (2026-11-14)
+
+Proven in PIE on `L_Stage`: typing "Worrier, why do you keep checking the exits?" put an in-character answer from The Worrier in the on-screen log after 2.3 s, and the editor log shows `NHOS: LLM worrier-1 ok 2.329 in=2995 out=89`. With `Local/llm_key.json` renamed, the header says "AI SERVICE UNAVAILABLE", the log says "AI service unavailable: key file missing or not valid JSON: <path>", and the editor log shows `NHOS: SHOW UNAVAILABLE ...`. Screenshots: `Saved/Screenshots/T05/` (not in git).
+
+More checks:
+
+- **Several asks in flight:** two lines sent in the same second came back as `worrier-2` after 2.0 s and `worrier-3` after 4.0 s, each under its own tag.
+- **A failed ask:** with a fake key, the log shows `NHOS: LLM worrier-1 fail API error authentication_error: invalid x-api-key`, and the screen shows "The Worrier looks around."
+- **No leaks:** after every ask, `BP_Show` holds only `DefaultSceneRoot` and `LLMClient` (`ActorTools.get_components` on the PIE actor).
+
+How the client works now (later tasks call this):
+
+- **`BPC_LLMClient.LoadConfig()` → (Ok, Error)** reads the key and `llm.json`, keeps all of `roles`, builds the HTTP headers once and sets `Ready`.
+- **`BPC_LLMClient.Ask(Tag, Role, System, User)`.** The plan said `Ask(Tag, System, User)`. `Role` (`actor`, `input` or `director`) picks the model, effort and token limit from `llm.json`, so T07 and T09 don't have to change the signature.
+- **`OnAnswer(Tag, Ok, Speech, Vote, Reason, Pass, Verbs, Targets, Items, Error)`**, an event dispatcher. The actions come as three string arrays of the same length (verb, target, item), so no struct asset is needed. `Ok` is false for: not ready, unknown role, no reply (`transport ...`), an API error, `stop_reason` refusal or max_tokens, no text block, and a reply that isn't JSON. When the client isn't ready or the role is unknown, `OnAnswer` fires at once, inside `Ask`.
+- **Every call prints** `NHOS: LLM <tag> ok <seconds> in=<input tokens> out=<output tokens>` or `NHOS: LLM <tag> fail <reason>`. Seconds come from `UtcNow` at send and at reply. The token counts let T11 work out the cost per show.
+- **`BPC_LLMRequest`**, new: one component per ask. `Ask` adds it to the owner actor with `Add Component by Class`, calls `Setup` and then `Send`. `Send` fires the Http Request node; both its outputs call `Finish`, which hands the reply to the client's `HandleHttp` and destroys the component.
+  - Why: in one shared Event Graph, a second ask overwrites the first one's tag before its reply arrives. The node's outputs and the graph's variables exist once per Blueprint instance. A component per ask keeps each tag with its own request.
+  - Its Http Request node is wired by hand, as in T01. Don't rewrite `BPC_LLMRequest`'s Event Graph with the DSL, or wire the node again afterwards.
+
+How `BP_Show` works now:
+
+- **Start:** BeginPlay → `Delay Until Next Tick`, so the player controller has made `WBP_Stage` → `StartShow` gets the widget → `Begin`.
+- **`Begin`:** binds the widget's `OnSend` to `HandleSend`, calls `LoadConfig`, then `LoadData`.
+  - `LoadData` reads `prompts.json` and `personas.json`, builds the cast list and The Worrier's system text: `game`, `base` and the persona prompt, each joined with newlines and separated by a blank line, as in `Tools/check_prompts.py`.
+  - A missing or broken file goes to `SetUnavailable`. On success it prints `NHOS: SHOW READY asking=The Worrier player=The Visionary`.
+- **The T05 talk flow is temporary; T06 replaces it.** The player sits in the first persona that isn't The Worrier. Each typed line goes into `SharedLog` as a Free Talk entry (`when` "scene 1, free talk round 1", `does` from `does_templates.nothing`). The Worrier gets the `free_talk` ask with `show`, `cast`, `you`, `log`, `game_messages`, `options` and `ask`, but no `set` or `scene_card` yet, so an ask is about 3,000 input tokens. Its answer is shown as "The Worrier: <speech>" and added to `SharedLog`.
+  - The typed line goes into the shared log raw. T07 sends it through the input LLM first.
+  - `WBP_Stage.SubmitInput` still writes the raw typed line to the screen. When T07 shows every line in the shared-log form, move that line out of the widget and let `BP_Show` write it.
+- **`BP_Show.NL`** is a string variable whose default is a newline. `Join String Array` uses it.
+
+Numbers, with `claude-haiku-5-5` at low effort: three asks took 2.3, 2.0 and 4.0 s. Input was 2,995 to 3,190 tokens and output 89 to 525 tokens.
+
+Unreal MCP rules found in this task:
+
+- **A failed `write_graph_dsl` rolls back, and it compiles the whole Blueprint.** One stale node anywhere blocks every write. An example is a call node that lacks a parameter you just added with `add_function_param`. Delete it with `delete_node` first.
+- **`write_graph_dsl` keeps event chains it doesn't name.** Writing only `(event EventBeginPlay)` left the old `RunSpike` chain in place, and an orphan node stayed in a function graph. To remove an event or a node, use `delete_node`.
+- **Binding a dispatcher to a function can't be written in the DSL.** `EventDispatchers|CreateEvent` has no delegate type until a function is chosen, so the compile fails.
+  - Make `Default|BindEventto<Dispatcher>`, the target's getter and `EventDispatchers|CreateEvent` with `create_node`.
+  - Connect `OutputDelegate` to the Bind node's `Delegate` pin first. Only then do `list_compatible_event_functions` and `set_create_event_function` work.
+  - Keep it in its own small function (`BP_Show.BindStage`), and don't rewrite that function with the DSL.
+- **A component's dispatcher:** `add_component_bound_event` on the component template (`/Game/NHOS/Core/BP_Show.BP_Show_C:LLMClient_GEN_VARIABLE`) makes the `OnAnswer(LLMClient)` event with the dispatcher's parameters. The DSL then fills it as `(event OnAnswer(LLMClient) (Tag Ok ...) ...)`.
+- **`Game|AddComponentbyClass`** with a class literal returns the typed component, so its functions and events can be called on it directly (`Class|BPCLLMRequest|Send :self req`).
+- **`Json|HasField` is impure** (it has exec pins). Bind its result before you use it in a condition.
+- **`ObjectTools.set_properties` takes `values` as a JSON string**, for example `{"NL": "\n"}`. On a new variable it works only after the Blueprint compiles.
+- **The DSL can't make the Http Request node** under its readback name `Http|HttpPostRequest` either.
+- **`read_graph_dsl` names a call to the Blueprint's own `Finish` function `Ability|Tasks|Finish`.** `get_node_infos` shows a `Self` target, so the node is right.
