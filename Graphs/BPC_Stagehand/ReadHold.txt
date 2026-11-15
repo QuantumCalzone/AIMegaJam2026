@@ -1,0 +1,18 @@
+; BPC_Stagehand.ReadHold (T61): the hold times from stagehand.json's "hold" block (Load's defaults stay if it is missing).
+; Its own function because an if without return after Load's early return would swallow the rest (T30).
+(fn ReadHold ()
+  (bind _hh (Json|HasField (V Data) "hold"))
+  (if (not _hh)
+    (return))
+  (bind _h (Json|GetField (V Data) "hold"))
+  (set Hold _h)
+  (bind _h1 (Json|GetField (V Hold) "base"))
+  (set HoldBase _h1)
+  (bind _h2 (Json|GetField (V Hold) "per_word"))
+  (set HoldPerWord _h2)
+  (bind _h3 (Json|GetField (V Hold) "min"))
+  (set HoldMin _h3)
+  (bind _h4 (Json|GetField (V Hold) "max"))
+  (set HoldMax _h4)
+  (bind _h5 (Json|GetField (V Hold) "gap"))
+  (set Gap _h5))

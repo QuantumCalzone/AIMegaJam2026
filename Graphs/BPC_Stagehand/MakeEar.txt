@@ -1,0 +1,8 @@
+; BPC_Stagehand.MakeEar (T61): makes the earpiece overlay once and adds it to the viewport at Z 15.
+(fn MakeEar ()
+  (Utilities|IsValid (V Ear)
+    (:"Is Valid")
+    (:"Is Not Valid"
+      (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Earpiece.WBP_Earpiece_C" (Game|GetPlayerController 0)))
+      (set Ear _w)
+      (UserInterface|Viewport|AddtoViewport :self (V Ear) :ZOrder 15))))

@@ -1,0 +1,23 @@
+; T63: my scene turn: the action I built (Verb, Item, Target) and the line I typed. Verb is move, look, grab,
+; throw, give, around (Look around) or none (No action); Item and Target are prop, place and Player names, as
+; T62's functions use them. HumanCheck pre-checks the action with the stage director's rules. No LLM sees the
+; action: HumanSay hands it to HandleReply with the line from SpellAsk. HandleSend sends Verb "none" until T64's
+; builder; AutoTurn picks an action for autoplay.
+(fn SendHumanTurn (Verb Item Target Line)
+  (set HumanSent true)
+  (set HVerb (Utilities|String|ToLower (Utilities|String|Trim Verb)))
+  (set HItem (Utilities|String|Trim Item))
+  (set HTarget (Utilities|String|Trim Target))
+  (if (and (streq (V HVerb) "look") (Utilities|String|IsEmpty (V HTarget)))
+    (set HVerb "around"))
+  (if (not (or (streq (V HVerb) "move") (or (streq (V HVerb) "look") (or (streq (V HVerb) "grab") (or (streq (V HVerb) "throw") (or (streq (V HVerb) "give") (streq (V HVerb) "around")))))))
+    (set HVerb "none"))
+  (if (or (streq (V HVerb) "move") (streq (V HVerb) "look"))
+    (set HItem ""))
+  (if (streq (V HVerb) "grab")
+    (set HTarget ""))
+  (if (or (streq (V HVerb) "around") (streq (V HVerb) "none"))
+    (set HItem "")
+    (set HTarget ""))
+  (CallFunction|HumanCheck)
+  (CallFunction|SpellAsk :Line Line :InPhase "scene"))

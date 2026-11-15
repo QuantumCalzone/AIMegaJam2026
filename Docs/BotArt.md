@@ -2,6 +2,8 @@
 
 The concept art for the cast that replaces T46's clay pill bots: what was chosen, the rules the build keeps, and how each image was made. The files are in `Docs/BotArt/`. They are concept images only, not game assets: rows go into [Assets.md](Assets.md) when the build makes the models (T79, T80).
 
+**Models:** the cast's parts made in Hyper3D from these images (T81) are in [CastArt/](CastArt/), one folder per part, each with its log; [tasks/T81.md](tasks/T81.md) lists them. T82 and T83 put them into `BP_Robot`.
+
 **Status:** chosen on 2026-11-15, after eleven concept rounds, by my picks in rounds 7 and 8, edited in round 10 (no hair) and checked in costume in round 11. Every round, with every take, is on the private concept page <https://claude.ai/artifact/DnjwjcZ1UV9o8BGAB4p9TQ> (ask QuantumCalzone for access). The design doc's "Art Inspiration" tab still describes the pill bots; T79 changes it, after my OK. T79 builds the shared round head and three of the bots, T80 builds Meta's android and my costume.
 
 ![The cast](BotArt/cast.png)
@@ -47,4 +49,4 @@ The emote tasks build this: T75 poses each robot's face and a gesture for twelve
 
 1. **The source images:** Leonardo Lucid Origin text to image, 864 × 1152, four takes per prompt, with `Tools/art_gen.py image`. Each prompt and seed is in `logs/<seat>_source.json`.
 2. **The edits:** `Tools/art_gen.py edit` (Leonardo's instruction-based `gemini-2.5-flash-image`), which changes the source image only as the prompt says. The hair removal and Meta's chain are in `logs/<seat>_edit.json`; the costume check is in `logs/costume_<headpiece>_<seat>.json`, with the headpiece's reference image as a second image. The edit keeps the source's size: three edits are 864 × 1184, a little taller than their 864 × 1152 sources.
-3. **Lessons:** a text prompt redrawn from a pick gives a new robot every time (round 9 drifted far from my picks), so change a picked image with `edit`, never with a new prompt. Leonardo doesn't hold more than one specified character per image: group shots drew six or seven bots and mixed the colors, so lineups are made by putting single images side by side. Leonardo reported no cost for any of these calls (`api_credit_cost` is null).
+3. **Lessons:** a text prompt redrawn from a pick gives a new robot every time (round 9 drifted far from my picks), so change a picked image with `edit`, never with a new prompt. Leonardo doesn't hold more than one specified character per image: group shots drew six or seven bots and mixed the colors, so lineups are made by putting single images side by side. Leonardo reported no cost for any of these calls (`api_credit_cost` is null), but the balance does drop: the cover's edits measured 26 API credits per edited image (`Docs/ItchMedia/README.md`).

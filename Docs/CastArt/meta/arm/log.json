@@ -1,0 +1,50 @@
+{
+ "part": "meta/arm",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/cc30ff9a-2df1-4fc8-8011-87d88fb5561a",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "cc30ff9a-2df1-4fc8-8011-87d88fb5561a",
+ "upload_id": "5JYO3gNAyhKm9YMSzlPM-w",
+ "prompt": "A single detached arm of a doll-like android toy: a short royal blue t-shirt sleeve at the shoulder, then a pale cream jointed doll arm with dark joint lines at the elbow and the wrist and a cream doll hand, hanging straight down. Only the arm, no body. One closed piece, matte clay, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7498,
+  "bbox_min": [
+   -0.321,
+   -0.281,
+   -0.951
+  ],
+  "bbox_max": [
+   0.321,
+   0.274,
+   0.948
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7497
+  ],
+  "open_edges": 0
+ }
+}

@@ -1,0 +1,16 @@
+; T63: the stage director's rules pre-check my built action (CanDo). A no makes it a look around at once, printed
+; in the rules' fallback form. A yes keeps it, and T62's CheckTurn accepts it in the log's order, so an AI that
+; grabs the same prop first in this turn still wins it. Look around and No action need no check.
+(fn HumanCheck ()
+  (if (or (streq (V HVerb) "around") (streq (V HVerb) "none"))
+    (return))
+  (bind _dir (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Stage/BP_StageDirector.BP_StageDirector_C"))
+  (if (== _dir (V NullDir))
+    (return))
+  (bind (_ok _why) (Class|BPStageDirector|CanDo :self _dir :Seat (V HumanSeat) :Verb (V HVerb) :Item (V HItem) :Target (V HTarget)))
+  (if _ok
+    (return))
+  (print (cat "NHOS: ACT " (get (V SeatId) (V HumanSeat)) " look around - (" _why ": " (V HVerb) " " (select (Utilities|String|IsEmpty (V HItem)) "-" (V HItem)) " " (select (Utilities|String|IsEmpty (V HTarget)) "-" (V HTarget)) ")"))
+  (set HVerb "around")
+  (set HItem "")
+  (set HTarget ""))

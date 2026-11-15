@@ -1,0 +1,48 @@
+{
+ "part": "anthropic/whole_bang",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/bc4141e1-c37a-42dd-8fe5-7a1763bc5d7c",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate_bang",
+ "asset_id": "8e60a7d6-c152-4fc8-ab4e-31048da75388",
+ "instruction": "head, body, left arm, right arm",
+ "strength": 4,
+ "explode_strength": 1,
+ "resolution": "Basic",
+ "geometry_file_format": "fbx",
+ "generation_id": "bc4141e1-c37a-42dd-8fe5-7a1763bc5d7c",
+ "use": "method test (a), not a game part",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "mesh_stats.json",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 5,
+  "triangles": 40000,
+  "vertices": 19994,
+  "bbox_min": [
+   -0.536,
+   -0.419,
+   -0.952
+  ],
+  "bbox_max": [
+   0.537,
+   0.418,
+   0.952
+  ],
+  "pieces": 5,
+  "piece_vertex_counts": [
+   7317,
+   6663,
+   3180,
+   2175,
+   656
+  ],
+  "open_edges": 0
+ },
+ "files_not_kept": "model.fbx and its textures: a method test, not a game part; fetch them again with rodin_get_result and the generation id"
+}

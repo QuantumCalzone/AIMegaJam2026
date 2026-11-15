@@ -1,0 +1,65 @@
+{
+ "part": "you/body",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/1a0a9bbf-6d96-4eaa-bf9c-325706174e9d",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate_polygen",
+ "face_count": 15000,
+ "material": "PBR",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "generation_id": "1a0a9bbf-6d96-4eaa-bf9c-325706174e9d",
+ "source": {
+  "tool": "rodin_generate_agentic",
+  "tier": "standard",
+  "producer": "high-poly (the agentic tool chose it)",
+  "export_type": "fbx",
+  "generation_id": "e67332a6-603a-437a-ba15-c7da390a3774",
+  "upload_id": "Uq8R3IFRKn5Ehw1EvobuQw",
+  "result": "500,000 triangles, a 49 MB FBX and 4K textures: not kept in git",
+  "prompt": "Only the body of a homemade robot costume worn by a person, without head and without arms: a teal-painted cardboard box worn as a torso, with two strips of gray duct tape across the front at slight angles and two silver bottle caps glued on as buttons; under the box, blue jeans with rolled cuffs and black canvas sneakers with white toes. No scarf, no head, no arms: the top of the box is closed."
+ },
+ "note": "PolyGen remade the high-poly agentic model at 15,000 faces with new PBR textures from the same reference",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "materials": {
+   "model": [
+    0.8,
+    0.8,
+    0.8
+   ]
+  },
+  "meshes": 1,
+  "triangles": 13521,
+  "vertices": 6763,
+  "bbox_min": [
+   -0.584,
+   -0.541,
+   -0.95
+  ],
+  "bbox_max": [
+   0.583,
+   0.541,
+   0.951
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   6759
+  ],
+  "open_edges": 0
+ }
+}

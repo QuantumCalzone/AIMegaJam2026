@@ -1,0 +1,12 @@
+; T63: the input LLM's reply to spell-<n>, in time (HandleReply's first branch sends it here). Its actions are
+; ignored. A failed or refused ask, or an empty reply that isn't a pass, sends the line as typed.
+(fn SpellIn (Ok Speech Pass)
+  (set SpellTag "")
+  (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "SpellTimeout")
+  (if (not Ok)
+    (CallFunction|SpellSkip :Why "failed")
+    (return))
+  (if (and (Utilities|String|IsEmpty (Utilities|String|Trim Speech)) (not Pass))
+    (CallFunction|SpellSkip :Why "empty")
+    (return))
+  (CallFunction|HumanSay :Line Speech :Pass Pass))

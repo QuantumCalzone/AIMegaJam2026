@@ -1,0 +1,8 @@
+{
+	"_readme": [
+		"Settings for the player's turn input (T63). The game reads this file at each line the player sends (BP_Show.SpellWait), so a change takes effect at the next line, even mid-show.",
+		"spelling_wait: seconds the input LLM gets to fix the spelling of a typed line (BP_Show.SpellAsk). If it fails, is refused or takes longer, the line goes as typed, with provider names turned into Player names (ScrubLabels), and the log prints NHOS: SPELLING skipped <off|failed|empty|late>. A reply that comes late is dropped. 0 sends every line as typed, with no call. A missing file or field means 4.",
+		"Tools/check_prompts.py checks this file. T66 adds 'timers' here."
+	],
+	"spelling_wait": 4
+}

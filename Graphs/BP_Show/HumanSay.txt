@@ -1,0 +1,25 @@
+; T63: my final line, capped at 15 words, goes back through HandleReply under my turn's input-<n> tag, as the
+; input LLM's reply did before T63. In a scene turn, the action I built goes with it as a one-action reply, so
+; BuildDoes writes my does with does_templates exactly as an AI's, and T62's CheckTurn accepts it in the log's
+; order. "around" is a look with no target ("looks around"); "none" is no action ("stands still").
+; HVerb goes back to "none" before HandleReply, which can start the next turn at once (StartTurn, AutoTurn).
+(fn HumanSay (Line Pass)
+  (bind _c (CallFunction|CapWords :Text Line))
+  (set HLine _c)
+  (clear (V HVerbs))
+  (clear (V HTargets))
+  (clear (V HItems))
+  (bind _scene (streq (V HPhase) "scene"))
+  (bind _around (streq (V HVerb) "around"))
+  (if (and _scene (not (or (streq (V HVerb) "none") (Utilities|String|IsEmpty (V HVerb)))))
+    (add (V HVerbs) (select _around "look" (V HVerb)))
+    (add (V HTargets) (select _around "" (V HTarget)))
+    (add (V HItems) (select _around "" (V HItem))))
+  (if _scene
+    (print (cat "NHOS: HUMAN " (select (Utilities|String|IsEmpty (V HVerb)) "none" (V HVerb)) " " (select (Utilities|String|IsEmpty (V HItem)) "-" (V HItem)) " " (select (Utilities|String|IsEmpty (V HTarget)) "-" (V HTarget)) " says=" (select (Utilities|String|IsEmpty (V HLine)) "-" (V HLine)))))
+  (set RVote "")
+  (set RReason "")
+  (set HVerb "none")
+  (set HItem "")
+  (set HTarget "")
+  (CallFunction|HandleReply :Tag (V HTag) :Ok true :Speech (V HLine) :Pass Pass :Verbs (V HVerbs) :Targets (V HTargets) :Items (V HItems)))

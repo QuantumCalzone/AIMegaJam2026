@@ -1,0 +1,1 @@
+{"materials": {"model": [0.8, 0.8, 0.8]}, "meshes": 1, "triangles": 15000, "vertices": 7502, "bbox_min": [-0.949, -0.868, -0.907], "bbox_max": [0.951, 0.868, 0.906], "pieces": 1, "piece_vertex_counts": [7501], "open_edges": 0}

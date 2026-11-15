@@ -1,0 +1,13 @@
+; T63: input.json's spelling_wait, read at each send so a test can change it mid-show (LoadCannedLast's form, T58).
+; A missing file or field means 4.
+(fn SpellWait ()
+  (bind _cdir (Utilities|Paths|GetProjectContentDirectory))
+  (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _cdir "NHOS/Data/input.json"))))
+  (if (not _ok)
+    (return 4.0))
+  (bind _h (Json|HasField _o "spelling_wait"))
+  (if (not _h)
+    (return 4.0))
+  (bind _w (Json|GetField _o "spelling_wait"))
+  (set SpellSecs _w)
+  (return (V SpellSecs)))

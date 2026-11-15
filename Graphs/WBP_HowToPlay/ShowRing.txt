@@ -1,0 +1,11 @@
+; WBP_HowToPlay.ShowRing(Ring, On) (T61, copied from WBP_Title, T33): the gold focus ring (UIStyle FocusRing) on the Border that wraps a button.
+; The tick calls it for each button with On = the button has keyboard focus. A ButtonStyle has no focused brush (T32, C7).
+(fn ShowRing (Ring On)
+  (bind w (Class|UIStyle|UISize :Role "FocusRing"))
+  (bind r (Class|UIStyle|UISize :Role "ButtonRadius"))
+  (bind gap (Class|UIStyle|UISize :Role "S1"))
+  (bind gold (Class|UIStyle|UIColor :Role "Gold"))
+  (bind clear (Utilities|Struct|MakeLinearColor 0.0 0.0 0.0 0.0))
+  (Class|Border|SetBrushColor :self Ring :BrushColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (bind b (Class|UIStyle|Brush :Fill clear :Outline (select On gold clear) :Width w :Radius (+ r gap)))
+  (Appearance|SetBrush :self Ring :InBrush b))

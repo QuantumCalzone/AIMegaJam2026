@@ -1,0 +1,8 @@
+; BPC_Stagehand.SetTipsNext(On) -> Boolean saved (T61): writes Local/progress.json, as BPC_LLMClient.SaveKeys writes
+; Local/llm_key.json. EndShow writes false after a teaching show; the title's toggle writes what it shows.
+(fn SetTipsNext (On)
+  (bind _o (Json|LoadJsonfromString (select On "{\"tips\": true}" "{\"tips\": false}")))
+  (bind _p (cat (Utilities|Paths|GetProjectDirectory) "Local/progress.json"))
+  (bind _ok (Json|SaveJsontoFile _o (Utilities|Struct|MakeFilePath _p)))
+  (print (cat (cat "NHOS: STAGEHAND saved tips=" (Utilities|String|ToString(Boolean) On)) (cat " ok=" (Utilities|String|ToString(Boolean) _ok))))
+  (return _ok))
