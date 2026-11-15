@@ -1,0 +1,5 @@
+; T47: two hex digits of S (upper case), from At, as a byte. A bad digit counts as 0.
+(fn HexByte (S At)
+  (bind _hi (Utilities|String|FindSubstring :SearchIn "0123456789ABCDEF" :Substring (Utilities|String|Mid :SourceString S :Start At :Count 1)))
+  (bind _lo (Utilities|String|FindSubstring :SearchIn "0123456789ABCDEF" :Substring (Utilities|String|Mid :SourceString S :Start (+ At 1) :Count 1)))
+  (return (Math|Conversions|ToByte(Integer) (+ (* (Math|Integer|Max(Integer) _hi 0) 16) (Math|Integer|Max(Integer) _lo 0)))))

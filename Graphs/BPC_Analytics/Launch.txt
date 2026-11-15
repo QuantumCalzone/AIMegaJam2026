@@ -1,0 +1,16 @@
+; T68: once per level load, from BP_Show.ShowTitle, which the title screen and autoplay both pass.
+; A relaunch (a mode switch mid-show reloads the level, BPC_LLMClient.IsRelaunch) is the same launch:
+; no event and no count. Launches counts even with analytics off (the local count).
+(fn Launch ()
+  (CallFunction|Init)
+  (bind _rl (Class|BPCLLMClient|IsRelaunch :self (V Client)))
+  (if _rl
+    (return))
+  (if (not (V HaveSave))
+    (return))
+  (Class|SGPlayer|Bump :self (V Save))
+  (SaveGame|SaveGametoSlot :SaveGameObject (V Save) :SlotName "player" :UserIndex 0)
+  (bind _f (Json|LoadJsonfromString "{}"))
+  (Json|SetField _f "launches" (Class|SGPlayer|GetLaunches :self (V Save)))
+  (Json|SetField _f "first_seen" (Class|SGPlayer|GetFirstSeen :self (V Save)))
+  (CallFunction|Send :Event "launch" :Fields _f))

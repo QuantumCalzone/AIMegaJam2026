@@ -1,0 +1,13 @@
+; T68: a phase starts on screen, from RunCue's "stat" branch and from BP_Show.OpenPrep (scene_prep).
+; At each Scene Prep it first sends the call counts since the last one (my person's answer 1).
+; Left for the chain's part: BPC_LLMClient.FlushCalls doesn't exist yet. Once it does, add these lines
+; right after the two sets:
+;   (if (streq Key "scene_prep")
+;     (Class|BPCLLMClient|FlushCalls :self (V Client)))
+(fn SendPhase (Key Scene)
+  (set CurPhase Key)
+  (set CurScene Scene)
+  (bind _f (Json|LoadJsonfromString "{}"))
+  (Json|SetField _f "phase" Key)
+  (Json|SetField _f "scene" Scene)
+  (CallFunction|Send :Event "phase" :Fields _f))

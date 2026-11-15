@@ -1,0 +1,17 @@
+; T68: the first launch: a new anonymous id (32 lowercase hex digits, no dashes) and today's UTC date.
+; Everything after the cast sits in its :then, because a cast ends the flow (T45).
+(fn NewSave ()
+  (bind _sg (SaveGame|CreateSaveGameObject :SaveGameClass "/Game/NHOS/Core/SG_Player.SG_Player_C"))
+  (bind _p (Utilities|Casting|CastToSG_Player :Object _sg)
+    (:then
+      (set Save _p)
+      (set HaveSave true)
+      (bind _now (Math|DateTime|UTCNow))
+      (bind _mo (Math|DateTime|GetMonth _now))
+      (bind _dy (Math|DateTime|GetDay _now))
+      (set TmpStr (cat (str (Math|DateTime|GetYear _now)) "-" (select (< _mo 10) (cat "0" (str _mo)) (str _mo)) "-" (select (< _dy 10) (cat "0" (str _dy)) (str _dy))))
+      (Class|SGPlayer|Fill :self (V Save) :Id (Utilities|String|ToLower (Guid|ToString(Guid) (Guid|NewGuid))) :First (V TmpStr))
+      (SaveGame|SaveGametoSlot :SaveGameObject (V Save) :SlotName "player" :UserIndex 0)
+      (print "NHOS: ANALYTICS new player"))
+    (:CastFailed
+      (print "NHOS: ANALYTICS cannot make a save"))))

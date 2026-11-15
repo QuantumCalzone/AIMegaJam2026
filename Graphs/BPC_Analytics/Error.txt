@@ -1,0 +1,6 @@
+; T68: an error the player saw (a backstage note or the unavailable screen), as its errors.json case:
+; <kind>, down_<kind> or health_<kind>. From BPC_LLMClient.
+(fn Error (Kind)
+  (bind _f (Json|LoadJsonfromString "{}"))
+  (Json|SetField _f "kind" Kind)
+  (CallFunction|Send :Event "error" :Fields _f))

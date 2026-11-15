@@ -1,6 +1,6 @@
 # T47 build sheet: a headpiece for each role
 
-Back to [T47](T47.md) and [the plan](../Plan.md). A Mac prep session wrote this on 2026-11-15 for T46's capsule head, and a second Mac prep session refreshed it the same day for the new cast (T79 and T80). Both worked without the editor. It is a plan, not a record: nothing in `Content/`, `Tools/`, `Config/` or `Graphs/` changed, and the design doc was read, not changed (Stories tab rev 9, Art Inspiration rev 29).
+Back to [T47](T47.md) and [the plan](../Plan.md). **T47 was built on 2026-11-15 with no `BP_Show` or `BP_StageDirector` change (my call): parts 3 and 4 below were replaced by `BP_Robot.WatchShow` and `DressFromShow`, and the hood and the dino hood were re-fitted; [T47.md](T47.md)'s Findings say how.** A Mac prep session wrote this on 2026-11-15 for T46's capsule head, and a second Mac prep session refreshed it the same day for the new cast (T79 and T80). Both worked without the editor. It is a plan, not a record: nothing in `Content/`, `Tools/`, `Config/` or `Graphs/` changed, and the design doc was read, not changed (Stories tab rev 9, Art Inspiration rev 29).
 
 **Refreshed against `noHumansOnSet` at `7e973bd`.** There, T44 (the seven cards), T45 (each card's props, `props.json`) and T57 (`SetPassed`) are done; [T79-build.md](T79-build.md) and [T80-build.md](T80-build.md) are pushed; **T79 is being built on the Mac and has not pushed**, and T80 is not built. So every `BP_Robot` number below that comes from T79 or T80 comes from their sheets, not from their pushed graphs.
 

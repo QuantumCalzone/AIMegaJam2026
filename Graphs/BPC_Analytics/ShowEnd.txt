@@ -1,0 +1,10 @@
+; T68: the end screen, from RunCue's "end" branch: the last call counts, then show_end with T54's WinReason
+; (caught, final_two, last_scene). show_end is the show's last event. result is win or lose (NHOS: SHOW END).
+; Left for the chain's part: BPC_LLMClient.FlushCalls doesn't exist yet. Once it does, add as the first line:
+;   (Class|BPCLLMClient|FlushCalls :self (V Client))
+(fn ShowEnd (Win Reason)
+  (set TmpStr (select Win "win" "lose"))
+  (bind _f (Json|LoadJsonfromString "{}"))
+  (Json|SetField _f "result" (V TmpStr))
+  (Json|SetField _f "reason" Reason)
+  (CallFunction|Send :Event "show_end" :Fields _f))

@@ -1,0 +1,12 @@
+; T68: loads the player's save (slot "player") into Save, if there is one; HaveSave turns true when it loads.
+(fn LoadSave ()
+  (bind _ex (SaveGame|DoesSaveGameExist :SlotName "player" :UserIndex 0))
+  (if (not _ex)
+    (return))
+  (bind _sg (SaveGame|LoadGamefromSlot :SlotName "player" :UserIndex 0))
+  (bind _p (Utilities|Casting|CastToSG_Player :Object _sg)
+    (:then
+      (set Save _p)
+      (set HaveSave true))
+    (:CastFailed
+      (print "NHOS: ANALYTICS save unreadable, a new player id"))))

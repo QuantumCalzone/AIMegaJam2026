@@ -1,0 +1,8 @@
+; T47: "#E3C770" -> linear color. Color to Linear Color does the sRGB conversion, so
+; HexColor("#A8CCFF") is about (0.39, 0.60, 1.0), OpenAI's seat color in SetPersona.
+(fn HexColor (Hex)
+  (bind _h (Utilities|String|ToUpper (Utilities|String|Replace :SourceString Hex :From "#" :To "")))
+  (bind _r (CallFunction|HexByte :S _h :At 0))
+  (bind _g (CallFunction|HexByte :S _h :At 2))
+  (bind _b (CallFunction|HexByte :S _h :At 4))
+  (return (Math|Conversions|ToLinearColor(Color) (Utilities|Struct|MakeColor :R _r :G _g :B _b :A 255))))

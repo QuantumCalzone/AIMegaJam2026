@@ -1,8 +1,10 @@
 (fn SetLit (On)
   (Rendering|SetVisibility :self (Variables|Default|GetSpot) :bNewVisibility On :bPropagateToChildren false)
-  (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetEyeL) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))
-  (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetEyeR) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))
-  (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetMouth) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))
+  ; T80: only LEDs glow: the shared head's eyes and mouth, and Meta's eyes.
+  (bind _g (select On 10.0 3.0))
+  (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetEyeL) :ParameterName "Glow" :ParameterValue (select (Variables|Default|GetLedEyes) _g 0.0))
+  (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetEyeR) :ParameterName "Glow" :ParameterValue (select (Variables|Default|GetLedEyes) _g 0.0))
+  (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetMouth) :ParameterName "Glow" :ParameterValue (select (Variables|Default|GetLedMouth) _g 0.0))
   (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetBrowWL) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))
   (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetBrowWR) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))
   (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetBrowAL) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))

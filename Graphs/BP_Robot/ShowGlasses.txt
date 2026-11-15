@@ -1,0 +1,7 @@
+; T47: the dark shades hide this robot's own glasses (Anthropic's from T79, Meta's from T80, tagged
+; "glasses"). On again, only the persona's own pair comes back, as SetPersona's acc rule shows it.
+(fn ShowGlasses (On)
+  (bind _tag (Utilities|String|StringToName (Variables|Default|GetPersonaId)))
+  (for _c (Actor|GetComponentsByClass :ComponentClass "/Script/Engine.StaticMeshComponent")
+    (if (Components|ComponentHasTag :self _c :Tag "glasses")
+      (Rendering|SetVisibility :self _c :bNewVisibility (and On (Components|ComponentHasTag :self _c :Tag _tag)) :bPropagateToChildren false))))

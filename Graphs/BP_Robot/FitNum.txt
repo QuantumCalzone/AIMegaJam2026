@@ -1,0 +1,7 @@
+; T47: a number from this robot's override in costumes.json (CFit), or Def if it doesn't set it.
+(fn FitNum (Key Def)
+  (if (not (Json|HasField (V CFit) Key))
+    (return Def))
+  (bind _v (Json|GetField (V CFit) Key))
+  (set FTmp _v)
+  (return (V FTmp)))

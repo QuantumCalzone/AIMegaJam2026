@@ -1,0 +1,6 @@
+; T68: a mode was picked (BPC_LLMClient.SetMode, after it succeeds), or a show starts with no pick in this
+; level (autoplay, a relaunch). The event's own mode field carries the mode.
+(fn ModePicked ()
+  (set Picked true)
+  (bind _f (Json|LoadJsonfromString "{}"))
+  (CallFunction|Send :Event "mode" :Fields _f))
