@@ -173,6 +173,27 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset` (the timeouts, each phase's input), `Content/NHOS/UI/WBP_Stage.uasset` (the timer, the input row per phase), `Content/NHOS/Data/input.json` (`timers`), `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes, `Docs/tasks/T66.md`.
   - **Details:** [Docs/tasks/T66.md](tasks/T66.md)
 
+- [ ] **T67 Analytics, part 1: the relay takes events and reports them**
+  - **Model and effort:** Sonnet 5.5, medium. A new route and store in a Worker that already has its checks and limits, plus a report script and curl tests.
+  - **Depends on:** nothing.
+  - **Needs:** no editor. My OK before the relay is deployed again (every push deploys it). A new `STATS_KEY` secret or a read-only Cloudflare API token for the report, which I set.
+  - **Touches:** `Relay/src/index.js`, `Relay/relay.config.json` (`events`, `limits.ip_daily_events`), `Relay/wrangler.toml` (the store's binding), `Relay/test/curl-tests.sh`, `Relay/README.md`, new `Tools/analytics_report.py`, new `Docs/stats.example.json`, `Docs/tasks/T67.md`.
+  - **Details:** [Docs/tasks/T67.md](tasks/T67.md)
+
+- [ ] **T68 Analytics, part 2: the game sends its events**
+  - **Model and effort:** Opus 5.5, high. A new component and SaveGame, one call each in three Blueprints, per-provider call counts and an opt-out on the title screen.
+  - **Depends on:** T67 (the route), T66 (the lock on `BP_Show`, and the phases as T55 to T66 leave them), T37 (`ErrorKind`), T54 (`WinReason`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay with T67 deployed.
+  - **Touches:** new `Content/NHOS/Core/BPC_Analytics.uasset`, new `Content/NHOS/Core/SG_Player.uasset`, `Content/NHOS/Core/BP_Show.uasset` (the component, one call per phase, the end), `Content/NHOS/Core/BPC_LLMClient.uasset` (`SetMode`, the call counts, the error cases), `Content/NHOS/UI/WBP_Title.uasset` (the launch event, the stats toggle), `Content/NHOS/Data/llm.json` (`build`, `_readme`), `Docs/switches.example.json`, `Docs/ItchPage.md` (a privacy line), `CLAUDE.md`, `Relay/README.md`, `Graphs/` files for the graphs it writes, `Docs/tasks/T68.md`.
+  - **Details:** [Docs/tasks/T68.md](tasks/T68.md)
+
+- [ ] **T69 Analytics, part 3: the actions players try that the game can't do**
+  - **Model and effort:** Opus 5.5, high. A new field in the input LLM's reply, a schema choice across four providers, and a hook in the action builder.
+  - **Depends on:** T63 (the input ask as it leaves it), T64 (the action builder), T68 (`BPC_Analytics`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my OK on the Bot Prompts edit, my OK for a paid `--ask input` run (a few cents).
+  - **Touches:** `Content/NHOS/Data/prompts.json` (`input`, `asks.input`, maybe the reply schema), `Content/NHOS/Data/llm.json` (only if the input ask gets its own schema), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` or `Content/NHOS/Core/BPC_LLMClient.uasset` (where the input reply is read), `Content/NHOS/UI/WBP_ActionBuilder.uasset` (the blocked clicks), the design doc, `Graphs/` files for the graphs it writes, `Docs/tasks/T69.md`.
+  - **Details:** [Docs/tasks/T69.md](tasks/T69.md)
+
 - [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click (optional)**
   - **Model and effort:** Opus 5.5, high. A new widget placed over moving robots, timed by the line queue, and a new hidden state for the chat.
   - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style)
