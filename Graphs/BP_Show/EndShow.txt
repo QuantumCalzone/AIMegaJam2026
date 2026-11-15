@@ -1,0 +1,28 @@
+; The show is over: the game message the AIs read, the banners, then the closing asks.
+; T54: SetWinReason first; the win ending and the win banner say how I won (WinTail, WinLine).
+(fn EndShow (Win)
+  (CallFunction|SetWinReason :Win Win)
+  (bind _output (get (V SeatName) (V HumanSeat)))
+  (set ShowWin Win)
+  (set Phase "closing")
+  (clear (V PendingTags))
+  (clear (V PendingSeats))
+  (if Win
+    (add (V GameMsgs) (cat "The show is over. The human was " (Utilities|String|ToUpper _output) (V WinTail)))
+    (CallFunction|CueBanner :Text (cat (V WinLine) " You fooled the cast. Humanity wins the stage."))
+    (else
+      (add (V GameMsgs) (cat "The show is over. The human was " (Utilities|String|ToUpper _output) ". The AIs win."))
+      (CallFunction|CueBanner :Text "You were caught. The AIs win the show.")))
+  (CallFunction|CueHeader :Text "THE SHOW IS OVER")
+  (CallFunction|CueBanner :Text "The cast gives one last verdict...")
+  (clear (V ClosingSeat))
+  (clear (V ClosingReason))
+  (set ClosingLeft 0)
+  (for _index (range (V SeatCount))
+    (add (V ClosingSeat) -1)
+    (Utilities|Array|Add (V ClosingReason) "")
+    (if (!= _index (V HumanSeat))
+      (set ClosingLeft (+ (V ClosingLeft) 1))))
+  (for _index_1 (range (V SeatCount))
+    (if (!= _index_1 (V HumanSeat))
+      (CallFunction|AskClosing :Seat _index_1))))
