@@ -1,0 +1,18 @@
+; T64: a chip was clicked (WBP_Chip passes its Index). An "item" chip picks that prop, or unpicks it if it was the picked
+; one, and clears the target after it. A "target" chip picks that target, or unpicks it if it was picked.
+; The focus goes back to the input box.
+(fn ChipClicked (Index)
+  (if (or (not (V Armed)) (V Sent))
+    (return))
+  (if (or (< Index 0) (>= Index (len (V Choices))))
+    (return))
+  (set TmpStr (get (V Choices) Index))
+  (set Kind (get (V ChipRole) Index))
+  (if (streq (V Kind) "item")
+    (set Item (select (streq (V TmpStr) (V Item)) "" (V TmpStr)))
+    (set Target ""))
+  (if (streq (V Kind) "target")
+    (set Target (select (streq (V TmpStr) (V Target)) "" (V TmpStr))))
+  (CallFunction|Refresh)
+  (CallFunction|PickLine)
+  (CallFunction|KeepFocus))

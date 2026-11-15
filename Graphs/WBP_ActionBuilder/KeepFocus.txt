@@ -1,0 +1,6 @@
+; T64: after a click on an action or a chip, the keyboard focus goes back to the input box that SetFocusBack named,
+; so what I type next still lands there (step 5). Without SetFocusBack it does nothing. NullWidget is never set.
+(fn KeepFocus ()
+  (if (== (V FocusBack) (V NullWidget))
+    (return))
+  (Widget|SetKeyboardFocus :self (V FocusBack)))

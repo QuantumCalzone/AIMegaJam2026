@@ -1,0 +1,31 @@
+; T64: the chips for the step I'm on (step 3). Only the picked action's valid choices show, read from T62's rules on
+; every refresh. Throw and Give: my held props first; once I pick one, that prop as a picked chip, then its targets.
+; Move, Look, Grab: the whole list, the picked one in paper. Look around and No action: none.
+; TmpList holds each list while AddChip runs, so no later call to the director can change what the loop walks.
+(fn BuildChips ()
+  (Widget|Panel|ClearChildren :self (Variables|WBP_ActionBuilder|GetChipsWrap))
+  (clear (V Choices))
+  (clear (V ChipRole))
+  (if (== (V Dir) (V NullDir))
+    (return))
+  (bind _ni (CallFunction|NeedsItem :Act (V Verb)))
+  (bind _nt (CallFunction|NeedsTarget :Act (V Verb)))
+  (bind _hasi (not (Utilities|String|IsEmpty (V Item))))
+  (if (and _ni (and _nt _hasi))
+    (CallFunction|AddChip :Value (V Item) :Role "item" :Picked true)
+    (bind _ts (Class|BPStageDirector|TargetsFor :self (V Dir) :Seat (V Seat) :Verb (V Verb)))
+    (set TmpList _ts)
+    (for _t (V TmpList)
+      (CallFunction|AddChip :Value _t :Role "target" :Picked (streq _t (V Target))))
+    (return))
+  (if _ni
+    (bind _is (Class|BPStageDirector|ItemsFor :self (V Dir) :Seat (V Seat) :Verb (V Verb)))
+    (set TmpList _is)
+    (for _i (V TmpList)
+      (CallFunction|AddChip :Value _i :Role "item" :Picked (streq _i (V Item))))
+    (return))
+  (if _nt
+    (bind _ts2 (Class|BPStageDirector|TargetsFor :self (V Dir) :Seat (V Seat) :Verb (V Verb)))
+    (set TmpList _ts2)
+    (for _t2 (V TmpList)
+      (CallFunction|AddChip :Value _t2 :Role "target" :Picked (streq _t2 (V Target))))))

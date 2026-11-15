@@ -1,0 +1,28 @@
+{
+ "src": "Docs/BotArt/spacexai.png",
+ "out": "reference.png",
+ "rect": [
+  270,
+  578,
+  330,
+  482
+ ],
+ "fills": [
+  {
+   "clear": [
+    270,
+    595,
+    30,
+    80
+   ]
+  },
+  {
+   "clear": [
+    578,
+    595,
+    22,
+    80
+   ]
+  }
+ ]
+}

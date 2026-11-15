@@ -1,0 +1,5 @@
+; T64: true when the picked action has every chip it needs. No action and Look around are always ready.
+(fn IsReady ()
+  (bind _ni (CallFunction|NeedsItem :Act (V Verb)))
+  (bind _nt (CallFunction|NeedsTarget :Act (V Verb)))
+  (return (and (or (not _ni) (not (Utilities|String|IsEmpty (V Item)))) (or (not _nt) (not (Utilities|String|IsEmpty (V Target)))))))

@@ -1,0 +1,3 @@
+; T38: the first N letters of the speech are typed (the same N BPC_LinePlayer.TypeStep gives WBP_ChatLine.TypeTo).
+(fn TypeTo (N)
+  (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetSpeechShown) :Text (Utilities|Text|ToText(String) (Utilities|String|GetSubstring :SourceString (V FullSpeech) :StartIndex 0 :Length N))))

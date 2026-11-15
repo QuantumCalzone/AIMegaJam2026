@@ -1,0 +1,7 @@
+; T64: the name I see for a choice. A Player name ("Player 3") becomes its seat's screen name (SeatLabel: "Meta");
+; props and places stay as the card and the set name them. The call keeps the Player name (T62's names).
+(fn ScreenName (Value)
+  (bind _s (Utilities|Array|FindItem (V Names) Value))
+  (if (< _s 0)
+    (return Value))
+  (return (get (V Labels) _s)))

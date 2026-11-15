@@ -1,0 +1,56 @@
+{
+ "part": "meta/body",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/aeeac94b-7265-415e-acf2-08c7bfd8e9fe",
+ "reference": "none (text only; reference.png was used by the dropped first try)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "aeeac94b-7265-415e-acf2-08c7bfd8e9fe",
+ "tries": [
+  {
+   "generation_id": "f1d5436e-79da-4389-bfbf-55401fddfd9f",
+   "upload_id": "JnECEPM4ig0_MtfBru0lJw",
+   "dropped": "the paint patch over the chain became a bib, holes in the legs"
+  }
+ ],
+ "prompt": "Only the torso and legs of a doll-like android toy, no head and no arms: a boxy torso in a plain royal blue crew-neck t-shirt with no sleeves and rounded shoulders, the shirt hem with a ribbed band; royal blue straight pants on two straight legs; rounded cream shoes. The neck opening and the shoulders are smooth closed surfaces. No necklace, no pockets, no print. One closed piece, matte clay, toy-like, symmetrical, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7490,
+  "bbox_min": [
+   -0.513,
+   -0.318,
+   -0.949
+  ],
+  "bbox_max": [
+   0.514,
+   0.317,
+   0.949
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7489
+  ],
+  "open_edges": 0
+ }
+}

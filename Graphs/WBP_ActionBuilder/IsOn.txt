@@ -1,0 +1,3 @@
+; T64: true while the builder is up (my scene turn, before and after I send). WBP_Stage.FitBuilder reads it.
+(fn IsOn ()
+  (return (V Armed)))

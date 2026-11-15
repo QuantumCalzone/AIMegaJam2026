@@ -1,0 +1,58 @@
+; T75: points the emotion code at this robot's face parts and sets the per-head flags. Every head uses the
+; same EyeL, EyeR and Mouth on Face (T79, T80). The shared round head (OpenAI, Anthropic, SpaceXAI) glows
+; (LED eyes, mouth and brows); the worrier and overclocker rest with their own brows (BrowWL/WR, BrowAL/AR),
+; and the worrier's hidden pair gives every other robot's run-time brows their size and depth. Meta: gold LED
+; eyes behind its glasses, an ink Mouth that shows only while it emotes (its fixed charcoal Smile makes way, and the Mouth sits lower, under the nose),
+; dark clay brows above the glasses. My box: eyeballs in two slots, a marker Mouth whose two InkL/InkR strokes
+; make way for the corner bars, marker brows above the slots, no tint. The Eye* limits keep Meta's eyes inside
+; its lenses and mine inside the slots.
+(fn FaceParts ()
+  (bind _m (streq (V PersonaId) "copycat"))
+  (bind _h (streq (V PersonaId) "human"))
+  (bind _w (streq (V PersonaId) "worrier"))
+  (bind _o (streq (V PersonaId) "overclocker"))
+  (bind _led (not (or _m _h)))
+  (set PEyeL (V EyeL))
+  (set PEyeR (V EyeR))
+  (set PMouth (V Mouth))
+  ; The resting mouth parts that make way while an emotion shows: Meta's Smile, my InkL and InkR,
+  ; SpaceXAI's teeth bar (Teeth, TGap0 to TGap2), which covers its LED mouth.
+  (clear (V SmileParts))
+  (if _m
+    (add (V SmileParts) (V Smile)))
+  (if _h
+    (add (V SmileParts) (V InkL))
+    (add (V SmileParts) (V InkR)))
+  (if _o
+    (add (V SmileParts) (V Teeth))
+    (add (V SmileParts) (V TGap0))
+    (add (V SmileParts) (V TGap1))
+    (add (V SmileParts) (V TGap2)))
+  ; Meta's emotion mouth sits under its nose; SpaceXAI's is wider, so it shows either side of its nose.
+  (set MouthDX (select _m -1.5 0.0))
+  (set MouthDZ (select _m -4.5 0.0))
+  (set MouthWK (select _o 1.4 1.0))
+  (set RestBrows (or _w _o))
+  (set PBrowL (select _o (V BrowAL) (V BrowWL)))
+  (set PBrowR (select _o (V BrowAR) (V BrowWR)))
+  (set LedColor (Math|Conversions|ToVector(LinearColor) (V EyeColor)))
+  (set BrowLed _led)
+  (set CornerLed (V LedMouth))
+  (set BrowMat (select _led (V LedMat) (V ClayMat)))
+  (set CornerCol (select (V LedMouth) (V LedColor) (Math|Vector|MakeVector :X 0.015 :Y 0.015 :Z 0.015)))
+  (set TintEyes (V LedEyes))
+  (set TintMouth (V LedMouth))
+  (set TintBrows _led)
+  (set FaceR (select _m 30.0 (select _h 1000.0 35.0)))
+  (set BrowFix (not _led))
+  (set BrowFixX (select _m 32.5 35.9))
+  (set BrowFixZ (select _m 147.0 143.5))
+  ; The highest the brows go: the shared head's screen ends just above its eyes (T82: the model's recess, z 139 in the Rig).
+  (set BrowMaxZ (select _m 153.0 (select _h 152.0 143.0)))
+  ; Anthropic's brows stay in front of its glasses' dark lenses (LensL/LensR at x 35.5).
+  (set BrowMinX (select _w 36.3 0.0))
+  (set EyeMaxW (select _m 1.5 (select _h 1.3 2.0)))
+  (set EyeMaxH (select _m 1.3 (select _h 1.15 2.0)))
+  (set EyeMaxDX (select _m 4.0 (select _h 2.0 9.0)))
+  (set EyeMaxDZ (select _m 1.5 (select _h 0.5 9.0)))
+  (set MouthRest (Math|Vector|MakeVector :X 0.02 :Y 0.1 :Z 0.02)))

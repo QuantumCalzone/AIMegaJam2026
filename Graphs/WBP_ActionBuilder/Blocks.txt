@@ -1,0 +1,6 @@
+; T64: true while my scene turn is open and the picked action still lacks a chip: Action! is greyed and Enter does nothing.
+(fn Blocks ()
+  (if (or (not (V Armed)) (V Sent))
+    (return false))
+  (bind _r (CallFunction|IsReady))
+  (return (not _r)))

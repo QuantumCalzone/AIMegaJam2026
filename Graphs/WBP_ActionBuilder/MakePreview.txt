@@ -1,0 +1,25 @@
+; T64: the preview line (step 6), in the terminal style: the action as built, then the typed line, live.
+;   > throw rose at @Meta: "Oops, my servo slipped."
+; An unfinished action shows what's missing ("> throw rose at ..."). No action reads "stand still", the log's
+; "stands still"; Look around reads "look around". An empty line adds nothing.
+(fn MakePreview ()
+  (bind _noi (Utilities|String|IsEmpty (V Item)))
+  (bind _it (select _noi "..." (V Item)))
+  (bind _tn (CallFunction|PreviewName :Value (V Target)))
+  (bind _tg (select (Utilities|String|IsEmpty (V Target)) "..." _tn))
+  (set TmpStr "stand still")
+  (if (streq (V Verb) "move")
+    (set TmpStr (cat "move to " _tg)))
+  (if (streq (V Verb) "look")
+    (set TmpStr (cat "look at " _tg)))
+  (if (streq (V Verb) "around")
+    (set TmpStr "look around"))
+  (if (streq (V Verb) "grab")
+    (set TmpStr (cat "grab " _it)))
+  (if (streq (V Verb) "throw")
+    (set TmpStr (select _noi "throw ..." (cat "throw " _it " at " _tg))))
+  (if (streq (V Verb) "give")
+    (set TmpStr (select _noi "give ..." (cat "give " _it " to " _tg))))
+  (if (Utilities|String|IsEmpty (V Line))
+    (return (cat "> " (V TmpStr))))
+  (return (cat "> " (V TmpStr) ": \"" (V Line) "\"")))

@@ -1,0 +1,7 @@
+; T38: hides the bubble at once (a cut robot, a phase change, the start).
+(fn HideNow ()
+  (set Fading false)
+  (set TypingOn false)
+  (set Shown false)
+  (set Alpha 1.0)
+  (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetBubbleBox) :InVisibility "Collapsed"))

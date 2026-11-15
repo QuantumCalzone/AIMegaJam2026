@@ -1,0 +1,47 @@
+{
+ "part": "openai/arm",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/e87efc58-a864-4cfc-84e2-47fd299610e7",
+ "reference": "none (text only: the concept's arms are folded)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "e87efc58-a864-4cfc-84e2-47fd299610e7",
+ "prompt": "A single detached arm of a cute claymation robot: a sleeve of gray chunky knit wool with a ribbed cuff, ending in a smooth pale blue rounded mitten hand, straight and hanging down, with a rounded closed shoulder end at the top. Only the arm, no body. One closed piece, matte clay, toy-like, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "mesh_stats.json",
+  "model.fbx",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7502,
+  "bbox_min": [
+   -0.392,
+   -0.292,
+   -0.948
+  ],
+  "bbox_max": [
+   0.392,
+   0.287,
+   0.95
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7501
+  ],
+  "open_edges": 0
+ }
+}

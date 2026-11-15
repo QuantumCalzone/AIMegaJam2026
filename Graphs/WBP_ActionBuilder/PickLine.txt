@@ -1,0 +1,6 @@
+; T64: a check line on every pick, with the preview it gives.
+(fn PickLine ()
+  (bind _p (CallFunction|MakePreview))
+  (bind _i (select (Utilities|String|IsEmpty (V Item)) "-" (V Item)))
+  (bind _t (select (Utilities|String|IsEmpty (V Target)) "-" (V Target)))
+  (print (cat "NHOS: BUILDER pick " (V Verb) " " _i " " _t " | " _p)))

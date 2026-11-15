@@ -2,6 +2,8 @@
 
 The concept art for the cast that replaces T46's clay pill bots: what was chosen, the rules the build keeps, and how each image was made. The files are in `Docs/BotArt/`. They are concept images only, not game assets: rows go into [Assets.md](Assets.md) when the build makes the models (T79, T80).
 
+**Models:** the cast's parts made in Hyper3D from these images (T81) are in [CastArt/](CastArt/), one folder per part, each with its log; [tasks/T81.md](tasks/T81.md) lists them. T82 and T83 put them into `BP_Robot`.
+
 **Status:** chosen on 2026-11-15, after eleven concept rounds, by my picks in rounds 7 and 8, edited in round 10 (no hair) and checked in costume in round 11. Every round, with every take, is on the private concept page <https://claude.ai/artifact/DnjwjcZ1UV9o8BGAB4p9TQ> (ask QuantumCalzone for access). The design doc's "Art Inspiration" tab still describes the pill bots; T79 changes it, after my OK. T79 builds the shared round head and three of the bots, T80 builds Meta's android and my costume.
 
 ![The cast](BotArt/cast.png)

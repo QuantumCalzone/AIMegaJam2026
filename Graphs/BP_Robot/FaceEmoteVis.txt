@@ -1,0 +1,10 @@
+; T75: while an emotion shows: the new brows take over from any resting brows, and the resting mouth parts
+; (SmileParts: Meta's Smile, my InkL/InkR, SpaceXAI's teeth) make way for the Mouth bar. Hide first, then show, in case one part plays two roles on a new head.
+(fn FaceEmoteVis ()
+  (Rendering|SetVisibility :self (V PBrowL) :bNewVisibility false :bPropagateToChildren false)
+  (Rendering|SetVisibility :self (V PBrowR) :bNewVisibility false :bPropagateToChildren false)
+  (for _p (V SmileParts)
+    (Rendering|SetVisibility :self _p :bNewVisibility false :bPropagateToChildren false))
+  (Rendering|SetVisibility :self (V PMouth) :bNewVisibility true :bPropagateToChildren false)
+  (Rendering|SetVisibility :self (V EmBrowL) :bNewVisibility true :bPropagateToChildren false)
+  (Rendering|SetVisibility :self (V EmBrowR) :bNewVisibility true :bPropagateToChildren false))

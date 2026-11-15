@@ -1,0 +1,10 @@
+; T64: one chip in ChipsWrap. Its place in Choices is its Index, so a click tells the builder which choice it was.
+; An actor shows by its screen name with a seat-color bar (WBP_Chip.Setup); the builder keeps its Player name (Value).
+(fn AddChip (Value Role Picked)
+  (bind _lab (CallFunction|ScreenName :Value Value))
+  (bind _s (Utilities|Array|FindItem (V Names) Value))
+  (bind _chip (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Chip.WBP_Chip_C" (Widget|GetOwningPlayer self)))
+  (Class|WBPChip|Setup :self _chip :Owner self :Index (len (V Choices)) :Label _lab :Actor (>= _s 0) :Picked Picked)
+  (Panel|AddChildtoWrapBox :self (Variables|WBP_ActionBuilder|GetChipsWrap) :Content _chip)
+  (add (V Choices) Value)
+  (add (V ChipRole) Role))

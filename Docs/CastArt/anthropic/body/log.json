@@ -1,0 +1,50 @@
+{
+ "part": "anthropic/body",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/e663fec4-a090-4011-b082-690e06565393",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "e663fec4-a090-4011-b082-690e06565393",
+ "upload_id": "eBHVOSzvgk6w9BsHdTRJew",
+ "prompt": "Only the torso of a cute claymation robot, smooth matte orange clay: a round egg-shaped orange body with a cream oval belly and three small dark buttons, standing on two round orange feet. No head, no arms: the neck top and the shoulders are smooth closed rounded surfaces. One closed piece, toy-like, no hair, no wires, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7486,
+  "bbox_min": [
+   -0.753,
+   -0.736,
+   -0.946
+  ],
+  "bbox_max": [
+   0.75,
+   0.736,
+   0.946
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7486
+  ],
+  "open_edges": 0
+ }
+}

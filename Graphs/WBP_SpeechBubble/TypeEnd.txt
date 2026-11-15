@@ -1,0 +1,5 @@
+; T38: the typing is over (or stopped): the whole speech shows.
+(fn TypeEnd ()
+  (Widget|SetRenderOpacity :self (Variables|WBP_SpeechBubble|GetSpeechText) :InOpacity 1.0)
+  (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetSpeechShown) :Text (Utilities|Text|ToText(String) ""))
+  (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetSpeechShown) :InVisibility "Collapsed"))

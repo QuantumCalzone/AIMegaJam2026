@@ -1,0 +1,21 @@
+; WBP_Chip.Setup(Owner, Index, Label, Actor, Picked), called by WBP_ActionBuilder.AddChip (T64). One choice of the picked
+; action: paper when picked, plum otherwise (UIStyle's Paper and Secondary buttons). An actor's chip has a seat-color bar
+; before its screen name (a 14 x 20 swatch with an ink outline), so the seat shows by color and by name. The button
+; never takes keyboard focus.
+(fn Setup (Owner Index Label Actor Picked)
+  (set Builder Owner)
+  (set ChipIndex Index)
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Chip|GetChipButton) :Label (Variables|WBP_Chip|GetChipLabel) :Kind (select Picked "Paper" "Secondary"))
+  (Class|Text|SetText :self (Variables|WBP_Chip|GetChipLabel) :Text (Utilities|Text|ToText(String) Label))
+  (if (not Actor)
+    (Widget|SetVisibility :self (Variables|WBP_Chip|GetSeatBar) :InVisibility "Collapsed")
+    (return))
+  (bind cQuiet (Class|UIStyle|UIColor :Role "Quiet"))
+  (bind cBar (Class|UIStyle|SeatColor :Name Label :Fallback cQuiet))
+  (bind cInk (Class|UIStyle|UIColor :Role "InkSolid"))
+  (bind trim (Class|UIStyle|UISize :Role "PanelTrim"))
+  (bind rad (Class|UIStyle|UISize :Role "S1"))
+  (bind bBar (Class|UIStyle|Brush :Fill cBar :Outline cInk :Width trim :Radius rad))
+  (Class|Border|SetBrushColor :self (Variables|WBP_Chip|GetSeatFill) :BrushColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (Appearance|SetBrush :self (Variables|WBP_Chip|GetSeatFill) :InBrush bBar)
+  (Widget|SetVisibility :self (Variables|WBP_Chip|GetSeatBar) :InVisibility "HitTestInvisible"))

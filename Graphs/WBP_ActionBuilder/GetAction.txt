@@ -1,0 +1,8 @@
+; T64: the action as built, for T63's SendHumanTurn: Verb (move, look, grab, throw, give, around, none), Item and Target
+; (prop, place and Player names). An unfinished action comes back as a look around with Ready false, the fallback a bot
+; gets (T66's timer sends it that way; Action! and Enter wait for Ready).
+(fn GetAction ()
+  (bind _r (CallFunction|IsReady))
+  (if _r
+    (return (V Verb) (V Item) (V Target) true))
+  (return "around" "" "" false))

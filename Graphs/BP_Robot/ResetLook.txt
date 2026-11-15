@@ -1,4 +1,6 @@
 (fn ResetLook ()
+  ; T75: any emotion ends, and the face is at rest (Restart, a new persona).
+  (CallFunction|EmoteStop)
   (Variables|Default|SetIsCut false)
   (Variables|Default|SetTipRoll 0.0)
   (Variables|Default|SetTipGoal 0.0)

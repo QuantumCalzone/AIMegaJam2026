@@ -1,0 +1,3 @@
+; WBP_Chip.EventGraph (T64): a click tells the builder which choice this chip is.
+(event OnClicked(ChipButton)
+  (Class|WBPActionBuilder|ChipClicked :self (V Builder) :Index (V ChipIndex)))

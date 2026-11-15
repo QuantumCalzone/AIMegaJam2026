@@ -1,0 +1,50 @@
+{
+ "part": "anthropic/arm",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/d2a28308-1727-43a5-976c-1552e321cbb9",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "d2a28308-1727-43a5-976c-1552e321cbb9",
+ "upload_id": "DmEnJmTn7H5O56P-rCxvNw",
+ "prompt": "A single detached robot arm, smooth matte orange clay: a rounded shoulder end at the top, an orange upper arm and forearm with a charcoal elbow band, a gold wrist band and an orange mitten hand, hanging straight down. Only the arm, no body. One closed piece, claymation toy style, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7502,
+  "bbox_min": [
+   -0.332,
+   -0.951,
+   -0.861
+  ],
+  "bbox_max": [
+   0.33,
+   0.947,
+   0.859
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7502
+  ],
+  "open_edges": 0
+ }
+}

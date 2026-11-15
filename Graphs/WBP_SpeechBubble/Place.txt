@@ -1,0 +1,44 @@
+; T38: Geo is Root's geometry, which the host put with its bottom center (the tail tip) on the speaker's head: a screen-space
+; WidgetComponent with its pivot at (0.5, 1), or a canvas slot with that alignment. The bubble, the window and the panels are
+; measured in viewport units (LocaltoViewport: the DPI-scaled units WBP_Stage is laid out in, where ProjectWorldLocationtoWidgetPosition
+; lands too; LocaltoAbsolute returned 0 here), Fit finds the shift, and only BubbleBox and the tails move, so the next frame's
+; rect doesn't feed back. With no SetKeepOut yet, the bubble stays where the host put it.
+(fn Place (Geo)
+  (if (== (V KeepView) (V NullWidget))
+    (return))
+  (bind z (Math|Vector2D|MakeVector2D :X 0.0 :Y 0.0))
+  (bind vg (Widget|GetCachedGeometry :self (V KeepView)))
+  (bind vs (UserInterface|Geometry|GetLocalSize :Geometry vg))
+  (bind (vp0 vtl) (UserInterface|Geometry|LocaltoViewport :Geometry vg :LocalCoordinate z))
+  (bind (vp1 vbr) (UserInterface|Geometry|LocaltoViewport :Geometry vg :LocalCoordinate vs))
+  (set ViewTL vtl)
+  (set ViewBR vbr)
+  (clear (V KTL))
+  (clear (V KBR))
+  (for p (V KeepPanels)
+    (bind pv (Widget|IsVisible :self p))
+    (if pv
+      (bind pg (Widget|GetCachedGeometry :self p))
+      (bind ps (UserInterface|Geometry|GetLocalSize :Geometry pg))
+      (bind (pp0 ptl) (UserInterface|Geometry|LocaltoViewport :Geometry pg :LocalCoordinate z))
+      (bind (pp1 pbr) (UserInterface|Geometry|LocaltoViewport :Geometry pg :LocalCoordinate ps))
+      (add (V KTL) ptl)
+      (add (V KBR) pbr)))
+  (bind sz (UserInterface|Geometry|GetLocalSize :Geometry Geo))
+  (bind (bp0 btl) (UserInterface|Geometry|LocaltoViewport :Geometry Geo :LocalCoordinate z))
+  (bind (bp1 bbr) (UserInterface|Geometry|LocaltoViewport :Geometry Geo :LocalCoordinate sz))
+  (bind (bl bt) (Math|Vector2D|BreakVector2D btl))
+  (bind (br bb) (Math|Vector2D|BreakVector2D bbr))
+  (bind (dx dy tx up) (CallFunction|Fit :L bl :T bt :R br :B bb :AX (* 0.5 (+ bl br))))
+  (Widget|Transform|SetRenderTranslation :self (Variables|WBP_SpeechBubble|GetBubbleBox) :Translation (Math|Vector2D|MakeVector2D :X dx :Y dy))
+  (bind tt (Math|Vector2D|MakeVector2D :X tx :Y 0.0))
+  (Widget|Transform|SetRenderTranslation :self (Variables|WBP_SpeechBubble|GetTailDown) :Translation tt)
+  (Widget|Transform|SetRenderTranslation :self (Variables|WBP_SpeechBubble|GetTailUp) :Translation tt)
+  (if (xor up (V LastUp))
+    (set LastUp up)
+    (if up
+      (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetTailUp) :InVisibility "HitTestInvisible")
+      (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetTailDown) :InVisibility "Collapsed")
+      (else
+        (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetTailDown) :InVisibility "HitTestInvisible")
+        (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetTailUp) :InVisibility "Collapsed")))))

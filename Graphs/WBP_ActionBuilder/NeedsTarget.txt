@@ -1,0 +1,4 @@
+; T64: true for the actions that take a target: move (a place), look (an actor, a prop or a place),
+; throw (an actor or a place), give (an actor). Look around and No action take none.
+(fn NeedsTarget (Act)
+  (return (or (streq Act "move") (or (streq Act "look") (or (streq Act "throw") (streq Act "give"))))))

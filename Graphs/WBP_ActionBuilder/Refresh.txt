@@ -1,0 +1,19 @@
+; T64: draws the builder from its state: the picked action in paper, the rest plum; greyed actions disabled with
+; their tips (step 4); the chips of the step I'm on; the preview line. Everything is off until my turn is live
+; (SetLive) and after I send.
+(fn Refresh ()
+  (bind _on (and (V Armed) (and (not (V Sent)) (V Live))))
+  (for _k (range (len (V ActBtns)))
+    (bind _b (get (V ActBtns) _k))
+    (bind _l (get (V ActLbls) _k))
+    (Class|UIStyle|StyleButton :Button _b :Label _l :Kind (select (streq (get (V ActVerbs) _k) (V Verb)) "Paper" "Secondary"))
+    (Widget|SetIsEnabled :self _b :bInIsEnabled (and _on (get (V ActOk) _k)))
+    (Widget|SetToolTipText :self _b :InToolTipText (Utilities|Text|ToText(String) (get (V ActTip) _k))))
+  (CallFunction|BuildChips)
+  (Widget|SetIsEnabled :self (Variables|WBP_ActionBuilder|GetChipsWrap) :bInIsEnabled _on)
+  (if (> (len (V Choices)) 0)
+    (Widget|SetVisibility :self (Variables|WBP_ActionBuilder|GetChipsBox) :InVisibility "SelfHitTestInvisible")
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_ActionBuilder|GetChipsBox) :InVisibility "Collapsed")))
+  (bind _p (CallFunction|MakePreview))
+  (Class|Text|SetText :self (Variables|WBP_ActionBuilder|GetPreviewText) :Text (Utilities|Text|ToText(String) _p)))

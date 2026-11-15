@@ -1,0 +1,33 @@
+; WBP_ActionBuilder.EventGraph (T64). The action builder for my scene turns (the Turn Input tab): the preview line, the
+; seven actions and the chips of the picked one. Every color, size and font comes from UIStyle (the mono font from
+; MonoFont for now). No button or chip takes keyboard focus (IsFocusable off in the designer), so what I type stays
+; in WBP_Stage's input box while I click.
+(event UserInterface|EventPreConstruct (IsDesignTime)
+  (CallFunction|StyleAll)
+  (if IsDesignTime
+    (Class|Text|SetText :self (Variables|WBP_ActionBuilder|GetPreviewText) :Text (Utilities|Text|ToText(String) "> throw rose at @Meta: \"Oops, my servo slipped.\""))))
+
+(event UserInterface|EventConstruct
+  (CallFunction|FillLists)
+  (CallFunction|Close))
+
+(event OnClicked(MoveBtn)
+  (CallFunction|PickVerb :Act "move"))
+
+(event OnClicked(LookBtn)
+  (CallFunction|PickVerb :Act "look"))
+
+(event OnClicked(GrabBtn)
+  (CallFunction|PickVerb :Act "grab"))
+
+(event OnClicked(ThrowBtn)
+  (CallFunction|PickVerb :Act "throw"))
+
+(event OnClicked(GiveBtn)
+  (CallFunction|PickVerb :Act "give"))
+
+(event OnClicked(AroundBtn)
+  (CallFunction|PickVerb :Act "around"))
+
+(event OnClicked(NoneBtn)
+  (CallFunction|PickVerb :Act "none"))

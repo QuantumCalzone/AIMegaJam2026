@@ -1,0 +1,68 @@
+{
+ "part": "you/arm",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/06f08a4a-8446-434a-bbce-9bd9215537b8",
+ "reference": "none (text only; reference.png was used by the two dropped tries)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "06f08a4a-8446-434a-bbce-9bd9215537b8",
+ "tries": [
+  {
+   "generation_id": "2bbc244a-ea8b-493f-97a1-4990288b4af3",
+   "upload_id": "PsbnoEQSbiQmwmEIJzHtPQ",
+   "dropped": "the glove came out as a bare hand"
+  },
+  {
+   "generation_id": "f58f14ad-691b-4ce8-b9f0-58e2ce5c3ead",
+   "upload_id": "PsbnoEQSbiQmwmEIJzHtPQ",
+   "dropped": "still a bare hand"
+  }
+ ],
+ "prompt": "A single detached arm of a homemade robot costume, claymation style: a long cream sleeve with evenly spaced black horizontal stripes, straight and hanging down, with a closed rounded shoulder end at the top; at the bottom a chunky cream knitted wool work glove with thick fingers, like a winter glove, the same cream color as the sleeve, completely covering the hand so no skin shows. Only the arm, no body. One closed piece, matte, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "materials": {
+   "model": [
+    0.8,
+    0.8,
+    0.8
+   ]
+  },
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7500,
+  "bbox_min": [
+   -0.311,
+   -0.239,
+   -0.949
+  ],
+  "bbox_max": [
+   0.308,
+   0.237,
+   0.945
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7500
+  ],
+  "open_edges": 0
+ }
+}

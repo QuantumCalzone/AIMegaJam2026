@@ -1,0 +1,5 @@
+; T64: Free Talk, the vote, the reactions, Scene Prep and a restart: no builder (T66 shapes those phases).
+(fn Close ()
+  (set Armed false)
+  (set PendingTurn false)
+  (Widget|SetVisibility :self self :InVisibility "Collapsed"))
