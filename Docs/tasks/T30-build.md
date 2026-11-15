@@ -10,7 +10,7 @@ Sources read: `Graphs/BP_Show/*.txt`, `Graphs/BP_StageDirector/{PlayLine,PlayPar
 
 | # | Assumption | How to check | If it is wrong |
 |---|---|---|---|
-| A1 | **T29 is done, and its banner is one `WBP_Stage` function**, called here `ShowBanner(Text)`. T29's Findings list every call site in `BP_Show`. | Read `Docs/tasks/T29.md` Findings and `Graphs/WBP_Stage/`. `get_node_type_pins` on the banner function. | Use T29's real name and pins in `RunCue` and `CueBanner`. If T29 wrapped the banner in one `BP_Show` function, change only that wrapper's body to call `CueBanner`, and skip the per-site swaps. |
+| A1 | **T29 is done, and its banner is one `WBP_Stage` function, `ShowBanner(Line)`.** T29's Findings list every call site in `BP_Show`. Seen in T29's uncommitted work while this sheet was written: `Graphs/WBP_Stage/ShowBanner.txt` adds each line to its own `BannerQueue`, and `NextBanner` and `FadeBanner` play them one at a time. So `cue_hold.banner` only keeps the next line from starting under a banner; it doesn't replace T29's queue. | Read `Docs/tasks/T29.md` Findings and `Graphs/WBP_Stage/`. `get_node_type_pins` on the banner function. | Use T29's real name and pins in `RunCue` and `CueBanner`. If T29 wrapped the banner in one `BP_Show` function, change only that wrapper's body to call `CueBanner`, and skip the per-site swaps. |
 | A2 | **After T29, `BP_Show` calls `AddLogLine` for no game line.** Echoes (`> ...`) and hints (`(...)`) are gone; hints use the turn line or the input hint. | `find_nodes` `AddLogLine` in `BP_Show`. | A game line that is left is a screen change too. Route it as a `banner` cue, or add a `log` kind to `RunCue` that calls `AddLogLine`. |
 | A3 | **T29 did not change `ActorLine`, the signature of `ShowLine(Seat, Does, Says)` or the signature of `WBP_Stage.AddChatLine(Name, Color, Action, Speech, IsMe)`.** It may have changed `ShowLine`'s body. | `read_graph_dsl` `ActorLine` and compare it with `Graphs/BP_Show/ActorLine.txt`. Read `ShowLine` fresh (E1). | Keep the design. Adjust the `Push` pins to match `AddChatLine`. |
 | A4 | **Every caller calls `ActorLine` and then `ShowLine` for the same seat, with nothing between them.** Callers: `PlayTurn`, `PlayTalk`, `Tally`, `PlayReact` (T14). | `find_nodes` `ActorLine` and `ShowLine` in `BP_Show`. Each graph has the same count of each. | `StageLine` checks `Json|HasField Entry "does"`, so an empty entry plays nothing and logs no warning. A `ShowLine` with no `ActorLine` before it would replay the last entry's actions, so clear `LineEntry` at the end of `ShowLine` (set it from a `JsonObjectWrapper` variable that is never set). |
@@ -369,7 +369,7 @@ Notes on the drafts:
     (Class|WBPStage|SetPhase :self (Variables|Default|GetStage) :Phase Text)
     (return))
   (if (Utilities|String|EqualExactly(String) Kind "banner")
-    (Class|WBPStage|ShowBanner :self (Variables|Default|GetStage) :Text Text)
+    (Class|WBPStage|ShowBanner :self (Variables|Default|GetStage) :Line Text)
     (return))
   (if (Utilities|String|EqualExactly(String) Kind "stamp")
     (Class|WBPStage|SetStamp :self (Variables|Default|GetStage) :Stamp Text)
@@ -444,7 +444,7 @@ Notes on the drafts:
   (return false))
 ```
 
-`ShowBanner :Text` and `SetVoteOptions :Names` are placeholders until A1 and E5 give the real names. Write `SetPhase` as `Class|WBPStage|SetPhase :self ... :Phase ...` (T08: its read-back looks like `Variables|Default|SetPhase`). The literal `"phase"` in `CueHeader` goes into a typed string input, not a wildcard pin, so T01's literal rule doesn't apply.
+`ShowBanner :Line` is from T29's draft source (A1), and `SetVoteOptions :Names` is a placeholder until E5 gives the real name. Write `SetPhase` as `Class|WBPStage|SetPhase :self ... :Phase ...` (T08: its read-back looks like `Variables|Default|SetPhase`). The literal `"phase"` in `CueHeader` goes into a typed string input, not a wildcard pin, so T01's literal rule doesn't apply.
 
 ### Existing graphs that change
 
