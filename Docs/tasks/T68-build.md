@@ -30,7 +30,9 @@ Back to [T68](T68.md). A PC prep session wrote this on 2026-11-15, without the e
 
 ## Questions for my person
 
-Two questions. The recommended answer is first in each. The T68 session asks them with the multiple-choice tool, one at a time, before part 2, unless my person answered them on this sheet first.
+Two questions. The recommended answer is first in each.
+
+**Answers (my person, 2026-11-15, to the prep session):** 1: **`calls` at each Scene Prep and at the end**, as recommended (part 3d's `if` stays; T67's limit stays 500). 2: **add the `build` check**, as recommended (part 8; widen T68's Touches to `Tools/check_prompts.py`, part 0 step 2). Don't ask again; copy these answers under "Findings" in `T68.md`.
 
 1. **How often `calls` is sent: the event count per show.** T67 caps each address at 500 real events a day (`limits.ip_daily_events`; `"test"` events are counted apart, so our checks don't use it up) and calls that "about 20 shows", so about 25 events a show. T68's own spec gives far more. A full 5-actor show has about 35 phase headers (each scene: Scene Prep, 3 turns, 2 Free Talk rounds, maybe a last word, the vote, the reactions; then the closing). Each `calls` flush sends one event per provider and model asked since the last flush, about 4 (the four AI providers; the input ask runs on Anthropic's actor model).
    - **Send `calls` at each Scene Prep and at the end, not at every phase (Recommended).** About 60 events a show (3 launch/mode/start, about 35 phases, about 20 `calls`, 1 end), so 500 is about 8 shows a day per address, plenty for a judge. The totals per provider and model are the same; only a show quit mid-scene loses that scene's counts (it still has every scene before). One `if` in `SendPhase` (part 3d).
