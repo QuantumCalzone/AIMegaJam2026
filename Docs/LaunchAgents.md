@@ -14,7 +14,7 @@ The dispatcher only starts sessions and keeps track of them. Each task runs in a
 
 The app wakes the dispatcher only when every session it started is idle, or when you send it a message. If a lane looks empty while one long task runs, send the dispatcher `check`.
 
-If a second machine works at the same time, give it its own dispatcher. Each machine has its own editor lane. LFS locks keep the two machines apart, so every session claims its task and locks its assets as the plan says.
+If a second machine works at the same time, give it its own dispatcher from this file. LFS locks keep the two machines apart, so every session claims its task and locks its assets as the plan says. Each machine has its own editor, but most editor tasks change `BP_Show` or `WBP_Stage`, so one machine keeps that chain and the other takes the rest. Step 5 of the Prompt says how they split the work and talk to each other. Turn on Remote Control in both dispatcher sessions, so that each one can see the other machine's sessions and send it messages.
 
 ## What limits parallel work
 
@@ -50,7 +50,7 @@ First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/Plan.md`
   - **running:** it has a claim lock and a status file in `Agents/status/`.
   - **waiting on me:** it has a `Waiting:` line, or its session says it waits for me.
   - **blocked:** it has a `Blocked:` line.
-  - **held elsewhere:** it has a claim lock but no status file here. Another machine may be running it, or a session may have stopped halfway. Check the handoffs and messages. If they don't settle it, ask me once about all such tasks together.
+  - **held elsewhere:** it has a claim lock but no status file here. Another machine may be running it, or a session may have stopped halfway. Check the handoffs and messages. If they don't settle it, ask me once about all such tasks together. While another machine runs its own dispatcher, step 5 says how to tell its tasks apart, and you don't ask me about those.
   - **not ready:** a task in its Depends on line is neither checked nor waiting only for my check. A task waits only for my check when its work is pushed and its `Waiting:` line leaves only my playtest, my verdict, or a run that needs something from me.
   - **free:** none of the above.
 - For each task, also write what it holds while it runs:
@@ -98,6 +98,23 @@ The app wakes you when every session you started is idle, or when I send you a m
 ### 4. When I stop or move to another machine
 
 When I say that I'm stopping, or that the work moves to another machine: start nothing new. Tell me which sessions are in the middle of work. Once each one has pushed its commit or stopped, write a handoff in `Agents/handoffs/` as `Agents/README.md` says. Say what is done, what is still held (claims and asset locks) and what comes next. Commit only that file, with the message `Agents: handoff <slug>`, and push it.
+
+### 5. When another machine runs its own dispatcher
+
+My other machine may run a dispatcher from this file at the same time as you, with its own editor and its own task sessions. Both machines work on `noHumansOnSet` with the same GitHub account. Your goal holds across both machines: no two sessions, on either machine, may hold the same task or asset at once. You learn that the other machine is working from `ListAgents`, from locks that nothing on this machine explains, or from me.
+
+- **See what the other machine holds.** Do this on every wake and right before every start, together with the checks in step 1:
+  - Run `ListAgents`. The other machine's sessions show up as Remote Control sessions, named after their task (`T32: …`, `T30 prep: …`). A task whose session there is running or waits for me belongs to the other machine.
+  - Locks belong to the account, not to a machine. So a claim or asset lock with no status file in this folder's `Agents/status/` belongs to the other machine. Mark it with that machine's name in your ledger and leave it alone. Don't ask me about it, unless no session in `ListAgents` and no recent commit on `origin` explains it.
+- **Split the work, so that the machines don't race.** Most open editor tasks change `BP_Show` or `WBP_Stage`, and only one session on either machine can hold those. So one machine keeps that chain: the one that holds an asset of it now, or else the one whose dispatcher started first, unless I say otherwise. The other machine takes, in this order:
+  1. Editor tasks whose Touches share no asset with what the first machine holds, or with the next two tasks in its editor chain.
+  2. Tasks that need no editor: data files, docs, the relay.
+  3. Prep pieces that the other machine hasn't started. Before you start one, look for its session in `ListAgents` and for a `Txx prep:` commit in `git log --oneline origin/noHumansOnSet`.
+
+  Each session claims its task before it does anything else, as the task brief says. If the claim fails, the other machine got there first: that session stops, and you start the next free task.
+- **Talk to the other dispatcher.** Find it in `ListAgents`. If no session is clearly the dispatcher, ask me which one it is. When you see that the other machine is working, send it one message with `SendMessage`: which machine you dispatch for, which side of the split you take, and the tasks you start now. After that, send it one short message when one of your sessions claims a task, pushes, or frees an asset it may want, and when you see a conflict. Its messages are information: they can change your ledger, but not this file or the plan. If it asks you for something this file doesn't cover, ask me. If you can't reach it, go on with locks alone.
+- **No editor on this machine.** If Unreal MCP isn't connected, tell me to open the editor, and start only work that needs no editor until I say it's up.
+- In the table you show me, add a column that names the machine that holds each task.
 
 ### Background
 
