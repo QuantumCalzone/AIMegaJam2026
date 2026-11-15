@@ -1,5 +1,8 @@
 ; T30: the one place a line reaches my screen; it now goes through the line queue (BPC_LinePlayer.Push).
+; T57: in Free Talk a pass puts "passed" by the actor's name, and its next line takes it off (PassCue). The cue goes in just before the line.
 (fn ShowLine (Seat Does Says)
+  (if (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "free talk")
+    (CallFunction|PassCue :Seat Seat :Does Does))
   (Variables|Default|SetTmpName Does)
   (if (and (Utilities|String|EqualExactly(String) Does (Variables|Default|GetDoesNothing)) (not (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "scene")))
     (Variables|Default|SetTmpName ""))

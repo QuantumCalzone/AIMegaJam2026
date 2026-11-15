@@ -1,0 +1,10 @@
+; T57: shows or clears the "passed" marker on one seat's robot, or on every robot when Seat is -1.
+; RunCue calls it when a "passed" or "unpass" cue plays. A seat with no robot is skipped.
+(fn MarkPass (Seat On)
+  (for _i (range (len (V Robots)))
+    (if (or (< Seat 0) (== _i Seat))
+      (set PassBot (get (V Robots) _i))
+      (Utilities|IsValid (V PassBot)
+        (:"Is Valid"
+          (Class|BPRobot|SetPassed :self (V PassBot) :On On))
+        (:"Is Not Valid")))))
