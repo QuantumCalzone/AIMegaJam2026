@@ -29,6 +29,8 @@ const isDoneOpen = atom({ plugin: 'task-list', key: 'isDoneOpen' } as const, fal
 let claims = new Map<string, string>()
 let tick = 0
 let isBusy = false
+// The repo folder of each session folder: found once, as it does not move.
+const repoRoots = new Map<string, string>()
 
 type PlanTask = {
   id: string
@@ -111,6 +113,36 @@ async function readStatus($: Engine, root: string) {
   return notes
 }
 
+// The repo folder: the first path `git worktree list` prints. A session in a
+// worktree runs in a copy that may have no Docs/Plan.md (a worktree cut from
+// main has none), and its own Agents/status, which nobody writes: status files
+// always go in the repo folder's (Agents/README.md). The session's folder
+// stands in when git can't say.
+async function repoRoot($: Engine, root: string) {
+  const known = repoRoots.get(root)
+  if (known !== undefined) return known
+  try {
+    const ran = await $.process.run(['git', 'worktree', 'list', '--porcelain'], {
+      cwd: root,
+      timeoutMs: 15_000,
+      env: { GIT_TERMINAL_PROMPT: '0' },
+    })
+    if (ran.exitCode !== 0) return root
+    // A bare repository is listed first, with a `bare` line, and has no files.
+    const main = ran.stdout.split(/\r?\n\r?\n/).find(block => !/^bare$/m.test(block))
+    const found = main && /^worktree (.+)$/m.exec(main)?.[1]?.trim()
+    if (!found) return root
+    repoRoots.set(root, found)
+    return found
+  } catch {
+    return root
+  }
+}
+
+const samePath = (a: string, b: string) =>
+  a.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase() ===
+  b.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase()
+
 async function readClaims($: Engine, root: string) {
   try {
     const ran = await $.process.run(['git', 'lfs', 'locks'], {
@@ -180,16 +212,22 @@ async function refresh($: Engine, options: { withClaims?: boolean } = {}) {
       const found = await readClaims($, root)
       if (found) claims = found
     }
-    let planText: string
-    try {
-      planText = await $.fs.read(`${root}/${PLAN}`)
-    } catch {
-      const error = `No ${PLAN} in ${root}.`
+    // The session's own plan first, so a branch that changes the plan shows
+    // its change; else the repo folder's.
+    const repo = await repoRoot($, root)
+    const places = samePath(root, repo) ? [root] : [root, repo]
+    let planText: string | undefined
+    for (const place of places) {
+      planText = await $.fs.read(`${place}/${PLAN}`).catch(() => undefined)
+      if (planText !== undefined) break
+    }
+    if (planText === undefined) {
+      const error = `No ${PLAN} in ${places.join(' or in the repo folder ')}.`
       await update($, snapshot, old => ({ ...old, error, updatedAt: Date.now() }))
       return
     }
     const plan = parsePlan(planText)
-    const notes = await readStatus($, root)
+    const notes = await readStatus($, repo)
     let sessions = new Map<string, SessionRef[]>()
     let sessionsError: string | undefined
     try {

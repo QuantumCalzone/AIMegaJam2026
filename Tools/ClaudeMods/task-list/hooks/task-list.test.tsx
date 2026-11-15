@@ -47,6 +47,16 @@ const SESSIONS = [
   { sessionId: 'local_c', title: 'Unrelated chat', isRunning: true },
 ]
 
+const ran = (stdout: string) => ({
+  value: { exitCode: 0, stdout, stderr: '', isStdoutTruncated: false, isStderrTruncated: false },
+})
+const CLAIMS = 'Docs/claims/T18\tQuantumCalzone\tID:1\n'
+// `git worktree list --porcelain`: the repo folder first, then each worktree.
+const worktrees = (repo: string, ...others: string[]) =>
+  [repo, ...others].map(path => `worktree ${path}\nHEAD 0123abc\nbranch refs/heads/x\n`).join('\n')
+const file = (name: string) => ({ name, kind: 'file', size: 1, mtimeMs: 0, isLink: false }) as const
+const slashes = (path: string) => path.replace(/\\/g, '/')
+
 test('the pane sorts tasks and opens a session on a press, on every surface', async ($, on) => {
   const opened: unknown[] = []
   on('ui.open', () => ({ value: { isPlaced: true } }))
@@ -70,15 +80,7 @@ test('the pane sorts tasks and opens a session on a press, on every surface', as
       { name: 'notes-T19.md', kind: 'file', size: 1, mtimeMs: 0, isLink: false },
     ],
   }))
-  on('process.run', () => ({
-    value: {
-      exitCode: 0,
-      stdout: 'Docs/claims/T18\tQuantumCalzone\tID:1\n',
-      stderr: '',
-      isStdoutTruncated: false,
-      isStderrTruncated: false,
-    },
-  }))
+  on('process.run', (_, e) => ran(e.argv[1] === 'worktree' ? worktrees('/repo') : CLAIMS))
   on('mcp.call', (_, e) => {
     if (e.tool === 'list_sessions') {
       return { value: { content: [{ type: 'text', text: JSON.stringify(SESSIONS) }], isError: false } }
@@ -125,4 +127,75 @@ test('the pane sorts tasks and opens a session on a press, on every surface', as
   }
 
   expect(opened[0]).toEqual({ session_id: 'local_a', target: 'focus' })
+})
+
+// A session in a worktree cut from main: its folder has no Docs/Plan.md, and
+// its own Agents/status is a copy nobody writes. The pane reads the repo
+// folder's plan and status files, the first path `git worktree list` prints.
+test('a session in a worktree reads the repo folder', async ($, on) => {
+  const listed: string[] = []
+  on('ui.open', () => ({ value: { isPlaced: true } }))
+  on('ui.log', () => ({ value: undefined }))
+  on('ui.toast', () => ({ value: undefined }))
+  on('session.root', () => ({ value: 'C:\repo\.claude\worktrees\wt' }))
+  on('fs.read', (_, e) => {
+    const path = slashes(e.path)
+    if (path === 'C:/repo/Docs/Plan.md') return { value: PLAN }
+    if (path === 'C:/repo/Agents/status/task-T18.md') return { value: '- State: from the repo folder' }
+    return { deny: `ENOENT: ${path}` }
+  })
+  on('fs.list', (_, e) => {
+    const path = slashes(e.path)
+    listed.push(path)
+    if (path === 'C:/repo/Agents/status') return { value: [file('task-T18.md')] }
+    // The worktree's own copy: never read.
+    return { value: [file('task-T23.md')] }
+  })
+  on('process.run', (_, e) =>
+    ran(e.argv[1] === 'worktree' ? worktrees('C:/repo', 'C:/repo/.claude/worktrees/wt') : CLAIMS),
+  )
+  on('mcp.call', () => ({
+    value: { content: [{ type: 'text', text: JSON.stringify(SESSIONS) }], isError: false },
+  }))
+
+  await $.command.run({
+    command: 'task-list',
+    args: '',
+    origin: { kind: 'composer' },
+    presentation: { isFullscreen: true, columns: 80 },
+  })
+
+  const ui = await $.ui.mount({ ...PANE, surface: 'desktop' })
+  expect(await ui.find({ type: 'Text', text: /^No Docs/ })).toBeUndefined()
+  expect((await ui.find({ type: 'Text', text: /done · / }))?.text).toBe(
+    '1 done · 2 in progress · 4 not started',
+  )
+  expect(await ui.find({ type: 'Text', text: /from the repo folder/ })).toBeDefined()
+  expect(listed).toEqual(['C:/repo/Agents/status'])
+  await ui.unmount()
+})
+
+test('with no plan in either folder, the error names both', async ($, on) => {
+  on('ui.open', () => ({ value: { isPlaced: true } }))
+  on('ui.log', () => ({ value: undefined }))
+  on('session.root', () => ({ value: '/elsewhere/wt' }))
+  on('fs.read', (_, e) => ({ deny: `ENOENT: ${e.path}` }))
+  on('fs.list', () => ({ value: [] }))
+  on('process.run', (_, e) =>
+    ran(e.argv[1] === 'worktree' ? worktrees('/elsewhere', '/elsewhere/wt') : ''),
+  )
+  on('mcp.call', () => ({ value: { content: [{ type: 'text', text: '[]' }], isError: false } }))
+
+  await $.command.run({
+    command: 'task-list',
+    args: '',
+    origin: { kind: 'composer' },
+    presentation: { isFullscreen: true, columns: 80 },
+  })
+
+  const ui = await $.ui.mount({ ...PANE, surface: 'desktop' })
+  expect((await ui.find({ type: 'Text', text: /^No Docs/ }))?.text).toBe(
+    'No Docs/Plan.md in /elsewhere/wt or in the repo folder /elsewhere.',
+  )
+  await ui.unmount()
 })
