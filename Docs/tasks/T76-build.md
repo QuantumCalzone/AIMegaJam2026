@@ -1,17 +1,17 @@
 # T76 build sheet: the bots send an emotion with every reply
 
-Back to [T76](T76.md). A PC prep session wrote this on 2026-11-15, without the editor, against **`noHumansOnSet` at `2e3e5c8`**. T76 needs no editor and changes no asset.
+Back to [T76](T76.md). A PC prep session wrote this on 2026-11-15, without the editor, against **`noHumansOnSet` at `485a979`**. T76 needs no editor and changes no asset.
 
-**What lands before T76 and moves these places.** T57, T58, T62, T63, T64 to T66, T68 and T69 come first in the plan, and T75 is a dependency. Of those, these change T76's files: T58 (`asks.last_word`, a `last_word` free-mode phase, a free-mode phase guard in the checker), T62 (the actions block, `_readme` lines, free-mode actions: `[0, 1]` in a scene turn and none in a reaction, `look {prop}`), T63 (the `input` prompt, `asks.input`, `_readme`, `input.json`), T68 (`llm.json` `build` and two `_readme` sentences, a paragraph in `Relay/README.md`), T69 (maybe an `attempt` field in the reply, or a schema of its own for the input ask), and T75 (`emotes.json`, and `check_files` returns it). This sheet writes each edit **as T69 leaves the files**, from [T57-build.md](T57-build.md), [T58-build.md](T58-build.md), [T62-build.md](T62-build.md), [T63-build.md](T63-build.md), [T64-build.md](T64-build.md) to [T66-build.md](T66-build.md), [T68-build.md](T68-build.md) and [T75-build.md](T75-build.md). T69 has no build sheet yet, so every place T69 may touch says what to do either way. **T60 comes after T76** in the plan (it adds `tell` to the reply); part 9 tells it what T76 leaves. Each place is named by its text first, then its line at `2e3e5c8`. Find each by its text before you change it.
+**What lands before T76 and moves these places.** T57, T58, T62, T63, T64 to T66, T68 and T69 come first in the plan, and T75 is a dependency. Of those, these change T76's files: T58 (`asks.last_word`, a `last_word` free-mode phase, a free-mode phase guard in the checker), T62 (the actions block, `_readme` lines, free-mode actions: `[0, 1]` in a scene turn and none in a reaction, `look {prop}`), T63 (the `input` prompt, `asks.input`, `_readme`, `input.json`), T68 (`llm.json` `build` and two `_readme` sentences, a paragraph in `Relay/README.md`), T69 (a new `input_schema` for the input ask alone, the reply shape plus `attempt`; the `llm.json` `_readme` sentence about the schemas; `input`, `asks.input` and a `_readme` sentence in `prompts.json`; in the checker, an `input_schema` check, `attempt` in `check_reply`'s `types` for the input ask, and `shape_fails(reply, ask)`; no `free_mode.json` or `Relay/` change), and T75 (`emotes.json`, and `check_files` returns it). This sheet writes each edit **as T69 leaves the files**, from [T57-build.md](T57-build.md), [T58-build.md](T58-build.md), [T62-build.md](T62-build.md), [T63-build.md](T63-build.md), [T64-build.md](T64-build.md) to [T66-build.md](T66-build.md), [T68-build.md](T68-build.md), [T69-build.md](T69-build.md) and [T75-build.md](T75-build.md). T57 is already in `485a979`; T69's sheet landed while this one was written. **T60 comes after T76** in the plan (it adds `tell` to the reply); part 9 tells it what T76 leaves. Each place is named by its text first, then its line at `485a979`. Find each by its text before you change it.
 
-**Sources read:** `T76.md` and its plan entry; `T75.md`, `T75-build.md` (the 12 ids, part 4's checker code, part 7), `T77.md`, `T78.md`, `T69.md`; the T55 and T60 build sheets (the model for this form) and the T57, T58, T62 to T66 and T68 build sheets for the files they change; `Content/NHOS/Data/llm.json`, `prompts.json`, `free_mode.json`; `Relay/src/index.js` (`freePhase`, `weighted`, `freeReplyObject`, `freeResponse`), `Relay/test/curl-tests.sh`, `Relay/test/game_shape.py`, `Relay/README.md`, `Relay/relay.config.json`; `Tools/check_prompts.py`; `Graphs/BPC_LLMClient/ParseReply.txt`. **The design doc, read and not changed:** Rules rev 45, Bot Prompts rev 82, Tech & Build rev 28.
+**Sources read:** `T76.md` and its plan entry; `T75.md`, `T75-build.md` (the 12 ids, part 4's checker code, part 7), `T77.md`, `T78.md`, `T69.md`; the T55 and T60 build sheets (the model for this form) and the T57, T58, T62 to T66, T68 and T69 build sheets for the files they change (T69's parts 1, 2, 3c and 4); `Content/NHOS/Data/llm.json`, `prompts.json`, `free_mode.json`; `Relay/src/index.js` (`freePhase`, `weighted`, `freeReplyObject`, `freeResponse`), `Relay/test/curl-tests.sh`, `Relay/test/game_shape.py`, `Relay/README.md`, `Relay/relay.config.json`; `Tools/check_prompts.py`; `Graphs/BPC_LLMClient/ParseReply.txt`. **The design doc, read and not changed:** Rules rev 45, Bot Prompts rev 82, Tech & Build rev 28.
 
 ## In short
 
 | T76 step | Where in this sheet |
 |---|---|
 | 1. The design doc first | Part 1: the Rules tab's new "Emotions" section and the Bot Prompts tab's new base line, as text for my person's OK; question 1 adds three small Tech & Build edits |
-| 2. The reply shape | Part 2: `emotion` in `reply_schema` (the 12 ids, required) and the `llm.json` `_readme`; part 3b: the `prompts.json` `_readme` |
+| 2. The reply shape | Part 2: `emotion` in `reply_schema` and in T69's `input_schema` (the 12 ids, required in both), and the `llm.json` `_readme`; part 3b: the `prompts.json` `_readme` |
 | 3. The prompt | Part 3a: the one rule line at the end of `base`, word for word from part 1b |
 | 4. Free mode in the relay | Part 4: a weighted `emotions` list in seven phases of `free_mode.json` (none in `input`), and its `_readme`; part 5a: `freeEmotion` in `Relay/src/index.js` |
 | 5. The checker | Part 6: `emotion_problems` (enum = ids, base line, free-mode lists), the known-id check on every reply, the count of each provider's picks, the `types` in `check_reply` and `shape_fails` |
@@ -35,7 +35,7 @@ One question. My recommendation is first.
 My person asked prep sessions to take their own recommendation on calls that are theirs, and list them here. Each is open to change. The T76 session shows this list to my person when it closes the task.
 
 1. **The rule line overrides `game`'s "Fill only the fields the ask names".** `game`'s How to reply says "Fill only the fields the ask names, and leave the others empty", and no ask names `emotion`. The new `base` line starts "Every reply, whatever the ask, fills "emotion"", and `base` comes after `game` in the system text, so the narrower rule wins. The schema forces a value from the enum anyway. `game` stays as it is, inside T76's Touches.
-2. **`emotion` goes after `pass`** in `reply_schema`'s `properties` and `required` (after T69's new field, if it adds one), and its enum lists the ids in `emotes.json` file order, `neutral` first. The checker allows any order (the task: "in any order"). If the paid run shows a provider always sending `neutral`, the enum's order is a second knob to try after the rule line.
+2. **`emotion` goes after `pass`** in `reply_schema`'s `properties` and `required`, and between `pass` and `attempt` in T69's `input_schema` (T69's check compares the two schemas without regard to order), and its enum lists the ids in `emotes.json` file order, `neutral` first. The checker allows any order (the task: "in any order"). If the paid run shows a provider always sending `neutral`, the enum's order is a second knob to try after the rule line.
 3. **The free-mode lists are `{id, weight}` objects,** one line per phase, as `scene_actions` are `{verb, target, item, weight}`. Every phase but `input` has one; all 12 ids appear somewhere, so a free show in T77 shows every face. The leans are the task's examples, plus a list for the phases it doesn't name: `last_word` leans worried and angry (a bot defending itself), `reaction_cut` sad and angry (the cut bot's last words), `closing` smug and happy (the end screen's vote).
 4. **A free pass shows a face:** the relay picks the emotion before it decides a pass, so a Free Talk pass carries one from `free_talk`'s list (the rule line: "A pass shows a face too").
 5. **The design doc's base line is wrapped like the rest of the block** (78 columns, two spaces before each continued line), and `prompts.json` holds it as one line. The checker finds it in `base` word for word (`DOC_EMOTION_LINE`), as it finds the note lines in `game` (`DOC_NOTE_LINES`).
@@ -48,10 +48,10 @@ My person asked prep sessions to take their own recommendation on calls that are
 ## 0. Before you start (after T69 is pushed)
 
 1. `git pull` (or, in a worktree, move onto `noHumansOnSet` as `CLAUDE.md` says), read `Agents/`, `git lfs locks`. T76 needs no editor and no lock, so it can run in a worktree (the plan's "Worktrees" build note); claim T76 with `Docs/claims/T76` as the plan says. `git log --oneline -15 -- Content/NHOS/Data/llm.json Content/NHOS/Data/prompts.json Content/NHOS/Data/free_mode.json Relay/ Tools/check_prompts.py` should show T55, T58, T62, T63, T67, T68, T69 and T75.
-2. **What T69 did to the reply.** Read `T69.md`'s Findings ("the pick", step 1) and `git show <T69 commit> -- Content/NHOS/Data/llm.json Tools/check_prompts.py Relay/src/index.js`:
-   - **`attempt` in `reply_schema`** (every ask fills it): `emotion` goes after it (part 2a), and the checker's lists keep it (part 6).
-   - **A schema of its own for the input ask** (an `input_schema` key, or whatever T69 named it): add the same `emotion` property and required entry to it too (part 2a). T77 needs the input ask's `emotion`. The checker's `emotion_problems` checks every `*_schema` key in `llm.json`; if T69's key doesn't end in `_schema`, add it to that loop by name.
-   - **No reply change:** the sheet applies as written.
+2. **What T69 built.** [T69-build.md](T69-build.md) gives the input ask its own `input_schema` (decision 1 there): `reply_schema`'s properties plus `attempt`, with the checker failing the two if they drift apart ("T76 adds emotion to both"). Read `T69.md`'s Findings ("the pick", step 1) and `git show <T69 commit> -- Content/NHOS/Data/llm.json Tools/check_prompts.py Relay/src/index.js` to confirm it was built that way:
+   - **`input_schema`, as its sheet says** (the usual case): part 2a adds `emotion` to both schemas. T77 needs the input ask's `emotion`.
+   - **`attempt` in `reply_schema` instead** (T69 changed its mind): `emotion` goes after `attempt` there, there is no second schema, and the checker's lists keep `attempt` (part 6).
+   - **Another name than `input_schema`:** `emotion_problems` (part 6b) checks every `llm.json` key that ends in `_schema`; add T69's key to that loop by name if it doesn't.
 3. **T75's ids.** `python -c "import json;print([e['id'] for e in json.load(open('Content/NHOS/Data/emotes.json',encoding='utf-8'))['emotes']])"` prints the ids in order. Expected: `['neutral', 'happy', 'sad', 'angry', 'worried', 'scared', 'surprised', 'confused', 'disgusted', 'suspicious', 'smug', 'embarrassed']`. If T75's rework changed them, use its list in part 2a's enum and part 4's lists (every id in part 4 must still exist; the checker says which doesn't). Check that `check_files` returns `"emotes": emotes` (T75-build part 4c).
 4. `python Tools/check_prompts.py --offline` passes before you start.
 5. **Ask my person, one question per call, with the multiple-choice tool** (CLAUDE.md, "Asking for input"):
@@ -112,7 +112,7 @@ In "Shared base prompt", the code block (id `.4986`), after its last line `- Kee
 
 ### 2a. `reply_schema`
 
-At `2e3e5c8`, lines 40 to 44 (T68 adds `"build"` after `"relay"`, one line lower):
+At `485a979`, lines 40 to 44 (T68 adds `"build"` after `"relay"`, one line lower):
 
 ```json
 			"pass": {
@@ -136,18 +136,49 @@ becomes
 		"required": ["actions", "speech", "vote", "reason", "pass", "emotion"],
 ```
 
-- **If T69 added a property after `pass`** (such as `attempt`), put `emotion` after T69's property instead, and add `"emotion"` at the end of `required`, after T69's entry.
-- **If T69 gave the input ask a schema of its own,** add the same `"emotion"` property and `required` entry there.
+**T69's `input_schema`**, right after `reply_schema` (T69-build part 2a), ends with the same `pass` property, then `attempt`:
+
+```json
+			"pass": {
+				"type": "boolean"
+			},
+			"attempt": {
+				"type": "string"
+			}
+		},
+		"required": ["actions", "speech", "vote", "reason", "pass", "attempt"],
+```
+
+becomes
+
+```json
+			"pass": {
+				"type": "boolean"
+			},
+			"emotion": {
+				"type": "string",
+				"enum": ["neutral", "happy", "sad", "angry", "worried", "scared", "surprised", "confused", "disgusted", "suspicious", "smug", "embarrassed"]
+			},
+			"attempt": {
+				"type": "string"
+			}
+		},
+		"required": ["actions", "speech", "vote", "reason", "pass", "emotion", "attempt"],
+```
+
+- **Both or neither:** T69's check (`input_schema must be reply_schema's properties plus attempt`, part 6c) fails if `emotion` is in only one of them, and the two `emotion` blocks must be identical, the enum's order included (it compares the property objects). Only the match with `emotes.json` is free of order.
+- **If T69 put `attempt` in `reply_schema` instead** (part 0 step 2), put `emotion` after `attempt` there, and add `"emotion"` at the end of `required`.
 - **Strict schemas:** all four providers already take an `enum` here (`verb`'s, since T16) and need every property in `required` with `additionalProperties: false`, which this keeps (`Relay/README.md`, "All three Chat Completions providers take structured output ...").
-- **Size:** the enum adds about 200 bytes to every request. The largest request at `2e3e5c8` is 18.6 KB (a closing ask), far under the relay's `max_body_bytes` of 65536.
+- **Size:** the enum adds about 200 bytes to every request. The largest request at `485a979` is 18.6 KB (a closing ask), far under the relay's `max_body_bytes` of 65536.
 
 ### 2b. `_readme` (line 2, one string)
 
-Find `reply_schema is the one reply shape for every ask (scene turn, Free Talk line, vote, reaction, closing line, input conversion); unused fields come back empty.` and make it:
+T69 rewrites this sentence (T69-build part 2b). Find its version, `reply_schema is the reply shape for every actor ask (scene turn, Free Talk line, vote, reaction, closing line); input_schema is the same shape plus attempt, for the input ask alone (T69: a few words naming an action the player typed that the game can't do, for analytics); unused fields come back empty.`, and make it:
 
-`reply_schema is the one reply shape for every ask (scene turn, Free Talk line, last word, vote, reaction, closing line, input conversion); unused fields come back empty, except 'emotion' (T76), which every reply fills with one id from emotes.json: the face the robot shows while its line plays. Its enum lists every id in emotes.json, so a new emotion goes in both files.`
+`reply_schema is the reply shape for every actor ask (scene turn, Free Talk line, last word, vote, reaction, closing line); input_schema is the same shape plus attempt, for the input ask alone (T69: a few words naming an action the player typed that the game can't do, for analytics); unused fields come back empty, except 'emotion' (T76), which every reply in both shapes fills with one id from emotes.json: the face the robot shows while its line plays. Both enums list every id in emotes.json, so a new emotion goes in all three places.`
 
-- "last word" is T58's ask (decision 10). If T68 or T69 rewrote the list, keep theirs and add only "last word" if it's missing.
+- "last word" is T58's ask (decision 10). If T69's sentence came out different, keep its words, add "last word" to the list of actor asks if it's missing, and add the `except 'emotion' ...` part after `unused fields come back empty`.
+- If T69 put `attempt` in `reply_schema` instead (no `input_schema`), write "every reply fills" and "The enum lists every id in emotes.json, so a new emotion goes in both files."
 - **Decision 10's other fix:** if the same string still says `uses at most 2 actions`, make it `uses at most 1 action (none in a reaction)` (T62-build part 9).
 - T68's two changes to this string ("no LLM call", and the sentence about `build` at its end) sit elsewhere in it; keep them.
 
@@ -157,7 +188,7 @@ Each line as it sits in the file (two tabs before it, quotes escaped as the file
 
 ### 3a. `base`: the rule line (step 3)
 
-At `2e3e5c8` `base` is lines 75 to 84, and its last line is line 83: `		"- Keep every line short: about 10 words, never more than 15."`. Nothing before T76 changes `base` (T62 and T63 change `game`, `input` and `asks`), so it is still the last line; only its line number moves. Give it a comma, and add the new line after it:
+At `485a979` `base` is lines 76 to 85, and its last line is line 84: `		"- Keep every line short: about 10 words, never more than 15."`. Nothing before T76 changes `base` (T62 and T63 change `game`, `input` and `asks`), so it is still the last line; only its line number moves. Give it a comma, and add the new line after it:
 
 ```
 		"- Keep every line short: about 10 words, never more than 15.",
@@ -168,7 +199,7 @@ It is part 1b's line, unwrapped. The `]` and the `,` after it stay as they are.
 
 ### 3b. `_readme`: the reply's fields (step 2)
 
-At `2e3e5c8` the last `_readme` line (line 9): `"Every reply matches llm.json 'reply_schema': actions [{verb, target, item}], speech, pass, vote, reason. Unused fields come back empty. Tools/check_prompts.py sends every ask with the same request body as the game."`
+At `485a979` the last `_readme` line (line 9): `"Every reply matches llm.json 'reply_schema': actions [{verb, target, item}], speech, pass, vote, reason. Unused fields come back empty. Tools/check_prompts.py sends every ask with the same request body as the game."`
 
 - After `speech, pass, vote, reason` (and after T69's field, if it listed one there) add `, emotion`.
 - After `Unused fields come back empty.` add: ` Every reply fills emotion, though: one id from emotes.json, the face its robot shows while its line plays (T76; the rule is the last line of 'base'). The game reads it from T77 on.`
@@ -214,7 +245,7 @@ Line 9 (the legibility line) stays last. Line 4 ("... (BPC_LLMClient.FreeReply, 
 
 Two edits.
 
-**1. A new function**, right after `weighted` (lines 201 to 209 at `2e3e5c8`, the function that ends `return list[list.length - 1];` and `}`), with one blank line before it:
+**1. A new function**, right after `weighted` (lines 201 to 209 at `485a979`, the function that ends `return list[list.length - 1];` and `}`), with one blank line before it:
 
 ```js
 // The emotion a free reply shows (T76): a weighted pick from the phase's "emotions"
@@ -227,18 +258,18 @@ function freeEmotion(ph) {
 
 `isObject` and `weighted` are the file's own (`weighted` reads `x.weight ?? 1`).
 
-**2. The reply literal** in `freeReplyObject` (line 228 at `2e3e5c8`):
+**2. The reply literal** in `freeReplyObject` (line 228 at `485a979`):
 
 - Now: `	const reply = { actions: [], speech: "", vote: "", reason: "", pass: false };`
 - New: `	const reply = { actions: [], speech: "", vote: "", reason: "", pass: false, emotion: freeEmotion(ph) };`
 
-If T69 added a field to this literal (such as `attempt: ""`), keep it and put `emotion: freeEmotion(ph)` last. The line is right after `const ph = freePhase(state);`, so `ph` is set, and every return path after it (the input echo, the vote, the pass, the scene line) sends the same `reply`, so every free reply carries an emotion. Nothing else in `Relay/src/index.js` changes. `freeResponse` stringifies the object as it is.
+T69 leaves this literal alone (T69-build part 3c: the free reply has no `attempt`, which the game and T69's `shape_fails` read as `""`), and T76 doesn't add `attempt` either. If T69 did add a field here, keep it and put `emotion: freeEmotion(ph)` last. The line is right after `const ph = freePhase(state);`, so `ph` is set, and every return path after it (the input echo, the vote, the pass, the scene line) sends the same `reply`, so every free reply carries an emotion. Nothing else in `Relay/src/index.js` changes. `freeResponse` stringifies the object as it is.
 
 There is no Node.js on this PC, so the change can't run locally. The curl tests (part 7c) check it on the deployed relay.
 
 ### 5b. `Relay/test/curl-tests.sh`
 
-**1. A helper,** right after the `absent()` function (lines 93 to 99 at `2e3e5c8`, it ends with `}`), with one blank line before it:
+**1. A helper,** right after the `absent()` function (lines 93 to 99 at `485a979`, it ends with `}`), with one blank line before it:
 
 ```bash
 emotion_of() { # a relay reply on stdin -> "known <id>" (an id in emotes.json, T76) or "unknown <what>"
@@ -264,7 +295,7 @@ It runs after the script's `cd "$(dirname "$0")/.."` (line 86), so the working f
 
 ### 5c. `Relay/README.md`
 
-**1. The free mode paragraph** (line 36 at `2e3e5c8`, starts `**Free mode** costs nothing, for local testing.`). Its sentence `The reply text is a valid game reply: ... pass false.` is out of date (it says `actions` empty and `reason` "Free mode reply."). Replace that whole sentence with:
+**1. The free mode paragraph** (line 36 at `485a979`, starts `**Free mode** costs nothing, for local testing.`). Its sentence `The reply text is a valid game reply: ... pass false.` is out of date (it says `actions` empty and `reason` "Free mode reply."). Replace that whole sentence with:
 
 `The reply text is a valid game reply, made from free_mode.json: speech a canned line for the ask's phase (or, for the input step, the player's typed text cut to 15 words), at most one stage action in a scene turn, vote a random name from the ask's options with a canned reason, now and then a pass in Free Talk, and emotion (T76) a weighted pick from the phase's emotions list, or neutral for a phase with none (the input step).`
 
@@ -276,11 +307,11 @@ Wrap each field name in backticks as the paragraph does (`speech`, `typed`, `vot
 
 ## 6. `Tools/check_prompts.py` (step 5)
 
-Line numbers are at `2e3e5c8`; T57, T58, T62, T63, T66, T68, T69 and T75 all move them (T75 alone adds about 130 lines before `check_files`). Find each place by its text.
+Line numbers are at `485a979`; T57, T58, T62, T63, T66, T68, T69 and T75 all move them (T75 alone adds about 130 lines before `check_files`). Find each place by its text.
 
 ### 6a. The docstring
 
-Before `Exit code 0 means the files are valid and every reply passed its checks.` (line 109), after T75's "Emotions (T75)" paragraph:
+Before `Exit code 0 means the files are valid and every reply passed its checks.` (line 117), after T75's "Emotions (T75)" paragraph:
 
 ```
 Emotions in replies (T76): every reply carries 'emotion', the face its robot
@@ -363,11 +394,12 @@ def emotion_problems(llm, prompts, emotes, free) -> list[str]:
 
 ### 6c. `check_files`
 
-**1. The required list** (line 604): add `"emotion"`.
+**1. The required list** (line 614): add `"emotion"`.
 
 - Now: `    if sorted(schema.get("required", [])) != sorted(["actions", "speech", "pass", "vote", "reason"]):` and `        errors.append("llm.json: reply_schema must require actions, speech, pass, vote and reason")`
 - New: `    if sorted(schema.get("required", [])) != sorted(["actions", "speech", "pass", "vote", "reason", "emotion"]):` and `        errors.append("llm.json: reply_schema must require actions, speech, pass, vote, reason and emotion")`
-- If T69 added its field to this list, keep it there, and in the message.
+- T69's `input_schema` check sits right after it (T69-build part 4c: `# T69: the input ask's own schema is reply_schema plus "attempt" ...`). It needs no change: with `emotion` in both schemas (part 2a) it passes, and with `emotion` in only one it fails `llm.json: input_schema must be reply_schema's properties plus attempt (a string)` and `... must require reply_schema's fields plus attempt`.
+- If T69 put `attempt` in `reply_schema` instead, keep it in this list and in the message.
 
 **2. The call,** right after T75's `    errors.extend(emote_problems(emotes))` (T75-build part 4c, after `errors.extend(prewritten_problems(scenes, errors))`):
 
@@ -381,22 +413,22 @@ It loads `free_mode.json` itself (as `prewritten_problems` does), so it doesn't 
 
 ### 6d. The reply's types: `check_reply` and `shape_fails`
 
-- **`check_reply`** (line 1252): `    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str}` becomes `    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str, "emotion": str}`. Without it, every reply fails with `unexpected fields ['emotion']` (the `extra` check right after). The unpack line after it (`actions, speech, passed, vote, reason = ...`) stays.
-- **`shape_fails`** (line 1563): the same `types` line gets `"emotion": str` too, so a `--free` reply without one fails.
-- If T69 added its field to these dicts, keep it.
+- **`check_reply`** (line 1268): `    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str}` becomes `    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str, "emotion": str}`. Without it, every reply fails with `unexpected fields ['emotion']` (the `extra` check right after). The unpack line after it (`actions, speech, passed, vote, reason = ...`) stays.
+- **`shape_fails`** (line 1607): the same `types` line gets `"emotion": str` too, so a `--free` reply without one fails.
+- **As T69 leaves them** (T69-build parts 4f and 4g): `check_reply` adds `types["attempt"] = str` under `if ask == "input":` right after the dict, and `shape_fails` becomes `shape_fails(reply, ask=None)` with its own dict and an `attempt` check for input replies. Change only the two dict lines; T69's lines around them stay. The relay's free input replies have `emotion` and no `attempt`, which T69's `shape_fails` allows.
 
 ### 6e. `main`: the known-id check and the count
 
-**1. The import** (line 115): add `import collections` after `import argparse`.
+**1. The import** (line 123): add `import collections` after `import argparse`.
 
-**2. Before the loop,** after `    mentions = {}  # provider -> [AI lines with speech or a reason, lines with an "@Player N" mention]` (line 1639):
+**2. Before the loop,** after `    mentions = {}  # provider -> [AI lines with speech or a reason, lines with an "@Player N" mention]` (line 1683):
 
 ```python
     picks = {}  # T76: provider (the input LLM apart) -> collections.Counter of the emotions its replies picked
     emotion_ids = [e.get("id") for e in data["emotes"].get("emotes", [])]
 ```
 
-**3. In the loop,** right after the `if reply is None: ... elif args.free: ... else: fails, warns = check_reply(reply, ask, ctx)` block (lines 1650 to 1655) and before `        n_fail += bool(fails)`:
+**3. In the loop,** right after the `if reply is None: ... elif args.free: ... else: fails, warns = check_reply(reply, ask, ctx)` block (lines 1694 to 1699) and before `        n_fail += bool(fails)`:
 
 ```python
         # T76: every reply's emotion is an id in emotes.json. The schema's enum should force it, but a
@@ -410,7 +442,7 @@ It loads `free_mode.json` itself (as `prewritten_problems` does), so it doesn't 
 
 A missing or non-string `emotion` is already a fail from 6d's `types`, so this skips it.
 
-**4. The summary,** right after the `@ mentions` print (`    if mentions:` and its `print`, lines 1677 to 1678), before `    if n:`:
+**4. The summary,** right after the `@ mentions` print (`    if mentions:` and its `print`, lines 1721 to 1722), before `    if n:`:
 
 ```python
     if picks:
@@ -428,18 +460,21 @@ A missing or non-string `emotion` is already a fail from 6d's `types`, so this s
 
 ### 6f. Tried on a scratch copy
 
-This session tried parts 2 to 4 and 6 on a scratch copy of `2e3e5c8` (`Tools/`, `Relay/`, `Content/NHOS`), with T75-build's `emotes.json` (part 1) and checker code (parts 4b and 4c) and T58-build's `last_word` phase (part 3a) put in first, because none of them had pushed. A script took each block from this sheet and stopped if an anchor wasn't found exactly once. T62, T63 and T69 weren't in the copy, so their anchors weren't exercised.
+This session tried parts 2 to 4 and 6 on a scratch copy of `485a979` (`Tools/`, `Relay/`, `Content/NHOS`; T57 is in it). Put in first, because none of them had pushed: T75-build's `emotes.json` (part 1) and checker code (parts 4b and 4c), T58-build's `last_word` phase (part 3a), and T69-build's `input_schema` (part 2a), its `_readme` sentence (part 2b, as part 2b here quotes it) and its `input_schema` check (part 4c). A script took each block from this sheet and stopped if an anchor wasn't found exactly once. T62's and T63's edits weren't in the copy, so their anchors weren't exercised.
 
 - `python -I Tools/check_prompts.py --offline` exits 0. Part 1b's text unwrapped, part 3a's line and `DOC_EMOTION_LINE` are the same string, and 1b's widest line is 78 characters.
-- **Each break fails with exactly these lines** (exit 1), and the copy passes again after each:
+- **Each break fails with exactly these lines** (exit 1), and the copy passes again after each. A break to `reply_schema`'s `emotion` alone also prints T69's `llm.json: input_schema must be reply_schema's properties plus attempt (a string)`, because the two schemas no longer match; that line is left out of the table.
 
-  | Break | FAIL line |
+  | Break | FAIL line (besides T69's) |
   |---|---|
   | `smug` left out of the enum | `llm.json: reply_schema.emotion's enum must hold exactly the emotes.json ids, each once (T76); missing ['smug']` |
   | `bored` added to the enum | `... each once (T76); not in emotes.json ['bored']` |
   | `happy` twice in the enum | `... each once (T76)` |
-  | `emotion` out of `required` | `llm.json: reply_schema must require actions, speech, pass, vote, reason and emotion` and `llm.json: reply_schema must require emotion (strict schemas need every field required)` |
-  | no `emotion` property | `llm.json: reply_schema needs 'emotion', a string whose enum is the emotes.json ids (T76)` |
+  | `reply_schema`'s enum reversed, `input_schema`'s not | only T69's line: the two blocks must be identical |
+  | `sad` left out of `input_schema`'s enum | `llm.json: input_schema.emotion's enum must hold exactly the emotes.json ids, each once (T76); missing ['sad']` |
+  | `emotion` out of `input_schema` | `llm.json: input_schema needs 'emotion', a string whose enum is the emotes.json ids (T76)`, and T69's `... must require reply_schema's fields plus attempt` |
+  | `emotion` out of `reply_schema`'s `required` | `llm.json: reply_schema must require actions, speech, pass, vote, reason and emotion`, `llm.json: reply_schema must require emotion (strict schemas need every field required)`, and T69's `... must require reply_schema's fields plus attempt` |
+  | no `emotion` property in `reply_schema` | `llm.json: reply_schema needs 'emotion', a string whose enum is the emotes.json ids (T76)` |
   | one word of `base`'s line changed | `prompts.json: 'base' lost the design doc's emotion line (DOC_EMOTION_LINE, T76)` |
   | `scene_turn` without `emotions` | `free_mode.json: phase scene_turn needs 'emotions', the faces its free replies show (T76)` |
   | `bored` in `vote`'s list | `free_mode.json: phase vote: emotion 'bored' is not an id in emotes.json` |
@@ -448,8 +483,8 @@ This session tried parts 2 to 4 and 6 on a scratch copy of `2e3e5c8` (`Tools/`, 
   | an extra key in a `free_talk` entry | `free_mode.json: phase free_talk: each emotion is {id, weight} and nothing else, not {...}` |
   | `last_word`'s list empty | `free_mode.json: phase last_word: emotions must be a list of {id, weight}` |
 
-  The enum in reverse order passes, and so does a list on the `input` phase (allowed, not required).
-- **`main`, with the send patched out (no network), 59 asks:** in `--relay --free`, a reply with `"emotion": "bored"` fails `emotion 'bored' is not an id in emotes.json`, one with no `emotion` fails `emotion is missing or not a str`, and the rest pass; the table prints one line per provider plus `input (anthropic)`, with no NOTE. In a paid-mode run where Meta always sent `neutral`, the table adds `    NOTE: meta sticks to neutral (13 of 13 replies); see T76's Done-when`. No reply failed with `unexpected fields`.
+  Both enums reversed together pass, and so does a list on the `input` phase (allowed, not required).
+- **`main`, with the send patched out (no network), 63 asks:** in `--relay --free`, a reply with `"emotion": "bored"` fails `emotion 'bored' is not an id in emotes.json`, one with no `emotion` fails `emotion is missing or not a str`, and the rest pass; the table prints one line per provider plus `input (anthropic)`, with no NOTE. In a paid-mode run where Meta always sent `neutral`, the table adds `    NOTE: meta sticks to neutral (13 of 13 replies); see T76's Done-when`. No reply failed with `unexpected fields`.
 - **Part 5b's `emotion_of`** printed `known smug` for a Messages reply, `known neutral` for a Chat Completions reply and `unknown None` for a reply with no `emotion`; the two new `expect` patterns match the first two. The relay's JavaScript (part 5a) couldn't run here (no Node.js); part 7c tests it on the deployed relay.
 
 ## 7. The check (Done when)
@@ -516,7 +551,7 @@ Release `Docs/claims/T76` and delete the status file after the last push. Worktr
 
 - **T77:** every reply has `emotion`, an id from `emotes.json` (part 2a); `HandleReply` can read it with `Json|GetField`, like `speech`. Free mode's lists are `emotions: [{id, weight}]` on each phase but `input` (part 4a), and the relay picks with `freeEmotion(ph)` (part 5a); `BPC_LLMClient.FreeReply` should pick the same way (`FreeAction` already does a weighted pick from `scene_actions`). Its keyword table for my line is new: the relay's input path is `if (ph.echo_typed) { ... return reply; }` in `freeReplyObject`, where the table's pick replaces `reply.emotion`. The checker counts the input LLM apart (`input (<provider>)`); T77's input checks can reuse `emotion_ids` from `main`. The curl test "free input reply's emotion is neutral" sends "hello there". `emotion_problems` doesn't require a list on the `input` phase and doesn't forbid one. The Rules tab's "Emotions" section (part 1a) already says the log tells the AIs each face and that my emotion comes from my line.
 - **T78:** reads the ids from `emotes.json` (T75), not from `llm.json`. The Rules tab's bullet 4 says I can pick my face before I send. The Turn Input tab has no Face chip yet, and T78's Touches don't name the design doc: T78 should propose that edit.
-- **T60 (after T76 in the plan):** its sheet's `reply_schema` (part 1b) and its checker's required list (part 5) are written without `emotion`. Keep T76's: `required` becomes `["actions", "speech", "vote", "reason", "pass", "emotion", "tell"]` (with `tell` after `emotion` in `properties`), the checker's required check and message name both, `check_reply`'s and `shape_fails`'s `types` get `"tell": str` beside `"emotion": str`, and its `prompts.json` `_readme` edit ("... speech, pass, vote, reason, tell.") keeps `emotion` too. The relay's free replies now carry `emotion` and still no `tell`, which T60's `--free` allowance covers.
-- **T69:** if it hasn't pushed when T76 starts, nothing to tell. If it has a schema of its own for the input ask, T76 adds `emotion` there (part 0 step 2).
+- **T60 (after T76 in the plan):** its sheet's `reply_schema` (part 1b) and its checker's required list (part 5) are written without `emotion`. Keep T76's: `required` becomes `["actions", "speech", "vote", "reason", "pass", "emotion", "tell"]` (with `tell` after `emotion` in `properties`), the checker's required check and message name both, `check_reply`'s and `shape_fails`'s `types` get `"tell": str` beside `"emotion": str`, and its `prompts.json` `_readme` edit ("... speech, pass, vote, reason, tell.") keeps `emotion` too. **And `input_schema`:** since T69 the checker fails unless `input_schema` is `reply_schema`'s properties plus `attempt`, so T60's `tell` goes in `input_schema` as well (the input converter leaves it `""`, as T60's sheet says). The relay's free replies now carry `emotion` and still no `tell`, which T60's `--free` allowance covers.
+- **T69:** nothing to change. Its sheet already says T76 adds `emotion` to both schemas, which part 2a does. Its `attempt_test` switch and `NoteAttempt` don't read `emotion`.
 - **T68:** its `llm.json` `_readme` edits sit in other sentences than part 2b's; its `Relay/README.md` paragraph follows the paragraph part 5c changes.
 - **T70 (the itch page):** "What gets sent where" doesn't change: the emotion is part of each AI's reply, not new data about the player.
