@@ -1,0 +1,2 @@
+(fn LandSnd ()
+  (CallFunction|Snd :Key "land"))

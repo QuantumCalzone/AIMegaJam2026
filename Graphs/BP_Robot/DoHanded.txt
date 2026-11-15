@@ -16,6 +16,8 @@
   (set LookUntil (+ _c 1.6))
   (if (streq Verb "throw")
     (Class|BPProp|ThrowTo :self Prop :Loc Loc :Dur (* 0.9 K) :Height 170.0 :Spin 1.5)
+    (CallFunction|Snd :Key "throw")
+    (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "LandSnd" :Time (* 0.9 K) :bLooping false)
     (set HitBot Bot)
     (set HitAt (+ _c (* 0.9 K)))
     (set TalkUntil (+ _c 0.5))

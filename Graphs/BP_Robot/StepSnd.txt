@@ -1,0 +1,3 @@
+(fn StepSnd ()
+  (if (not (V IsCut))
+    (CallFunction|Snd :Key "step")))

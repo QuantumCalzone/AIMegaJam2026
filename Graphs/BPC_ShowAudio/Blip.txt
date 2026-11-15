@@ -1,0 +1,4 @@
+; T20: a short blip when a line plays, at each provider's own pitch. My own lines use 1.0.
+(fn Blip (Name IsMe)
+  (bind _p (select (Utilities|String|StartsWith Name "Open") 1.15 (select (Utilities|String|StartsWith Name "Anth") 0.85 (select (Utilities|String|StartsWith Name "Space") 1.3 (select (Utilities|String|StartsWith Name "Meta") 0.7 1.0)))))
+  (CallFunction|Sfx :Key "blip" :Pitch (select IsMe 1.0 _p)))
