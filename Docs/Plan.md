@@ -222,6 +222,13 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Docs/BackdropArt/` and `Docs/BackdropArt.md`, `Docs/Assets.md`, new `Content/NHOS/Stage/Backdrops/`, `Content/NHOS/Stage/Materials/M_Backdrop.uasset`, `Content/NHOS/Stage/BP_Backdrop.uasset`, `Graphs/BP_Backdrop/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T48.md](tasks/T48.md)
 
+- [ ] **T70 The itch.io page: the description, screenshots, a cover and a gameplay video**
+  - **Model and effort:** Opus 5.5, high. Claude plays shows for the best moments, picks the frames, cuts a captioned video, and rewrites the page text to match the finished game.
+  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T62, T63, T64, T65, T66, T38, T34, T60, T61, T45, T47, T48. A task that is cut comes off this line.
+  - **Needs:** a packaged build (T22's command) or the game window at 1920 × 1080, Play via Relay for the recorded shows and my OK for their cost (about $0.11 a show, two or three shows), ffmpeg to record and cut (not on the PC yet: my OK before Claude installs it with winget), my OK on the page text. No editor change.
+  - **Touches:** `Docs/ItchPage.md`, `Docs/Submission.md` (the shot list and "Left to do"), new `Docs/ItchMedia/` (`cover.png`, `screenshots/`, `gameplay.mp4` and `description.html`), `Docs/tasks/T70.md`.
+  - **Details:** [Docs/tasks/T70.md](tasks/T70.md)
+
 ### Done
 
 - [x] **T01 Spike: one Claude call from Blueprint, in PIE**
