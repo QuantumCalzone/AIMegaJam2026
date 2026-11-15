@@ -209,6 +209,34 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/Data/prompts.json` (`input`, `asks.input`, maybe the reply schema), `Content/NHOS/Data/llm.json` (only if the input ask gets its own schema), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` or `Content/NHOS/Core/BPC_LLMClient.uasset` (where the input reply is read), `Content/NHOS/UI/WBP_ActionBuilder.uasset` (the blocked clicks), the design doc, `Graphs/` files for the graphs it writes, `Docs/tasks/T69.md`.
   - **Details:** [Docs/tasks/T69.md](tasks/T69.md)
 
+- [ ] **T75 Each robot can show an emotion: its face and a gesture**
+  - **Model and effort:** Opus 5.5, high. A new data file and a new function on the robot with a dozen face and body poses, judged from screenshots.
+  - **Depends on:** T46 (the face: LED eyes, brows and the mouth bar), T19 (the robot's act clock: `TickActs`, `Shake`, `Cheer`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows. It touches neither `BP_Show` nor `WBP_Stage`.
+  - **Touches:** new `Content/NHOS/Data/emotes.json`, `Content/NHOS/Stage/BP_Robot.uasset` (new `Emote`, `TickActs`, the face and new brow components), `Docs/switches.example.json` (`emote_test`), `Tools/check_prompts.py`, `Graphs/BP_Robot/` files for the graphs it writes, `Docs/tasks/T75.md`.
+  - **Details:** [Docs/tasks/T75.md](tasks/T75.md)
+
+- [ ] **T76 The bots send an emotion with every reply**
+  - **Model and effort:** Opus 5.5, high. A new field in the one reply shape across four providers' strict schemas, the prompt line that asks for it, free mode in the relay and the checker.
+  - **Depends on:** T75 (the ids in `emotes.json`), T69 (the reply shape, the prompts, `free_mode.json` and the relay as T58 to T69 leave them)
+  - **Needs:** no editor. My OK on the design doc edits (Rules and Bot Prompts tabs), my OK before the relay is deployed again (its free mode fills the new field), my OK for a paid check run on the four providers.
+  - **Touches:** `Content/NHOS/Data/llm.json` (`reply_schema`, `_readme`), `Content/NHOS/Data/prompts.json` (`base`, `_readme`), `Content/NHOS/Data/free_mode.json` (`emotions` per phase, `_readme`), `Relay/src/index.js`, `Relay/test/curl-tests.sh`, `Relay/README.md`, `Tools/check_prompts.py`, the design doc, `Docs/tasks/T76.md`.
+  - **Details:** [Docs/tasks/T76.md](tasks/T76.md)
+
+- [ ] **T77 Each robot shows its emotion as its line plays, mine too**
+  - **Model and effort:** Opus 5.5, high. The emotion rides with each line to its robot, the shared log names each face, and the input LLM picks mine.
+  - **Depends on:** T75 (`Emote`), T76 (the reply's `emotion` and free mode's lists), T63 (my turn's path and the input LLM's call), T73 (`PlayCur` as the typing lines leave it), T69 (the input ask as it leaves it, and the lock on `BP_Show`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay for a `--relay --free` check, my OK on the Bot Prompts edit, my OK before the relay is deployed again (the keyword table), my OK for a paid `--ask input` run (a few cents).
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset` (`HandleReply`, `ActorLine`, `StageLine`, the log entry, my sends), `Content/NHOS/Core/BPC_LLMClient.uasset` (`FreeReply`), `Content/NHOS/Core/BPC_LinePlayer.uasset` (`PlayCur`, if the call goes there), `Content/NHOS/Data/prompts.json` (`game`, `input`, `asks.input`, `_readme`), `Content/NHOS/Data/free_mode.json` (the keyword table), `Relay/src/index.js`, `Tools/check_prompts.py`, the design doc, `Graphs/` files for the graphs it writes, `Docs/tasks/T77.md`.
+  - **Details:** [Docs/tasks/T77.md](tasks/T77.md)
+
+- [ ] **T78 I can pick my robot's emotion**
+  - **Model and effort:** Opus 5.5, high. A new chip and list in the action builder, in every phase where I speak, that overrides the automatic pick.
+  - **Depends on:** T77 (my emotion's path), T64 (the action builder and the preview line), T65 (the speech field and its focus rules), T66 (the timer and the input row in each phase)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
+  - **Touches:** `Content/NHOS/UI/WBP_ActionBuilder.uasset` (the emotion chip and its list), `Content/NHOS/UI/WBP_Stage.uasset` (the input row per phase, the preview line), `Content/NHOS/Core/BP_Show.uasset` (my sends carry the pick), `Graphs/` files for the graphs it writes, `Docs/tasks/T78.md`.
+  - **Details:** [Docs/tasks/T78.md](tasks/T78.md)
+
 - [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click (optional)**
   - **Model and effort:** Opus 5.5, high. A new widget placed over moving robots, timed by the line queue, and a new hidden state for the chat.
   - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style), T73 (a line types out with its voice, so the bubble types out the same way)
@@ -218,7 +246,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
-  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes), and T64, T65, T66 (the action builder, the preview line, the speech field and the timer are in the input row it polishes), and T73 (the lines type out on the screen it polishes).
+  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes), and T64, T65, T66, T78 (the action builder, the preview line, the speech field, the timer and the emotion chip are in the input row it polishes), and T73 (the lines type out on the screen it polishes).
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_SpeechBubble.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
@@ -262,7 +290,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T70 The itch.io page: the description, screenshots, a cover and a gameplay video**
   - **Model and effort:** Opus 5.5, high. Claude plays shows for the best moments, picks the frames, cuts a captioned video, and rewrites the page text to match the finished game.
-  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T71, T72, T62, T63, T64, T65, T66, T73, T67, T68, T69, T38, T34, T60, T61, T45, T47, T48, T74. A task that is cut comes off this line, and every new task goes on it (T70 stays last; see "Changing the plan").
+  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T71, T72, T62, T63, T64, T65, T66, T73, T67, T68, T69, T75, T76, T77, T78, T38, T34, T60, T61, T45, T47, T48, T74. A task that is cut comes off this line, and every new task goes on it (T70 stays last; see "Changing the plan").
   - **Needs:** a packaged build (T22's command) or the game window at 1920 × 1080, Play via Relay for the recorded shows and my OK for their cost (about $0.11 a show, two or three shows), ffmpeg to record and cut (not on the PC yet: my OK before Claude installs it with winget), my OK on the page text. No editor change.
   - **Touches:** `Docs/ItchPage.md`, `Docs/Submission.md` (the shot list and "Left to do"), new `Docs/ItchMedia/` (`cover.png`, `screenshots/`, `gameplay.mp4` and `description.html`), `Docs/tasks/T70.md`.
   - **Details:** [Docs/tasks/T70.md](tasks/T70.md)
