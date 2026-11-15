@@ -3,15 +3,107 @@
 	"max_body_bytes": 65536,
 	"upstream_timeout_ms": 90000,
 	"limits": {
-		"_readme": "A show is about 55 calls of 1,300 to 5,400 input tokens each (Findings in Docs/tasks/T07.md and T08.md). The day is the UTC day. session_calls is per session id per day, ip_daily_calls per player address per day, daily_calls for everyone together.",
+		"_readme": "A show is about 55 calls of 1,300 to 5,400 input tokens each (Findings in Docs/tasks/T07.md and T08.md). The day is the UTC day. session_calls is per session id per day, ip_daily_calls per player address per day, daily_calls for everyone together. ip_daily_events is analytics events (POST /event) per player address per day, counted apart from calls, with \"test\" events counted apart from real ones; override it with the var IP_DAILY_EVENTS.",
 		"session_calls": 150,
 		"ip_daily_calls": 600,
 		"daily_calls": 5000,
+		"ip_daily_events": 500,
 		"free": {
 			"_readme": "Free mode (\"free\": true) counts calls apart from real calls, so tests never use up the real budget. No tokens are counted.",
 			"session_calls": 150,
 			"ip_daily_calls": 20000,
 			"daily_calls": 50000
+		}
+	},
+	"events": {
+		"_readme": "Analytics events (POST /event, see Relay/README.md). Each event lists the only fields it may carry; a field is optional, and an unknown event, an extra field, a wrong type, a number out of range or a string over its max length is a bad_request. Types: string (max = length), int (min, max), bool. Never add a field that holds typed text, keys or an address.",
+		"max_body_bytes": 2048,
+		"allowed": {
+			"launch": {
+				"launches": {
+					"type": "int",
+					"min": 1,
+					"max": 1000000
+				},
+				"first_seen": {
+					"type": "string",
+					"max": 10
+				}
+			},
+			"mode": {},
+			"show_start": {},
+			"phase": {
+				"phase": {
+					"type": "string",
+					"max": 40
+				},
+				"scene": {
+					"type": "int",
+					"min": 0,
+					"max": 99
+				}
+			},
+			"show_end": {
+				"result": {
+					"type": "string",
+					"max": 20
+				},
+				"reason": {
+					"type": "string",
+					"max": 40
+				}
+			},
+			"calls": {
+				"provider": {
+					"type": "string",
+					"max": 20
+				},
+				"model": {
+					"type": "string",
+					"max": 60
+				},
+				"calls": {
+					"type": "int",
+					"min": 0,
+					"max": 100000
+				},
+				"failed": {
+					"type": "int",
+					"min": 0,
+					"max": 100000
+				},
+				"tokens_in": {
+					"type": "int",
+					"min": 0,
+					"max": 100000000
+				},
+				"tokens_out": {
+					"type": "int",
+					"min": 0,
+					"max": 100000000
+				}
+			},
+			"error": {
+				"kind": {
+					"type": "string",
+					"max": 40
+				}
+			},
+			"unsupported": {
+				"words": {
+					"type": "string",
+					"max": 80
+				},
+				"source": {
+					"type": "string",
+					"max": 10
+				},
+				"phase": {
+					"type": "string",
+					"max": 40
+				}
+			},
+			"analytics_off": {}
 		}
 	},
 	"providers": {

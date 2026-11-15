@@ -208,6 +208,7 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** no editor. My OK before the relay is deployed again (every push deploys it). A new `STATS_KEY` secret or a read-only Cloudflare API token for the report, which I set.
   - **Touches:** `Relay/src/index.js`, `Relay/relay.config.json` (`events`, `limits.ip_daily_events`), `Relay/wrangler.toml` (the store's binding), `Relay/test/curl-tests.sh`, `Relay/README.md`, new `Tools/analytics_report.py`, new `Docs/stats.example.json`, `Docs/tasks/T67.md`.
   - **Details:** [Docs/tasks/T67.md](tasks/T67.md)
+  - **Waiting:** built and tested on the Mac against a local relay (49 of 49 curl tests); the deploy waits for my OK, then the checks run against the live relay. Left: my OK to push (it deploys the relay), the `STATS_KEY` secret in the Worker, and for the event-limit test the var `IP_DAILY_EVENTS` = `3` for the run.
 
 - [ ] **T68 Analytics, part 2: the game sends its events**
   - **Model and effort:** Opus 5.5, high. A new component and SaveGame, one call each in three Blueprints, per-provider call counts and an opt-out on the title screen.
