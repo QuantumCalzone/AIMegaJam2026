@@ -1,6 +1,6 @@
 # Plan: No Humans On Set
 
-The living plan for our jam game: the tasks in priority order, how to run one and how to add one. The design is in [GameDesign.md](GameDesign.md). Say **"Next task"** to build the next step.
+The living plan for our jam game: the tasks in priority order, how to run one and how to add one. The design is a private Claude Doc, linked from [GameDesign.md](GameDesign.md). Say **"Next task"** to build the next step.
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
@@ -92,7 +92,7 @@ These hold for every task, and for editor work outside the task list too. If one
 - **Prompts are files, not Blueprint strings.** The opening game prompt, the base prompt, the personas, the input LLM prompt and the scene cards live in `Content/NHOS/Data/`, so they diff in git. Store long text as an array of lines.
 - **One provider.** All calls go to the Claude Messages API. The model, effort and token limit for each role (actor, input LLM, Director) are values in `Content/NHOS/Data/llm.json`. T01 and T02 ran `claude-opus-5-5` at low effort. Since 2026-11-13 every role runs `claude-haiku-5-5` at low effort, the cheapest model at its lowest level. Haiku 5.5 has no server-side fallback, so `beta` and `fallbacks` in `llm.json` are empty; a refusal comes back as `stop_reason: "refusal"`.
 - **One provider per persona, from T16 and T18 on.** Each persona runs on its own provider, as in the design's table, with a key per provider (no router). T16 sets up the prompts and the keys; T18 makes the game call them. Since 2026-11-14 each bot goes by its provider's name on screen, in the log and in the cast list the AIs read (OpenAI, Anthropic, SpaceXAI, Meta: the `name` fields in `personas.json`), not by a persona name such as "The Worrier". Persona ids (`worrier`) stay as they are in files and `NHOS:` lines. Real people's names and product names stay out of prompts and off the screen.
-- **The design doc follows the game.** When a task changes the design (the speech style, the sets, the providers), it shows me the matching edit to the Claude Doc. After my OK, it makes the edit with the Claude Docs connector and refreshes `Docs/GameDesign.md` from the doc. `Tools/check_prompts.py` checks the prompts against `GameDesign.md` word for word, so the refresh comes before the check.
+- **The design doc follows the game.** The Claude Doc is the only source of truth for the design, and the repo keeps no copy of it: [GameDesign.md](GameDesign.md) only links it. When a task changes the design (the speech style, the sets, the providers), it shows me the matching edit to the Claude Doc, and after my OK it makes the edit with the Claude Docs connector. A prompt changes in the doc's Bot Prompts tab first, then word for word in `prompts.json` or `personas.json`. No script checks the two against each other.
 - **Legibility first.** Everything an AI says reads like a normal chat, the way Claude or ChatGPT write: plain sentences, no brackets or tags, no beeps or sound effects, no emoji, no ALL-CAPS words. Each persona's personality comes through what it says, not how it is typed.
 - **Outside and generated assets.** Record every art, audio or font asset in `Docs/Assets.md` when you add it: what it is, where it came from (a Fab link, a site, or the AI tool and prompt) and its license. The submission form needs the list.
 - **One reply shape.** Every ask (scene turn, Free Talk line, vote, reaction, tiebreak) gets back the same small JSON object, with unused fields empty. One parser serves the whole game.
@@ -127,7 +127,7 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Model and effort:** Opus 5.5, high. It adds a pause to the show loop and splits the info card by phase.
   - **Depends on:** T27 (the card's place and size), T19 (the lock on `BP_Show`)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ScenePrep`, the Start button's call, `ShowPrep` if the card's fill changes), `Graphs/` files for the graphs it writes, `Docs/GameDesign.md`, the design doc.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ScenePrep`, the Start button's call, `ShowPrep` if the card's fill changes), `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T28.md](tasks/T28.md)
 
 - [ ] **T29 The chat holds only chat**
@@ -148,7 +148,7 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Model and effort:** Opus 5.5, high. Timing across the show loop, the chat and the stage.
   - **Depends on:** T19 (the stage acts out each line), T29 (only actor lines and the banner are left to pace)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
-  - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, `Docs/GameDesign.md`, the design doc.
+  - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T30.md](tasks/T30.md)
 
 - [ ] **T34 Fix the in-show screen**
@@ -183,7 +183,7 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
   - **Depends on:** T27 (the input row), T30 (the lock on `WBP_Stage`)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (the input box's keys and the suggestion row), maybe `Content/NHOS/Core/BP_Show.uasset` (to hand the names, places and props to the widget), `Graphs/` files for the graphs it writes, `Docs/GameDesign.md`, the design doc.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (the input box's keys and the suggestion row), maybe `Content/NHOS/Core/BP_Show.uasset` (to hand the names, places and props to the widget), `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T31.md](tasks/T31.md)
 
 - [ ] **T23 Submission**
@@ -199,13 +199,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** editor + Unreal MCP running, my API key.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Data/scenes.json`.
   - **Details:** [Docs/tasks/T24.md](tasks/T24.md)
-
-- [ ] **T25 The design docs point to the Claude Doc**
-  - **Model and effort:** Haiku 5.5, low. Docs and one small script edit.
-  - **Depends on:** T23, the last task (T24 is done or cut by then). It changes nothing in the build, so it can run after the submission.
-  - **Needs:** the Claude Docs connector on my account, to read the doc. No editor, no API key.
-  - **Touches:** `Docs/GameDesign.md`, `Tools/check_prompts.py`, the `_readme` fields in `Content/NHOS/Data/`, `CLAUDE.md`, `README.md`, `Docs/Plan.md`.
-  - **Details:** [Docs/tasks/T25.md](tasks/T25.md)
 
 ### Done
 
@@ -251,6 +244,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T19.md](tasks/T19.md)
 - [x] **T27 The screen floats over the stage**
   - **Details:** [Docs/tasks/T27.md](tasks/T27.md)
+- [x] **T25 The design docs point to the Claude Doc**
+  - **Details:** [Docs/tasks/T25.md](tasks/T25.md)
 
 ## Not planned yet
 
