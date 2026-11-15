@@ -59,6 +59,11 @@ lines, no case is unknown, a line uses only the placeholders its case gets
 ({lab}, {n}, {type}), and no line has a persona name, a lab's name written out
 (that comes from {lab}) or a banned name.
 
+Rivals (T56): every persona has a 'rival', the id of another persona, and the
+pairs are mutual. Its prompt ends with its rival line ('Your rival: ...'), which
+describes the rival by its traits and holds no persona id, provider name, pun
+name from the design doc (PUN_NAMES) or Player name.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -262,6 +267,10 @@ ERROR_PLACEHOLDERS = {"lab", "n", "type"}
 # Persona names the bots once had or could be called by. The persona ids in personas.json are
 # added to these. The bots go by their provider's name only, which a line gets from {lab}.
 OLD_PERSONA_NAMES = ["overseer"]
+# The design doc's pun names for the personas. They are for the doc only: no prompt, no rival
+# line and no screen may use them.
+PUN_NAMES = ["Sam Botman", "Botman", "Dario Amobotei", "Amobotei", "Elon Muskatron", "Muskatron",
+             "Mark Zuckerbot", "Zuckerbot"]
 
 
 def error_line_problems(data, plist) -> list[str]:
@@ -369,6 +378,23 @@ def check_files(errors: list[str]):
     used = [p.get("provider") for p in plist]
     if len(set(used)) != len(used):
         errors.append("personas.json: two personas share a provider (each persona runs on its own)")
+    # Rivals (T56): each persona's 'rival' is another persona, the pairs are mutual, and the
+    # prompt's last line describes the rival by its traits, never by a name the AIs could match.
+    by_id = {p.get("id"): p for p in plist}
+    rival_names = [p.get("id") for p in plist] + [p.get("name") for p in plist] + OLD_PERSONA_NAMES + PUN_NAMES
+    for p in plist:
+        pid, rid = p.get("id"), p.get("rival")
+        if rid not in by_id or rid == pid:
+            errors.append(f"personas.json: {pid}'s rival {rid!r} must be another persona's id")
+        elif by_id[rid].get("rival") != pid:
+            errors.append(f"personas.json: {pid}'s rival is {rid}, but {rid}'s rival is not {pid}")
+        line = p["prompt"][-1] if is_lines(p.get("prompt")) and p["prompt"] else ""
+        if not line.startswith("Your rival: "):
+            errors.append(f"personas.json: {pid}'s prompt must end with its rival line ('Your rival: ...')")
+        for n in [n for n in rival_names if n and re.search(r"(?i)\b" + re.escape(n) + r"\b", line)]:
+            errors.append(f"personas.json: {pid}'s rival line names {n!r}; describe the rival by its traits")
+        if re.search(r"(?i)\bplayer\s*\d", line):
+            errors.append(f"personas.json: {pid}'s rival line holds a Player name")
 
     # The relay forwards the game's body unchanged, but only if its allow-list takes it.
     errors.extend(relay_problems(llm, providers))
@@ -415,7 +441,7 @@ def check_files(errors: list[str]):
     # 'provider' is an id for the code (the relay's id, such as "xai"), never shown or sent.
     shown = dict(personas, personas=[{k: v for k, v in p.items() if k != "provider"} for p in plist])
     texts = json.dumps([prompts, shown, scenes], ensure_ascii=False)
-    for word in BANNED:
+    for word in BANNED + PUN_NAMES:
         if re.search(r"\b" + re.escape(word) + r"\b", texts, re.I):
             errors.append(f"banned name in the prompt files: {word!r}")
 

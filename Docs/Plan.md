@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is done: later UI tasks style their widgets with `UIStyle` (see `Docs/tasks/T32.md`). T30 (the lines play one at a time, Opus 5.5 · xhigh) is the next editor task, then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name). T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done. T40 (the headpieces) is done. T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but both write `Docs/PropArt/manifest.json`, so run them one at a time. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) needs no editor and is free now. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 come after T33.
+**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is done: later UI tasks style their widgets with `UIStyle` (see `Docs/tasks/T32.md`). T30 (the lines play one at a time, Opus 5.5 · xhigh) is the next editor task, then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name). T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done. T40 (the headpieces) is done. T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but both write `Docs/PropArt/manifest.json`, so run them one at a time. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) is done: each persona's prompt ends with its rival line, and `personas.json` has a `rival` field for T60. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 come after T33.
 
 ## Goal
 
@@ -136,13 +136,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T30.md](tasks/T30.md)
-
-- [ ] **T56 The bots want to survive, and each has a rival**
-  - **Model and effort:** Opus 5.5, high. Prompt design: two new goals that must not pull the bots away from finding the human.
-  - **Depends on:** T16, T26 (both done: the persona prompts and the Player names). No open task.
-  - **Needs:** the relay for a `--relay --free` check (no tokens). No editor, so it can run beside the editor lane. It changes `prompts.json`, as T51, T50, T59, T52, T54, T55, T57 and T58 do, so commit those changes one at a time.
-  - **Touches:** `Content/NHOS/Data/personas.json`, `Content/NHOS/Data/prompts.json` (`game`), `Tools/check_prompts.py`, `Docs/tasks/T56.md`.
-  - **Details:** [Docs/tasks/T56.md](tasks/T56.md)
 
 - [ ] **T51 No decoy note, and every note gets a category**
   - **Model and effort:** Opus 5.5, high. The notes' data, the deal in `BP_Show`, two prompts and the checker change together.
@@ -386,6 +379,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T32.md](tasks/T32.md)
 - [x] **T40 Generate the 13 headpieces**
   - **Details:** [Docs/tasks/T40.md](tasks/T40.md)
+- [x] **T56 The bots want to survive, and each has a rival**
+  - **Details:** [Docs/tasks/T56.md](tasks/T56.md)
 
 ## Not planned yet
 
