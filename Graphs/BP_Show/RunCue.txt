@@ -1,9 +1,10 @@
 ; T30: a cued screen change, run by BPC_LinePlayer when its turn in the queue comes.
 ; T20: the cues also carry the sound: the show music under every header, the drum roll with the vote row,
 ; the stinger and the crowd at the cut, the applause or laughs at the end screen.
+; T71: each header asks BPC_ShowAudio for its phase's music (PlayPhase); OpenPrep starts the card's loop.
 (fn RunCue (Kind Text Num)
   (if (streq Kind "phase")
-    (Class|BPCShowAudio|PlayMusic :self (V Audio) :Key "show")
+    (Class|BPCShowAudio|PlayPhase :self (V Audio) :Text Text :CardId (V CardId))
     (Class|WBPStage|SetPhase :self (Variables|Default|GetStage) :Phase Text)
     (return))
   (if (streq Kind "banner")
@@ -21,8 +22,10 @@
     (CallFunction|CutActor :Seat Num)
     (return))
   ; T52: a tie cuts nobody. The drum roll stops with no stinger, the audience laughs, and the reactions start.
+  ; T71: the Cut loop stops with the drum.
   (if (streq Kind "tie")
     (Class|BPCShowAudio|StopDrum :self (V Audio))
+    (Class|BPCShowAudio|StopMusic :self (V Audio))
     (Class|BPCShowAudio|Sfx :self (V Audio) :Key "laughs" :Pitch 1.0)
     (CallFunction|EndCut)
     (return))
@@ -34,8 +37,8 @@
   (if (streq Kind "unpass")
     (CallFunction|MarkPass :Seat Num :On false)
     (return))
+  ; T71: the card's loop starts in OpenPrep, at the end of ScenePrep.
   (if (streq Kind "prep")
-    (Class|BPCShowAudio|PlayMusic :self (V Audio) :Key "show")
     (CallFunction|ScenePrep)
     (return))
   (if (streq Kind "end")

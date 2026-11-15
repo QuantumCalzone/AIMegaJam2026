@@ -1,11 +1,10 @@
+; After this source is written, T71 step 6 adds the Audio Component's FadeIn (1.0 s, to 1.0) after Set Music, self from Set Music's output,
+; by create_node (declaring_class /Script/Engine.AudioComponent; see Docs/tasks/T71-build.md part 6). A rewrite from this file must redo the splice.
+; T20: one music loop at a time. T71: each key has its own loop (TrackFor); a key with no track gets the show loop.
 (fn SwapMusic (Key)
-  (if (not (Utilities|String|IsEmpty (V MusicKey)))
-    (Audio|Components|Audio|StopDelayed :self (V Music) :DelayTime 0.0))
+  (CallFunction|StopMusic)
   (set MusicKey Key)
   (print (cat "NHOS: SOUND music " Key))
-  (if (streq Key "title")
-    (bind _t (Audio|SpawnSound2D :Sound "/Game/NHOS/Audio/Music/S_MusicTitle.S_MusicTitle"))
-    (set Music _t)
-    (return))
-  (bind _s (Audio|SpawnSound2D :Sound "/Game/NHOS/Audio/Music/S_MusicShow.S_MusicShow"))
-  (set Music _s))
+  (bind _snd (CallFunction|TrackFor :Key Key))
+  (bind _m (Audio|SpawnSound2D :Sound _snd))
+  (set Music _m))

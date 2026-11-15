@@ -1,0 +1,4 @@
+; T71: the end screen's loop. If other music started first (Play Again within 3 s), it stays out of the way.
+(fn EndMusic ()
+  (if (Utilities|String|IsEmpty (V MusicKey))
+    (CallFunction|PlayMusic :Key (select (V EndWin) "win" "lose"))))

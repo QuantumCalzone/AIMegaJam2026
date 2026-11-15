@@ -1,0 +1,9 @@
+; T71: the one call RunCue's "phase" cue makes. The card id comes from BP_Show's CardId, which only
+; changes inside ScenePrep, and ScenePrep runs at its own cue's turn (T30), so it is never ahead of the queue.
+(fn PlayPhase (Text CardId)
+  (bind _k (CallFunction|PhaseKey :Text Text))
+  (if (streq _k "card")
+    (CallFunction|PlayMusic :Key CardId)
+    (return))
+  (if (not (Utilities|String|IsEmpty _k))
+    (CallFunction|PlayMusic :Key _k)))

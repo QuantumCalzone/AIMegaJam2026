@@ -1,0 +1,7 @@
+; After this source is written, T71 step 6 replaces StopDelayed with the Audio Component's FadeOut (1.0 s, to 0.0) by create_node
+; (declaring_class /Script/Engine.AudioComponent; see Docs/tasks/T71-build.md part 6). A rewrite from this file must redo the splice.
+; T71: stops the loop that plays and forgets its key, so the next PlayMusic always starts a loop.
+(fn StopMusic ()
+  (if (not (Utilities|String|IsEmpty (V MusicKey)))
+    (Audio|Components|Audio|StopDelayed :self (V Music) :DelayTime 0.0))
+  (set MusicKey ""))

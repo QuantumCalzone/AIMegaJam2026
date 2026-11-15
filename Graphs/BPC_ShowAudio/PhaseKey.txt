@@ -1,0 +1,14 @@
+; T71: the music key for the header a "phase" cue carries (BP_Show.CueHeader).
+; "card" means the card in play. "" means no track of its own: the loop that plays goes on.
+; Headers: "SCENE PREP: SCENE n", "THE SCENE: SCENE n, ...", "FREE TALK: SCENE n...",
+; "...FREE TALK IS OVER", "THE CUT: ...", "REACTIONS: SCENE n", "THE SHOW IS OVER". T58 adds "LAST WORD: SCENE n".
+(fn PhaseKey (Text)
+  (if (Utilities|String|StartsWith :SourceString Text :InPrefix "SCENE PREP")
+    (return "card"))
+  (if (Utilities|String|StartsWith :SourceString Text :InPrefix "THE SCENE")
+    (return "card"))
+  (if (Utilities|String|StartsWith :SourceString Text :InPrefix "FREE TALK")
+    (return "free_talk"))
+  (if (Utilities|String|StartsWith :SourceString Text :InPrefix "THE CUT")
+    (return "cut"))
+  (return ""))

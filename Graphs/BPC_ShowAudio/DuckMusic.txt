@@ -1,0 +1,6 @@
+; After this source is written, T71 step 6 adds the Audio Component's AdjustVolume (1.0 s, to 0.4) after the print, self from a Get Music node,
+; by create_node (declaring_class /Script/Engine.AudioComponent; see Docs/tasks/T71-build.md part 6). A rewrite from this file must redo the splice.
+; T71: the Cut loop drops to 40% under the drum roll; Reveal and the tie stop it.
+(fn DuckMusic ()
+  (if (streq (V MusicKey) "cut")
+    (print "NHOS: SOUND duck")))

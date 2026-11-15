@@ -1,7 +1,9 @@
 ; T20: the drum roll under the vote. StopDrum fades it at the reveal.
 ; The vote row's cue can come twice in a scene, so a drum already playing stops first.
+; T71: the Cut loop drops low under the drum (DuckMusic).
 (fn StartDrum ()
   (CallFunction|StopDrum)
+  (CallFunction|DuckMusic)
   (print "NHOS: SOUND drum")
   (bind _d (Audio|SpawnSound2D :Sound "/Game/NHOS/Audio/Show/S_DrumRoll.S_DrumRoll"))
   (set Drum _d))

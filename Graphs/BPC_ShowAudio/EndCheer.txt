@@ -1,6 +1,7 @@
 ; T20: the end screen: the music stops; a win gets the long applause, a loss the laughs.
+; T71: 3 s in, the win or lose loop starts (EndMusic).
 (fn EndCheer (Win)
-  (if (not (Utilities|String|IsEmpty (V MusicKey)))
-    (Audio|Components|Audio|StopDelayed :self (V Music) :DelayTime 0.0))
-  (set MusicKey "")
-  (CallFunction|Sfx :Key (select Win "applause_win" "laughs") :Pitch 1.0))
+  (CallFunction|StopMusic)
+  (set EndWin Win)
+  (CallFunction|Sfx :Key (select Win "applause_win" "laughs") :Pitch 1.0)
+  (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "EndMusic" :Time 3.0 :bLooping false))

@@ -124,6 +124,24 @@ Credit lines for the CC BY files:
 - "Applaudissements" by Thomas Bresson, CC BY 4.0, via Wikimedia Commons.
 - "approx 800 laughter and clapter 1" by lonemonk, CC BY 3.0, via Wikimedia Commons.
 
+### Music for each place and each scene (T71)
+
+Imported in T71 (2026-11-15) from `SourceAssets/Audio/music/` (see `Docs/tasks/T71-build.md`) into `Content/NHOS/Audio/Music/`. No AI audio tools were used. Kenney's packs are CC0, so no credit is needed; optional credit: "Kenney (www.kenney.nl)". `S_MusicTitle` stays on the title, and `S_MusicShow` now plays only for a card with no loop of its own.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Content/NHOS/Audio/Music/S_MusicSpacePlans` | Music loop for the `space_plans` card (24 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Space Cadet.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicMineBridge` | Music loop for the `mine_bridge` card (12 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Infinite Descent.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicDinoIsland` | Music loop for the `dino_island` card (15 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Drumming Sticks.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicFavorFather` | Music loop for the `favor_father` card (30 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Italian Mom.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicGlowingBriefcase` | Music loop for the `glowing_briefcase` card (12 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Cheerful Annoyance.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicLeagueNight` | Music loop for the `league_night` card (15 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Alpha Dance.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicPickAPill` | Music loop for the `pick_a_pill` card (48 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Retro/Retro Mystic.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicFreeTalk` | Music loop under Free Talk (32 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Mishief Stroll.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicCut` | Music loop under The Cut, low under the drum roll (11 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Mission Plausible.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicWin` | Music loop on the end screen after a win (16 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Polka Train.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicLose` | Music loop on the end screen after a loss (10 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Game Over.ogg` | CC0 1.0 |
+
 ### Voices (T72)
 
 Made in T72 (2026-11-15). Each speaker's set of short gibberish syllables, played one per syllable by `BPC_ShowAudio.Syllable` (T73 calls it as a line types out). The four robot sets are made by our own script, with no outside audio and no AI audio tool. My own set is my own recording. All are 44.1 kHz, 16-bit mono, on `SC_Voice` at wave volume 0.6 (0.3 effective, the same as the talk blip), and set to the talk blip's loudness. The source wavs are in `SourceAssets/Audio/voices/<set>/`.
