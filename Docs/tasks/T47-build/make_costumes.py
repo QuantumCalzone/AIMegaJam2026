@@ -4,8 +4,8 @@
 
 Writes, next to this script:
   costumes.json      the draft of Content/NHOS/Data/costumes.json: each headpiece's mesh and its
-                     fit on the robot's head, computed from Docs/PropArt/manifest.json (fit.bounds_cm)
-                     and T46's head (a 70 cm pill whose dome tops out at z 158 in Rig).
+                     fit on the robot's HeadSocket, computed from Docs/PropArt/manifest.json
+                     (fit.bounds_cm) and T79's shared round head (see HEAD below).
   scenes_seats.json  every card's seats with the headpiece and color T47 adds, in scenes.json order.
 It then checks the roles in a scenes.json (default Content/NHOS/Data/scenes.json) against SEATS.
 With a second path it writes that scenes.json with headpiece and color added to every seat and one
@@ -25,35 +25,49 @@ ROOT = HERE.parents[2]
 scenes_path = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "Content/NHOS/Data/scenes.json"
 out_scenes = pathlib.Path(sys.argv[2]) if len(sys.argv) > 2 else None
 
-# T46's head, in Rig space (cm): the top cap is a sphere of radius 35 centered at z 123,
-# so the dome tops out at z 158. The face (the screen) is at +X; the back slot is at X -38.
-# The antenna stalk (Nub) runs from z 156 to 180 and the toppers sit above it.
-DOME_TOP = 158.0
-STALK_BASE = 156.0
+# T79's shared round head (OpenAI, Anthropic, SpaceXAI), in Rig space (cm), from T79-build.md part 2:
+# an ellipsoid with radii 33 (deep, x), 35 (wide, y), 31 (tall, z) around z 127, so it runs from z 96
+# to 158. HeadSocket sits on its top, at (0, 0, 158), scale 1. The screen (Visor) shows from about
+# z 118 to 147 at the middle; the eyes' centers are at z 135 (12 cm tall, so z 129 to 141), the brows
+# at z 144 to 145, the mouth at z 123 (it stretches to 118.5 to 127.5). The ear pods stand out to
+# y +-38 at z 118 to 138. Anthropic's glasses stand out to x 35.8 and the eyes to x 38. The antenna
+# stalk (Nub) runs from z 156 to 180, as on T46.
+# Rule for every piece but the shades: nothing covers the eyes (front edge above z 141) or the mouth;
+# a wig's bangs may cover the brows (Docs/BotArt.md: "the mouth always shows").
+HEAD_TOP = 158.0
+EYE_FRONT_X = 40.0  # the shades' front: in front of Anthropic's glasses (x 35.8) and the eyes (x 38)
 
-# The fit of each headpiece, set by hand from the manifest's bounds (the models' shapes were not
-# looked at from below; see T43's "underside"). width_cm is the model's width across the face
-# (raw X, since every Meshy model faces raw +Y); bottom_z is where its lowest point sits in Rig;
-# x moves it toward the face (+) or the back (-). lift: how far the stalk and toppers rise so they
-# poke out of the top (0 for pieces that leave the dome's top open).
+# The fit of each headpiece, set by hand from the manifest's bounds (the shapes inside the boxes
+# were not seen). width: the model's width across the face in cm (raw X, since every Meshy model faces
+# raw +Y); bottom: where its lowest point sits, in Rig z on the round head (it is written out relative
+# to HeadSocket); x: toward the face (+) or the back (-); y: to the robot's left (+) or right (-);
+# lifts: whether the stalk and the toppers rise so they poke out of its top. look: why a close-up must
+# check it first (T47-build.md part 5c); None if the numbers follow plainly from the head.
 FIT = {
-    #                  width  bottom   x     lift?
-    "hood":            (98,   98.0,  -6.0,  True),   # baggy; its opening faces the house, rim below the screen's top corners
-    "dark_shades":     (74,  102.0,  None,  False),  # on the eyes (eye line about z 116: check EyeL); front at x 36
-    "top_hat":         (72,  150.0,   0.0,  True),
-    "bob_wig":         (84,   92.0,  -4.0,  True),   # open underside (T43); the fringe may reach the screen's top
-    "ball_cap":        (74,  135.0,  20.0,  True),   # the bill reaches forward over the screen
-    "wide_brim_hat":   (90,  150.0,   0.0,  True),
-    "saucepan_helmet": (126, 128.0,   0.0,  True),   # width includes the handle (raw X 190 vs pot 115)
-    "wizard_hat":      (80,  150.0,   0.0,  True),
-    "tiara":           (64,  140.0,   0.0,  False),  # a circlet around the dome; the stalk shows through its middle
-    "fedora":          (80,  150.0,   0.0,  True),
-    "horned_helmet_beard": (85, 68.0, 4.0,  True),   # the beard hangs over the screen's lower half (T43); check the eyes
-    "dino_hood":       (84,  100.0,  10.0,  True),   # the snout reaches forward over the screen
-    "beanie":          (76,  130.0,   0.0,  True),
+    #                  width  bottom    x     y     lifts  look
+    "top_hat":         (72,  150.0,   0.0,  0.0,  True,  None),  # filled underside: rests on the crown, brim 5 cm over the brows
+    "wide_brim_hat":   (90,  150.0,   0.0,  0.0,  True,  None),
+    "fedora":          (80,  150.0,   0.0,  0.0,  True,  None),
+    "wizard_hat":      (80,  150.0,   0.0,  0.0,  True,  None),
+    "ball_cap":        (74,  143.0,  20.0,  0.0,  True,  "raised 8 cm: on T46's head its bill sat at z 135, which is now the eye line"),
+    "beanie":          (68,  142.0,   0.0,  0.0,  True,  "raised 12 cm off the eyes and narrowed from 76 to 68, so it doesn't stand 74 cm over the head"),
+    "tiara":           (56,  146.0,   0.0,  0.0,  False, "raised 6 cm off the eyes and narrowed to the head's width there (55 cm); a front-only arc would need x about 22"),
+    "saucepan_helmet": (89,  145.0,   0.0, 17.7,  True,  "the pot (54 cm of the 89; the raw pot is 115 of 190.2) rests where the head is 54 cm across, its front rim at z 145; y moves the pot, not the handle, over the head: if the pot sits off to one side, negate y"),
+    "bob_wig":         (84,   92.0,  -4.0,  0.0,  True,  "the fringe should end over the brows (about z 145) and the sides may show the ear pods"),
+    "hood":            (98,   98.0,  -6.0,  0.0,  True,  "the face opening must frame the screen (z 118 to 147)"),
+    "dino_hood":       (84,  100.0,  10.0,  0.0,  True,  "the snout and the open jaw must leave the eyes and the mouth showing"),
+    "horned_helmet_beard": (85, 88.0, 4.0,  0.0,  True,  "raised 20 cm with the face: the helmet's rim above the eyes (z 141), the beard below the mouth (z 118)"),
+    "dark_shades":     (72,  124.0,  None,  0.0,  False, "on the eyes (z 129 to 141) and clear of the mouth (z 124 and down); the temples rest on the ear pods; SpaceXAI's nose comes out under them"),
 }
 FRONT_YAW = 270  # turns a Meshy model (face at raw +Y) to the robot's face at Rig +X
-EYE_FRONT_X = 36.0
+
+# Per-persona overrides, for a head whose HeadSocket alone doesn't make a piece fit (T80's Meta and my
+# box head). Each entry: {persona id: {any of scale, x, y, z, top}}, in HeadSocket space, replacing the
+# headpiece's own value on that robot. Empty until T80's findings or T47's close-ups say otherwise.
+ON = {
+    # "dark_shades": {"copycat": {"z": -20.0}},
+}
+PERSONAS = {"visionary", "worrier", "overclocker", "copycat", "human"}
 
 # Each role's headpiece and color, from the design doc's Stories tab (rev 9) and Art Inspiration
 # Costumes (rev 29). The doc names colors in words; these hex values are this sheet's picks (sRGB).
@@ -111,8 +125,8 @@ SEATS = {
 }
 
 manifest = {a["id"]: a for a in json.loads((ROOT / "Docs/PropArt/manifest.json").read_text())["assets"]}
-heads = {}
-for hid, (width, bottom, x, lifts) in FIT.items():
+heads, looks = {}, {}
+for hid, (width, bottom, x, y, lifts, look) in FIT.items():
     a = manifest[hid]
     assert a["kind"] == "headpiece", hid
     fit = a["fit"]
@@ -121,27 +135,36 @@ for hid, (width, bottom, x, lifts) in FIT.items():
     bx, by, bz = fit["bounds_cm"]
     s = width / bx
     h, depth = bz * s, by * s
-    if x is None:  # sits on the face: its front at the screen
+    if x is None:  # sits on the face: its front at EYE_FRONT_X
         x = EYE_FRONT_X - depth / 2
     top = bottom + h
     heads[hid] = {
         "mesh": f"{pkg}.{pkg.rsplit('/', 1)[1]}",
         "scale": round(s, 4),
         "x": round(x, 1),
-        "z": round(bottom - fit["min_z"] * s, 1),  # the mesh pivot is its center, so z = bottom + h/2
+        "y": round(y, 1),
+        "z": round(bottom - fit["min_z"] * s - HEAD_TOP, 1),  # the mesh pivot is its center: z = bottom + h/2, from HeadSocket
         "yaw": FRONT_YAW,
-        "lift": round(max(0.0, top - DOME_TOP - 2.0), 1) if lifts else 0.0,
+        "top": round(top - HEAD_TOP, 1) if lifts else 0.0,
         "size_cm": [round(width), round(depth), round(h)],
     }
+    if look:
+        looks[hid] = look
 # The eldest son's cap, backwards: the same model turned round, its bill over the back.
 heads["ball_cap_back"] = dict(heads["ball_cap"], yaw=(FRONT_YAW + 180) % 360, x=-heads["ball_cap"]["x"])
+looks["ball_cap_back"] = looks["ball_cap"]
+for hid, per in ON.items():
+    assert hid in heads and set(per) <= PERSONAS, (hid, per)
+    assert all(set(v) <= {"scale", "x", "y", "z", "top"} for v in per.values()), per
+    heads[hid]["on"] = per
 
 costumes = {
     "_readme": [
         "The headpieces the robots wear (T47). Each seat in scenes.json names one by its id ('headpiece') and gives its color ('color', sRGB hex).",
         "mesh: the static mesh's object path, loaded by BP_Robot.SetHeadpiece as a soft reference. Every headpiece model has MI_Clay_Neutral on its slots, and SetHeadpiece sets its Color.",
-        "scale, x, z, yaw: the Headpiece component's relative transform under the robot's Rig (cm, degrees). The face is +X; yaw 270 turns a model's face to it. z puts the model's lowest point where it sits on the head.",
-        "lift: how far the antenna stalk and the persona's topper rise while the headpiece is on, so they poke out of its top. 0 leaves them where they are.",
+        "scale, x, y, z, yaw: the Hat component's relative transform under the robot's HeadSocket (cm, degrees), sized for the shared round head (T79). The face is +X; yaw 270 turns a model's face to it. T80 placed and scaled Meta's and my box's HeadSocket so the same numbers fit there.",
+        "top: the headpiece's top above HeadSocket, in cm. The antenna stalk, the toppers and the name label rise so they poke out of it. 0 leaves them where they are (the tiara and the shades).",
+        "on: optional, {persona id: {any of scale, x, y, z, top}}, which replaces those numbers on that robot only, for a head the socket alone doesn't fit.",
         "size_cm: width, depth and height on the head, for reading only. ball_cap_back is ball_cap worn backwards (the same model).",
         "The game never sends this file or a seat's headpiece and color to the AIs. Docs/tasks/T47-build/make_costumes.py builds it from Docs/PropArt/manifest.json.",
     ],
@@ -158,6 +181,7 @@ meshes = {heads[h]["mesh"] for h in used}
 print(f"{len(heads)} headpiece ids ({len(meshes)} models in use), {sum(map(len, SEATS.values()))} seats on {len(SEATS)} cards")
 unused = set(FIT) - {h.replace('_back', '') for h in used}
 assert not unused, f"headpieces no seat wears: {unused}"
+print(f"to look at first in the editor: {', '.join(sorted(looks))}")
 
 README_ADD = (" Each seat's 'headpiece' (an id in costumes.json) and 'color' (sRGB hex) dress the robot that plays it (T47);"
               " the game never sends them to the AIs.")
