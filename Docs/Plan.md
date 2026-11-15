@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T26 (five actors), T17 (stage art) and T19 (the robots act out their actions) are built and committed, and each waits for me: its `Waiting:` line says what is left. T20 (audio) waits for T19's box. T27 to T31, the UI fixes from my playtest on 2026-11-14, wait for all three boxes, because those tasks still hold the locks on `WBP_Stage`, `BP_Show` and `L_Stage`. The first task that is free to start is T21 (Opus 5.5 · high): how a judge plays.
+**Next up:** T26 (five actors), T17 (stage art) and T19 (the robots act out their actions) are done: my UI playtest on 2026-11-14 closed them. Their locks are released, so the UI fixes from that playtest can start. The first free task is T27 (Opus 5.5 · xhigh): the screen floats over the stage. T28 to T30 follow it. T20 (audio) and T21 (how a judge plays) are free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -115,50 +115,6 @@ These hold for every task, and for editor work outside the task list too. If one
 "Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. A new task goes wherever it belongs in that order (see "Changing the plan"), so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its block moves to the end of "Done".
 
 ### Open
-
-- [ ] **T26 Five actors: one AI per provider, plus me**
-  - **Model and effort:** Opus 5.5, high. It changes the seat draw, every name the AIs read and every name I see.
-  - **Depends on:** T15 (the same data files and the checker). It holds the lock on `BP_Show`, so it goes before T17.
-  - **Needs:** editor + Unreal MCP running. Free mode for the PIE shows; my API key only for `Tools/check_prompts.py`.
-  - **Why:** in a show on 2026-11-14 my robot was labeled "Anthropic". I sat in one of the four persona seats, and the seats go by provider name, so that provider's AI sat the show out. A label must always be true. But if the AIs read four provider names plus a fifth name, they know at once who the human is. Decided with me: **the AIs read "Player 1" to "Player 5"; my screen shows each AI's provider and "You" for me.**
-  - **Steps:**
-    1. **Seats (`BP_Show.SetupShow`).** Every persona takes an AI seat (up to `MaxCast` − 1), and I take one more seat with no persona, so a full show has 5 actors and 3 scenes. My place in the seat order is random. Each seat has two names: `SeatName`, which the AIs read ("Player 1" to "Player 5", in seat order), and a new `SeatLabel`, which my screen shows (the persona's `name` for an AI seat, "You" for mine). My seat has `SeatId` "human" and no system text.
-    2. **What the AIs read.** `SeatName` is used everywhere an AI or the Director reads a name: the cast, `you`, the log, `options`, votes and `game_messages`. Cast entries lose `about`, because an `about` on four seats of five would point at mine. `prompts.json`: I'm disguised as a robot with no persona; every AI plays a parody of the leader of the lab that made it, and the human has to fake one; name examples use Player names. No provider name ever reaches an actor or the Director.
-    3. **What I see.** Every place a seat name reaches my screen uses `SeatLabel`: chat lines, the cast panel, "YOU ARE" (with "The cast knows you as Player 3"), the vote buttons, the reveal stamp ("OPENAI: AI", "YOU: HUMAN"), the robots' labels and the end screen. AI text (speech, `does`, vote reasons, closing lines, the tiebreak, game lines) goes through a new `DisplayText`, which swaps each AI's Player name for its label and mine for "Player 3 (you)".
-    4. **What I type.** The input converter gets each Player name with the label I know it by, and turns any provider, company or model name I use for an actor ("Meta", "Claude", "open ai") into that Player name, in actions and in speech. Then the game swaps any label still left in the converted speech for its Player name, so no provider name I type reaches the AIs.
-    5. **A fifth seat everywhere.** A fifth robot in `L_Stage` and a fifth `SeatColors` entry; the end screen fits four AI cards. Each card in `scenes.json` gets a fifth seat, and every want must work when any one or two seats are left out (scene 2 deals 4 of 5 seats, scene 3 deals 3). `autoplay.json` covers 3 scenes.
-    6. **The checker.** `Tools/check_prompts.py`: the sample show has 5 Player names, and a check fails if a provider name is in any actor or Director state. The input examples include a line that names a provider.
-    7. Propose the matching edit to the design doc (Rules, "Cast & personas": I have no persona, every persona whose provider has a key takes an AI seat, and the Player names), which also answers the Art tab's open question about The Understudy (see the build notes).
-  - **Done when:** `Tools/check_prompts.py` exits with code 0; a free-mode autoplay show prints `NHOS: SEATS` with 5 seats, `human` at a random Player number, plays up to 3 scenes and reaches `NHOS: SHOW END`; a screenshot shows provider names and "you" on my screen while the `NHOS: LOG` lines (what the AIs read) use only Player names; I play one show.
-  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_Title.uasset` (How to play, line 1), `Content/NHOS/Maps/L_Stage.umap`; `Content/NHOS/Data/prompts.json`, `personas.json`, `scenes.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc. `WBP_EndScreen` needed no change: four cards fit.
-  - **Waiting:** the work is done and committed (see "T26: five actors results" in Findings), and the design doc edit is in (my OK on 2026-11-14). Left: I play one show (the four-button vote row hasn't been clicked by hand yet).
-
-- [ ] **T17 Stage art and personality**
-  - **Model and effort:** Opus 5.5, high. Art direction and level design, plus robot behavior.
-  - **Depends on:** T14 (the screen layout and the lock on `BP_Show`), T15 (the places and backdrops), T26 (the fifth robot)
-  - **Needs:** editor + Unreal MCP running, my API key, my OK on the look from a first screenshot before the details.
-  - **Steps:**
-    1. **An improv theater.** `L_Stage` gets a wooden stage floor, a proscenium with red curtains, footlights and a spotlight rig, a riser and a prop table where T15's places are, and a backdrop flat. Engine shapes and Substrate materials, plus textures from Fab or an AI image tool where they help.
-    2. **A backdrop for each scene card**, made from the card's `backdrop` line. Scene Prep shows the new card's backdrop.
-    3. **A robot look for each persona:** a head shape, an accessory and a color that fit it (for example a halo ring for The Visionary, a lightning antenna for The Overclocker, a warning light for The Worrier, a headset for The Copycat). My robot is The Understudy from the Art tab, with no persona and no logo. Keep the name label and the "(you)" mark.
-    4. **Personality in motion:** an idle bob, a bounce while its line shows, a shake when voted for, a cheer from the AIs when the human is caught, and a slump before a cut robot tips over.
-    5. Record every outside or generated asset in `Docs/Assets.md`.
-  - **Done when:** screenshots show the theater with five distinct robots, a different backdrop in scene 1 and scene 2, and a talking bounce; an autoplay show reaches `NHOS: SHOW END`; I say it has personality.
-  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/` (`BP_Robot`, new meshes, materials, textures and `BP_Backdrop`), `Content/NHOS/Core/BP_Show.uasset`, `Docs/Assets.md`. T17 made no meshes or textures: new `M_Set`, `M_Backdrop`, `Content/NHOS/Stage/Materials/` (41 instances) and `BP_Backdrop`. Its `BP_Show.uasset` also carries the T26 label fix's `SetupShow` and `ShowLine` (see the 19:53 DevLog line).
-  - **Waiting:** the work is done and committed (see "T17: stage art results" in Findings). Left: I watch a show and say it has personality.
-
-- [ ] **T19 Robots act out their actions**
-  - **Model and effort:** Opus 5.5, high. Movement, props and timing on stage, driven by the show loop.
-  - **Depends on:** T17 (the stage and props), T18 (the lock on `BP_Show`)
-  - **Needs:** editor + Unreal MCP running, my API key.
-  - **Steps:**
-    1. A marker for each place, and each prop as an actor on the Prop Table. Props go back to the table at each Scene Prep.
-    2. `BP_Robot` gets `MoveTo(Place)` (it glides or hops there in about a second), `LookAt(Target)` (it turns toward a place or an actor), `Grab(Prop)` (the prop attaches to it), `Throw(Prop, Target)` (an arc that lands near the target) and `Give(Prop, Robot)`.
-    3. When a scene turn plays out, all four robots act at once. Actions in Free Talk and reaction lines play too. An unknown place or prop becomes a look around. Two robots never stand on the same spot.
-    4. Print `NHOS: ACT <id> <verb> <target> <item>` for each action played.
-  - **Done when:** an autoplay show prints `NHOS: ACT` lines and reaches `NHOS: SHOW END`; screenshots show robots at different places and a prop in a robot's hand; I see a throw land.
-  - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset`, new `Content/NHOS/Stage/BP_Prop.uasset` and place markers, `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Core/BP_Show.uasset`. T19 also added `BP_PlaceMark`, `BP_StageDirector`, five `M_Set` instances and `Graphs/BP_Prop/`, `BP_PlaceMark/`, `BP_StageDirector/`, `BP_Robot/`, `BP_Show/ActorLine.txt` and `StagePrep.txt`.
-  - **Waiting:** the work is done, saved and committed (see "T19: robots act out their actions" in Findings; handoff in `Agents/handoffs/`). Left: the free autoplay check (needs `autoplay: true` in `Local/switches.json`, then back to false), then I play one show in a game window and see a throw land.
 
 - [ ] **T27 The screen floats over the stage**
   - **Model and effort:** Opus 5.5, high. A new layout for the main screen, with many widget parts, plus the camera.
@@ -539,6 +495,50 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Done when:** an autoplay show in relay mode seats 4 AIs on 4 different providers, the log has `ok` lines from each and no `fail` line, and it reaches `NHOS: SHOW END`. A free-mode autoplay show reaches `SHOW END` with the network off (or a wrong relay address). In key mode with only my Anthropic key, the screen says which keys are missing; with one of 4 keys removed from a full set (if I have them), the show deals a cast of 3 AIs and me.
   - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Title.uasset`, new `Content/NHOS/UI/WBP_Keys.uasset`, `BPC_LLMRequest.uasset` only if it holds anything specific to one provider, the docs in step 6. T18 left `BPC_LLMRequest` unchanged and added `Graphs/BPC_LLMClient/`, `Graphs/BP_Show/DrawCast.txt`, `Graphs/WBP_Title/` and `Graphs/WBP_Keys/`.
   - **Result:** done. A relay autoplay show seated all four providers and reached `SHOW END` with 88 `ok` lines (Anthropic 43, OpenAI 8, xAI 15, Meta 22) and no `fail` line. A free show with a wrong relay address reached `SHOW END` with 88 `ok` lines and no HTTP call. Key mode with only my Anthropic key says which three keys are missing. See "T18: one LLM per AI player, in the game" in Findings. Left for me: click through the keys screen once by hand, and OK the design doc edit.
+
+- [x] **T26 Five actors: one AI per provider, plus me**
+  - **Model and effort:** Opus 5.5, high. It changes the seat draw, every name the AIs read and every name I see.
+  - **Depends on:** T15 (the same data files and the checker). It holds the lock on `BP_Show`, so it goes before T17.
+  - **Needs:** editor + Unreal MCP running. Free mode for the PIE shows; my API key only for `Tools/check_prompts.py`.
+  - **Why:** in a show on 2026-11-14 my robot was labeled "Anthropic". I sat in one of the four persona seats, and the seats go by provider name, so that provider's AI sat the show out. A label must always be true. But if the AIs read four provider names plus a fifth name, they know at once who the human is. Decided with me: **the AIs read "Player 1" to "Player 5"; my screen shows each AI's provider and "You" for me.**
+  - **Steps:**
+    1. **Seats (`BP_Show.SetupShow`).** Every persona takes an AI seat (up to `MaxCast` − 1), and I take one more seat with no persona, so a full show has 5 actors and 3 scenes. My place in the seat order is random. Each seat has two names: `SeatName`, which the AIs read ("Player 1" to "Player 5", in seat order), and a new `SeatLabel`, which my screen shows (the persona's `name` for an AI seat, "You" for mine). My seat has `SeatId` "human" and no system text.
+    2. **What the AIs read.** `SeatName` is used everywhere an AI or the Director reads a name: the cast, `you`, the log, `options`, votes and `game_messages`. Cast entries lose `about`, because an `about` on four seats of five would point at mine. `prompts.json`: I'm disguised as a robot with no persona; every AI plays a parody of the leader of the lab that made it, and the human has to fake one; name examples use Player names. No provider name ever reaches an actor or the Director.
+    3. **What I see.** Every place a seat name reaches my screen uses `SeatLabel`: chat lines, the cast panel, "YOU ARE" (with "The cast knows you as Player 3"), the vote buttons, the reveal stamp ("OPENAI: AI", "YOU: HUMAN"), the robots' labels and the end screen. AI text (speech, `does`, vote reasons, closing lines, the tiebreak, game lines) goes through a new `DisplayText`, which swaps each AI's Player name for its label and mine for "Player 3 (you)".
+    4. **What I type.** The input converter gets each Player name with the label I know it by, and turns any provider, company or model name I use for an actor ("Meta", "Claude", "open ai") into that Player name, in actions and in speech. Then the game swaps any label still left in the converted speech for its Player name, so no provider name I type reaches the AIs.
+    5. **A fifth seat everywhere.** A fifth robot in `L_Stage` and a fifth `SeatColors` entry; the end screen fits four AI cards. Each card in `scenes.json` gets a fifth seat, and every want must work when any one or two seats are left out (scene 2 deals 4 of 5 seats, scene 3 deals 3). `autoplay.json` covers 3 scenes.
+    6. **The checker.** `Tools/check_prompts.py`: the sample show has 5 Player names, and a check fails if a provider name is in any actor or Director state. The input examples include a line that names a provider.
+    7. Propose the matching edit to the design doc (Rules, "Cast & personas": I have no persona, every persona whose provider has a key takes an AI seat, and the Player names), which also answers the Art tab's open question about The Understudy (see the build notes).
+  - **Done when:** `Tools/check_prompts.py` exits with code 0; a free-mode autoplay show prints `NHOS: SEATS` with 5 seats, `human` at a random Player number, plays up to 3 scenes and reaches `NHOS: SHOW END`; a screenshot shows provider names and "you" on my screen while the `NHOS: LOG` lines (what the AIs read) use only Player names; I play one show.
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_Title.uasset` (How to play, line 1), `Content/NHOS/Maps/L_Stage.umap`; `Content/NHOS/Data/prompts.json`, `personas.json`, `scenes.json`, `autoplay.json`; `Tools/check_prompts.py`; `Docs/GameDesign.md`; the design doc. `WBP_EndScreen` needed no change: four cards fit.
+  - **Result:** done, confirmed by me on 2026-11-14: my UI playtest that day closed it. What that playtest found about the main screen became T27 to T31. See "T26: five actors results" in Findings.
+
+- [x] **T17 Stage art and personality**
+  - **Model and effort:** Opus 5.5, high. Art direction and level design, plus robot behavior.
+  - **Depends on:** T14 (the screen layout and the lock on `BP_Show`), T15 (the places and backdrops), T26 (the fifth robot)
+  - **Needs:** editor + Unreal MCP running, my API key, my OK on the look from a first screenshot before the details.
+  - **Steps:**
+    1. **An improv theater.** `L_Stage` gets a wooden stage floor, a proscenium with red curtains, footlights and a spotlight rig, a riser and a prop table where T15's places are, and a backdrop flat. Engine shapes and Substrate materials, plus textures from Fab or an AI image tool where they help.
+    2. **A backdrop for each scene card**, made from the card's `backdrop` line. Scene Prep shows the new card's backdrop.
+    3. **A robot look for each persona:** a head shape, an accessory and a color that fit it (for example a halo ring for The Visionary, a lightning antenna for The Overclocker, a warning light for The Worrier, a headset for The Copycat). My robot is The Understudy from the Art tab, with no persona and no logo. Keep the name label and the "(you)" mark.
+    4. **Personality in motion:** an idle bob, a bounce while its line shows, a shake when voted for, a cheer from the AIs when the human is caught, and a slump before a cut robot tips over.
+    5. Record every outside or generated asset in `Docs/Assets.md`.
+  - **Done when:** screenshots show the theater with five distinct robots, a different backdrop in scene 1 and scene 2, and a talking bounce; an autoplay show reaches `NHOS: SHOW END`; I say it has personality.
+  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/` (`BP_Robot`, new meshes, materials, textures and `BP_Backdrop`), `Content/NHOS/Core/BP_Show.uasset`, `Docs/Assets.md`. T17 made no meshes or textures: new `M_Set`, `M_Backdrop`, `Content/NHOS/Stage/Materials/` (41 instances) and `BP_Backdrop`. Its `BP_Show.uasset` also carries the T26 label fix's `SetupShow` and `ShowLine` (see the 19:53 DevLog line).
+  - **Result:** done, confirmed by me on 2026-11-14: my UI playtest that day closed it, personality verdict included. See "T17: stage art results" in Findings.
+
+- [x] **T19 Robots act out their actions**
+  - **Model and effort:** Opus 5.5, high. Movement, props and timing on stage, driven by the show loop.
+  - **Depends on:** T17 (the stage and props), T18 (the lock on `BP_Show`)
+  - **Needs:** editor + Unreal MCP running, my API key.
+  - **Steps:**
+    1. A marker for each place, and each prop as an actor on the Prop Table. Props go back to the table at each Scene Prep.
+    2. `BP_Robot` gets `MoveTo(Place)` (it glides or hops there in about a second), `LookAt(Target)` (it turns toward a place or an actor), `Grab(Prop)` (the prop attaches to it), `Throw(Prop, Target)` (an arc that lands near the target) and `Give(Prop, Robot)`.
+    3. When a scene turn plays out, all four robots act at once. Actions in Free Talk and reaction lines play too. An unknown place or prop becomes a look around. Two robots never stand on the same spot.
+    4. Print `NHOS: ACT <id> <verb> <target> <item>` for each action played.
+  - **Done when:** an autoplay show prints `NHOS: ACT` lines and reaches `NHOS: SHOW END`; screenshots show robots at different places and a prop in a robot's hand; I see a throw land.
+  - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset`, new `Content/NHOS/Stage/BP_Prop.uasset` and place markers, `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Core/BP_Show.uasset`. T19 also added `BP_PlaceMark`, `BP_StageDirector`, five `M_Set` instances and `Graphs/BP_Prop/`, `BP_PlaceMark/`, `BP_StageDirector/`, `BP_Robot/`, `BP_Show/ActorLine.txt` and `StagePrep.txt`.
+  - **Result:** done, confirmed by me on 2026-11-14: my UI playtest that day closed it. The free autoplay check ran in a game window the same evening: 24 actions printed as `NHOS: ACT` lines (moves, looks, grabs, a give and two throws) and `NHOS: SHOW END`, with no `LogScript` line. See "T19: robots act out their actions" in Findings.
 
 ## Not planned yet
 
@@ -1251,6 +1251,7 @@ Every role still runs `claude-haiku-5-5` at low effort.
 - **`BP_Robot`** gets an action queue: `MoveTo(Dest)`, `LookAt(Target)`, `LookAround`, `Grab(Prop)`, `Throw(Prop, Target, Hit)`, `Give(Prop, Bot)`, `PutDown(Prop, Target)` and `GoHome`. Each one adds to the queue, and `TickActs` (called from Event Tick) starts the next action when the last one is done. A move hops there in about a second (higher onto the riser). A look turns the robot for 2.5 s, then it turns back to the audience. A throw or give of a prop the robot doesn't hold grabs it first. A thrown prop lands near the target, and a robot it lands at shakes. A grab flies the prop into the right hand, then the left; with both hands full, the oldest prop drops at its feet. The paper crown goes on the head and the cape on the back. When the queue falls behind (free mode answers in 0.3 s), each action plays faster. A cut robot drops what it holds and plays nothing more, but it slides home at the next Scene Prep. The label keeps facing the camera (absolute rotation).
 - **Free Talk has no actions to play.** Since T26 its ask says "No actions", and `PlayTalk` logs "stands still". The robots still bounce while they talk (T17).
 - **PIE, free mode, played by hand** (I typed my scene turns, passed Free Talk and my reaction, and voted by click; `Local/switches.json` was not changed): two shows, scene 1 through The Cut and into scene 2. Every verb played and printed an `ACT` line, including give-after-grab, a snatch from another robot's hand, throws at Front and Back, the crown on a head, a robot on the riser, votes as looks, a cut robot dropping its teacup, and the reset at scene 2 (robots home, props on the table). The director found `marks=7 props=8 robots=5`. No `LogScript` warning or "Accessed None". Screenshots: `Saved/T19/shots/` (not in git): `pie2_t3_s.png` (robots at Left, Right, the Riser and home; crown and cape on the floor), `pie2_cut_s.png` (a cut robot on the riser), `pie2_s2_s.png` (scene 2 reset), `table2_s.png` (the props on the table).
+- **Free autoplay check (game window, 2026-11-15 01:00 UTC):** `Local/switches.json` set to `autoplay: true` for the run, then back to false. The director found `marks=7 props=8 robots=5`, 24 actions played as `NHOS: ACT` lines (5 moves, 10 looks, 6 grabs, a give and two throws: `worrier throw Center teacup`, `overclocker throw Center paper crown`), and the show reached `NHOS: SHOW END result=lose scenes=1` (the human was cut in scene 1). No `LogScript` line.
 - **Unreal MCP rules found in this task:**
   - **Inside a Blueprint, a call to its own function on another instance is `CallFunction|Name :self <other>`.** `Class|BPRobot|IsDown` doesn't exist inside `BP_Robot`.
   - **`(switch string ...)` can't name its cases** ("Unknown exec output move ... Available: Case_0 ..."). Use a chain of `if` with `return`.
