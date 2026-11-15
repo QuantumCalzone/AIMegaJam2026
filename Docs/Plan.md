@@ -180,6 +180,13 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/UI/WBP_Title.uasset`, `WBP_Keys.uasset`, `WBP_EndScreen.uasset`, `WBP_EndCard.uasset`, T21's unavailable-screen widget, `Graphs/` files for the graphs it writes, `Docs/tasks/T33.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T33.md](tasks/T33.md)
 
+- [ ] **T36 Each burning bill shows the logo of the provider it paid**
+  - **Model and effort:** Sonnet 5.5, medium. Four small images, one image added to a widget that is already built, and one value passed through two calls.
+  - **Depends on:** T35 (the money burn), T34 (it may change `WBP_MoneyBurn`). Steps 1 and 2 (find the logos and make the badges) need no editor and can run as prep at any time.
+  - **Needs:** my OK before each logo download, editor + Unreal MCP running, Test for Free with `burn_test` on for the checks, and my look at one free show in a game window. No relay show: in relay mode, `Burn` reads the same `CurProv` that `Deliver` prints for each relay reply.
+  - **Touches:** new `Docs/MoneyBurnArt/logo_*.png` and `Content/NHOS/UI/MoneyBurn/T_Logo_*.uasset`, `Content/NHOS/UI/WBP_BurningBill.uasset`, `Content/NHOS/UI/WBP_MoneyBurn.uasset` (`Burn`), `Content/NHOS/Core/BPC_LLMClient.uasset` (`Burn` only), `Docs/MoneyBurnArt.md`, `Docs/Assets.md`, `Graphs/BPC_LLMClient/Burn.txt`, `Graphs/WBP_MoneyBurn/Burn.txt`, new `Graphs/WBP_BurningBill/SetLogo.txt`.
+  - **Details:** [Docs/tasks/T36.md](tasks/T36.md)
+
 - [ ] **T31 Tab completes names, places and props (cut if we fall behind)**
   - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
   - **Depends on:** T27 (the input row), T30 (the lock on `WBP_Stage`)
@@ -189,7 +196,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T23 Submission**
   - **Model and effort:** Sonnet 5.5, medium. Writing and checklists.
-  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, and T31 if it is done
+  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, T31 if it is done, and T36 if it is done
   - **Needs:** me, to record the video, set up the itch.io page and send the form. The packaged build, which I make myself.
   - **Touches:** `Docs/ItchPage.md`, new `Docs/Submission.md`, `Packaged/` (not in git).
   - **Details:** [Docs/tasks/T23.md](tasks/T23.md)
