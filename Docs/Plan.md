@@ -228,6 +228,48 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/Stage/Headpieces/`, `Content/NHOS/Stage/Set/`, new folders in `Content/NHOS/Stage/Props/`, new `Content/NHOS/Stage/Materials/M_Clay.uasset` and its instances, `Docs/PropArt/manifest.json`, `Docs/Submission.md`, `Docs/tasks/T43.md`.
   - **Details:** [Docs/tasks/T43.md](tasks/T43.md)
 
+- [ ] **T44 The seven film-parody cards in the data files**
+  - **Model and effort:** Opus 5.5, high. Story data, the director's notes and the checker's rules change together, and the base prompt changes in the doc first.
+  - **Depends on:** T34, T33, T36, T37 (my call on 2026-11-15: the art goes in after the UI tasks)
+  - **Needs:** my accept of the Rules tab's two suggested edits and my OK on the Bot Prompts edit, the relay for a `--relay --free` check (no tokens). No editor.
+  - **Touches:** `Content/NHOS/Data/scenes.json`, `Content/NHOS/Data/prompts.json`, `Tools/check_prompts.py`, the design doc (Rules and Bot Prompts tabs), `Docs/tasks/T44.md`.
+  - **Details:** [Docs/tasks/T44.md](tasks/T44.md)
+
+- [ ] **T45 Each card's props on the prop table**
+  - **Model and effort:** Opus 5.5, high. Props become data-driven meshes across the prop actor, the stage director and the state the AIs read.
+  - **Depends on:** T44 (the cards' props), T43 (the prop models and their fit)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Touches:** new `Content/NHOS/Data/props.json`, `Content/NHOS/Stage/BP_Prop.uasset`, `Content/NHOS/Stage/BP_StageDirector.uasset` (`ResetStage`), `Content/NHOS/Core/BP_Show.uasset` (the state's `set.props` at Scene Prep), `Content/NHOS/Maps/L_Stage.umap` (four prop actors), `Content/NHOS/Data/scenes.json`, `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes.
+  - **Details:** [Docs/tasks/T45.md](tasks/T45.md)
+
+- [ ] **T46 The two-tone capsule pill bots**
+  - **Model and effort:** Opus 5.5, high. A new body for every robot that keeps all of T17's and T19's motion working.
+  - **Depends on:** T43 (`M_Clay`), T45 (the lock on `L_Stage`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset`, `M_Clay` instances in `Content/NHOS/Stage/Materials/`, `Content/NHOS/Maps/L_Stage.umap` (if the robots must be re-placed), `Graphs/BP_Robot/` files for the graphs it writes.
+  - **Details:** [Docs/tasks/T46.md](tasks/T46.md)
+
+- [ ] **T47 A headpiece for each role**
+  - **Model and effort:** Opus 5.5, high. Costume data per seat, a new component on the robot and one call at Scene Prep.
+  - **Depends on:** T44 (the seats), T46 (the head), T43 (the headpiece models)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Touches:** `Content/NHOS/Data/scenes.json`, `Content/NHOS/Data/props.json` (or a new `costumes.json`), `Content/NHOS/Stage/BP_Robot.uasset`, `Content/NHOS/Core/BP_Show.uasset` (Scene Prep), `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes.
+  - **Details:** [Docs/tasks/T47.md](tasks/T47.md)
+
+- [ ] **T48 The seven painted backdrops**
+  - **Model and effort:** Opus 5.5, high. Seven images picked by eye, and a backdrop material that the stage lights don't wash out.
+  - **Depends on:** T44 (the backdrop ids), T39 (the tool). Steps 1 and 2 (making and picking the images) need no editor and can run as prep once T44 is done.
+  - **Needs:** the Leonardo key in `Local/` and a few dollars of its API credit, editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Touches:** new `Docs/BackdropArt/` and `Docs/BackdropArt.md`, `Docs/Assets.md`, new `Content/NHOS/Stage/Backdrops/`, `Content/NHOS/Stage/Materials/M_Backdrop.uasset`, `Content/NHOS/Stage/BP_Backdrop.uasset`, `Graphs/BP_Backdrop/` files for the graphs it writes.
+  - **Details:** [Docs/tasks/T48.md](tasks/T48.md)
+
+- [ ] **T49 The clay opera-house stage**
+  - **Model and effort:** Opus 5.5, high. Set dressing and materials across the whole level, framed for the house camera.
+  - **Depends on:** T42 and T43 (the set pieces and `M_Clay`), T46 (the audience bots' body and the lock on `L_Stage`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/Materials/` (`M_Set` and its instances), `Content/NHOS/Stage/Set/`, `Docs/tasks/T49.md`.
+  - **Details:** [Docs/tasks/T49.md](tasks/T49.md)
+
 - [ ] **T31 Tab completes names, places and props (optional)**
   - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
   - **Depends on:** T27 (the input row), T30 (the lock on `WBP_Stage`)
@@ -296,5 +338,3 @@ These hold for every task, and for editor work outside the task list too. If one
 ## Not planned yet
 
 Ideas that are not tasks yet, and only if time is left after the last open task: a fifth persona (since T26, that is a sixth actor and a fourth scene), more scene cards and more notes. To plan one, add it as a task (see "Changing the plan").
-
-The clay art direction (2026-11-15, the design doc's "Art Inspiration" and "Stories" tabs) also needs hooking in, after T39 to T43 make its models; where it goes against the UI tasks is my call: the seven film-parody cards with four props each into the game (from `Docs/StoryDrafts/`, with per-card props, trimmed banned-word lists and the director's notes that assume the old prop table), the two-tone capsule pill bots, a headpiece on each bot for its role, the clay stage, the seven painted backdrops (Leonardo, by `Tools/art_gen.py`) and the opera-house dressing.
