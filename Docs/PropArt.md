@@ -4,6 +4,26 @@ How each generated 3D asset is made: its reference image, its Meshy settings and
 
 **Status:** the style test passed on 2026-11-15 (see "Test result" at the end). The plan's asset tasks make the rest the same way with `Tools/art_gen.py`. The art direction (stop-motion clay), the 13 headpieces and the props of each story are in the design doc: the "Art Inspiration" tab and the "Stories" tab. The story drafts behind them are in `Docs/StoryDrafts/`.
 
+## Making a batch (T39)
+
+Every asset is an entry in [PropArt/manifest.json](PropArt/manifest.json): 13 headpieces, 28 props (6 spares, `core: false`) and 3 set pieces, each with its prompt, Meshy model, texture, polycount and size. `Tools/art_gen.py` reads it and writes each asset's status back into it as soon as it has it: `images` (the Leonardo generation), `pick`, `ref`, `task` (the Meshy task), `credits` and `fbx`. Every step skips an asset that already has it, so a run that stops can simply be run again.
+
+```bash
+python Tools/art_gen.py status --kind headpiece
+python Tools/art_gen.py batch-images --kind headpiece
+python Tools/art_gen.py sheet --kind headpiece --candidates
+python Tools/art_gen.py pick hood 2
+python Tools/art_gen.py batch-meshes --kind headpiece --max-credits 260
+python Tools/art_gen.py sheet --kind headpiece
+```
+
+1. `batch-images` makes 4 Leonardo candidates per asset, three assets at a time, into `Local/art/props/<id>/` (not git). The log goes to `Docs/PropArt/<id>/leonardo.json`.
+2. `sheet --candidates` saves `Local/art/sheet_<kind>_candidates.html` with each asset's four candidates, numbered. Look at them (or read the PNGs) and `pick` the clearest outline: the whole object in frame, nothing touching it, a three-quarter view. `pick --force` re-picks an asset that already has a model and clears it, so the next `batch-meshes` makes it again.
+3. `batch-meshes` checks the balance, then runs Meshy image to 3D for every asset with a `ref` and no `fbx`, up to 8 at once. It never starts a task that would take the run past `--max-credits` (estimates: `meshy-7.1` 20, `meshy-6-lite` 5, plus 10 with a texture) and prints the balance before and after. The FBX, its thumbnail and `meshy_image.json` go to `Docs/PropArt/<id>/`.
+4. `sheet` saves `Local/art/sheet_<kind>.html` with every thumbnail, for one look at a whole kind.
+
+Two runs on different kinds can go at once: each status write reloads the manifest first. Commit one task's manifest changes at a time.
+
 ## The look to match
 
 Stop-motion clay: matte modeling clay, chunky rounded forms, faint thumbprints and tool marks, saturated but slightly chalky colors. The house camera sees a prop at about 30 px tall, so a bold outline and one or two strong colors matter more than detail. The stage isn't clay yet, so there is no style reference image: the prompt carries the look.

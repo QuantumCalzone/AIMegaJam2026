@@ -25,13 +25,38 @@ Commands:
       Meshy text to 3D: a preview (20 credits), then a texture refine (10 credits) unless
       --no-texture. Saves DIR/NAME_text.fbx, a thumbnail and DIR/meshy_text.json.
 
+Batch commands, over the asset list Docs/PropArt/manifest.json (one entry per asset; see Docs/PropArt.md).
+They are resumable: a step an asset already has is skipped. Each one writes its status fields (images, pick,
+ref, task, credits, fbx) back into the manifest as soon as it has them.
+  python Tools/art_gen.py status [--kind K]
+      What each asset has so far, and the credits spent.
+  python Tools/art_gen.py batch-images --kind K [--ids ID ...] [--count 4] [--parallel 3] [--force]
+      Leonardo candidates for every asset with no images yet, into Local/art/props/<id>/ (not git), a few
+      assets at a time. The log goes to Docs/PropArt/<id>/leonardo.json.
+  python Tools/art_gen.py pick ID N [--force]
+      Copies candidate N to Docs/PropArt/<id>/ref.png. --force re-picks an asset that has a model, and
+      clears its model so the next batch-meshes makes it again.
+  python Tools/art_gen.py batch-meshes --kind K [--ids ID ...] --max-credits C [--parallel 8] [--all-files]
+      Meshy image to 3D for every asset with a ref and no fbx, up to 8 at once (Pro allows 10). Checks the
+      balance first and never starts a task that would take the run past C credits (estimates: meshy-7.1
+      20, meshy-6-lite 5, +10 with a texture). FBX and thumbnail into Docs/PropArt/<id>/. An asset whose
+      task started but never downloaded is fetched, not paid for again.
+  python Tools/art_gen.py sheet --kind K [--candidates]
+      Local/art/sheet_<kind>.html: every thumbnail with its id (or, with --candidates, the four Leonardo
+      candidates of each asset, numbered for pick).
+
 Meshy keeps files for 3 days and its download links expire, so every command downloads at once.
 """
 import argparse
 import base64
+import concurrent.futures
+import html
 import json
 import mimetypes
+import os
+import shutil
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -116,20 +141,26 @@ def find(obj, field):
     return None
 
 
+def now():
+    return time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime())
+
+
 # ---- Leonardo -------------------------------------------------------------------------------
 
-def cmd_image(a):
-    token, out = key("leonardo"), outdir(a)
-    params = {"prompt": a.prompt, "width": a.width, "height": a.height, "quantity": a.count}
-    if a.negative:
-        params["negative_prompt"] = a.negative
-    body = {"model": a.model, "parameters": params, "public": False}
+def leonardo(prompt, img_dir, model, width, height, count, negative=None, label="Leonardo"):
+    """One Leonardo v2 generation. Saves img_dir/candidate_N.png and returns the log entry."""
+    token = key("leonardo")
+    img_dir.mkdir(parents=True, exist_ok=True)
+    params = {"prompt": prompt, "width": width, "height": height, "quantity": count}
+    if negative:
+        params["negative_prompt"] = negative
+    body = {"model": model, "parameters": params, "public": False}
     res = call("POST", f"{LEO}/v2/generations", token, body)
     gen_id = find(res, "generationId")
     if not gen_id:
         sys.exit(f"No generationId in the reply: {json.dumps(res)[:400]}")
     cost = find(res, "apiCreditCost")
-    print(f"Leonardo generation {gen_id} ({a.model}, {a.count} images, cost {cost})")
+    print(f"{label}: Leonardo generation {gen_id} ({model}, {count} images, cost {cost})")
     for _ in range(120):
         time.sleep(5)
         got = call("GET", f"{LEO}/v1/generations/{gen_id}", token)
@@ -138,15 +169,19 @@ def cmd_image(a):
         if status == "COMPLETE":
             imgs = g.get("generated_images") or []
             for i, img in enumerate(imgs, 1):
-                download(img["url"], out / f"candidate_{i}.png")
-            log(out, "leonardo.json", {"time": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
-                                       "generation": gen_id, "model": a.model, "parameters": params,
-                                       "api_credit_cost": cost, "seed": g.get("seed"),
-                                       "images": [f"candidate_{i}.png" for i in range(1, len(imgs) + 1)]})
-            return
+                download(img["url"], img_dir / f"candidate_{i}.png")
+            return {"time": now(), "generation": gen_id, "model": model, "parameters": params,
+                    "api_credit_cost": cost, "seed": g.get("seed"),
+                    "images": [f"candidate_{i}.png" for i in range(1, len(imgs) + 1)]}
         if status == "FAILED":
             sys.exit(f"Leonardo generation {gen_id} failed.")
     sys.exit(f"Leonardo generation {gen_id} timed out.")
+
+
+def cmd_image(a):
+    out = outdir(a)
+    entry = leonardo(a.prompt, out, a.model, a.width, a.height, a.count, a.negative)
+    log(out, "leonardo.json", entry)
 
 
 # ---- Meshy ----------------------------------------------------------------------------------
@@ -162,9 +197,13 @@ def wait_meshy(token, path, task_id, label):
         if status == "SUCCEEDED":
             return t
         if status in ("FAILED", "CANCELED"):
-            sys.exit(f"{label} {task_id} {status}: {t.get('task_error')}")
+            raise TaskFailed(f"{label} {task_id} {status}: {t.get('task_error')}")
         time.sleep(5)
     sys.exit(f"{label} {task_id} timed out.")
+
+
+class TaskFailed(Exception):
+    """A Meshy task ended FAILED or CANCELED."""
 
 
 EXTRAS = ROOT / "Local" / "art" / "props"
@@ -194,19 +233,26 @@ def mesh_options(a):
             "target_polycount": a.polycount, "target_formats": ["fbx", "glb"]}
 
 
-def cmd_mesh_image(a):
-    token, out = key("meshy"), outdir(a)
-    img = Path(a.image)
+def meshy_image_task(token, image, model, polycount, texture):
+    """Starts a Meshy image-to-3D task. Returns its id and the request body without the image."""
+    img = Path(image)
     mime = mimetypes.guess_type(img.name)[0] or "image/png"
     data_uri = f"data:{mime};base64," + base64.b64encode(img.read_bytes()).decode()
-    body = {"image_url": data_uri, "should_texture": not a.no_texture, **mesh_options(a)}
+    opts = {"ai_model": model, "should_remesh": True, "topology": "triangle", "target_polycount": polycount,
+            "target_formats": ["fbx", "glb"]}
+    body = {"image_url": data_uri, "should_texture": texture, **opts}
     task = call("POST", f"{MESHY}/v1/image-to-3d", token, body)["result"]
+    return task, {k: v for k, v in body.items() if k != "image_url"}
+
+
+def cmd_mesh_image(a):
+    token, out = key("meshy"), outdir(a)
+    task, body = meshy_image_task(token, a.image, a.model, a.polycount, not a.no_texture)
     print(f"Meshy image to 3D {task} ({a.model}, texture {not a.no_texture})")
     t = wait_meshy(token, "v1/image-to-3d", task, "image-to-3d")
     save_meshy(t, out, a.name, a.all_files)
-    log(out, "meshy_image.json", {"time": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime()),
-                                  "task": task, "image": img.name, "consumed_credits": t.get("consumed_credits"),
-                                  **{k: v for k, v in body.items() if k != "image_url"}})
+    log(out, "meshy_image.json", {"time": now(), "task": task, "image": Path(a.image).name,
+                                  "consumed_credits": t.get("consumed_credits"), **body})
     print(f"Done. Credits used: {t.get('consumed_credits')}")
 
 
@@ -250,6 +296,218 @@ def cmd_balance(a):
           f"permanent {b.get('permanent_credits')}, resets {b.get('monthly_resets_at')})")
 
 
+# ---- Batch over the asset list ------------------------------------------------------------
+
+MANIFEST = ROOT / "Docs" / "PropArt" / "manifest.json"
+PROPART = ROOT / "Docs" / "PropArt"
+MESH_COST = {"meshy-7.1": 20, "meshy-7": 20, "meshy-6": 20, "meshy-6-lite": 5}
+TEXTURE_COST = 10
+_manifest_lock = threading.Lock()
+
+
+def load_manifest():
+    return json.loads(MANIFEST.read_text(encoding="utf-8"))
+
+
+def save_manifest(m):
+    tmp = MANIFEST.with_suffix(".tmp")
+    tmp.write_text(json.dumps(m, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    os.replace(tmp, MANIFEST)
+
+
+def update_asset(asset_id, **fields):
+    """Writes status fields into the manifest. It reloads the file first, so runs on other assets keep theirs."""
+    with _manifest_lock:
+        m = load_manifest()
+        next(x for x in m["assets"] if x["id"] == asset_id).update(fields)
+        save_manifest(m)
+
+
+def select(m, kind=None, ids=None):
+    known = {x["id"] for x in m["assets"]}
+    for i in ids or []:
+        if i not in known:
+            sys.exit(f"No asset {i!r} in {rel(MANIFEST)}.")
+    return [x for x in m["assets"] if (not kind or x["kind"] == kind) and (not ids or x["id"] in ids)]
+
+
+def rel(path):
+    return Path(path).resolve().relative_to(ROOT).as_posix()
+
+
+def mesh_cost(x):
+    return MESH_COST.get(x["meshy_model"], 30) + (TEXTURE_COST if x["texture"] else 0)
+
+
+def run_parallel(items, work, parallel):
+    """Runs work(item) on a few threads. A failure stops that item only. Returns {id: result or None}."""
+    results = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, parallel)) as pool:
+        futures = {pool.submit(work, x): x["id"] for x in items}
+        for f in concurrent.futures.as_completed(futures):
+            asset_id = futures[f]
+            try:
+                results[asset_id] = f.result()
+            except (SystemExit, Exception) as e:
+                print(f"{asset_id}: FAILED: {e}")
+                results[asset_id] = None
+    return results
+
+
+def cmd_status(a):
+    rows = select(load_manifest(), a.kind)
+    for x in rows:
+        step = "model" if x.get("fbx") else "picked" if x.get("ref") else "images" if x.get("images") else "-"
+        extra = f" (task {x['task']} not downloaded)" if x.get("task") and not x.get("fbx") else ""
+        print(f"{x['kind']:9} {x['id']:22} {step:7} {x['meshy_model']:12} credits {x.get('credits') or 0}{extra}")
+    done = sum(1 for x in rows if x.get("fbx"))
+    spent = sum(x.get("credits") or 0 for x in rows)
+    left = sum(mesh_cost(x) for x in rows if not x.get("fbx"))
+    print(f"{len(rows)} assets, {done} with a model, {spent} credits spent, about {left} to make the rest.")
+
+
+def cmd_batch_images(a):
+    m = load_manifest()
+    todo = []
+    for x in select(m, a.kind, a.ids):
+        if (x.get("images") or x.get("ref")) and not a.force:
+            print(f"{x['id']}: skip, has images")
+        else:
+            todo.append(x)
+
+    def work(x):
+        entry = leonardo(x["prompt"], EXTRAS / x["id"], m.get("leonardo_model", "lucid-origin"), 1024, 1024,
+                         a.count, m.get("negative"), x["id"])
+        out = PROPART / x["id"]
+        out.mkdir(parents=True, exist_ok=True)
+        log(out, "leonardo.json", entry)
+        update_asset(x["id"], images=entry["generation"])
+        return entry["generation"]
+
+    res = run_parallel(todo, work, a.parallel)
+    ok = sum(1 for v in res.values() if v)
+    print(f"Images for {ok} of {len(todo)} assets, in {rel(EXTRAS)}/<id>/. Look at them, then: pick ID N")
+
+
+def cmd_pick(a):
+    x = select(load_manifest(), ids=[a.id])[0]
+    src = EXTRAS / a.id / f"candidate_{a.n}.png"
+    if not src.exists():
+        sys.exit(f"No {rel(src)}. Run batch-images first.")
+    if x.get("fbx") and not a.force:
+        sys.exit(f"{a.id} already has a model ({x['fbx']}). Use --force to pick again and remake it.")
+    dst = PROPART / a.id / "ref.png"
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, dst)
+    fields = {"pick": a.n, "ref": rel(dst)}
+    if a.force:
+        fields.update(task=None, credits=None, fbx=None)
+    update_asset(a.id, **fields)
+    print(f"{a.id}: candidate {a.n} -> {rel(dst)}")
+
+
+def balance(token):
+    return call("GET", f"{MESHY}/v1/balance", token).get("balance")
+
+
+def cmd_batch_meshes(a):
+    token, m = key("meshy"), load_manifest()
+    todo = []
+    for x in select(m, a.kind, a.ids):
+        if x.get("fbx"):
+            print(f"{x['id']}: skip, has {x['fbx']}")
+        elif not x.get("ref"):
+            print(f"{x['id']}: skip, no ref yet (batch-images, then pick)")
+        else:
+            todo.append(x)
+    before = balance(token)
+    print(f"Meshy balance before: {before}. Cap for this run: {a.max_credits} credits.")
+    budget = {"committed": 0}
+    lock = threading.Lock()
+
+    def work(x):
+        out = PROPART / x["id"]
+        if x.get("task"):
+            task, body = x["task"], {"resumed": True}
+            print(f"{x['id']}: resuming task {task} (already paid for)")
+        else:
+            est = mesh_cost(x)
+            with lock:
+                if budget["committed"] + est > (a.max_credits if before is None else min(a.max_credits, before)):
+                    print(f"{x['id']}: not started, {est} more credits would pass the cap or the balance")
+                    return None
+                budget["committed"] += est
+            task, body = meshy_image_task(token, ROOT / x["ref"], x["meshy_model"], x["polycount"], x["texture"])
+            update_asset(x["id"], task=task)
+            print(f"{x['id']}: Meshy image to 3D {task} ({x['meshy_model']}, texture {x['texture']}, about {est})")
+        try:
+            t = wait_meshy(token, "v1/image-to-3d", task, x["id"])
+        except TaskFailed as e:
+            update_asset(x["id"], task=None)  # so the next run starts it again
+            raise SystemExit(str(e))
+        save_meshy(t, out, x["id"], a.all_files)
+        used = t.get("consumed_credits")
+        log(out, "meshy_image.json", {"time": now(), "task": task, "image": "ref.png",
+                                      "consumed_credits": used, **body})
+        update_asset(x["id"], credits=used, fbx=rel(out / f"{x['id']}.fbx"))
+        if not body.get("resumed"):
+            with lock:
+                budget["committed"] += (used or 0) - mesh_cost(x)
+        return used or 0
+
+    res = run_parallel(todo, work, min(a.parallel, 8))
+    after = balance(token)
+    made = sum(1 for v in res.values() if v is not None)
+    used = sum(v or 0 for v in res.values())
+    drop = before - after if before is not None and after is not None else "?"
+    print(f"Made {made} of {len(todo)}. Credits in the logs: {used}. Balance after: {after} (dropped {drop}).")
+
+
+def cmd_sheet(a):
+    m = load_manifest()
+    sheet_dir = ROOT / "Local" / "art"
+    sheet_dir.mkdir(parents=True, exist_ok=True)
+
+    def src(path):
+        return html.escape(Path(path).resolve().as_uri())
+
+    cards = []
+    for x in select(m, a.kind):
+        if a.candidates:
+            figs = []
+            for p in sorted((EXTRAS / x["id"]).glob("candidate_*.png")):
+                n = int(p.stem.split("_")[1])
+                figs.append(f'<figure><img src="{src(p)}"><figcaption>{n}'
+                            f'{" (picked)" if x.get("pick") == n else ""}</figcaption></figure>')
+            pics = "".join(figs) or "<p>no candidates yet</p>"
+        else:
+            thumb = PROPART / x["id"] / f"{x['id']}_thumb.png"
+            ref = PROPART / x["id"] / "ref.png"
+            pics = (f'<img src="{src(thumb)}">' if thumb.exists() else
+                    f'<img class="ref" src="{src(ref)}"><p>ref only, no model yet</p>' if ref.exists() else
+                    "<p>nothing yet</p>")
+        bits = [x.get("story"), "spare" if x.get("core") is False else None, x["meshy_model"],
+                f"{x['credits']} credits" if x.get("credits") else None]
+        info = " · ".join(str(b) for b in bits if b)
+        cards.append(f'<section><h2>{html.escape(x["id"])}</h2><p class="info">{html.escape(info)}</p>'
+                     f'<div class="pics">{pics}</div></section>')
+    title = f"{a.kind} {'candidates' if a.candidates else 'models'}"
+    col, img = (520, 120) if a.candidates else (240, 220)
+    page = f"""<!doctype html><meta charset="utf-8"><title>{title}</title>
+<style>
+body {{ font: 14px system-ui, sans-serif; background: #222; color: #eee; margin: 16px; }}
+main {{ display: grid; grid-template-columns: repeat(auto-fill, minmax({col}px, 1fr)); gap: 12px; }}
+section {{ background: #333; border-radius: 8px; padding: 8px; }}
+h2 {{ font-size: 16px; margin: 0; }} .info {{ color: #aaa; margin: 2px 0 6px; }}
+.pics {{ display: flex; flex-wrap: wrap; gap: 4px; }} figure {{ margin: 0; text-align: center; }}
+img {{ width: {img}px; background: #ddd; border-radius: 4px; }} img.ref {{ opacity: .6; }}
+</style><h1>{title} ({len(cards)})</h1><main>{"".join(cards)}</main>
+"""
+    out = sheet_dir / f"sheet_{a.kind}{'_candidates' if a.candidates else ''}.html"
+    out.write_text(page, encoding="utf-8")
+    print(f"Saved {out}")
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -280,9 +538,35 @@ def main():
             m.add_argument("--image", required=True)
         else:
             m.add_argument("--prompt", required=True)
+    kinds = ["headpiece", "prop", "set"]
+    st = sub.add_parser("status")
+    st.add_argument("--kind", choices=kinds)
+    bi = sub.add_parser("batch-images")
+    bi.add_argument("--kind", choices=kinds, required=True)
+    bi.add_argument("--ids", nargs="+")
+    bi.add_argument("--count", type=int, default=4)
+    bi.add_argument("--parallel", type=int, default=3)
+    bi.add_argument("--force", action="store_true")
+    pk = sub.add_parser("pick")
+    pk.add_argument("id")
+    pk.add_argument("n", type=int)
+    pk.add_argument("--force", action="store_true")
+    bm = sub.add_parser("batch-meshes")
+    bm.add_argument("--kind", choices=kinds, required=True)
+    bm.add_argument("--ids", nargs="+")
+    bm.add_argument("--max-credits", type=int, required=True)
+    bm.add_argument("--parallel", type=int, default=8)
+    bm.add_argument("--all-files", action="store_true")
+    sh = sub.add_parser("sheet")
+    sh.add_argument("--kind", choices=kinds, required=True)
+    sh.add_argument("--candidates", action="store_true")
     a = p.parse_args()
-    {"balance": cmd_balance, "fetch": cmd_fetch, "image": cmd_image, "mesh-image": cmd_mesh_image,
-     "mesh-text": cmd_mesh_text}[a.cmd](a)
+    try:
+        {"balance": cmd_balance, "fetch": cmd_fetch, "image": cmd_image, "mesh-image": cmd_mesh_image,
+         "mesh-text": cmd_mesh_text, "status": cmd_status, "batch-images": cmd_batch_images, "pick": cmd_pick,
+         "batch-meshes": cmd_batch_meshes, "sheet": cmd_sheet}[a.cmd](a)
+    except TaskFailed as e:
+        sys.exit(str(e))
 
 
 if __name__ == "__main__":
