@@ -8,7 +8,7 @@ In this file, "I" and "my" mean the person at the keyboard. "Claude" means the a
 
 ## Goal
 
-Finish **No Humans On Set** and submit it to the 2026 Epic AI MegaJam. The "Open" tasks below are what we know is still to do. I add tasks as the game needs them, and a new task goes wherever it belongs in that list (see "Changing the plan").
+Finish **No Humans On Set** and submit it to the 2026 Epic AI MegaJam. The "Open" tasks below are what we know is still to do. I add tasks as the game needs them, and a new task goes wherever it belongs in that list, always above T70 (the itch.io page), which stays last (see "Changing the plan").
 
 **How the plan began.** It started as the plan for an MVP (T01 to T12), which had to answer one question as fast as possible: is it fun to fool an all-AI cast, and do the AIs catch a human at a fair rate (not every time, not never)? The gate (T12, 2026-11-14) said go. I liked it. Since then the plan covers the whole game. Until 2026-11-14 this file was `Docs/MVPPlan.md`. Finished tasks' files, the dev log and older notes in `Agents/` still use that name. Until 2026-11-14 this file also held every task's full text and a Findings section; since then each task has its own file in `Docs/tasks/` (see "Tasks").
 
@@ -62,11 +62,12 @@ To add a task:
 2. **Place it.** "Open" is in priority order, and "Next task" takes from the top. Two things decide where the task goes:
    - **Architecture:** it goes below every task it builds on, and above the tasks that build on it. Name the first kind in its **Depends on** line, and add it to the **Depends on** line of each task of the second kind.
    - **Priority:** among tasks that don't depend on each other, the one that matters more for the submission goes higher.
+   - **T70 stays last.** T70 (the itch.io page) is always the last task in "Open", because the page shows the finished game. A new task always goes above it, however low its priority, and its number goes on T70's **Depends on** line, so "Next task" never reaches T70 while another task is open.
 3. **Write it** like the other open tasks, in two places. In this file, under "Open": the title line, then **Model and effort**, **Depends on**, **Needs**, **Touches** and **Details** (a link to its file). In a new file, `Docs/tasks/Txx.md`: a `# Txx Title` heading, the line back to the plan, then "## Task" with **Why** (if there is one), **Steps** and **Done when**. A task is about an hour of agent work at most, so split a bigger one.
 4. **Add its claim file,** `Docs/claims/Txx`, with the same two lines as the other claim files and the new number.
 5. **Commit** the plan, the task's file, the claim file and the dev log line together as `Plan: add Txx <title>`. Update "Next up" if the new task changes what is next.
 
-To move a task, cut its entry in this file and paste it at its new place. Its number and its file stay. To drop a task, delete its entry and its file, and say why in the commit message. Its claim file stays, so that the number is never used again. To change a task's steps, edit its file; to change its **Depends on**, **Needs** or **Touches**, edit its entry here.
+To move a task, cut its entry in this file and paste it at its new place. Its number and its file stay. Never move a task below T70, or T70 above another open task. To drop a task, delete its entry and its file, and say why in the commit message. Its claim file stays, so that the number is never used again. To change a task's steps, edit its file; to change its **Depends on**, **Needs** or **Touches**, edit its entry here.
 
 **Keep the form.** Every task is an entry here plus a file, `Docs/tasks/Txx.md`. An open task's entry holds its title line and the short lines that other readers need (**Model and effort**, **Depends on**, **Needs**, **Touches**, any **Waiting:** or **Blocked:** line, and **Details**); its file holds the rest. A done task's entry holds only its checked title line and its **Details** line; its file holds everything else, its findings included. Findings that belong to no one task are in `Docs/tasks/Background.md`. The task-list pane (`Tools/ClaudeMods/task-list`) reads only this file, never the task files, and lists the tasks in this file's order. It finds a task only under `## Tasks`, as a line that starts `- [ ] **Txx Title**`, or `- [x]` when the task is done. It reads the boxes, not the "Open" and "Done" headings. Under a task, it reads these indented lines:
 
@@ -112,7 +113,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 ## Tasks
 
-"Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. A new task goes wherever it belongs in that order (see "Changing the plan"), so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its entry moves to the end of "Done" (see "How to run a task", step 6). Each entry links its file in `Docs/tasks/`, which holds the task's Why, Steps, Done-when check, Result and findings.
+"Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. A new task goes wherever it belongs in that order, always above T70, which stays last (see "Changing the plan"), so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its entry moves to the end of "Done" (see "How to run a task", step 6). Each entry links its file in `Docs/tasks/`, which holds the task's Why, Steps, Done-when check, Result and findings.
 
 ### Open
 
@@ -240,7 +241,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T70 The itch.io page: the description, screenshots, a cover and a gameplay video**
   - **Model and effort:** Opus 5.5, high. Claude plays shows for the best moments, picks the frames, cuts a captioned video, and rewrites the page text to match the finished game.
-  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T62, T63, T64, T65, T66, T38, T34, T60, T61, T45, T47, T48. A task that is cut comes off this line.
+  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T62, T63, T64, T65, T66, T67, T68, T69, T38, T34, T60, T61, T45, T47, T48. A task that is cut comes off this line, and every new task goes on it (T70 stays last; see "Changing the plan").
   - **Needs:** a packaged build (T22's command) or the game window at 1920 × 1080, Play via Relay for the recorded shows and my OK for their cost (about $0.11 a show, two or three shows), ffmpeg to record and cut (not on the PC yet: my OK before Claude installs it with winget), my OK on the page text. No editor change.
   - **Touches:** `Docs/ItchPage.md`, `Docs/Submission.md` (the shot list and "Left to do"), new `Docs/ItchMedia/` (`cover.png`, `screenshots/`, `gameplay.mp4` and `description.html`), `Docs/tasks/T70.md`.
   - **Details:** [Docs/tasks/T70.md](tasks/T70.md)
