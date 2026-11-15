@@ -2,7 +2,7 @@
 
 The art that T35 (a bill burns in the bottom-right corner for every relay call) imports in its step 2. It was made on 2026-11-14 without the editor. The files are in `Local/art/moneyburn/`, which git ignores, so they exist only on the Mac that made them. T35 imports them under `Content/NHOS/UI/`, and then records them in `Docs/Assets.md` from this page.
 
-The bill is drawn by a script, because Kenney's bundle has no banknote (see "Backups"). The flame and the ember are Kenney sprites (CC0 1.0), recolored by the same script into the palette in `Docs/UIStyle.md`. I checked every image myself at about 120 px wide over `bg.scrim` and over a dim warm stage floor (`Local/art/moneyburn/preview.png`): the bill reads as a banknote, the char reads as burnt paper, and the flame reads as fire.
+The bill is drawn by a script, because Kenney's bundle has no banknote (see "Backups"). The flame and the ember are Kenney sprites (CC0 1.0), recolored by the same script into the palette of the T32 prep draft of `Docs/UIStyle.md` (commit `eb882ac`; the UI direction now lives in the design doc). I checked every image myself at about 120 px wide over `bg.scrim` and over a dim warm stage floor (`Local/art/moneyburn/preview.png`): the bill reads as a banknote, the char reads as burnt paper, and the flame reads as fire.
 
 ## Files
 
@@ -19,7 +19,7 @@ Frame order in `flame_sheet.png` (source, mirrored, vertical scale): 0 `muzzle_0
 
 ### Colors
 
-All colors come from `Docs/UIStyle.md`:
+All colors come from the T32 prep draft of `Docs/UIStyle.md` (commit `eb882ac`):
 
 - **Flame:** a heat ramp from `state.dangerFill` #C42B2F (outer edge and tips) through `state.ai` #F2A93B, `accent.goldHover` #FFC857 and `accent.gold` #FFE7A3 to `note.text` #FFF4D6 (the hot core near the base). It is the only saturated part, as UIStyle asks.
 - **Ember:** the same ramp, from orange at the rim to gold in the core.
@@ -57,7 +57,7 @@ swiftc -O Local/art/moneyburn/makeart.swift -o /tmp/makeart && /tmp/makeart "<un
 // Usage: swift makeart.swift <particlePackTransparentDir> <outDir>
 // Writes bill.png (drawn here), bill_char.png (bill.png darkened), flame_sheet.png
 // (Kenney Particle Pack muzzle_*.png tinted into 8 flame frames) and ember.png
-// (Kenney Particle Pack circle_05.png tinted). Colors come from Docs/UIStyle.md.
+// (Kenney Particle Pack circle_05.png tinted). Colors come from the eb882ac draft of Docs/UIStyle.md.
 import Foundation
 import CoreGraphics
 import CoreText
@@ -76,7 +76,7 @@ func hex(_ s: String) -> RGB {
 func mix(_ a: RGB, _ b: RGB, _ t: Double) -> RGB { RGB(r: a.r + (b.r - a.r) * t, g: a.g + (b.g - a.g) * t, b: a.b + (b.b - a.b) * t) }
 func cg(_ c: RGB, _ a: Double = 1) -> CGColor { CGColor(colorSpace: cs, components: [c.r, c.g, c.b, a])! }
 
-// UIStyle.md palette entries used here.
+// Palette entries of the eb882ac UIStyle.md draft used here.
 let noteText = hex("#FFF4D6"), noteBg = hex("#4A3A12"), gold = hex("#FFE7A3"), goldHover = hex("#FFC857")
 let stateAi = hex("#F2A93B"), dangerFill = hex("#C42B2F"), win = hex("#6FDCA6"), panel = hex("#14151B")
 let scrim = hex("#0A0B0F")
