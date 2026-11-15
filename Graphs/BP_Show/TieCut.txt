@@ -1,0 +1,19 @@
+; T52: a tie for the most votes cuts nobody (the Rules tab, The Cut, step 3). Tally calls it in place of
+; the Director's tiebreak, with TiedSeats, TiedNames and MaxVotes filled. The AIs read the full message
+; (who tied, with how many votes) in game_messages. The scene still counts: the
+; "tie" cue (RunCue) stops the drum roll and starts the reactions with no reveal, and EndReactions then
+; goes on to the next Scene Prep, or ends the show after the last scene (T53's LastSceneDone).
+(fn TieCut ()
+  (bind _names (CallFunction|JoinNames :Names (V TiedNames)))
+  (set TieMsg (cat "The vote is tied between " _names ", with " (str (V MaxVotes)) (select (== (V MaxVotes) 1) " vote each." " votes each.") " Nobody is cut."))
+  (add (V GameMsgs) (V TieMsg))
+  (set CutSeat -1)
+  (CallFunction|RecordVotes)
+  (clear (V TieIds))
+  (for _s (V TiedSeats)
+    (add (V TieIds) (get (V SeatId) _s)))
+  ; The tally banner just before names every actor with their votes, so this banner stays short:
+  ; with all five names it ran to five lines and covered the robots' name tags.
+  (CallFunction|CueBanner :Text "The vote is tied, so nobody is cut. The scene still counts.")
+  (print (cat "NHOS: TIE " (V TieMsg) " tied=" (Utilities|String|JoinStringArray (V TieIds) ",") " cut=none"))
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "tie" :Text "" :Num 0))

@@ -20,6 +20,12 @@
     (Class|BPCShowAudio|Reveal :self (V Audio) :IsHuman (== Num (V HumanSeat)))
     (CallFunction|CutActor :Seat Num)
     (return))
+  ; T52: a tie cuts nobody. The drum roll stops with no stinger, the audience laughs, and the reactions start.
+  (if (streq Kind "tie")
+    (Class|BPCShowAudio|StopDrum :self (V Audio))
+    (Class|BPCShowAudio|Sfx :self (V Audio) :Key "laughs" :Pitch 1.0)
+    (CallFunction|EndCut)
+    (return))
   (if (streq Kind "prep")
     (Class|BPCShowAudio|PlayMusic :self (V Audio) :Key "show")
     (CallFunction|ScenePrep)

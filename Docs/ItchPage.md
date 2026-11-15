@@ -45,7 +45,7 @@ On stage, everyone goes by a Player number, so a name can't give you away. Only 
 
 ### Director's Cut
 
-Every scene comes with a secret note from the director, which only the AIs get, and every scene ends with a cut: the cast votes, and one actor leaves the show. When the vote ties, the Director, a tired AI who isn't acting, makes the final cut. The reveal stamp says who it really was: an AI, or the human.
+Every scene comes with a secret note from the director, which only the AIs get, and every scene ends with a cut: the cast votes, and one actor leaves the show. When the vote ties, nobody is cut, but the scene still counts. The reveal stamp says who it really was: an AI, or the human.
 
 We built it the same way. A small crew of Claude agents did the work, directed by us: they wrote the Blueprints, built the stage and tested every prompt on four labs' models. The dev log has every cut we made: [YOU: dev log link].
 

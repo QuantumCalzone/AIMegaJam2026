@@ -86,6 +86,12 @@ Scene clock (T53): a show has one scene fewer than the cast, so every sample
 state says scenes = 4 (SAMPLE_SCENES). --log also fails a show whose SETUP
 lines don't say scenes = its seat count - 1.
 
+A tie (T52): a tie for the most votes cuts nobody, and the reactions still run.
+Each persona's reaction ask also goes out after a tie (Player 2 and Player 5
+tied 2 to 2), and the file check finds the design doc's tie line in
+prompts.json 'game', word for word (DOC_TIE_LINE). --log fails a scene whose
+vote ended in no NHOS: CUT or TIE line, or in more than one.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -122,7 +128,9 @@ FORMATS = ["anthropic", "openai_chat"]
 PROVIDER_KEYS = ["format", "endpoint", "key_field", "model", "max_tokens_field", "max_tokens", "effort_field", "effort"]
 # Cloudflare answers 403 to Python's default User-Agent (Relay/README.md).
 USER_AGENT = "nhos-check-prompts/1.0"
-CALLS_PER_SHOW = 90  # a full 3-scene show with 5 actors made 87 calls in T26 (a cast of 4 made 55)
+# T52: about 7 calls per actor per scene (T26: 87 for a 3-scene show of 5, 4 and 3 actors), plus 4 closing.
+# A 4-scene show with one tie (5, 5, 4 and 3 actors) makes about 7 x 17 + 4 = 123; with a tie in every scene, 144.
+CALLS_PER_SHOW = 125
 
 PLACES = ["Center", "Left", "Right", "Front", "Back", "Riser", "Prop Table"]
 MIN_CARDS, MIN_NOTES = 6, 10
@@ -138,6 +146,8 @@ DOC_NOTE_LINES = [
     "Fitting the category is not proof. An actor who only matches the category, or copies the others a turn late, probably lacks the note.",
     "In Free Talk the scene is over, so you may name the note when you accuse someone.",
 ]
+# T52: the design doc's tie rule (Bot Prompts, "Opening prompt: game rules"), word for word.
+DOC_TIE_LINE = "A tied vote cuts nobody and still uses up a scene. If the human is still on stage when the last scene ends, the human wins."
 
 # Real people and products that must never appear in prompts or on screen. The bots go by
 # their provider's name (the 'name' fields in personas.json), so those names are allowed.
@@ -644,6 +654,10 @@ def check_files(errors: list[str]):
     for line in DOC_NOTE_LINES:
         if not any(line in g for g in game):
             errors.append(f"prompts.json: 'game' lost a note rule from the design doc: {line[:60]!r}")
+    if not any(DOC_TIE_LINE in g for g in game):
+        errors.append("prompts.json: 'game' lost the design doc's tie rule (DOC_TIE_LINE)")
+    if any("Director breaks" in g for g in game):
+        errors.append("prompts.json: 'game' still says the Director breaks ties; since T52 a tie cuts nobody")
     story_text = json.dumps([prompts, scenes], ensure_ascii=False)
     for w, r in STORY_RES:
         if r.search(story_text):
@@ -896,6 +910,15 @@ class Show:
         cases["reaction"] = self.actor_state(
             pid, "reaction", "the cut, reactions", self.log(turns=3, talk=2, votes=votes),
             cut={cut_id: f"cut, revealed {reveal}"}, game_messages=g)
+
+        # T52: reaction after a tie, which cuts nobody. Player 2 and Player 5 tied 2 to 2, Player 1 got 1.
+        w, cc = self.name("worrier"), self.name("copycat")
+        votes = [("visionary", "worrier", self.vote_reason(w)), ("overclocker", "worrier", self.vote_reason(w)),
+                 (HUMAN, "copycat", self.vote_reason(cc)), ("worrier", "copycat", self.vote_reason(cc)),
+                 ("copycat", "visionary", self.vote_reason(self.name("visionary")))]
+        cases["reaction_tie"] = self.actor_state(
+            pid, "reaction", "the cut, reactions", self.log(turns=3, talk=2, votes=votes),
+            game_messages=[f"The vote is tied between {w} and {cc}, with 2 votes each. Nobody is cut."])
 
         # Reaction to its own cut.
         votes = [(v, pid, self.vote_reason(self.name(pid))) for v in SAMPLE_CAST if v != pid]
@@ -1246,7 +1269,7 @@ def check_reply(reply, ask, ctx):
 
 # ---------------------------------------------------------------- PIE log
 
-LOG_RE = re.compile(r"NHOS: (SHOW READY|RESTART|SEATS|SETUP|LOG|CLOSING|DIRECTOR)\b ?(.*)$")
+LOG_RE = re.compile(r"NHOS: (SHOW READY|RESTART|SEATS|SETUP|LOG|CLOSING|DIRECTOR|CUT|TIE|REACTIONS DONE)\b ?(.*)$")
 
 
 def check_log(path: Path, personas, all_shows: bool) -> int:
@@ -1278,11 +1301,25 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
 
     res = provider_res(personas)
     n = bad = clock_bad = 0
+    vote_bad = 0  # T52: scenes whose vote didn't end in exactly one CUT or TIE
     for i, show in enumerate(shows, 1):
         human = None
         cards = []
         seats = total = None
+        ends, scene, ties = [], 0, 0  # T52
         for kind, rest in show:
+            if kind in ("CUT", "TIE"):
+                ends.append(kind)
+                continue
+            if kind == "REACTIONS DONE":
+                # T52: each scene's vote ends in one cut or one tie (which cuts nobody), then the reactions.
+                scene += 1
+                ties += ends.count("TIE")
+                if len(ends) != 1:
+                    vote_bad += 1
+                    print(f"[FAIL] show {i} | scene {scene} | the vote ended in {' + '.join(ends) or 'no CUT or TIE line'}; one CUT or one TIE expected")
+                ends = []
+                continue
             if kind == "SEATS":
                 # Since T26: "NHOS: SEATS human=<Player number> seats=5 cast=<ids in seat order>".
                 m = re.search(r"human=(\d+)", rest)
@@ -1338,9 +1375,9 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
         if seats and total and total != seats - 1:
             clock_bad += 1
             print(f"[FAIL] show {i} | SETUP | scenes={total}, but {seats} seats means {seats - 1} scenes")
-        print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}.")
+        print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}, ties = {ties}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad else 0
+    return 1 if bad or clock_bad or vote_bad else 0
 
 
 # ---------------------------------------------------------------- main
@@ -1361,6 +1398,13 @@ def build_jobs(data, show, asks, personas, repeat):
                            "note": st["you"]["note"]}
                     pv = provider_for(data, "actor", pid)
                     jobs.append((ask, show.name(pid), pv, request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
+            if "reaction" in asks:  # T52: the same ask after a tie, which cuts nobody
+                st = cases["reaction_tie"]
+                ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": [],
+                       "note": st["you"]["note"]}
+                pv = provider_for(data, "actor", pid)
+                jobs.append(("reaction", f"{show.name(pid)} after a tie", pv,
+                             request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
         if "scene_turn" in asks:
             for card_id, pid, role, st in show.card_cases():
                 if pid in personas:
