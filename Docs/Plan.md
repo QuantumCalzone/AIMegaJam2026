@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T27 (the screen floats over the stage) is built and waits for my playtest in a game window; it keeps its claim and the locks on `WBP_Stage` and `L_Stage` until then. T28 to T30 follow it and need its box checked. T20 (audio) and T21 (how a judge plays) are free (Opus 5.5 · xhigh), but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T27 (the screen floats over the stage) is done: I played a show in a game window and the screen no longer feels blocked. Its locks are released. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 and T30 follow it. T20 (audio) is free too, and T21 (how a judge plays) is in progress, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -115,21 +115,6 @@ These hold for every task, and for editor work outside the task list too. If one
 "Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. A new task goes wherever it belongs in that order (see "Changing the plan"), so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its block moves to the end of "Done".
 
 ### Open
-
-- [ ] **T27 The screen floats over the stage**
-  - **Model and effort:** Opus 5.5, high. A new layout for the main screen, with many widget parts, plus the camera.
-  - **Depends on:** T26 (the vote row and labels in `WBP_Stage`, and its lock), T17 (the camera in `L_Stage`), T19 (the lock on `L_Stage`)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
-  - **Why:** my playtest on 2026-11-14. The panels take up almost half the screen. The UI should float on top of the game, not block it. The input box, its hint and the text I type are too light to read.
-  - **Steps:**
-    1. **The stage fills the window.** Move `StageCamera` so the theater fills the whole 16:9 frame, not only the band above the log. Check at 1600 × 900, the game-window size.
-    2. **Panels float over the stage.** No full-width band. The chat sits at the bottom left, about a third of the width and 40% of the height, on a dark panel at about 75% opacity, newest line at the bottom. The input row and its controls (Send, Pass, the vote buttons, See the results) sit under the chat. My info card is a small panel at the top right (T28 decides what it shows in each phase). The header is a slim strip at the top left. The rest of the window is the stage, and the reveal stamp stays centered on it. The title, keys and end screens don't change.
-    3. **Nothing important is hidden.** No robot, robot label, held prop or the reveal stamp sits behind a panel. If the chat covers a robot at Left, move the camera or the chat, not the robots.
-    4. **Text that reads.** Chat and card text stays 18 pt or larger, on a backing dark enough to read over the brightest part of the stage.
-    5. **The input box reads clearly:** a dark fill, the text I type in white, the hint in a gray that still reads easily on that fill (about 4.5:1 contrast), and a visible caret. Off my turn, the disabled box still looks different from the enabled one.
-  - **Done when:** screenshots at 1600 × 900 of Scene Prep, a scene turn, my Free Talk turn and the vote show the stage in the whole window, all five robots and their labels clear of the panels, and input text that is easy to read; a free autoplay show reaches `NHOS: SHOW END`; I play one show and say the screen no longer feels blocked.
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, maybe `WBP_ChatLine.uasset`, `Content/NHOS/Maps/L_Stage.umap` (the camera), and a `Graphs/WBP_Stage/` file for each graph it writes.
-  - **Waiting:** the layout, the camera and the input box are committed; the screenshots and a free autoplay show passed (see "T27: the screen floats over the stage" in Findings). The claim and the locks on `WBP_Stage` and `L_Stage` stay until my verdict. Left: play one show in a game window and say whether the screen still feels blocked.
 
 - [ ] **T28 Scene Prep shows the whole card, the scene shows only mine**
   - **Model and effort:** Opus 5.5, high. It adds a pause to the show loop and splits the info card by phase.
@@ -540,6 +525,21 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Done when:** an autoplay show prints `NHOS: ACT` lines and reaches `NHOS: SHOW END`; screenshots show robots at different places and a prop in a robot's hand; I see a throw land.
   - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset`, new `Content/NHOS/Stage/BP_Prop.uasset` and place markers, `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Core/BP_Show.uasset`. T19 also added `BP_PlaceMark`, `BP_StageDirector`, five `M_Set` instances and `Graphs/BP_Prop/`, `BP_PlaceMark/`, `BP_StageDirector/`, `BP_Robot/`, `BP_Show/ActorLine.txt` and `StagePrep.txt`.
   - **Result:** done, confirmed by me on 2026-11-14: my UI playtest that day closed it. The free autoplay check ran in a game window the same evening: 24 actions printed as `NHOS: ACT` lines (moves, looks, grabs, a give and two throws) and `NHOS: SHOW END`, with no `LogScript` line. See "T19: robots act out their actions" in Findings.
+
+- [x] **T27 The screen floats over the stage**
+  - **Model and effort:** Opus 5.5, high. A new layout for the main screen, with many widget parts, plus the camera.
+  - **Depends on:** T26 (the vote row and labels in `WBP_Stage`, and its lock), T17 (the camera in `L_Stage`), T19 (the lock on `L_Stage`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
+  - **Why:** my playtest on 2026-11-14. The panels take up almost half the screen. The UI should float on top of the game, not block it. The input box, its hint and the text I type are too light to read.
+  - **Steps:**
+    1. **The stage fills the window.** Move `StageCamera` so the theater fills the whole 16:9 frame, not only the band above the log. Check at 1600 × 900, the game-window size.
+    2. **Panels float over the stage.** No full-width band. The chat sits at the bottom left, about a third of the width and 40% of the height, on a dark panel at about 75% opacity, newest line at the bottom. The input row and its controls (Send, Pass, the vote buttons, See the results) sit under the chat. My info card is a small panel at the top right (T28 decides what it shows in each phase). The header is a slim strip at the top left. The rest of the window is the stage, and the reveal stamp stays centered on it. The title, keys and end screens don't change.
+    3. **Nothing important is hidden.** No robot, robot label, held prop or the reveal stamp sits behind a panel. If the chat covers a robot at Left, move the camera or the chat, not the robots.
+    4. **Text that reads.** Chat and card text stays 18 pt or larger, on a backing dark enough to read over the brightest part of the stage.
+    5. **The input box reads clearly:** a dark fill, the text I type in white, the hint in a gray that still reads easily on that fill (about 4.5:1 contrast), and a visible caret. Off my turn, the disabled box still looks different from the enabled one.
+  - **Done when:** screenshots at 1600 × 900 of Scene Prep, a scene turn, my Free Talk turn and the vote show the stage in the whole window, all five robots and their labels clear of the panels, and input text that is easy to read; a free autoplay show reaches `NHOS: SHOW END`; I play one show and say the screen no longer feels blocked.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, maybe `WBP_ChatLine.uasset`, `Content/NHOS/Maps/L_Stage.umap` (the camera), and a `Graphs/WBP_Stage/` file for each graph it writes.
+  - **Result:** done, confirmed by me on 2026-11-15: one show in a game window, and the screen no longer feels blocked. See "T27: the screen floats over the stage" in Findings.
 
 ## Not planned yet
 
@@ -1274,6 +1274,7 @@ Built on a Mac, checked in PIE (a 1600 × 900 floating window, Test for Free, pl
 - **Input box:** `InputBox` draws rounded dark boxes instead of the engine's light texture: fill (0.008, 0.009, 0.014) linear, a gray outline, a teal outline when focused, white text and a white caret. Off my turn the box is disabled and loses the focus outline, so it looks flat and dim.
   - **The engine draws an EditableTextBox's hint at 35% of the text color,** with no style field to change it. White text gave a hint of 1.7:1 on the dark fill when disabled, and no fill can reach 4.5:1 that way. So a new `HintLabel` (TextBlock, 18 pt, gray (0.262, 0.275, 0.314) linear, ellipsis when too long) sits over the box in a new `InputStack` overlay. `SetPrompt` now writes the hint to `HintLabel`, not to the box's own hint, and on every call (once a frame, from `BP_Show.UpdatePrompt`) sets the label's opacity to 1 when the box is empty and 0 when it isn't. Measured from screenshots: hint 5.1:1 on the fill, typed text white. The source is `Graphs/WBP_Stage/SetPrompt.txt`.
 - **Checks:** screenshots of Scene Prep, a scene turn, my Free Talk turn, the vote and a reaction after a cut are in `Saved/T27/shots/` (not in git). A free autoplay show in a game window reached `NHOS: SHOW END result=win scenes=3` with three cuts and no `LogScript` warning (the only `LogScript` line is the missing `Local/llm_key.json`, which free mode doesn't need).
+- **My playtest (2026-11-15, one show in a game window, Test for Free):** the screen no longer feels blocked, so T27 is closed.
 - **Game windows on a Mac (the first task to use the build note):**
   - The game-window command works with the macOS binary: `"/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor" "<PROJECT>" -game -windowed -ResX=1600 -ResY=900`. It reads the same `Local/switches.json`.
   - On a Mac the logs are not in `Saved/Logs/`. The editor's log is `~/Library/Logs/Unreal Engine/AIMegaJam2026Editor/AIMegaJam2026.log`. A game window started with `-log=<name>.log` writes `~/Library/Logs/AIMegaJam2026/<name>.log`.
