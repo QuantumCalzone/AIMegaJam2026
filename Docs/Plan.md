@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T27 (the screen floats over the stage) is done: I played a show in a game window and the screen no longer feels blocked. Its locks are released. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 and T30 follow it, then the UI/UX sweep: T32 (the audit, the style guide and the shared pieces), T34 (the in-show screen) and T33 (the title, key entry and end screens). T20 (audio) is free too, and T21 (how a judge plays) is in progress, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T27 (the screen floats over the stage) is done: I played a show in a game window and the screen no longer feels blocked. Its locks are released. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows it, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time) and T34 (the in-show screen) come after T32, and T33 (the title, key entry and end screens) comes after T21. T20 (audio) is free too, and T21 (how a judge plays) is in progress, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -146,6 +146,22 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Done when:** screenshots of a scene turn, Free Talk, the vote and a cut show only actor lines in the chat and the moments on the banner; a free autoplay show reaches `NHOS: SHOW END`, and its `NHOS: LOG` lines have the same form as before; I play one show and say the chat reads as a chat.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Graphs/` files for the graphs it writes, the Findings section.
 
+- [ ] **T32 UI/UX audit, style guide and shared pieces**
+  - **Model and effort:** Opus 5.5, high. Design judgment across every screen, and one style that all the widgets share.
+  - **Depends on:** T28, T29 (Scene Prep, my card and the chat's content are final, and `WBP_Stage` is unlocked). T27 is done. T30 comes after this task, so its typing line is T34's to check.
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows. No playtest: I read the findings and the style guide and say go.
+  - **Why:** my playtests keep finding text that is hard to read and screens that look unfinished (T14, T27), and visuals is a judging criterion. This task checks the whole UI the way a senior game UI/UX designer would. T34 and T33 fix what it finds.
+  - **Steps:**
+    1. **Decide before you change.** For each screen below, write the one thing I must see and the one thing I must do next, and rank everything else (primary, secondary, tertiary). Size, weight, color and position follow the rank. Look at one or two comparable chat-heavy party games for what readable looks like.
+       The screens: title, key entry, Scene Prep, a scene turn (mine and the AIs'), Free Talk, the vote (before and after a pick), the reveal stamp, a cut, the last reactions with "See the results", the win and lose end screens, and the unavailable screen T21 adds, if T21 is done.
+    2. **Screenshot every screen and state** at 1600 × 900 and 1280 × 720, with the methods that "T27: the screen floats over the stage" in Findings lists (PIE by hand through the Slate inspector for the phases, a game window for the real look). Test the worst cases: the longest provider name, a long AI line, a full cast of five. Save them in `Saved/T32/shots/` (not in git).
+    3. **Audit against known rules, and name the rule for each problem:** visual hierarchy, contrast (WCAG), a type scale, a spacing grid, alignment, consistent components, clear states and feedback (Nielsen's heuristics), safe margins from the window edge, and no meaning carried by color alone. Write the result under "T32: UI audit" in Findings, as a table: for each screen its primary focus and next action, then each problem with its rule, ranked by how much it hurts a player, with the fix and the task that does it (T32, T34 or T33).
+    4. **Write the design system** in new `Docs/UIStyle.md`: the palette by role (not only colors), the type scale, the spacing steps, the button, panel and input styles with every state (enabled, disabled, hover, pressed, focused), and the motion times. Keep what already works (the seat colors, gold for my move, the `F_UI` font) and match the theater look. Record any new font or art in `Docs/Assets.md`.
+    5. **Put each value in one place.** A new Blueprint (for example `UIStyle`) holds the palette, the sizes and the spacing, and the widgets read them from it. Build the shared pieces with it: the button styles for every state (as a function the widgets call), and `WBP_ChatLine`. The rest of `WBP_Stage` is T34's, and the other widgets are T33's.
+    6. **A cold review.** A subagent reads the screenshots and the table, without your reasoning, and critiques them as a design reviewer. Add what it finds that the table lacks.
+  - **Done when:** the table covers every screen in the list, and every problem in it has a fix and a task; `Docs/UIStyle.md` exists and the style Blueprint holds its values; screenshots show all four button states in the shared styles; a free autoplay show reaches `NHOS: SHOW END` with no new `LogScript` warning and its `NHOS: LOG` lines in the same form; I read the table and the style guide and say go.
+  - **Touches:** new `Docs/UIStyle.md`, `Docs/Assets.md`, a new style Blueprint under `Content/NHOS/UI/`, `Content/NHOS/UI/WBP_ChatLine.uasset`, the Findings section, `Graphs/` files for the graphs it writes. It only reads the other widgets.
+
 - [ ] **T30 The lines play one at a time**
   - **Model and effort:** Opus 5.5, high. Timing across the show loop, the chat and the stage.
   - **Depends on:** T19 (the stage acts out each line), T29 (only actor lines and the banner are left to pace)
@@ -161,28 +177,12 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Done when:** a free autoplay show with `fast_lines` reaches `NHOS: SHOW END`; a free autoplay show without it plays a scene turn's lines at least 1 s apart (the times on its `NHOS: LINE` lines); a screenshot shows one robot acting while its line is the newest in the chat; I play one show and say the lines are easy to follow.
   - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, `Docs/GameDesign.md`, the design doc.
 
-- [ ] **T32 UI/UX audit, style guide and shared pieces**
-  - **Model and effort:** Opus 5.5, high. Design judgment across every screen, and one style that all the widgets share.
-  - **Depends on:** T28, T29, T30 (the layout, my card, the chat and the pacing are final, and `WBP_Stage` is unlocked). T27 is done.
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows. No playtest: I read the findings and the style guide and say go.
-  - **Why:** my playtests keep finding text that is hard to read and screens that look unfinished (T14, T27), and visuals is a judging criterion. This task checks the whole UI the way a senior game UI/UX designer would. T34 and T33 fix what it finds.
-  - **Steps:**
-    1. **Decide before you change.** For each screen below, write the one thing I must see and the one thing I must do next, and rank everything else (primary, secondary, tertiary). Size, weight, color and position follow the rank. Look at one or two comparable chat-heavy party games for what readable looks like.
-       The screens: title, key entry, Scene Prep, a scene turn (mine and the AIs'), Free Talk, the vote (before and after a pick), the reveal stamp, a cut, the last reactions with "See the results", the win and lose end screens, and the unavailable screen T21 adds, if T21 is done.
-    2. **Screenshot every screen and state** at 1600 × 900 and 1280 × 720, with the methods that "T27: the screen floats over the stage" in Findings lists (PIE by hand through the Slate inspector for the phases, a game window for the real look). Test the worst cases: the longest provider name, a long AI line, a full cast of five. Save them in `Saved/T32/shots/` (not in git).
-    3. **Audit against known rules, and name the rule for each problem:** visual hierarchy, contrast (WCAG), a type scale, a spacing grid, alignment, consistent components, clear states and feedback (Nielsen's heuristics), safe margins from the window edge, and no meaning carried by color alone. Write the result under "T32: UI audit" in Findings, as a table: for each screen its primary focus and next action, then each problem with its rule, ranked by how much it hurts a player, with the fix and the task that does it (T32, T34 or T33).
-    4. **Write the design system** in new `Docs/UIStyle.md`: the palette by role (not only colors), the type scale, the spacing steps, the button, panel and input styles with every state (enabled, disabled, hover, pressed, focused), and the motion times. Keep what already works (the seat colors, gold for my move, the `F_UI` font) and match the theater look. Record any new font or art in `Docs/Assets.md`.
-    5. **Put each value in one place.** A new Blueprint (for example `UIStyle`) holds the palette, the sizes and the spacing, and the widgets read them from it. Build the shared pieces with it: the button styles for every state (as a function the widgets call), and `WBP_ChatLine`. The rest of `WBP_Stage` is T34's, and the other widgets are T33's.
-    6. **A cold review.** A subagent reads the screenshots and the table, without your reasoning, and critiques them as a design reviewer. Add what it finds that the table lacks.
-  - **Done when:** the table covers every screen in the list, and every problem in it has a fix and a task; `Docs/UIStyle.md` exists and the style Blueprint holds its values; screenshots show all four button states in the shared styles; a free autoplay show reaches `NHOS: SHOW END` with no new `LogScript` warning and its `NHOS: LOG` lines in the same form; I read the table and the style guide and say go.
-  - **Touches:** new `Docs/UIStyle.md`, `Docs/Assets.md`, a new style Blueprint under `Content/NHOS/UI/`, `Content/NHOS/UI/WBP_ChatLine.uasset`, the Findings section, `Graphs/` files for the graphs it writes. It only reads the other widgets.
-
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
-  - **Depends on:** T32 (and with it T28, T29 and T30)
+  - **Depends on:** T32, T30 (the line pacing and its typing line are in, so this task polishes the final screen)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
   - **Steps:**
-    1. **Take T34's rows from T32's table,** highest impact first, for every part of `WBP_Stage`: the header and turn line, the chat, the input row and its buttons, the vote row, my card, the banner, the reveal stamp, the robot labels and the "See the results" button. Fix hierarchy, spacing and contrast before you add any decoration, and cut anything that doesn't help me read or act.
+    1. **Take T34's rows from T32's table,** highest impact first, for every part of `WBP_Stage`: the header and turn line, the chat and its typing line (T30), the input row and its buttons, the vote row, my card, the banner, the reveal stamp, the robot labels and the "See the results" button. Fix hierarchy, spacing and contrast before you add any decoration, and cut anything that doesn't help me read or act.
     2. **Use the style.** Colors, sizes, spacing and states come from the style Blueprint and `Docs/UIStyle.md`. A change to a panel, a text size or a color goes through the style Blueprint, not a one-off edit.
     3. **Go phase by phase** (Scene Prep, a scene turn, Free Talk, the vote, a cut and its reactions): screenshot, critique it as a design reviewer, change, screenshot again. Each phase ends with one clear primary focus and one clear next action. No robot, label, prop or the stamp sits behind a panel (T27's rule).
     4. **Mark each row fixed** in "T32: UI audit", with the before and after screenshot names. Add a row for anything new you find.
@@ -190,19 +190,6 @@ These hold for every task, and for editor work outside the task list too. If one
     6. **Check without color.** Make a grayscale and a deuteranopia version of each screenshot with a small script, and look at them.
   - **Done when:** every T34 row is fixed; screenshots at 1600 × 900 and 1280 × 720 of every phase show no clipped, overlapping or hidden text and all five robots and their labels clear of the panels; in the grayscale and deuteranopia versions, who is speaking, whose turn it is and which vote button is which still show; body text is 18 pt or larger, text contrast is 4.5:1 or better, and button and border contrast is 3:1 or better, measured from the screenshots and written in Findings; a free autoplay show reaches `NHOS: SHOW END` with no new `LogScript` warning and its `NHOS: LOG` lines in the same form; I play one show in a game window and say it is readable and polished.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_ChatLine.uasset` if T32 left a row there, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, the Findings section.
-
-- [ ] **T33 Fix the title, key entry and end screens**
-  - **Model and effort:** Sonnet 5.5, medium. Well-specified UMG work from T32's table and style guide.
-  - **Depends on:** T32, T21 (it changes `WBP_Keys` and adds a screen)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, from the title to the end screen).
-  - **Steps:**
-    1. **Take T33's rows from T32's table,** highest impact first, for `WBP_Title`, `WBP_Keys` (empty, partly filled and with an error), T21's unavailable screen, `WBP_EndScreen` and `WBP_EndCard` (win and lose, every card, the longest provider name).
-    2. **Use the style.** Colors, sizes, spacing and states come from the style Blueprint and `Docs/UIStyle.md`, with no loose values in these widgets.
-    3. **Go screen by screen:** screenshot, critique it as a design reviewer, change, screenshot again. Each screen ends with one clear primary focus and one clear next action.
-    4. **Mark each row fixed** in "T32: UI audit", with the before and after screenshot names. Add a row for anything new you find.
-    5. **Check without color,** as T34 does: a grayscale and a deuteranopia version of each screenshot.
-  - **Done when:** every T33 row is fixed; screenshots at 1600 × 900 and 1280 × 720 of each screen and state show no clipped, overlapping or hidden text; in the grayscale and deuteranopia versions, the end cards still tell apart and each button's job still shows; body text is 18 pt or larger, text contrast is 4.5:1 or better, and button and border contrast is 3:1 or better, measured from the screenshots and written in Findings; a free autoplay show reaches `NHOS: SHOW END`; I play from the title to the end screen and say it is readable and polished.
-  - **Touches:** `Content/NHOS/UI/WBP_Title.uasset`, `WBP_Keys.uasset`, `WBP_EndScreen.uasset`, `WBP_EndCard.uasset`, T21's unavailable-screen widget, `Graphs/` files for the graphs it writes, the Findings section.
 
 - [ ] **T20 Audio**
   - **Model and effort:** Sonnet 5.5, medium. Finding sounds and playing them at points the show loop already has.
@@ -227,6 +214,19 @@ These hold for every task, and for editor work outside the task list too. If one
     3. Write the itch.io page text that explains the ways to play.
   - **Done when:** with a wrong relay address, the unavailable screen and key entry appear; keys entered on that screen play a show; a budget error from the relay shows its message.
   - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Keys.uasset`, new `Docs/ItchPage.md`, `Relay/` only if a limit changes.
+
+- [ ] **T33 Fix the title, key entry and end screens**
+  - **Model and effort:** Sonnet 5.5, medium. Well-specified UMG work from T32's table and style guide.
+  - **Depends on:** T32, T21 (it changes `WBP_Keys` and adds a screen)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, from the title to the end screen).
+  - **Steps:**
+    1. **Take T33's rows from T32's table,** highest impact first, for `WBP_Title`, `WBP_Keys` (empty, partly filled and with an error), T21's unavailable screen, `WBP_EndScreen` and `WBP_EndCard` (win and lose, every card, the longest provider name).
+    2. **Use the style.** Colors, sizes, spacing and states come from the style Blueprint and `Docs/UIStyle.md`, with no loose values in these widgets.
+    3. **Go screen by screen:** screenshot, critique it as a design reviewer, change, screenshot again. Each screen ends with one clear primary focus and one clear next action.
+    4. **Mark each row fixed** in "T32: UI audit", with the before and after screenshot names. Add a row for anything new you find.
+    5. **Check without color,** as T34 does: a grayscale and a deuteranopia version of each screenshot.
+  - **Done when:** every T33 row is fixed; screenshots at 1600 × 900 and 1280 × 720 of each screen and state show no clipped, overlapping or hidden text; in the grayscale and deuteranopia versions, the end cards still tell apart and each button's job still shows; body text is 18 pt or larger, text contrast is 4.5:1 or better, and button and border contrast is 3:1 or better, measured from the screenshots and written in Findings; a free autoplay show reaches `NHOS: SHOW END`; I play from the title to the end screen and say it is readable and polished.
+  - **Touches:** `Content/NHOS/UI/WBP_Title.uasset`, `WBP_Keys.uasset`, `WBP_EndScreen.uasset`, `WBP_EndCard.uasset`, T21's unavailable-screen widget, `Graphs/` files for the graphs it writes, the Findings section.
 
 - [ ] **T31 Tab completes names, places and props (cut if we fall behind)**
   - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
