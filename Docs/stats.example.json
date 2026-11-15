@@ -1,5 +1,6 @@
 {
-	"_readme": "Copy this file to Local/stats.json (git ignores Local/), or run: python Tools/analytics_report.py --new-key. stats_key is the relay's STATS_KEY Worker secret (16 characters or more; --new-key makes a 64-character one). relay is the relay's address; leave it empty to use \"relay\" from Content/NHOS/Data/llm.json. Never put this key in Local/llm_key.json, which ships next to the packaged game, and never commit it.",
+	"_readme": "Copy this file to Local/stats.json (git ignores Local/), or run: python Tools/analytics_report.py --new-key. stats_key is the relay's STATS_KEY Worker secret (16 characters or more; --new-key makes a 64-character one). relay is the relay's address; leave it empty to use \"relay\" from Content/NHOS/Data/llm.json. Never put this key in Local/llm_key.json, which ships next to the packaged game, and never commit it. ignore_players lists the player ids of our own machines (the game prints its id in the log); the report always leaves their events out.",
 	"relay": "",
-	"stats_key": ""
+	"stats_key": "",
+	"ignore_players": []
 }

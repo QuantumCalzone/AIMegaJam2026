@@ -123,3 +123,15 @@ Credit lines for the CC BY files:
 
 - "Applaudissements" by Thomas Bresson, CC BY 4.0, via Wikimedia Commons.
 - "approx 800 laughter and clapter 1" by lonemonk, CC BY 3.0, via Wikimedia Commons.
+
+### Voices (T72)
+
+Made in T72 (2026-11-15). Each speaker's set of short gibberish syllables, played one per syllable by `BPC_ShowAudio.Syllable` (T73 calls it as a line types out). The four robot sets are made by our own script, with no outside audio and no AI audio tool. My own set is my own recording. All are 44.1 kHz, 16-bit mono, on `SC_Voice` at wave volume 0.6 (0.3 effective, the same as the talk blip), and set to the talk blip's loudness. The source wavs are in `SourceAssets/Audio/voices/<set>/`.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Content/NHOS/Audio/Voice/OpenAI/S_VoiceOpenAI_00` to `_09` | OpenAI's voice: a clean, bright chirp (soft sine harmonics, front vowels, a calm upward glide), 0.08 to 0.12 s | Ours: `python Tools/make_voices.py` (seed 7272; base pitch 201 Hz, formants × 1.15, a +6 dB shelf at 2 kHz, a faint 23 ms echo) | Ours |
+| `Content/NHOS/Audio/Voice/Anthropic/S_VoiceAnthropic_00` to `_09` | Anthropic's voice: a warm, round vowel (a glottal pulse, rounded vowels, a low-pass at 2.2 kHz, a 9 Hz nervous flutter, a falling end), 0.09 to 0.13 s | Ours: `python Tools/make_voices.py` (seed 7272; base pitch 149 Hz) | Ours |
+| `Content/NHOS/Audio/Voice/SpaceXAI/S_VoiceSpaceXAI_00` to `_10` | SpaceXAI's voice: a crunchy, bit-crushed buzz (square and saw, driven into clipping, crushed to 3 bits at 7.35 kHz, jumpy pitch steps), 0.08 to 0.11 s | Ours: `python Tools/make_voices.py` (seed 7272; base pitch 228 Hz) | Ours |
+| `Content/NHOS/Audio/Voice/Meta/S_VoiceMeta_00` to `_09` | Meta's voice: a low, wobbly drone (a dark saw with a nasal hum, an 8 Hz vibrato of 7% with tremolo, a flat monotone), 0.10 to 0.15 s | Ours: `python Tools/make_voices.py` (seed 7272; base pitch 122 Hz) | Ours |
+| `Content/NHOS/Audio/Voice/Me/S_VoiceMe_00` to `_11` | My voice: a human doing a flat robot impression ("beep", "boop", "bzzt", "dee", "doo", "bop", "kshh", "blip", "zap", "bleep", "dah", "wub"), 0.22 to 0.25 s | Recorded by the project owner on 2026-11-15 (`SourceAssets/Audio/voices/Me/source/recording.wav`), cut by `python Tools/make_voices.py --me SourceAssets/Audio/voices/Me/source/recording.wav --first 12 --max-len 0.25` | Ours |
