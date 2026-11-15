@@ -10,7 +10,9 @@ Instructions for one Claude Fable 5.2 session. It starts Claude Opus 5.5 session
 2. In the Claude desktop app's Code tab, start a new session on the repo folder itself, with no worktree, and pick Fable 5.2 as its model. The sessions it starts share that folder, because that is the folder the editor has open.
 3. Drag this file into the chat and send it. You don't need to type anything else. Typing `Follow the Prompt section of Docs/LaunchAgents.md.` works too.
 
-The dispatcher only starts sessions and keeps track of them. Each task runs in a normal session in the sidebar. Open that session to answer its questions, approve downloads and play your playtests.
+The dispatcher only starts sessions and keeps track of them. Each task runs in a normal session in the sidebar. Open that session to answer its questions, approve downloads and play your playtests. A session archives itself when it is done and leaves you nothing to decide or do. You can still open it from the sidebar's Archived list. Unless the sessions run in auto mode, the app asks you to approve each archive.
+
+The app wakes the dispatcher only when every session it started is idle, or when you send it a message. If a lane looks empty while one long task runs, send the dispatcher `check`.
 
 If a second machine works at the same time, give it its own dispatcher. Each machine has its own editor lane. LFS locks keep the two machines apart, so every session claims its task and locks its assets as the plan says.
 
@@ -74,7 +76,7 @@ Use sessions, not subagents. Each task stops to ask me things (an OK on prompt t
 
 ### 3. Keep every lane busy
 
-You get a note each time a session you started ends a turn. A note quotes only the first 400 characters of the session's report, so read git and the session's status file too. Don't poll. On each note, and on each message from me:
+The app wakes you when every session you started is idle, or when I send you a message, and brings a note from each session that ended a turn. A note quotes only the first 400 characters of the session's report, so read git and the session's status file too. A session that archived itself is done and never wakes you again: list your linked sessions with the archived ones included, and check git for it as usual. If a session ended with `DONE` but didn't archive itself (I declined the call, or had it open on screen), leave it. Don't poll. On each note, and on each message from me:
 
 1. **Check git, not only the note.** Look for the task's commit in `git log`, its checked box in the plan, its status file gone, and `git status -sb` for commits that are not pushed.
 2. **Update the ledger.** Work out what the change freed. A session whose commit is pushed frees everything it held. A session that pushed its work to wait for my check frees everything but its claim, so the next task in its chain can start. Re-read the plan's Open list each time, because I add, move and drop tasks, and sessions add tasks for the fixes they find. Put each new task in the ledger by its Needs and Touches.
@@ -116,6 +118,7 @@ End every brief with these lines:
 > - In the editor, read only the graphs you need, keep graph sources in `Graphs/`, and build new systems in their own Blueprints, as the plan's build notes say.
 > - I picked Opus 5.5 at xhigh effort for this session on purpose, so don't ask me about the model or the effort.
 > - Start the last thing you write in each turn (your wrap-up recap, if you write one) with one of these: `DONE`, `WAITING ON YOU: <what>`, or `BLOCKED: <what>`. The dispatcher sees only the first 400 characters.
+> - Archive yourself when you are done. I asked for this: "Have each dispatched session archive itself if it has no remaining recommended actions or decisions from me." So when your turn ends with `DONE` and leaves me nothing to decide or do (no question, no recommended next step, no proposed session), archive yourself as the very last step, with `archive_session` and `session_id: "self"` (load it with ToolSearch if it is deferred). First check that your commits are pushed, your claim is released, your status file and any playtest copy are gone and, if you work in a worktree, your branch is merged into the repo folder, because archiving deletes your worktree. The conversation ends when the call returns, so write your final `DONE` line (and your wrap-up, if you use one) before it, in the same message as the call or earlier. If the call is declined or refused, end your turn and don't try again. Never archive yourself while you wait for me or are blocked.
 
 #### Task brief
 
