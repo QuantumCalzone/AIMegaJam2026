@@ -25,15 +25,15 @@
   (bind _es (select _v (Math|Vector|MakeVector :X 0.1 :Y 0.12 :Z 0.12) (select _w (Math|Vector|MakeVector :X 0.1 :Y 0.11 :Z 0.07) (select _o (Math|Vector|MakeVector :X 0.1 :Y 0.09 :Z 0.09) (select _h (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.1) (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.1))))))
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetEyeL) :NewScale3D _es)
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetEyeR) :NewScale3D _es)
-  ; T80: each head's face. The shared round head at the origin, Meta's doll face and my box's eyes behind their slots.
-  (Transformation|SetRelativeLocation :self (Variables|Default|GetFace) :NewLocation (select _r (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 0.0) (select _p (Math|Vector|MakeVector :X -4.0 :Y 0.0 :Z -1.0) (Math|Vector|MakeVector :X -7.5 :Y 0.0 :Z 3.0))))
+  ; T80: each head's face. Meta's doll face and my box's eyes behind their slots. T82: the shared round head's face moves with the Visor into the model's screen recess.
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetFace) :NewLocation (select _r (Math|Vector|MakeVector :X -5.0 :Y 0.0 :Z -4.0) (select _p (Math|Vector|MakeVector :X -4.0 :Y 0.0 :Z -1.0) (Math|Vector|MakeVector :X -7.5 :Y 0.0 :Z 3.0))))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetMouth) :NewLocation (select _h (Math|Vector|MakeVector :X 35.9 :Y 0.0 :Z 119.0) (select _p (Math|Vector|MakeVector :X 33.2 :Y 0.0 :Z 122.0) (Math|Vector|MakeVector :X 34.5 :Y 0.0 :Z 123.0))))
   ; T80: LED eyes on the shared head (light blue) and on Meta (gold); my eyes are eyes. Only the shared head's mouth is an LED.
   (Variables|Default|SetEyeColor (select _p (Utilities|Struct|MakeLinearColor :R 1.0 :G 0.62 :B 0.08 :A 1.0) (select _h (Utilities|Struct|MakeLinearColor :R 0.78 :G 0.76 :B 0.7 :A 1.0) (Utilities|Struct|MakeLinearColor :R 0.55 :G 0.85 :B 1.0 :A 1.0))))
   (Variables|Default|SetLedEyes (not _h))
   (Variables|Default|SetLedMouth _r)
-  ; T79: the shoulders of each body. T80: Meta's tee and my body box.
-  (bind _sy (select _v 26.0 (select _w 29.0 (select _o 30.0 (select _p 29.0 33.0)))))
+  ; T79: the shoulders of each body. T80: Meta's tee and my body box. T82: OpenAI's and SpaceXAI's model bodies are wider, so their shoulders move out; Anthropic's arms angle out from its egg instead (AArmXL/AArmXR).
+  (bind _sy (select _v 24.0 (select _w 30.0 (select _o 35.0 (select _p 29.0 33.0)))))
   (bind _sz (select _v 80.0 (select _w 76.0 (select _o 74.0 (select _p 86.0 94.0)))))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotL) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y (- _sy) :Z _sz))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotR) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y _sy :Z _sz))

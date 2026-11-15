@@ -1,5 +1,5 @@
 ; T75: how far forward (x, on Face) the shared round head's surface is at height Z and side Y: the screen
-; (Visor) or the shell (RHead), whichever is in front, plus BrowFwd. FaceApply puts the run-time brows there
+; (Visor) or the shell (the model RShell, as an ellipsoid; T82), whichever is in front, plus BrowFwd. FaceApply puts the run-time brows there
 ; and turns them along it, so they never sink into the curved screen. FaceRest reads the two shapes.
 (fn ScreenX (Y Z)
   (bind _vy (/ Y (.y (V ScrR))))

@@ -3,16 +3,15 @@
 ; It only reads in the construction script; with FaceReady it also moves the new parts onto this head.
 (fn FaceRest ()
   (CallFunction|FaceParts)
-  ; The shared head's screen (Visor) and shell (RHead) as ellipsoids on Face, for ScreenX.
+  ; The shared head's screen (Visor) and shell as ellipsoids on Face, for ScreenX. T82: the shell is the
+  ; Hyper3D model (RShell), whose outside is close to an ellipsoid 64 deep, 70 wide and 66.8 tall around z 124.6.
   (bind _fl (Class|SceneComponent|GetRelativeLocation :self (V Face)))
   (bind _vl (Class|SceneComponent|GetRelativeLocation :self (V Visor)))
   (bind _vs (Class|SceneComponent|GetRelativeScale3D :self (V Visor)))
-  (bind _hl (Class|SceneComponent|GetRelativeLocation :self (V RHead)))
-  (bind _hs (Class|SceneComponent|GetRelativeScale3D :self (V RHead)))
   (set ScrC (Math|Vector|MakeVector :X (- (.x _vl) (.x _fl)) :Y 0.0 :Z (- (.z _vl) (.z _fl))))
   (set ScrR (Math|Vector|MakeVector :X (* (.x _vs) 50.0) :Y (* (.y _vs) 50.0) :Z (* (.z _vs) 50.0)))
-  (set ShC (Math|Vector|MakeVector :X (- (.x _hl) (.x _fl)) :Y 0.0 :Z (- (.z _hl) (.z _fl))))
-  (set ShR (Math|Vector|MakeVector :X (* (.x _hs) 50.0) :Y (* (.y _hs) 50.0) :Z (* (.z _hs) 50.0)))
+  (set ShC (Math|Vector|MakeVector :X (- 0.0 (.x _fl)) :Y 0.0 :Z (- 124.6 (.z _fl))))
+  (set ShR (Math|Vector|MakeVector :X 32.0 :Y 35.0 :Z 33.4))
   (set RestEyeLocL (Class|SceneComponent|GetRelativeLocation :self (V PEyeL)))
   (set RestEyeRotL (Class|SceneComponent|GetRelativeRotation :self (V PEyeL)))
   (set RestEyeScaleL (Class|SceneComponent|GetRelativeScale3D :self (V PEyeL)))
