@@ -1,0 +1,9 @@
+; T64: Action! (SendButton) is greyed while the builder holds an unfinished action, with a tip that says why. SetPrompt
+; calls this every frame, but it touches the button only when the builder's answer changes, so a builder that is never
+; armed changes nothing, and a tooltip on screen doesn't flicker. SetPrompt's CanType block also reads LastBlock.
+(fn SyncAction ()
+  (bind _blk (Class|WBPActionBuilder|Blocks :self (Variables|WBP_Stage|GetActionBuilder)))
+  (if (xor _blk (V LastBlock))
+    (set LastBlock _blk)
+    (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetSendButton) :bInIsEnabled (and (Variables|Default|GetLastCanType) (not _blk)))
+    (Widget|SetToolTipText :self (Variables|WBP_Stage|GetSendButton) :InToolTipText (Utilities|Text|ToText(String) (select _blk "Pick a target first." "")))))

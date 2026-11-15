@@ -1,11 +1,16 @@
+; T64: Scene Prep closes the builder and gives the lower panel back its size; the play side styles Action! as the one
+; Primary button (gold, ink text: "act now").
 (fn SetPrepMode (Prep)
   (if Prep
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "SelfHitTestInvisible")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetStartButton) :InVisibility "Visible")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Collapsed")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Collapsed")
+    (Class|WBPActionBuilder|Close :self (Variables|WBP_Stage|GetActionBuilder))
+    (CallFunction|FitBuilder)
     (else
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "Collapsed")
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetStartButton) :InVisibility "Collapsed")
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Visible")
-      (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Visible"))))
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Visible")
+      (Class|UIStyle|StyleButton :Button (Variables|WBP_Stage|GetSendButton) :Label (Variables|WBP_Stage|GetSendLabel) :Kind "Primary"))))

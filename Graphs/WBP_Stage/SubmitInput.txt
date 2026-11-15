@@ -1,0 +1,17 @@
+; WBP_Stage.SubmitInput: Enter in the input box (OnTextCommitted) and Action! (OnClicked(SendButton)) both land here.
+; It trims the typed text, prints NHOS: TYPED and hands it to BP_Show through OnSend, then clears the box and keeps
+; the keyboard focus in it.
+; T64: while a picked action still lacks a chip, it does nothing (step 7). While the builder is up, an empty line
+; goes through too, so a No action turn with no words sends; with the builder down, an empty line still sends nothing.
+(fn SubmitInput ()
+  (bind _blk (Class|WBPActionBuilder|Blocks :self (Variables|WBP_Stage|GetActionBuilder)))
+  (if _blk
+    (print "NHOS: BUILDER blocked")
+    (return))
+  (bind _bon (Class|WBPActionBuilder|IsOn :self (Variables|WBP_Stage|GetActionBuilder)))
+  (bind _text (Utilities|String|Trim (Utilities|String|TrimTrailing (Utilities|String|ToString(Text) (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox))))))
+  (if (or (not (Utilities|String|IsEmpty _text)) _bon)
+    (print (cat "NHOS: TYPED " _text))
+    (Default|CallOnSend self _text))
+  (Widget|SetText(TextBox) :self (Variables|WBP_Stage|GetInputBox) :InText (Utilities|Text|ToText(String) ""))
+  (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox)))

@@ -1,0 +1,6 @@
+; T64: BP_Show.StartTurn calls this once per scene turn, just before the turn's header cue. It only arms the builder:
+; the builder opens when that header shows on screen (SetPhase), so it never opens over the last turn's lines (T30).
+; It also hands the builder the input box, so a click on an action or a chip gives the keyboard focus back to it.
+(fn BuilderTurn (Seat)
+  (Class|WBPActionBuilder|SetFocusBack :self (Variables|WBP_Stage|GetActionBuilder) :Target (Variables|WBP_Stage|GetInputBox))
+  (Class|WBPActionBuilder|Arm :self (Variables|WBP_Stage|GetActionBuilder) :ForSeat Seat))

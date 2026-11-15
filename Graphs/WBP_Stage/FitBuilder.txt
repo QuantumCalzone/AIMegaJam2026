@@ -1,0 +1,21 @@
+; T64 (question 1): while the builder shows, the lower panel widens (LowerWideBuild, so the seven actions fit one row)
+; and the chat gives up exactly the builder's height (its desired height and the 8 below it), never going under
+; ChatMin. So the panel's top stays where it is without the builder and never moves up over the robots (T27), however
+; many rows of chips the picked action has (Look has three). SetPrompt runs this every frame, SetPhase and SetPrepMode
+; right away. It touches a widget only when a value changes, so a builder that is never armed changes nothing, and
+; the chat is scrolled to its newest line whenever its height changes.
+(fn FitBuilder ()
+  (bind _on (Class|WBPActionBuilder|IsOn :self (Variables|WBP_Stage|GetActionBuilder)))
+  (if (xor _on (V FitOn))
+    (set FitOn _on)
+    (set LastChat (V ChatTall))
+    (Layout|SizeBox|SetWidthOverride :self (Variables|WBP_Stage|GetLowerSize) :InWidthOverride (select _on (V LowerWideBuild) (V LowerWide)))
+    (Layout|SizeBox|SetHeightOverride :self (Variables|WBP_Stage|GetChatSize) :InHeightOverride (V ChatTall))
+    (Widget|ScrolltoEnd :self (Variables|WBP_Stage|GetLogScroll)))
+  (if _on
+    (bind (_bw _bh) (Math|Vector2D|BreakVector2D (Widget|GetDesiredSize :self (Variables|WBP_Stage|GetActionBuilder))))
+    (bind _ch (Math|Float|Max(Float) (- (V ChatTall) (+ _bh 8.0)) (V ChatMin)))
+    (if (!= _ch (V LastChat))
+      (set LastChat _ch)
+      (Layout|SizeBox|SetHeightOverride :self (Variables|WBP_Stage|GetChatSize) :InHeightOverride _ch)
+      (Widget|ScrolltoEnd :self (Variables|WBP_Stage|GetLogScroll)))))

@@ -1,0 +1,6 @@
+; T64: what Action! sends. BP_Show.HandleSend calls it in a scene turn, right before SendHumanTurn (T63), and passes
+; Verb, Item and Target on with the typed line. It seals the builder until the next turn. An unfinished action comes
+; back as a look around with Ready false; only T66's timer can send one, since Action! and Enter wait for Ready.
+(fn TakeAction ()
+  (bind (_v _i _t _r) (Class|WBPActionBuilder|Seal :self (Variables|WBP_Stage|GetActionBuilder)))
+  (return _v _i _t _r))

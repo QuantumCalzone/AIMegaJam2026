@@ -1,3 +1,6 @@
+; T64: the builder hears when my input opens (SetLive), and Action! (SendButton) stays greyed while the builder holds
+; an unfinished action (LastBlock, kept by SyncAction at the end of every call). FitBuilder follows the builder's
+; height every frame.
 (fn SetPrompt (Turn Hint CanType)
   (Widget|SetRenderOpacity :self (Variables|WBP_Stage|GetHintLabel) :InOpacity (select (Utilities|Text|TextIsEmpty :InText (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox))) 1.0 0.0))
   (if (not (Utilities|String|EqualExactly(String) Turn (Variables|Default|GetLastTurn)))
@@ -9,8 +12,11 @@
   (if (xor CanType (Variables|Default|GetLastCanType))
     (Variables|Default|SetLastCanType CanType)
     (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetInputBox) :bInIsEnabled CanType)
-    (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetSendButton) :bInIsEnabled CanType)
+    (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetSendButton) :bInIsEnabled (and CanType (not (V LastBlock))))
     (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetPassButton) :bInIsEnabled (and CanType (Variables|Default|GetPassOn)))
+    (Class|WBPActionBuilder|SetLive :self (Variables|WBP_Stage|GetActionBuilder) :On CanType)
     (Class|Text|SetColorandOpacity :ColorAndOpacity (Utilities|Struct|MakeSlateColor (select CanType (Utilities|Struct|MakeLinearColor 1.0 0.85 0.45 1.0) (Utilities|Struct|MakeLinearColor 0.8 0.83 0.9 1.0))) :self (Variables|WBP_Stage|GetTurnText))
     (if CanType
-      (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox)))))
+      (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox))))
+  (CallFunction|SyncAction)
+  (CallFunction|FitBuilder))
