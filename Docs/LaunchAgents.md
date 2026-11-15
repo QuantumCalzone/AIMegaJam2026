@@ -24,7 +24,7 @@ So only one session drives the editor at a time. Beyond that, start a session fo
 
 You are the dispatcher for the jam project in this folder. You start Claude Opus 5.5 sessions at xhigh effort that do the tasks in `Docs/Plan.md`, and you keep each lane busy until the submission. You do no task work yourself: you don't edit project files, drive the editor or commit. You push and unlock only as step 3.6 says.
 
-First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/Plan.md`. In the plan, read "How to run a task", "Claiming a task", the "Time check", the build notes and every unchecked task.
+First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/Plan.md`. In the plan, read "How to run a task", "Claiming a task", the "Time check", the build notes and every unchecked task's entry (its Depends on, Needs and Touches lines, and any Waiting or Blocked line). A task's Why and Steps are in its file in `Docs/tasks/`; read one only when you need it, for example to write a prep brief.
 
 ### The lanes
 
@@ -119,7 +119,7 @@ Add these lines for some tasks:
 
 #### T20 prep: find music and sound effects
 
-> Get the audio ready for T20 in `Docs/Plan.md` without using the editor. The plan says that finding and choosing the files can start at any time. Don't claim T20, and don't open or drive the Unreal Editor.
+> Get the audio ready for T20 (`Docs/tasks/T20.md`, and its entry in `Docs/Plan.md`) without using the editor. The plan says that finding and choosing the files can start at any time. Don't claim T20, and don't open or drive the Unreal Editor.
 >
 > 1. T20's steps 1 and 2 list these sounds: a title music loop, a quieter show loop, a drum roll for the vote, two reveal stingers (one for AI, one for HUMAN), applause, laughs, UI clicks, one talk blip (the game pitches it per persona), and small sounds for robot moves, grabs and throws. Find 1 or 2 candidates for each. The license must allow use in a game that ships as a packaged build. Prefer CC0, then licenses such as CC-BY (record the exact attribution text) or Fab's standard license. Don't use licenses that are non-commercial only or that forbid derivatives. AI audio tools are allowed; record the tool and the prompt.
 > 2. Before each download, ask me and give the file name, source and size. Save the files to `Local/audio/` (git ignores `Local/`), not under `Content/`. T20 imports them through the editor.
@@ -130,7 +130,7 @@ Add these lines for some tasks:
 
 #### T21 prep: write and test the relay server
 
-> Write the relay-server half of T21 in `Docs/Plan.md` now, so that T21 has only the game side left when the editor lane gets to it. Don't claim T21, don't check its box, and don't touch the editor or any `.uasset`.
+> Write the relay-server half of T21 (`Docs/tasks/T21.md`) now, so that T21 has only the game side left when the editor lane gets to it. Don't claim T21, don't check its box, and don't touch the editor or any `.uasset`.
 >
 > - Read T21, then `Docs/GameDesign.md` (the persona provider table and the Tech & Build tab), `Content/NHOS/Data/llm.json`, and the LLM-calls decision in `Agents/decisions/`. The game makes raw HTTP calls with the `HttpBlueprint` plugin: a JSON body, no streaming, and the response arrives as a string with no status code.
 > - Build `Relay/` as a Cloudflare Worker, the plan's example host. If another host seems clearly better, ask me first. The game sends `{ provider, body }`. The relay keeps an allow-list of providers in config: the endpoint, the auth style (Anthropic's `x-api-key` plus `anthropic-version`, or `Authorization: Bearer` for the Chat Completions shape) and the secret name. Keep model ids in config too, because T16 picks them later. After its checks, the relay forwards the body unchanged and returns the provider's reply.

@@ -46,7 +46,7 @@ The jam page asks for the packaged build as a zip named `TeamName_GameName`, und
 - **Zip name:** `[YOU: team name]_NoHumansOnSet.zip`
 - **Platform:** Windows 10 or 11, a Development build (`Packaged/Windows/`, made in T22).
 - **Before zipping:** delete every `.pdb` file and the build's `Local/` folder (it can hold `llm_key.json` with our keys, and `switches.json`). Then search the unzipped build for anything that looks like a key: `sk-`, `xai-`, `api_key` with a value, or any long random string in a `.json` or `.ini`. Our only key placeholders are in `Docs/llm_key.example.json`, which isn't part of the build.
-- **Size:** T02's spike build was 968 MB, and 387 MB zipped without the `.pdb`. **[T22]** writes the real size in Findings.
+- **Size:** T02's spike build was 968 MB, and 387 MB zipped without the `.pdb`. **[T23]** writes the real size in `Docs/tasks/T23.md` (T22 was dropped; I package the build myself).
 - **On itch.io:** upload the zip as a Windows download, set "Kind of project" to Downloadable, then submit the project to the jam before **Nov 15, 5:59 PM PST (8:59 PM EST)**. Late entries are disqualified.
 
 ### Gameplay video link (30 to 60 seconds)

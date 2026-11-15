@@ -1,4 +1,4 @@
-**Draft from T32 prep.** It was written without the editor, from the plan's Findings, the `Graphs/` sources, the data files and the T27 screenshots in `Saved/T27/shots/`. T32 checks it against new screenshots, finishes it, records any new font or art in `Docs/Assets.md`, and builds the style Blueprint from it. Values marked *(guess)* were not read from Findings, the data files or `Graphs/`.
+**Draft from T32 prep.** It was written without the editor, from the Findings in the task files (`Docs/tasks/`), the `Graphs/` sources, the data files and the T27 screenshots in `Saved/T27/shots/`. T32 checks it against new screenshots, finishes it, records any new font or art in `Docs/Assets.md`, and builds the style Blueprint from it. Values marked *(guess)* were not read from Findings, the data files or `Graphs/`.
 
 # No Humans On Set: UI style guide
 
