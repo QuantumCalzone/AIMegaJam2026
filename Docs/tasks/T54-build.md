@@ -12,13 +12,13 @@ The design doc was read, not changed: Rules tab rev 27 (The Cut, step 6, and the
   - **`ShowEndScreen`:** the win subtitle reads `WinLine`; the `SHOW END` line gets ` reason=<WinReason>` right after `result=`.
   - **Nothing else changes.** T53's `EndReactions` already ends the show at two left or after the last scene, and T52's tie goes through it.
 - **`prompts.json` `game`:** goal 1 names both wins, and a new sub-bullet under it says a tie helps the human. `asks.closing` stays as it is (part 2).
-- **`Docs/ItchPage.md`:** the premise line and the "If you're cut" line say both wins; optionally a tip that a split vote helps (part 3).
+- **`Docs/ItchPage.md`:** the premise line and the "If you're cut" line say both wins, and "How to fool them" gains a tip that a split vote helps (part 3).
 - **`Tools/check_prompts.py`:** the closing ask goes out after all three endings (Meta: the final two; SpaceXAI: the last scene; OpenAI and Anthropic: caught), the file check fails a goal 1 that doesn't name both wins, and `--log` fails a `SHOW END` whose `reason=` doesn't match how the show ended (part 4). Tried on a scratch copy: `--offline` passes, a goal 1 without the last scene fails, and seven synthetic logs give the expected result.
 - **`WBP_Title`, `WBP_Unavailable`:** read only; report any old win rule (part 1e).
 
 ## Questions for my person
 
-The T54 session asks these with the question tool if my person hasn't answered them here yet, one at a time. The recommended answer is first. If the answers are below, use them and don't ask again.
+My person has answered all three (see "Answers" below). The recommended answer is first in each.
 
 1. **The end screen's title on a win.** The task says the title and subtitle say how I won, and gives the two sentences.
    - **Keep "YOU WIN" on the gold plate for both wins; the subtitle says how (Recommended).** The plate stays one big word, the sentence says the rest, and T60 redesigns the win screen anyway (the doc's Win screen row names no title).
@@ -30,7 +30,7 @@ The T54 session asks these with the question tool if my person hasn't answered t
    - **Add it (Recommended).** T52's "Why" names splitting the vote as a new play, and the page says nowhere that a tie helps me.
    - Leave it out; the page's only tie sentence stays T52's "When the vote ties, nobody is cut, but the scene still counts."
 
-Answers: _(none yet)_
+**Answers (my person, 2026-11-15, to the prep session): all three as recommended.** 1: "YOU WIN" for both wins, the subtitle says how. 2: two left after the last scene is `final_two`. 3: add the itch tip (part 3c). Don't ask again; copy these answers under "Findings" in `T54.md`.
 
 ## Wording that comes from the task or the doc
 
@@ -103,7 +103,7 @@ Not questions, but listed so my person can see each new line in one place.
 - Create it with `add_function_graph`, add one Boolean input `Win` (`add_function_param`), compile, then expand the file with `Tools/dslpp.py` and write it with `write_graph_dsl`. Compile before you place its call node in `EndShow` (T18: a call node goes stale when its function gets a new parameter).
 - **No `if` here has a `return`.** T30 found that an `if` without `return` inside the else path of an earlier `(if ... (return))` doesn't join the code after it, so the print would run only on one path. Two top-level `if`s with `and` avoid that.
 - Every form is in a pushed source: `(for _s (range ...))` and `(get ... _s)` in `DrawCast.txt` and `BPC_LLMClient/FlushLocal.txt`, `(and ...)`, `(not ...)`, `str`, `cat` and `print` in `DrawCast.txt`, a String `set` in `T52-build.md`'s `TieCut` (`(set TieText ...)`).
-- **If my person picks `last_scene` for question 2,** swap the two conditions: `final_two` when `(and Win (<= (V WinLeft) 2) (not <last scene done>))`. `LastSceneDone` has exec pins (T32: MCP can't make a function pure), so call it first and bind its `Done`: `(bind _last (CallFunction|LastSceneDone))`, then use `_last` in both conditions. Change part 4f's order to match.
+- **Two left after the last scene is `final_two`** (question 2, my person's answer), so `SetWinReason` needs no `LastSceneDone` call: a win with more than two left can only come from the last scene.
 - **If part 0 found a `LeftCount` variable,** replace the loop with nothing and `(V WinLeft)` with `(V LeftCount)`, and drop `WinLeft` (and print `left=` from `LeftCount`).
 
 ### 1c. `EndShow`: the game message and the banner
@@ -124,7 +124,7 @@ Node edits, no file. Write each one under "Findings" in `T54.md`, since `EndShow
 
 Node edits, no file. T60 rewrites this graph; keep the edits small.
 
-1. **The title:** per question 1. With the recommended answer, nothing changes: "YOU WIN" on the gold plate for both wins, "YOU'RE CUT" for a loss. With the other answer, the win title becomes `Append("YOU WIN: ", Select(WinReason == "final_two", "FINAL TWO", "THAT'S A WRAP"))`.
+1. **The title:** nothing changes (question 1: my person picked "YOU WIN" for both wins). "YOU WIN" stays on the gold plate for both, "YOU'RE CUT" for a loss.
 2. **The win subtitle** (the `Setup` call's `Sub`, or wherever part 0 found `EndSub` set): it must contain `WinLine` and no other wording about the final two. Expected today (T10): a sentence that names my seat and the final two, maybe with "in scene n of m" (T53: "`ShowEndScreen`'s subtitle still says '... of <SceneCount>'"). Make it `WinLine`, then the part that names my seat if there is one, for example:
    - `You made the final two. You were Player 3.`
    - `You were still on stage when the last scene ended. You were Player 3.`
@@ -180,7 +180,7 @@ T52 changes line 48 (the tie sentence) and T53 changed lines 58 and 116. These t
 - Now: `If you're cut, you lose, and the AIs gloat. Either way, the end screen shows how each AI voted and why.`
 - New: `You win if you make the final two, or if you're still on stage when the last scene ends. If you're cut, you lose, and the AIs gloat. Either way, the end screen shows how each AI voted and why.`
 
-**c. Line 62, "How to fool them"** (question 3; only with a yes). Append one sentence at its end.
+**c. Line 62, "How to fool them"** (question 3: my person said add it). Append one sentence at its end.
 
 - Now (its end): `... Watch what the AIs accuse each other of, because they're looking for the same things in you.`
 - New (its end): `... Watch what the AIs accuse each other of, because they're looking for the same things in you. A tied vote cuts nobody and uses up a scene, so a split vote helps you.`
@@ -312,7 +312,7 @@ LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING
                       f"after scene {scene} of {total or '?'}; reason={want or '<none: no ending fits>'} expected")
 ```
 
-- The order of the two win tests is question 2's answer: two left after the last scene is `final_two`. With the other answer, test `total and scene >= total` first.
+- The order of the two win tests is question 2's answer: two left after the last scene is `final_two`.
 - `left` is the seat count minus the `CUT` lines; a tie cuts nobody. `scene` counts `REACTIONS DONE` lines (T52), and `total` is the `SETUP` line's `scenes=` (T53).
 - A log from before T54 has no `reason=`: it prints a note and passes.
 
@@ -398,7 +398,7 @@ Run A with `"ai_seats": 3` (`-log=T54four.log`): 3 ties, `ENDING reason=last_sce
 
 PIE in a 1600 × 900 floating window, with `Local/switches.json` as in run A (autoplay skips the title, and `mode` free is Test for Free), then as in run B. With autoplay on, `ShowEndScreen` shows the end screen without the "See the results" step (T14, T29). Wait for `NHOS: SHOW END` in the log, then take the screenshot with `SlateInspectorToolset.Screenshot` (T33). If the stage waits on **See the results** instead (the gold `ContinueButton` in the input row, T14), click it through the Slate inspector, which lands on the PC, and wait for `NHOS: END screen shown`. Save them in `Saved/T54/shots/` (not in git):
 
-1. `end_last_scene.png`: the gold plate ("YOU WIN", or question 1's other title), the subtitle with "You were still on stage when the last scene ended.", and the four cards. No "final two" anywhere on screen.
+1. `end_last_scene.png`: the gold plate ("YOU WIN"), the subtitle with "You were still on stage when the last scene ended.", and the four cards. No "final two" anywhere on screen.
 2. `end_final_two.png`: the same with "You made the final two."
 3. `end_last_scene_p12.png`: the first again at 1280 × 720, the doc's second size; the longer sentence must wrap inside the plate's column, not run off it.
 
