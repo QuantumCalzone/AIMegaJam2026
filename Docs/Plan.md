@@ -200,7 +200,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Model and effort:** Opus 5.5, high. A new field in the input LLM's reply, a schema choice across four providers, and a hook in the action builder.
   - **Depends on:** T63 (the input ask as it leaves it), T64 (the action builder), T68 (`BPC_Analytics`)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my OK on the Bot Prompts edit, my OK for a paid `--ask input` run (a few cents).
-  - **Touches:** `Content/NHOS/Data/prompts.json` (`input`, `asks.input`, maybe the reply schema), `Content/NHOS/Data/llm.json` (only if the input ask gets its own schema), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` or `Content/NHOS/Core/BPC_LLMClient.uasset` (where the input reply is read), `Content/NHOS/UI/WBP_ActionBuilder.uasset` (the blocked clicks), the design doc, `Graphs/` files for the graphs it writes, `Docs/tasks/T69.md`.
+  - **Touches:** `Content/NHOS/Data/prompts.json` (`input`, `asks.input`, `_readme`), `Content/NHOS/Data/llm.json` (a new `input_schema` for the input ask, `_readme`), `Tools/check_prompts.py`, `Content/NHOS/Core/BPC_LLMClient.uasset` (where the input reply is read and sent on), `Content/NHOS/Core/BPC_Analytics.uasset` (a new `Unsupported` function), `Content/NHOS/UI/WBP_ActionBuilder.uasset` (the blocked clicks), `Docs/switches.example.json` (`attempt_test`), `Docs/ItchPage.md` (the privacy line), the design doc, `Graphs/` files for the graphs it writes, `Docs/tasks/T69.md`.
+  - **Not a chain task** (my call, 2026-11-15): it changes neither `BP_Show` nor `WBP_Stage`, so either machine can take it once T63, T64 and T68 are pushed. [Docs/tasks/T69-build.md](tasks/T69-build.md) has the build.
   - **Details:** [Docs/tasks/T69.md](tasks/T69.md)
 
 - [ ] **T75 Each robot can show an emotion: its face and a gesture**
@@ -219,7 +220,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T77 Each robot shows its emotion as its line plays, mine too**
   - **Model and effort:** Opus 5.5, high. The emotion rides with each line to its robot, the shared log names each face, and the input LLM picks mine.
-  - **Depends on:** T75 (`Emote`), T76 (the reply's `emotion` and free mode's lists), T63 (my turn's path and the input LLM's call), T73 (`PlayCur` as the typing lines leave it), T69 (the input ask as it leaves it, and the lock on `BP_Show`)
+  - **Depends on:** T75 (`Emote`), T76 (the reply's `emotion` and free mode's lists), T63 (my turn's path and the input LLM's call), T73 (`PlayCur` as the typing lines leave it), T69 (the input ask as it leaves it, its `input_schema`, and the lock on `BPC_LLMClient`)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay for a `--relay --free` check, my OK on the Bot Prompts edit, my OK before the relay is deployed again (the keyword table), my OK for a paid `--ask input` run (a few cents).
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset` (`HandleReply`, `ActorLine`, `StageLine`, the log entry, my sends), `Content/NHOS/Core/BPC_LLMClient.uasset` (`FreeReply`), `Content/NHOS/Core/BPC_LinePlayer.uasset` (`PlayCur`, if the call goes there), `Content/NHOS/Data/prompts.json` (`game`, `input`, `asks.input`, `_readme`), `Content/NHOS/Data/free_mode.json` (the keyword table), `Relay/src/index.js`, `Tools/check_prompts.py`, the design doc, `Graphs/` files for the graphs it writes, `Docs/tasks/T77.md`.
   - **Details:** [Docs/tasks/T77.md](tasks/T77.md)
