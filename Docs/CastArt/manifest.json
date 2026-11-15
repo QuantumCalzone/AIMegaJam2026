@@ -1,0 +1,1136 @@
+{
+  "about": "The cast's Hyper3D Rodin parts (T81) as Unreal assets (T82 prep, 2026-11-15). Each fit is a relative transform for a component under its parent in BP_Robot (Rig, or ArmPivotL/ArmPivotR for the arms), in cm, Rig +X = the robot's face, Z up, floor z 0. Rotations are UE (roll, pitch, yaw) in degrees. 'offset' is the component's relative location (arms: relative to the pivot). See Docs/tasks/T82-build.md.",
+  "frame": "Every Rodin part faces mesh +Y after import (the importer maps raw (x, y, z) to (100x, -100y, 100z) cm), so yaw 270 (= -90) turns its front to Rig +X. Bent arms add a roll that hangs them straight down. A mirrored arm has its X scale negated and its rotation mirrored, as given.",
+  "material": {
+    "master": "/Game/NHOS/Stage/Materials/M_CastModel",
+    "parameters": {
+      "BaseTex": "texture",
+      "NormalTex": "texture (normal)",
+      "RoughTex": "texture",
+      "Color": "vector, default (1,1,1): the seat color; multiplied in by TintAmount",
+      "TintAmount": "scalar, default 0 (1 on the white head shell)",
+      "Cut": "scalar 0..1, default 0: the cut's gray",
+      "GrayFromColor": "scalar, default 0 in the master and 1 in every MI here: a Color with no saturation (SetCut's 0.16 gray) also counts as cut",
+      "CutTint": "vector, default (0.25,0.25,0.25): the desaturated texture times this on the cut",
+      "Rough": "scalar, default 0.85",
+      "RoughFromTex": "scalar, default 0.5",
+      "NormalAmount": "scalar, default 1"
+    }
+  },
+  "targets": {
+    "head_top_z": 158,
+    "round_head_width_cm": 70,
+    "label_z": 228,
+    "arm_length_cm": 53,
+    "hand_centre_in_pivot": [
+      0,
+      5,
+      -44
+    ]
+  },
+  "assets": [
+    {
+      "id": "round_head",
+      "kind": "head shell",
+      "bots": [
+        "openai",
+        "anthropic",
+        "spacexai"
+      ],
+      "task": "T82",
+      "source": "Docs/CastArt/round_head/",
+      "fbx": "Docs/CastArt/round_head/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/RoundHead/SM_RoundHead",
+      "material": "/Game/NHOS/Stage/Cast/RoundHead/MI_RoundHead",
+      "imported_material": "/Game/NHOS/Stage/Cast/RoundHead/M_RoundHead",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/RoundHead/T_RoundHead_BaseColor",
+        "/Game/NHOS/Stage/Cast/RoundHead/T_RoundHead_Normal",
+        "/Game/NHOS/Stage/Cast/RoundHead/T_RoundHead_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 14998,
+      "mesh_bounds_cm": [
+        [
+          -94.9,
+          -86.8,
+          -90.7
+        ],
+        [
+          95.1,
+          86.8,
+          90.6
+        ]
+      ],
+      "fit": {
+        "scale": [
+          0.3686,
+          0.3686,
+          0.3686
+        ],
+        "offset": [
+          0.0,
+          0.0,
+          124.6
+        ],
+        "parent": "Rig",
+        "bounds_rig": [
+          [
+            -32.0,
+            32.0
+          ],
+          [
+            -35.0,
+            35.0
+          ],
+          [
+            91.2,
+            158.0
+          ]
+        ],
+        "screen": {
+          "z_rig": [
+            102.5,
+            146.7
+          ],
+          "y_rig_half_width": 27.9,
+          "recess_x_rig": 25.8,
+          "rim_x_rig": 32.0
+        },
+        "rotation": {
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 270
+        }
+      }
+    },
+    {
+      "id": "openai_body",
+      "kind": "body",
+      "bots": [
+        "openai"
+      ],
+      "task": "T82",
+      "source": "Docs/CastArt/openai/body/",
+      "fbx": "Docs/CastArt/openai/body/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/openai/SM_OpenAIBody",
+      "material": "/Game/NHOS/Stage/Cast/openai/MI_OpenAIBody",
+      "imported_material": "/Game/NHOS/Stage/Cast/openai/M_OpenAIBody",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/openai/T_OpenAIBody_BaseColor",
+        "/Game/NHOS/Stage/Cast/openai/T_OpenAIBody_Normal",
+        "/Game/NHOS/Stage/Cast/openai/T_OpenAIBody_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 15000,
+      "mesh_bounds_cm": [
+        [
+          -71.0,
+          -51.2,
+          -95.0
+        ],
+        [
+          71.0,
+          51.3,
+          94.5
+        ]
+      ],
+      "fit": {
+        "scale": [
+          0.4907,
+          0.4907,
+          0.4907
+        ],
+        "offset": [
+          -0.0,
+          -0.0,
+          46.6
+        ],
+        "parent": "Rig",
+        "bounds_rig": [
+          [
+            -25.2,
+            25.2
+          ],
+          [
+            -34.8,
+            34.8
+          ],
+          [
+            0.0,
+            93.0
+          ]
+        ],
+        "rotation": {
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 270
+        }
+      }
+    },
+    {
+      "id": "openai_arm",
+      "kind": "arm",
+      "bots": [
+        "openai"
+      ],
+      "task": "T82",
+      "source": "Docs/CastArt/openai/arm/",
+      "fbx": "Docs/CastArt/openai/arm/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/openai/SM_OpenAIArm",
+      "material": "/Game/NHOS/Stage/Cast/openai/MI_OpenAIArm",
+      "imported_material": "/Game/NHOS/Stage/Cast/openai/M_OpenAIArm",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/openai/T_OpenAIArm_BaseColor",
+        "/Game/NHOS/Stage/Cast/openai/T_OpenAIArm_Normal",
+        "/Game/NHOS/Stage/Cast/openai/T_OpenAIArm_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 14998,
+      "mesh_bounds_cm": [
+        [
+          -39.2,
+          -28.7,
+          -94.8
+        ],
+        [
+          39.2,
+          29.2,
+          95.0
+        ]
+      ],
+      "fit": {
+        "modeled_side": "either (text only, symmetric)",
+        "bent_model": false,
+        "axis_tilt_deg": 2.7,
+        "length_cm": 53.0,
+        "pivot_y_suggested": 24,
+        "left": {
+          "parent": "ArmPivotL",
+          "scale": [
+            -0.2792,
+            0.2792,
+            0.2792
+          ],
+          "offset": [
+            -0.2,
+            1.4,
+            -22.5
+          ],
+          "hand_centre_in_pivot": [
+            0.2,
+            0.9,
+            -43.4
+          ],
+          "pivot_rig_today": [
+            0,
+            -19,
+            80
+          ],
+          "pivot_rig_suggested": [
+            0,
+            -24,
+            80
+          ],
+          "rotation": {
+            "roll": 0.0,
+            "pitch": 0.0,
+            "yaw": -90.0
+          }
+        },
+        "right": {
+          "parent": "ArmPivotR",
+          "scale": [
+            0.2792,
+            0.2792,
+            0.2792
+          ],
+          "offset": [
+            -0.2,
+            -1.4,
+            -22.5
+          ],
+          "hand_centre_in_pivot": [
+            0.2,
+            -0.9,
+            -43.4
+          ],
+          "pivot_rig_today": [
+            0,
+            19,
+            80
+          ],
+          "pivot_rig_suggested": [
+            0,
+            24,
+            80
+          ],
+          "rotation": {
+            "roll": 0.0,
+            "pitch": 0.0,
+            "yaw": -90.0
+          }
+        },
+        "note": "The preview used pivot y 30; the arms floated clear of the narrow sweater, so 24 is suggested (covers the body's sleeve stubs)."
+      }
+    },
+    {
+      "id": "anthropic_body",
+      "kind": "body",
+      "bots": [
+        "anthropic"
+      ],
+      "task": "T82",
+      "source": "Docs/CastArt/anthropic/body/",
+      "fbx": "Docs/CastArt/anthropic/body/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/anthropic/SM_AnthropicBody",
+      "material": "/Game/NHOS/Stage/Cast/anthropic/MI_AnthropicBody",
+      "imported_material": "/Game/NHOS/Stage/Cast/anthropic/M_AnthropicBody",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/anthropic/T_AnthropicBody_BaseColor",
+        "/Game/NHOS/Stage/Cast/anthropic/T_AnthropicBody_Normal",
+        "/Game/NHOS/Stage/Cast/anthropic/T_AnthropicBody_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 15000,
+      "mesh_bounds_cm": [
+        [
+          -75.3,
+          -73.6,
+          -94.6
+        ],
+        [
+          75.0,
+          73.6,
+          94.6
+        ]
+      ],
+      "fit": {
+        "scale": [
+          0.4914,
+          0.4914,
+          0.4914
+        ],
+        "offset": [
+          -0.0,
+          -0.1,
+          46.5
+        ],
+        "parent": "Rig",
+        "bounds_rig": [
+          [
+            -36.2,
+            36.2
+          ],
+          [
+            -36.9,
+            36.9
+          ],
+          [
+            0.0,
+            93.0
+          ]
+        ],
+        "rotation": {
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 270
+        }
+      }
+    },
+    {
+      "id": "anthropic_arm",
+      "kind": "arm",
+      "bots": [
+        "anthropic"
+      ],
+      "task": "T82",
+      "source": "Docs/CastArt/anthropic/arm/",
+      "fbx": "Docs/CastArt/anthropic/arm/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/anthropic/SM_AnthropicArm",
+      "material": "/Game/NHOS/Stage/Cast/anthropic/MI_AnthropicArm",
+      "imported_material": "/Game/NHOS/Stage/Cast/anthropic/M_AnthropicArm",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/anthropic/T_AnthropicArm_BaseColor",
+        "/Game/NHOS/Stage/Cast/anthropic/T_AnthropicArm_Normal",
+        "/Game/NHOS/Stage/Cast/anthropic/T_AnthropicArm_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 15000,
+      "mesh_bounds_cm": [
+        [
+          -33.2,
+          -94.7,
+          -86.0
+        ],
+        [
+          33.0,
+          95.1,
+          85.9
+        ]
+      ],
+      "fit": {
+        "modeled_side": "left",
+        "bent_model": true,
+        "axis_tilt_deg": 51.8,
+        "length_cm": 53.0,
+        "pivot_y_suggested": 40,
+        "left": {
+          "parent": "ArmPivotL",
+          "scale": [
+            0.2371,
+            0.2371,
+            0.2371
+          ],
+          "offset": [
+            0.3,
+            -1.2,
+            -24.6
+          ],
+          "hand_centre_in_pivot": [
+            -1.2,
+            -0.9,
+            -42.4
+          ],
+          "pivot_rig_today": [
+            0,
+            -29,
+            76
+          ],
+          "pivot_rig_suggested": [
+            0,
+            -40,
+            76
+          ],
+          "rotation": {
+            "roll": 51.8,
+            "pitch": -1.7,
+            "yaw": -90.8
+          }
+        },
+        "right": {
+          "parent": "ArmPivotR",
+          "scale": [
+            -0.2371,
+            0.2371,
+            0.2371
+          ],
+          "offset": [
+            0.3,
+            1.2,
+            -24.6
+          ],
+          "hand_centre_in_pivot": [
+            -1.2,
+            0.9,
+            -42.4
+          ],
+          "pivot_rig_today": [
+            0,
+            29,
+            76
+          ],
+          "pivot_rig_suggested": [
+            0,
+            40,
+            76
+          ],
+          "rotation": {
+            "roll": 51.8,
+            "pitch": 1.7,
+            "yaw": -89.2
+          }
+        }
+      }
+    },
+    {
+      "id": "spacexai_body",
+      "kind": "body",
+      "bots": [
+        "spacexai"
+      ],
+      "task": "T82",
+      "source": "Docs/CastArt/spacexai/body/",
+      "fbx": "Docs/CastArt/spacexai/body/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/spacexai/SM_SpaceXAIBody",
+      "material": "/Game/NHOS/Stage/Cast/spacexai/MI_SpaceXAIBody",
+      "imported_material": "/Game/NHOS/Stage/Cast/spacexai/M_SpaceXAIBody",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/spacexai/T_SpaceXAIBody_BaseColor",
+        "/Game/NHOS/Stage/Cast/spacexai/T_SpaceXAIBody_Normal",
+        "/Game/NHOS/Stage/Cast/spacexai/T_SpaceXAIBody_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 14998,
+      "mesh_bounds_cm": [
+        [
+          -66.8,
+          -62.5,
+          -95.1
+        ],
+        [
+          66.6,
+          62.5,
+          94.9
+        ]
+      ],
+      "fit": {
+        "scale": [
+          0.4894,
+          0.4894,
+          0.4894
+        ],
+        "offset": [
+          0.0,
+          -0.0,
+          46.6
+        ],
+        "parent": "Rig",
+        "bounds_rig": [
+          [
+            -30.6,
+            30.6
+          ],
+          [
+            -32.6,
+            32.6
+          ],
+          [
+            0.0,
+            93.0
+          ]
+        ],
+        "rotation": {
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 270
+        }
+      }
+    },
+    {
+      "id": "spacexai_arm",
+      "kind": "arm",
+      "bots": [
+        "spacexai"
+      ],
+      "task": "T82",
+      "source": "Docs/CastArt/spacexai/arm/",
+      "fbx": "Docs/CastArt/spacexai/arm/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/spacexai/SM_SpaceXAIArm",
+      "material": "/Game/NHOS/Stage/Cast/spacexai/MI_SpaceXAIArm",
+      "imported_material": "/Game/NHOS/Stage/Cast/spacexai/M_SpaceXAIArm",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/spacexai/T_SpaceXAIArm_BaseColor",
+        "/Game/NHOS/Stage/Cast/spacexai/T_SpaceXAIArm_Normal",
+        "/Game/NHOS/Stage/Cast/spacexai/T_SpaceXAIArm_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 15000,
+      "mesh_bounds_cm": [
+        [
+          -23.2,
+          -94.9,
+          -60.0
+        ],
+        [
+          23.2,
+          94.9,
+          60.2
+        ]
+      ],
+      "fit": {
+        "modeled_side": "right",
+        "bent_model": true,
+        "axis_tilt_deg": 73.5,
+        "length_cm": 53.0,
+        "pivot_y_suggested": 35,
+        "left": {
+          "parent": "ArmPivotL",
+          "scale": [
+            -0.2599,
+            0.2599,
+            0.2599
+          ],
+          "offset": [
+            -3.0,
+            -2.3,
+            -20.9
+          ],
+          "hand_centre_in_pivot": [
+            -2.2,
+            -0.2,
+            -42.1
+          ],
+          "pivot_rig_today": [
+            0,
+            -30,
+            74
+          ],
+          "pivot_rig_suggested": [
+            0,
+            -35,
+            74
+          ],
+          "rotation": {
+            "roll": -73.5,
+            "pitch": -0.5,
+            "yaw": -89.7
+          }
+        },
+        "right": {
+          "parent": "ArmPivotR",
+          "scale": [
+            0.2599,
+            0.2599,
+            0.2599
+          ],
+          "offset": [
+            -3.0,
+            2.3,
+            -20.9
+          ],
+          "hand_centre_in_pivot": [
+            -2.2,
+            0.2,
+            -42.1
+          ],
+          "pivot_rig_today": [
+            0,
+            30,
+            74
+          ],
+          "pivot_rig_suggested": [
+            0,
+            35,
+            74
+          ],
+          "rotation": {
+            "roll": -73.5,
+            "pitch": 0.5,
+            "yaw": -90.3
+          }
+        }
+      }
+    },
+    {
+      "id": "meta_head",
+      "kind": "head",
+      "bots": [
+        "meta"
+      ],
+      "task": "T83",
+      "source": "Docs/CastArt/meta/head/",
+      "fbx": "Docs/CastArt/meta/head/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/meta/SM_MetaHead",
+      "material": "/Game/NHOS/Stage/Cast/meta/MI_MetaHead",
+      "imported_material": "/Game/NHOS/Stage/Cast/meta/M_MetaHead",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/meta/T_MetaHead_BaseColor",
+        "/Game/NHOS/Stage/Cast/meta/T_MetaHead_Normal",
+        "/Game/NHOS/Stage/Cast/meta/T_MetaHead_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 15000,
+      "mesh_bounds_cm": [
+        [
+          -83.6,
+          -78.0,
+          -95.0
+        ],
+        [
+          83.6,
+          78.2,
+          94.8
+        ]
+      ],
+      "fit": {
+        "scale": [
+          0.3696,
+          0.3696,
+          0.3696
+        ],
+        "offset": [
+          -0.0,
+          0.0,
+          123.0
+        ],
+        "parent": "Rig",
+        "bounds_rig": [
+          [
+            -28.9,
+            28.9
+          ],
+          [
+            -30.9,
+            30.9
+          ],
+          [
+            87.9,
+            158.0
+          ]
+        ],
+        "nose_tip_rig": [
+          28.9,
+          -0.5,
+          123.9
+        ],
+        "face_x_at_eyes_rig": 22.6,
+        "eye_line_z_rig_est": 129.6,
+        "rotation": {
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 270
+        }
+      }
+    },
+    {
+      "id": "meta_body",
+      "kind": "body",
+      "bots": [
+        "meta"
+      ],
+      "task": "T83",
+      "source": "Docs/CastArt/meta/body/",
+      "fbx": "Docs/CastArt/meta/body/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/meta/SM_MetaBody",
+      "material": "/Game/NHOS/Stage/Cast/meta/MI_MetaBody",
+      "imported_material": "/Game/NHOS/Stage/Cast/meta/M_MetaBody",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/meta/T_MetaBody_BaseColor",
+        "/Game/NHOS/Stage/Cast/meta/T_MetaBody_Normal",
+        "/Game/NHOS/Stage/Cast/meta/T_MetaBody_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 14998,
+      "mesh_bounds_cm": [
+        [
+          -51.3,
+          -31.7,
+          -95.0
+        ],
+        [
+          51.4,
+          31.8,
+          94.9
+        ]
+      ],
+      "fit": {
+        "scale": [
+          0.4951,
+          0.4951,
+          0.4951
+        ],
+        "offset": [
+          -0.0,
+          0.0,
+          47.0
+        ],
+        "parent": "Rig",
+        "bounds_rig": [
+          [
+            -15.7,
+            15.7
+          ],
+          [
+            -25.4,
+            25.4
+          ],
+          [
+            0.0,
+            94.0
+          ]
+        ],
+        "rotation": {
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 270
+        }
+      }
+    },
+    {
+      "id": "meta_arm",
+      "kind": "arm",
+      "bots": [
+        "meta"
+      ],
+      "task": "T83",
+      "source": "Docs/CastArt/meta/arm/",
+      "fbx": "Docs/CastArt/meta/arm/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/meta/SM_MetaArm",
+      "material": "/Game/NHOS/Stage/Cast/meta/MI_MetaArm",
+      "imported_material": "/Game/NHOS/Stage/Cast/meta/M_MetaArm",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/meta/T_MetaArm_BaseColor",
+        "/Game/NHOS/Stage/Cast/meta/T_MetaArm_Normal",
+        "/Game/NHOS/Stage/Cast/meta/T_MetaArm_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 14998,
+      "mesh_bounds_cm": [
+        [
+          -32.1,
+          -27.4,
+          -95.1
+        ],
+        [
+          32.1,
+          28.1,
+          94.8
+        ]
+      ],
+      "fit": {
+        "modeled_side": "right",
+        "bent_model": false,
+        "axis_tilt_deg": 8.0,
+        "length_cm": 53.0,
+        "pivot_y_suggested": 30,
+        "left": {
+          "parent": "ArmPivotL",
+          "scale": [
+            -0.2791,
+            0.2791,
+            0.2791
+          ],
+          "offset": [
+            3.4,
+            -1.2,
+            -22.5
+          ],
+          "hand_centre_in_pivot": [
+            5.4,
+            -2.3,
+            -44.0
+          ],
+          "pivot_rig_today": [
+            0,
+            -29,
+            86
+          ],
+          "pivot_rig_suggested": [
+            0,
+            -30,
+            86
+          ],
+          "rotation": {
+            "roll": 0.0,
+            "pitch": 0.0,
+            "yaw": -90.0
+          }
+        },
+        "right": {
+          "parent": "ArmPivotR",
+          "scale": [
+            0.2791,
+            0.2791,
+            0.2791
+          ],
+          "offset": [
+            3.4,
+            1.2,
+            -22.5
+          ],
+          "hand_centre_in_pivot": [
+            5.4,
+            2.3,
+            -44.0
+          ],
+          "pivot_rig_today": [
+            0,
+            29,
+            86
+          ],
+          "pivot_rig_suggested": [
+            0,
+            30,
+            86
+          ],
+          "rotation": {
+            "roll": 0.0,
+            "pitch": 0.0,
+            "yaw": -90.0
+          }
+        }
+      }
+    },
+    {
+      "id": "you_head",
+      "kind": "head",
+      "bots": [
+        "you"
+      ],
+      "task": "T83",
+      "source": "Docs/CastArt/you/head/",
+      "fbx": "Docs/CastArt/you/head/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/you/SM_YouHead",
+      "material": [
+        "/Game/NHOS/Stage/Cast/you/M_YouHead_Teal_cardboard_paint",
+        "/Game/NHOS/Stage/Cast/you/M_YouHead_Unpainted_cardboard_interior",
+        "/Game/NHOS/Stage/Cast/you/M_YouHead_Gray_duct_tape"
+      ],
+      "imported_material": null,
+      "textures": [],
+      "slots": [
+        "Teal cardboard paint",
+        "Unpainted cardboard interior",
+        "Gray duct tape"
+      ],
+      "tris": 1858,
+      "mesh_bounds_cm": [
+        [
+          -20.1,
+          -14.6,
+          -17.5
+        ],
+        [
+          20.1,
+          14.6,
+          17.5
+        ]
+      ],
+      "fit": {
+        "scale": [
+          1.6,
+          1.6,
+          1.6
+        ],
+        "offset": [
+          -0.0,
+          -0.0,
+          130.0
+        ],
+        "parent": "Rig",
+        "bounds_rig": [
+          [
+            -23.4,
+            23.4
+          ],
+          [
+            -32.2,
+            32.2
+          ],
+          [
+            102.1,
+            158.0
+          ]
+        ],
+        "eye_slots_rig": {
+          "centers": [
+            [
+              23.3,
+              -12.6,
+              134.7
+            ],
+            [
+              23.3,
+              12.6,
+              134.7
+            ]
+          ],
+          "size_w_h_cm": [
+            12.3,
+            15.7
+          ]
+        },
+        "slots": "Teal cardboard paint / Unpainted cardboard interior / Gray duct tape",
+        "rotation": {
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 270
+        }
+      }
+    },
+    {
+      "id": "you_body",
+      "kind": "body",
+      "bots": [
+        "you"
+      ],
+      "task": "T83",
+      "source": "Docs/CastArt/you/body/",
+      "fbx": "Docs/CastArt/you/body/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/you/SM_YouBody",
+      "material": "/Game/NHOS/Stage/Cast/you/MI_YouBody",
+      "imported_material": "/Game/NHOS/Stage/Cast/you/M_YouBody",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/you/T_YouBody_BaseColor",
+        "/Game/NHOS/Stage/Cast/you/T_YouBody_Normal",
+        "/Game/NHOS/Stage/Cast/you/T_YouBody_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 13513,
+      "mesh_bounds_cm": [
+        [
+          -58.4,
+          -54.1,
+          -95.0
+        ],
+        [
+          58.3,
+          54.1,
+          95.1
+        ]
+      ],
+      "fit": {
+        "scale": [
+          0.526,
+          0.526,
+          0.526
+        ],
+        "offset": [
+          0.0,
+          -0.0,
+          50.0
+        ],
+        "parent": "Rig",
+        "bounds_rig": [
+          [
+            -28.4,
+            28.4
+          ],
+          [
+            -30.7,
+            30.7
+          ],
+          [
+            0.0,
+            100.0
+          ]
+        ],
+        "rotation": {
+          "roll": 0,
+          "pitch": 0,
+          "yaw": 270
+        }
+      }
+    },
+    {
+      "id": "you_arm",
+      "kind": "arm",
+      "bots": [
+        "you"
+      ],
+      "task": "T83",
+      "source": "Docs/CastArt/you/arm/",
+      "fbx": "Docs/CastArt/you/arm/model.fbx",
+      "asset": "/Game/NHOS/Stage/Cast/you/SM_YouArm",
+      "material": "/Game/NHOS/Stage/Cast/you/MI_YouArm",
+      "imported_material": "/Game/NHOS/Stage/Cast/you/M_YouArm",
+      "textures": [
+        "/Game/NHOS/Stage/Cast/you/T_YouArm_BaseColor",
+        "/Game/NHOS/Stage/Cast/you/T_YouArm_Normal",
+        "/Game/NHOS/Stage/Cast/you/T_YouArm_Roughness"
+      ],
+      "slots": [
+        "model"
+      ],
+      "tris": 15000,
+      "mesh_bounds_cm": [
+        [
+          -31.1,
+          -23.7,
+          -94.9
+        ],
+        [
+          30.8,
+          23.9,
+          94.5
+        ]
+      ],
+      "fit": {
+        "modeled_side": "left",
+        "bent_model": false,
+        "axis_tilt_deg": 5.5,
+        "length_cm": 53.0,
+        "pivot_y_suggested": 35,
+        "left": {
+          "parent": "ArmPivotL",
+          "scale": [
+            0.2798,
+            0.2798,
+            0.2798
+          ],
+          "offset": [
+            0.7,
+            -1.5,
+            -22.4
+          ],
+          "hand_centre_in_pivot": [
+            2.9,
+            -1.3,
+            -42.7
+          ],
+          "pivot_rig_today": [
+            0,
+            -33,
+            94
+          ],
+          "pivot_rig_suggested": [
+            0,
+            -35,
+            94
+          ],
+          "rotation": {
+            "roll": 0.0,
+            "pitch": 0.0,
+            "yaw": -90.0
+          }
+        },
+        "right": {
+          "parent": "ArmPivotR",
+          "scale": [
+            -0.2798,
+            0.2798,
+            0.2798
+          ],
+          "offset": [
+            0.7,
+            1.5,
+            -22.4
+          ],
+          "hand_centre_in_pivot": [
+            2.9,
+            1.3,
+            -42.7
+          ],
+          "pivot_rig_today": [
+            0,
+            33,
+            94
+          ],
+          "pivot_rig_suggested": [
+            0,
+            35,
+            94
+          ],
+          "rotation": {
+            "roll": 0.0,
+            "pitch": 0.0,
+            "yaw": -90.0
+          }
+        }
+      }
+    }
+  ]
+}
