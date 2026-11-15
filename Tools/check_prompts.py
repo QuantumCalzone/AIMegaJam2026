@@ -430,8 +430,10 @@ def check_files(errors: list[str]):
     if len(notes) < MIN_NOTES:
         errors.append(f"scenes.json: needs at least {MIN_NOTES} director's notes")
     for n in notes:
-        if not n.get("note") or not n.get("decoy") or n["note"] == n["decoy"]:
-            errors.append(f"scenes.json: note {n.get('id')} needs a note and a different decoy")
+        if not n.get("note") or not n.get("category"):
+            errors.append(f"scenes.json: note {n.get('id')} needs a note and a category")
+        if set(n) - {"id", "category", "note"}:
+            errors.append(f"scenes.json: note {n.get('id')} may hold only id, category and note; every actor gets the same note")
     story_text = json.dumps([prompts, scenes], ensure_ascii=False)
     for w, r in STORY_RES:
         if r.search(story_text):
@@ -459,14 +461,13 @@ def act(verb, target="", item=""):
     return {"verb": verb, "target": target, "item": item}
 
 
-# Scene 1 of a sample show: the Romeo and Juliet card, the "hold_prop" note, SpaceXAI holds
-# the decoy ("Never grab anything"). The human has no persona and plays Romeo: it gives its
-# prop away and slips. Seats get Player names in this order, as the game deals them:
+# Scene 1 of a sample show: the Romeo and Juliet card and the "hold_prop" note, which every
+# actor gets. SpaceXAI forgets to grab a prop. The human has no persona and plays Romeo: it
+# gives its prop away and slips. Seats get Player names in this order, as the game deals them:
 # Player 1 OpenAI, Player 2 Anthropic, Player 3 the human, Player 4 SpaceXAI, Player 5 Meta.
 HUMAN = "human"
 SAMPLE_CARD = "star_crossed"
 SAMPLE_NOTE = "hold_prop"
-SAMPLE_DECOY = "overclocker"
 SAMPLE_CAST = ["visionary", "worrier", HUMAN, "overclocker", "copycat"]
 PERSONAS = [p for p in SAMPLE_CAST if p != HUMAN]
 # Seats of the card: 0 Romeo, 1 Juliet, 2 the Nurse, 3 Tybalt, 4 Friar Laurence.
@@ -501,7 +502,7 @@ TALK = [
         (HUMAN, "Recharge naps are normal for robots. Also, Player 4 never grabbed a prop. Suspicious."),
         ("visionary", None),
         ("copycat", "Player 3 gave away the rose. I kept my scroll all scene, like a real robot."),
-        ("worrier", "Player 4 grabbed nothing all scene. Decoy or human? I'm only raising a safety concern, gently."),
+        ("worrier", "Player 4 grabbed nothing all scene. Forgetful or human? I'm only raising a safety concern, gently."),
     ],
     [
         ("visionary", "Hm. The empty hands, the nap thing. I'm thinking about it, very calmly."),
@@ -549,7 +550,7 @@ INPUT_CASES = [
      "typed": "@Meta, why did you grab the rose?",
      "actions": [], "contains": ["@Player 5, why did you grab the rose?"]},
     {"phase": "free talk",
-     "typed": "i bet the claude bot has the decoy, it keeps sighing",
+     "typed": "i bet the claude bot is the human, it keeps sighing",
      "actions": [], "contains": ["Player 2"]},
     {"phase": "scene",
      "typed": "give the rose to open ai",
@@ -629,7 +630,7 @@ class Show:
             "name": self.name(pid),
             "role": self.seat[pid]["role"],
             "want": self.seat[pid]["want"],
-            "note": self.note["decoy"] if pid == SAMPLE_DECOY else self.note["note"],
+            "note": self.note["note"],
         }
 
     def actor_state(self, pid, ask, now, log, cut=None, game_messages=None, options=None):
@@ -708,7 +709,7 @@ class Show:
         Even cards play a 4-actor scene 2: persona i % 4 was cut in scene 1, and seat (i + 1) % 5
         of the card is left out. Odd cards play a 3-actor scene 3: personas i % 4 and (i + 1) % 4
         were cut, and seats (i + 1) % 5 and (i + 3) % 5 are left out. The human is always on stage.
-        Each card uses note i % notes and gives the decoy to one actor on stage."""
+        Each card uses note i % notes, and every actor gets it."""
         sc = self.d["scenes"]
         out = []
         for i, card in enumerate(sc["cards"]):
@@ -719,7 +720,6 @@ class Show:
             seats = [x for k, x in enumerate(card["seats"]) if k not in gone]
             seat = dict(zip(stage, seats))
             note = sc["notes"][i % len(sc["notes"])]
-            decoy = stage[i % len(stage)]
             cast = [{"name": self.name(p),
                      "role": seat[p]["role"] if p in seat else "", "want": seat[p]["want"] if p in seat else "",
                      "status": "on stage" if p in seat else "cut, revealed AI"} for p in SAMPLE_CAST]
@@ -734,7 +734,7 @@ class Show:
                     "scene_card": {"title": card["title"], "premise": card["premise"]},
                     "cast": cast,
                     "you": {"name": self.name(pid), "role": seat[pid]["role"], "want": seat[pid]["want"],
-                            "note": note["decoy"] if pid == decoy else note["note"]},
+                            "note": note["note"]},
                     "log": [],
                     "game_messages": g,
                     "options": [],
