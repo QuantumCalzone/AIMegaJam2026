@@ -1,0 +1,5 @@
+; T64: WBP_Stage hands the builder its input box once (step 5), so every click on an action or a chip gives the
+; keyboard focus straight back to it (KeepFocus). IsFocusable off is not enough on its own: on a mouse-down that
+; sets no focus, Slate gives the focus to the nearest focusable widget under the cursor, the game viewport.
+(fn SetFocusBack (Target)
+  (set FocusBack Target))

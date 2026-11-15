@@ -1,0 +1,11 @@
+; T64: Action! or Enter (or T66's timer) sends my turn: BP_Show.HandleSend takes the action through WBP_Stage.TakeAction.
+; From here until the next turn opens, the builder is disabled and the preview keeps the turn I sent (step 7).
+(fn Seal ()
+  (bind (_v _i _t _r) (CallFunction|GetAction))
+  (if (V Armed)
+    (set Sent true)
+    (CallFunction|Refresh))
+  (bind _di (select (Utilities|String|IsEmpty _i) "-" _i))
+  (bind _dt (select (Utilities|String|IsEmpty _t) "-" _t))
+  (print (cat "NHOS: BUILDER send " _v " " _di " " _dt " ready=" (select _r "yes" "no")))
+  (return _v _i _t _r))

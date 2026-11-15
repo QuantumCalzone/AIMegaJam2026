@@ -1,0 +1,8 @@
+; T64: the typed line, live, for the preview line (WBP_Stage's OnTextChanged on the input box). After I send, the
+; preview keeps the turn I sent, so the box being cleared doesn't change it.
+(fn SetLine (Text)
+  (if (V Sent)
+    (return))
+  (set Line Text)
+  (bind _p (CallFunction|MakePreview))
+  (Class|Text|SetText :self (Variables|WBP_ActionBuilder|GetPreviewText) :Text (Utilities|Text|ToText(String) _p)))

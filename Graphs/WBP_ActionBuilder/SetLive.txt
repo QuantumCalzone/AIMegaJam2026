@@ -1,0 +1,6 @@
+; T64: WBP_Stage.SetPrompt tells the builder when my input opens and closes (CanType): closed while the lines play
+; (T30) and after I send.
+(fn SetLive (On)
+  (set Live On)
+  (if (V Armed)
+    (CallFunction|Refresh)))

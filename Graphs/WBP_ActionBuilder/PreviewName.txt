@@ -1,0 +1,9 @@
+; T64: a target in the preview line: an actor as an @ mention by its screen name ("@Meta"), a prop or a place as is.
+; T65 swaps the plain @Meta for a mention chip; this is the one place that makes it.
+(fn PreviewName (Value)
+  (if (Utilities|String|IsEmpty Value)
+    (return ""))
+  (bind _s (Utilities|Array|FindItem (V Names) Value))
+  (if (< _s 0)
+    (return Value))
+  (return (cat "@" (get (V Labels) _s))))

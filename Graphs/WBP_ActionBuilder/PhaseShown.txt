@@ -1,0 +1,9 @@
+; T64: WBP_Stage.SetPhase calls it with the input box's text each time a header shows (the "phase" cue). A header
+; right after Arm opens my scene turn; any other header closes the builder (step 8: it shows only in my scene turns).
+(fn PhaseShown (Text)
+  (if (V PendingTurn)
+    (set PendingTurn false)
+    (set Line Text)
+    (CallFunction|OpenTurn)
+    (return))
+  (CallFunction|Close))

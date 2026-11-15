@@ -1,0 +1,5 @@
+; T64: BP_Show.StartTurn arms the builder for my scene turn (through WBP_Stage.BuilderTurn), with my seat. It opens
+; when the turn's header shows on screen (PhaseShown), after the last turn's lines have played (T30's queue).
+(fn Arm (ForSeat)
+  (set ArmSeat ForSeat)
+  (set PendingTurn true))

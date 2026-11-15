@@ -1,0 +1,12 @@
+; T64: an action button (step 2). Picking another action clears the chips I picked; clicking the picked one keeps
+; them. A greyed button is disabled, so Act is always an action I can do. The focus goes back to the input box.
+(fn PickVerb (Act)
+  (if (or (not (V Armed)) (V Sent))
+    (return))
+  (if (not (streq Act (V Verb)))
+    (set Verb Act)
+    (set Item "")
+    (set Target ""))
+  (CallFunction|Refresh)
+  (CallFunction|PickLine)
+  (CallFunction|KeepFocus))

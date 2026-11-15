@@ -1,0 +1,14 @@
+; T64: which of the seven actions I can pick this turn, with each greyed one's tip. OpenTurn calls it once: the rules'
+; state doesn't change during my turn (T62 accepts every action of a turn only after everyone has sent).
+(fn ReadOk ()
+  (clear (V ActOk))
+  (clear (V ActTip))
+  (clear (V GreyArr))
+  (for _v (V ActVerbs)
+    (bind _w (CallFunction|WhyNot :Act _v))
+    (set TmpStr _w)
+    (add (V ActTip) (V TmpStr))
+    (add (V ActOk) (Utilities|String|IsEmpty (V TmpStr)))
+    (if (not (Utilities|String|IsEmpty (V TmpStr)))
+      (add (V GreyArr) _v)))
+  (set GreyList (select (> (len (V GreyArr)) 0) (Utilities|String|JoinStringArray (V GreyArr) ",") "-")))
