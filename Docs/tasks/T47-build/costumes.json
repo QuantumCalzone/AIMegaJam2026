@@ -1,0 +1,194 @@
+{
+  "_readme": [
+    "The headpieces the robots wear (T47). Each seat in scenes.json names one by its id ('headpiece') and gives its color ('color', sRGB hex).",
+    "mesh: the static mesh's object path, loaded by BP_Robot.SetHeadpiece as a soft reference. Every headpiece model has MI_Clay_Neutral on its slots, and SetHeadpiece sets its Color.",
+    "scale, x, z, yaw: the Headpiece component's relative transform under the robot's Rig (cm, degrees). The face is +X; yaw 270 turns a model's face to it. z puts the model's lowest point where it sits on the head.",
+    "lift: how far the antenna stalk and the persona's topper rise while the headpiece is on, so they poke out of its top. 0 leaves them where they are.",
+    "size_cm: width, depth and height on the head, for reading only. ball_cap_back is ball_cap worn backwards (the same model).",
+    "The game never sends this file or a seat's headpiece and color to the AIs. Docs/tasks/T47-build/make_costumes.py builds it from Docs/PropArt/manifest.json."
+  ],
+  "headpieces": {
+    "hood": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_Hood.SM_Hood",
+      "scale": 0.5496,
+      "x": -6.0,
+      "z": 150.3,
+      "yaw": 270,
+      "lift": 42.5,
+      "size_cm": [
+        98,
+        66,
+        105
+      ]
+    },
+    "dark_shades": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_DarkShades.SM_DarkShades",
+      "scale": 0.4338,
+      "x": -5.3,
+      "z": 116.3,
+      "yaw": 270,
+      "lift": 0.0,
+      "size_cm": [
+        74,
+        83,
+        28
+      ]
+    },
+    "top_hat": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_TopHat.SM_TopHat",
+      "scale": 0.3787,
+      "x": 0.0,
+      "z": 177.7,
+      "yaw": 270,
+      "lift": 45.4,
+      "size_cm": [
+        72,
+        72,
+        55
+      ]
+    },
+    "bob_wig": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_BobWig.SM_BobWig",
+      "scale": 0.4502,
+      "x": -4.0,
+      "z": 134.9,
+      "yaw": 270,
+      "lift": 17.7,
+      "size_cm": [
+        84,
+        78,
+        86
+      ]
+    },
+    "ball_cap": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_BallCap.SM_BallCap",
+      "scale": 0.6021,
+      "x": 20.0,
+      "z": 162.9,
+      "yaw": 270,
+      "lift": 30.8,
+      "size_cm": [
+        74,
+        115,
+        56
+      ]
+    },
+    "wide_brim_hat": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_WideBrimHat.SM_WideBrimHat",
+      "scale": 0.4732,
+      "x": 0.0,
+      "z": 165.8,
+      "yaw": 270,
+      "lift": 21.6,
+      "size_cm": [
+        90,
+        89,
+        32
+      ]
+    },
+    "saucepan_helmet": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_SaucepanHelmet.SM_SaucepanHelmet",
+      "scale": 0.6625,
+      "x": 0.0,
+      "z": 149.5,
+      "yaw": 270,
+      "lift": 10.8,
+      "size_cm": [
+        126,
+        76,
+        43
+      ]
+    },
+    "wizard_hat": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_WizardHat.SM_WizardHat",
+      "scale": 0.4204,
+      "x": 0.0,
+      "z": 181.3,
+      "yaw": 270,
+      "lift": 52.5,
+      "size_cm": [
+        80,
+        78,
+        63
+      ]
+    },
+    "tiara": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_Tiara.SM_Tiara",
+      "scale": 0.3902,
+      "x": 0.0,
+      "z": 158.4,
+      "yaw": 270,
+      "lift": 0.0,
+      "size_cm": [
+        64,
+        74,
+        37
+      ]
+    },
+    "fedora": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_Fedora.SM_Fedora",
+      "scale": 0.4505,
+      "x": 0.0,
+      "z": 167.8,
+      "yaw": 270,
+      "lift": 25.7,
+      "size_cm": [
+        80,
+        86,
+        36
+      ]
+    },
+    "horned_helmet_beard": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_HornedHelmetBeard.SM_HornedHelmetBeard",
+      "scale": 0.6003,
+      "x": 4.0,
+      "z": 125.1,
+      "yaw": 270,
+      "lift": 22.2,
+      "size_cm": [
+        85,
+        67,
+        114
+      ]
+    },
+    "dino_hood": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_DinoHood.SM_DinoHood",
+      "scale": 0.5911,
+      "x": 10.0,
+      "z": 143.3,
+      "yaw": 270,
+      "lift": 26.5,
+      "size_cm": [
+        84,
+        112,
+        86
+      ]
+    },
+    "beanie": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_Beanie.SM_Beanie",
+      "scale": 0.4674,
+      "x": 0.0,
+      "z": 174.5,
+      "yaw": 270,
+      "lift": 58.8,
+      "size_cm": [
+        76,
+        77,
+        89
+      ]
+    },
+    "ball_cap_back": {
+      "mesh": "/Game/NHOS/Stage/Headpieces/SM_BallCap.SM_BallCap",
+      "scale": 0.6021,
+      "x": -20.0,
+      "z": 162.9,
+      "yaw": 90,
+      "lift": 30.8,
+      "size_cm": [
+        74,
+        115,
+        56
+      ]
+    }
+  }
+}
