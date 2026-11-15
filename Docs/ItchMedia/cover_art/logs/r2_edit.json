@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-15 21:32 UTC",
+    "generation": "1f1e13c0-a72d-6060-a23e-15b6e55c9125",
+    "model": "gemini-2.5-flash-image",
+    "source": "Local/art/cover/r1/edit_2_real.png",
+    "refs": [],
+    "prompt": "Edit this picture: change only the eyes of the four robots around the cardboard-box costume, so each one looks sideways toward the cardboard-box costume in the middle with a suspicious, narrowed side-eye look. The pale blue robot on the far left keeps its two glowing white ring eyes on its black screen face, shifted toward the right and narrowed by a lowered lid. The android in black glasses keeps its glowing gold eyes behind the glasses, shifted toward the right and narrowed. The orange robot keeps its round wire glasses and half-closed eyes, now glancing toward the left. The lime robot keeps its glowing yellow eyes on its black visor, shifted toward the left and narrowed. Keep everything else exactly the same: the cardboard costume with its smile and sweat drop, the poses, bodies, colors, curtain, floor, spotlight and lighting. No text, letters, logos or watermark.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]
