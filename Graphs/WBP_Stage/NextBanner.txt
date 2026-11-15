@@ -1,0 +1,12 @@
+(fn NextBanner ()
+  (if (> (Utilities|Array|Length (Variables|Default|GetBannerQueue)) 0)
+    (Variables|Default|SetBannerBusy true)
+    (Variables|Default|SetBannerAlpha 1.0)
+    (Class|Text|SetText :Text (Utilities|Text|ToText(String) (Utilities|Array|Get(acopy) (Variables|Default|GetBannerQueue) 0)) :self (Variables|WBP_Stage|GetBannerText))
+    (Utilities|Array|RemoveIndex (Variables|Default|GetBannerQueue) 0)
+    (Widget|SetRenderOpacity :self (Variables|WBP_Stage|GetEventBanner) :InOpacity 1.0)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetEventBanner) :InVisibility "HitTestInvisible")
+    (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "FadeBanner" :Time 3.5 :bLooping false)
+    (else
+      (Variables|Default|SetBannerBusy false)
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetEventBanner) :InVisibility "Collapsed"))))

@@ -1,0 +1,7 @@
+(fn FadeBanner ()
+  (Variables|Default|SetBannerAlpha (- (Variables|Default|GetBannerAlpha) 0.1))
+  (Widget|SetRenderOpacity :self (Variables|WBP_Stage|GetEventBanner) :InOpacity (Math|Float|Max(Float) (Variables|Default|GetBannerAlpha) 0.0))
+  (if (> (Variables|Default|GetBannerAlpha) 0.01)
+    (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "FadeBanner" :Time 0.05 :bLooping false)
+    (else
+      (CallFunction|NextBanner))))

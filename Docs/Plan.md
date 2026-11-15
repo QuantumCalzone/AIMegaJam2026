@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T28 (Scene Prep shows the whole card, the scene shows only mine) is pushed and waits for my playtest of one show and my OK on its Rules tab edit; its claim stays until then. The first free task is T29 (Opus 5.5 · xhigh): the chat holds only chat. It builds on T28 as pushed. Then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T28 (Scene Prep shows the whole card, the scene shows only mine) is pushed and waits for my playtest of one show and my OK on its Rules tab edit. T29 (the chat holds only chat) is pushed on top of it and waits for my playtest of one show; one show in a copy at T29's commit checks both. Their claims stay until then. The first free task is T32 (Opus 5.5 · xhigh), which starts the UI/UX sweep (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -134,6 +134,7 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Depends on:** T28 (the same widgets and `BP_Show`; the Scene Prep lines move into its card)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Graphs/` files for the graphs it writes, `Docs/tasks/T29.md`.
+  - **Waiting:** built and pushed; two free autoplay shows reach `SHOW END` with `LOG` lines of the same form, and screenshots of a scene turn, Free Talk, the vote and a cut show only actor lines in the chat and the moments on the new banner. Left: play one show and say whether the chat reads as a chat.
   - **Details:** [Docs/tasks/T29.md](tasks/T29.md)
 
 - [ ] **T32 UI/UX audit, style guide and shared pieces**
