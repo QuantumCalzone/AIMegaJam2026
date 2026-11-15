@@ -1,0 +1,47 @@
+[
+  {
+    "time": "2026-11-15 15:52 UTC",
+    "generation": "1f1e10c8-f2e0-6110-bb78-5e8dac7eb10c",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation diorama, wide 2:1 panoramic stage backdrop, sculpted matte modeling clay relief of a retro roadside diner interior at night: a long chrome-edged counter with round cherry-red stools, a black-and-white checkered floor, turquoise and cream walls, a row of plump red vinyl booths, a big round wall clock, glass pie domes on the counter, a chunky jukebox shape glowing with colored lights, wide windows showing a parking lot under a deep blue night sky with a fat paper-clay moon, a glowing neon arrow with no lettering. Chunky rounded shapes, saturated slightly chalky colors, visible thumbprints and sculpting tool marks, soft warm studio lighting, shallow relief like a painted theatre flat, straight-on front view, empty scene, no characters, no people, no text, no letters, no numbers, no logos, no signs with words. Composition for a theater backdrop seen behind actors: the most interesting scenery sits in the upper left, the upper right and the middle band; the top center is calm and simple; the bottom third is a plain, simple, uncluttered floor or ground with no objects. Warm, glowing color palette like a cozy old opera house stage.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, numbers, logo, watermark, signature, people, characters, person, robot, animals, creatures, hands, photorealistic, glossy plastic, frame, border, blurry"
+    },
+    "api_credit_cost": null,
+    "seed": 1811468262,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ],
+    "balance_before": 3782,
+    "balance_after": 3715
+  },
+  {
+    "time": "2026-11-15 15:54 UTC",
+    "generation": "1f1e10cd-c473-6f70-850d-f7596a7b05ef",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Claymation stop-motion set: everything is sculpted from soft matte plasticine modeling clay with visible thumbprints, chunky rounded toy-like shapes, slightly lumpy hand-made edges, saturated slightly chalky colors, like a handmade miniature theater backdrop. Wide 2:1 panoramic flat view, straight on. A cozy retro roadside diner interior at night: a long chrome-edged clay counter with round cherry-red stools on the left, a black-and-white checkered floor, turquoise and cream walls, plump red booths on the right, a big round wall clock with no numbers, glass pie domes on the counter, a rounded jukebox glowing warm amber, wide windows showing a deep blue night sky with a fat clay moon. Composition: the most interesting scenery sits in the upper left, the upper right and the middle band; the top center is calm and simple; the bottom third is plain, uncluttered checkered floor with no objects. Warm glowing color palette like a cozy old opera house stage. No characters, no people, no text, no letters, no numbers, no signs, no neon, no logos.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, numbers, signs, neon sign, logo, watermark, signature, people, characters, person, robot, animals, hands, photorealistic, photograph, realistic, 3d render, CGI, glossy plastic, frame, border, blurry"
+    },
+    "api_credit_cost": null,
+    "seed": 891500441,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ],
+    "balance_before": 3581,
+    "balance_after": 3514,
+    "folder": "try2"
+  }
+]
