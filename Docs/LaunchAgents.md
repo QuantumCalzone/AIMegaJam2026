@@ -90,7 +90,7 @@ The app wakes you when every session you started is idle, or when I send you a m
 7. **Steps that need me first.**
    - Packaging needs the editor closed. Before you start it, ask me to close the editor, and wait for my answer.
    - A task with a `Waiting:` line needs no new session while its own session still waits. If that session has ended, start a new one for what is left only when I say that what it waits for is ready. The line's `Left:` part says what that is.
-   - The submission task needs me for the video, the itch.io page and the form. Start its prep pieces early; start the task itself when its Depends on line allows.
+   - **Only I start T70** (the itch.io page and the video; my call, 2026-11-15). Never start it, even when it is the only open task left and even on my `next`. When its Depends on line allows, tell me in one line that it is ready, and start it only when I ask for T70 by name. Its prep pieces may run as usual.
 8. **When nothing can start,** tell me in one line what each lane waits for, update the ledger, and end your turn. The next note wakes you.
 
 ### 4. When I stop or move to another machine

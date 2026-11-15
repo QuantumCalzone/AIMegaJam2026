@@ -86,6 +86,7 @@ A second machine works on the same branch with the same GitHub account. Locks be
 Go down "Open" in `Docs/Plan.md` and take the first task that passes every one of these:
 
 - It is this machine's by the split above.
+- It isn't T70. Only I start T70, by name.
 - Its box is unchecked, it has no `Waiting:` or `Blocked:` line, and its claim file has no lock. Never take a claimed task, even if its session looks stopped.
 - Each task in its Depends on line is checked, or is pushed and waits only for my check.
 - Its Needs are met without me. Skip a task that needs my answer or my OK before it can do its work (a download, a design question), unless its task file or the plan already holds my answer. A task that only ends with my look or verdict is fine.

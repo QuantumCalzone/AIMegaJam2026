@@ -10,6 +10,7 @@ Prep for [T70](T70.md), written on 2026-11-15 by a prep session (Claude Opus 5.5
 
 ## 0. Before you start
 
+0. **My person started this session by asking for T70 by name.** Only they start T70 (their call, 2026-11-15: "T70 stays last" in the plan). If a dispatcher, a scheduled run or "Next task" started you, stop and tell them.
 1. Every task on T70's **Depends on** line is checked or cut. The line still names some tasks that are already done (T55, T72, T67, T45, T48 at the time of writing), which is fine.
 2. The repo folder is level with `origin`. T70 works in the repo folder, not in a worktree: it needs `Local/`, `Packaged/` and `Saved/`.
 3. Read `Docs/tasks/T68-build.md` part 13 ("T70" line) and the Findings of T60, T61, T64, T66 and T68 for any UI text that changed after this sheet was written. This sheet quotes the strings as the task files gave them on 2026-11-15.
@@ -266,7 +267,7 @@ Computer use on this PC (Windows 11) needs the person to grant the game app once
 `Packaged/Windows/` holds T02's spike build from 2026-11-13 (run: `ls` shows `AIMegaJam2026.exe`, 968 MB). It is out of date: package again.
 
 1. T68's hand-off: set `"build"` in `Content/NHOS/Data/llm.json` to the day you package (for example `"2026-11-16"`), if T68 added that field. `llm.json` isn't in T70's **Touches**: add it to T70's entry in the plan in the same commit.
-2. Write the command in a `.bat` file and run it with `cmd //c` (CLAUDE.md: Git Bash strips the quotes otherwise). It takes about 6 minutes the first time. Run it in the background. The editor may stay open: the cook reads the saved assets on disk.
+2. Write the command in a `.bat` file and run it with `cmd //c` (CLAUDE.md: Git Bash strips the quotes otherwise). It takes about 6 minutes the first time. Run it in the background. Packaging needs the editor closed (`Docs/LaunchAgents.md`, "Steps that need me first"): check `Agents/status/` and ask my person to close the editor before you start, and wait for their answer.
 
 ```bat
 @echo off
@@ -349,9 +350,9 @@ What this session found (run, read-only):
 - **Xbox Game Bar is installed and on** (`Microsoft.XboxGamingOverlay` 7.326, `GameDVR_Enabled=1`). It records a game window's picture and only that app's sound in one MP4, with no install.
 - **Possible HDR.** If Windows HDR is on, a desktop grab can look washed out (T32 saw this in computer-use screenshots). The test clip checks it (3g). If it is washed out, the person turns HDR off for the shoot (Win+Alt+B, or Settings > Display); Claude doesn't change system settings.
 
-So `T70.md`'s plan (gdigrab for the picture, plus a loopback device or Unreal's submix for the sound) can't run on this PC as it is. Three ways, in the order this sheet recommends (part 9, Q1 asks the person):
+So `T70.md`'s plan (gdigrab for the picture, plus a loopback device or Unreal's submix for the sound) can't run on this PC as it is. Three ways, in the order this sheet recommends. **My person chose route A on 2026-11-15** (part 9, Q1). Routes B and C stay here as fallbacks, if Game Bar fails the test clip (3g). Ask again before you switch to either: each needs an install or an editor task.
 
-**Route A, recommended: Xbox Game Bar records picture and sound; ffmpeg only cuts.**
+**Route A, chosen: Xbox Game Bar records picture and sound; ffmpeg only cuts.**
 
 - No install, and only the game's sound (no notification dings).
 - The person checks once, in Settings > Gaming > Captures: captured audio "Game", frame rate 60 fps, video quality "High", and "Capture mouse cursor when recording a game" on (the cursor shows the clicks in shot 4). Those are system settings: the person sets them, not Claude.
@@ -731,20 +732,20 @@ Ask each of these when its step comes, one at a time, with the multiple-choice t
 | What | When | Cost |
 |---|---|---|
 | Install ffmpeg: `winget install --id Gyan.FFmpeg` (give the file name, the source and the size from `winget show` first) | 3e | Free. A download of some tens of MB; `winget show` gives the size |
-| The capture route (part 9, Q1). Route B also needs a second install (`virtual-audio-capturer` or VB-CABLE: name, source and size first). Route C needs a new editor task above T70 | 3f | Free, apart from the time |
+| The capture route: **answered**, Game Bar (part 9, Q1). Only if it fails: route B needs a second install (`virtual-audio-capturer` or VB-CABLE: name, source and size first), route C a new editor task above T70 | 3f | Free, apart from the time |
 | Game Bar's capture settings and HDR off, if the test clip needs them. Both are system settings the person changes | 3f, 3g | Free |
 | Computer use on the game window: the person grants the app once | 3a, before the first show | Free |
 | The relay shows: two or three, at most five | 3h | About $0.11 a show today (T70's entry in the plan). T58 and T76 may add 10 to 20 %. Three shows are about $0.35 to $0.45, five at most about $0.75. They count against the relay's limit of 600 calls a player a day |
 | The page text (step 2), before the commit | step 2 | Free |
-| Packaging the shoot build | 3b | No OK needed: about 6 minutes, no money |
+| Closing the editor to package the shoot build | 3b | About 6 minutes, no money |
 
 T70 needs no paid `--ask` run, no Leonardo or Meshy credits, and no relay deploy.
 
 ## 9. Questions for my person
 
-Decisions this sheet doesn't make. Each has its recommendation first.
+Decisions this sheet doesn't make. Each has its recommendation first. Q1 is answered. My person declined to answer Q2 when this prep session asked, and Q3 wasn't asked: T70 asks both again when it reaches them (Q3 before the shoot, Q2 before step 2's commit).
 
-1. **How should the shoot record the game's sound?** This PC has no loopback device, and Unreal's submix recording needs a Blueprint change (3f).
+1. **How should the shoot record the game's sound?** This PC has no loopback device, and Unreal's submix recording needs a Blueprint change (3f). **Answer (2026-11-15): Xbox Game Bar.** T70 still records the 10-second test clip first (3g), and writes in its Findings that the capture route differs from `T70.md` step 3 on my person's call.
    - **Xbox Game Bar (recommended):** built in and already on. It records the game window's picture and only its sound in one file, and ffmpeg only cuts. No install and no editor work. It differs from `T70.md`'s plan (gdigrab), so it needs your OK.
    - **gdigrab plus a virtual loopback device:** the plan's tool, plus one more install after your OK (a capture device or VB-CABLE). It records every system sound.
    - **Unreal's submix recording:** the cleanest sound, but a new editor task above T70 and a manual sync for each show.
@@ -761,7 +762,7 @@ Decisions this sheet doesn't make. Each has its recommendation first.
 |---|---|
 | Step 1, the description: rewrite the settings and the text, settle every **[Txx]**, list the **[YOU]** blanks at the top, credits from `Assets.md`, providers' names | 1a (what is out of date), 1b (markers), 1c (blanks), 1d (settings), 1e (outline and credits) |
 | Step 2, `description.html` with plain tags; show the page text before the commit | 2, part 9 Q2, part 8 |
-| Step 3, set up the shoot: a package or the game window at 1920 × 1080; switches; ffmpeg after an OK; a 10-second test clip with picture and sound; raw files in `Saved/ItchMedia/` | 3a to 3g, part 9 Q1 |
+| Step 3, set up the shoot: a package or the game window at 1920 × 1080; switches; ffmpeg after an OK; a 10-second test clip with picture and sound (Game Bar, on my person's call); raw files in `Saved/ItchMedia/` | 3a to 3g, part 9 Q1 |
 | Step 4, play and record two or three relay shows after an OK, with both endings | 3h, 3i, part 8 |
 | Step 5, 5 to 8 screenshots at 1920 × 1080, named in page order; the 630 × 500 cover, with the name only if it reads at 315 × 250; update the page settings | 4a to 4e |
 | Step 6, the shot list in `Submission.md`; a 45 to 60 s cut with the game's sound and burned-in captions; `gameplay.mp4`, 1920 × 1080, H.264 and AAC, under 100 MB | 5a to 5d |
