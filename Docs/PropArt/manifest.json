@@ -18,7 +18,20 @@
       "ref": "Docs/PropArt/hood/ref.png",
       "task": "01a1de2d-753b-77e2-bd34-f29749d6acd6",
       "credits": 20,
-      "fbx": "Docs/PropArt/hood/hood.fbx"
+      "fbx": "Docs/PropArt/hood/hood.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_Hood",
+        "bounds_cm": [
+          178.3,
+          120.8,
+          190.2
+        ],
+        "min_z": -95.1,
+        "tris": 15426,
+        "scale": 0.14,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "dark_shades",
@@ -34,7 +47,20 @@
       "ref": "Docs/PropArt/dark_shades/ref.png",
       "task": "01a1de2d-7525-7464-a77e-2c15d0876fa2",
       "credits": 20,
-      "fbx": "Docs/PropArt/dark_shades/dark_shades.fbx"
+      "fbx": "Docs/PropArt/dark_shades/dark_shades.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_DarkShades",
+        "bounds_cm": [
+          170.6,
+          190.3,
+          65.7
+        ],
+        "min_z": -33.0,
+        "tris": 14526,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "top_hat",
@@ -50,7 +76,20 @@
       "ref": "Docs/PropArt/top_hat/ref.png",
       "task": "01a1de2d-752c-7248-9abf-685b6d94ae04",
       "credits": 20,
-      "fbx": "Docs/PropArt/top_hat/top_hat.fbx"
+      "fbx": "Docs/PropArt/top_hat/top_hat.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_TopHat",
+        "bounds_cm": [
+          190.1,
+          190.0,
+          146.2
+        ],
+        "min_z": -73.2,
+        "tris": 14511,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "filled"
+      }
     },
     {
       "id": "bob_wig",
@@ -66,7 +105,20 @@
       "ref": "Docs/PropArt/bob_wig/ref.png",
       "task": "01a1de2d-752d-702b-9e56-feb0c42c384e",
       "credits": 20,
-      "fbx": "Docs/PropArt/bob_wig/bob_wig.fbx"
+      "fbx": "Docs/PropArt/bob_wig/bob_wig.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_BobWig",
+        "bounds_cm": [
+          186.6,
+          173.7,
+          190.3
+        ],
+        "min_z": -95.2,
+        "tris": 15187,
+        "scale": 0.134,
+        "yaw": 90,
+        "underside": "open"
+      }
     },
     {
       "id": "ball_cap",
@@ -82,7 +134,20 @@
       "ref": "Docs/PropArt/ball_cap/ref.png",
       "task": "01a1de2d-7541-720b-9266-a6f379a1af88",
       "credits": 20,
-      "fbx": "Docs/PropArt/ball_cap/ball_cap.fbx"
+      "fbx": "Docs/PropArt/ball_cap/ball_cap.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_BallCap",
+        "bounds_cm": [
+          122.9,
+          190.3,
+          92.7
+        ],
+        "min_z": -46.4,
+        "tris": 15352,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "wide_brim_hat",
@@ -98,7 +163,20 @@
       "ref": "Docs/PropArt/wide_brim_hat/ref.png",
       "task": "01a1de2d-7541-720c-838b-68e385c551a5",
       "credits": 20,
-      "fbx": "Docs/PropArt/wide_brim_hat/wide_brim_hat.fbx"
+      "fbx": "Docs/PropArt/wide_brim_hat/wide_brim_hat.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_WideBrimHat",
+        "bounds_cm": [
+          190.2,
+          188.9,
+          66.7
+        ],
+        "min_z": -33.4,
+        "tris": 13909,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "saucepan_helmet",
@@ -114,7 +192,20 @@
       "ref": "Docs/PropArt/saucepan_helmet/ref.png",
       "task": "01a1de2d-753f-72b8-bd25-7c1cd0578f14",
       "credits": 20,
-      "fbx": "Docs/PropArt/saucepan_helmet/saucepan_helmet.fbx"
+      "fbx": "Docs/PropArt/saucepan_helmet/saucepan_helmet.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_SaucepanHelmet",
+        "bounds_cm": [
+          190.2,
+          114.6,
+          64.6
+        ],
+        "min_z": -32.4,
+        "tris": 15182,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "wizard_hat",
@@ -130,7 +221,20 @@
       "ref": "Docs/PropArt/wizard_hat/ref.png",
       "task": "01a1de2d-7536-70c4-a68c-4c2c1544db9a",
       "credits": 20,
-      "fbx": "Docs/PropArt/wizard_hat/wizard_hat.fbx"
+      "fbx": "Docs/PropArt/wizard_hat/wizard_hat.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_WizardHat",
+        "bounds_cm": [
+          190.3,
+          186.7,
+          148.7
+        ],
+        "min_z": -74.5,
+        "tris": 15224,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "tiara",
@@ -146,7 +250,20 @@
       "ref": "Docs/PropArt/tiara/ref.png",
       "task": "01a1de2d-f407-752d-8d4d-a10de84aec12",
       "credits": 20,
-      "fbx": "Docs/PropArt/tiara/tiara.fbx"
+      "fbx": "Docs/PropArt/tiara/tiara.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_Tiara",
+        "bounds_cm": [
+          164.0,
+          190.2,
+          94.1
+        ],
+        "min_z": -47.1,
+        "tris": 15329,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "fedora",
@@ -162,7 +279,20 @@
       "ref": "Docs/PropArt/fedora/ref.png",
       "task": "01a1de2d-f4b1-728d-b9ef-59edb5836c6d",
       "credits": 20,
-      "fbx": "Docs/PropArt/fedora/fedora.fbx"
+      "fbx": "Docs/PropArt/fedora/fedora.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_Fedora",
+        "bounds_cm": [
+          177.6,
+          190.2,
+          79.3
+        ],
+        "min_z": -39.6,
+        "tris": 14837,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "open"
+      }
     },
     {
       "id": "horned_helmet_beard",
@@ -178,7 +308,20 @@
       "ref": "Docs/PropArt/horned_helmet_beard/ref.png",
       "task": "01a1de2d-f4aa-76d3-87e3-aa75b50e10a8",
       "credits": 20,
-      "fbx": "Docs/PropArt/horned_helmet_beard/horned_helmet_beard.fbx"
+      "fbx": "Docs/PropArt/horned_helmet_beard/horned_helmet_beard.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_HornedHelmetBeard",
+        "bounds_cm": [
+          141.6,
+          111.6,
+          190.2
+        ],
+        "min_z": -95.2,
+        "tris": 15654,
+        "scale": 0.177,
+        "yaw": 90,
+        "underside": "filled"
+      }
     },
     {
       "id": "dino_hood",
@@ -194,7 +337,20 @@
       "ref": "Docs/PropArt/dino_hood/ref.png",
       "task": "01a1de2d-f573-70aa-a498-a2e122b1faf1",
       "credits": 20,
-      "fbx": "Docs/PropArt/dino_hood/dino_hood.fbx"
+      "fbx": "Docs/PropArt/dino_hood/dino_hood.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_DinoHood",
+        "bounds_cm": [
+          142.1,
+          190.2,
+          146.3
+        ],
+        "min_z": -73.2,
+        "tris": 15319,
+        "scale": 0.131,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "beanie",
@@ -210,7 +366,20 @@
       "ref": "Docs/PropArt/beanie/ref.png",
       "task": "01a1de2d-f598-743c-9aee-15cd7f181b8f",
       "credits": 20,
-      "fbx": "Docs/PropArt/beanie/beanie.fbx"
+      "fbx": "Docs/PropArt/beanie/beanie.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Headpieces/SM_Beanie",
+        "bounds_cm": [
+          162.6,
+          164.8,
+          189.9
+        ],
+        "min_z": -95.1,
+        "tris": 15513,
+        "scale": 0.152,
+        "yaw": 90,
+        "underside": "unchecked"
+      }
     },
     {
       "id": "tin_can_robot",
@@ -227,7 +396,19 @@
       "ref": "Docs/PropArt/tin_can_robot/ref.png",
       "task": "01a1de3e-e2ea-724b-ad6d-3083405f80ad",
       "credits": 30,
-      "fbx": "Docs/PropArt/tin_can_robot/tin_can_robot.fbx"
+      "fbx": "Docs/PropArt/tin_can_robot/tin_can_robot.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/space_plans/SM_TinCanRobot",
+        "bounds_cm": [
+          127.9,
+          64.5,
+          190.0
+        ],
+        "min_z": -95.0,
+        "tris": 15519,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "glow_stick_sword",
@@ -244,7 +425,19 @@
       "ref": "Docs/PropArt/glow_stick_sword/ref.png",
       "task": "01a1de3e-e2e9-7457-bfef-568c46af31f2",
       "credits": 30,
-      "fbx": "Docs/PropArt/glow_stick_sword/glow_stick_sword.fbx"
+      "fbx": "Docs/PropArt/glow_stick_sword/glow_stick_sword.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/space_plans/SM_GlowStickSword",
+        "bounds_cm": [
+          190.3,
+          35.8,
+          20.1
+        ],
+        "min_z": -10.1,
+        "tris": 15108,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "toy_blaster",
@@ -261,7 +454,19 @@
       "ref": "Docs/PropArt/toy_blaster/ref.png",
       "task": "01a1de3e-e2ef-7402-8c07-a60d65a62d1f",
       "credits": 30,
-      "fbx": "Docs/PropArt/toy_blaster/toy_blaster.fbx"
+      "fbx": "Docs/PropArt/toy_blaster/toy_blaster.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/space_plans/SM_ToyBlaster",
+        "bounds_cm": [
+          190.3,
+          71.3,
+          150.3
+        ],
+        "min_z": -75.2,
+        "tris": 15190,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "piggy_bank",
@@ -278,7 +483,19 @@
       "ref": "Docs/PropArt/piggy_bank/ref.png",
       "task": "01a1de42-ee4c-7197-88b6-1c7d813270a0",
       "credits": 30,
-      "fbx": "Docs/PropArt/piggy_bank/piggy_bank.fbx"
+      "fbx": "Docs/PropArt/piggy_bank/piggy_bank.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/space_plans/SM_PiggyBank",
+        "bounds_cm": [
+          178.5,
+          190.3,
+          170.2
+        ],
+        "min_z": -84.7,
+        "tris": 15588,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "cursed_ring",
@@ -295,7 +512,19 @@
       "ref": "Docs/PropArt/cursed_ring/ref.png",
       "task": "01a1de3e-e2e8-76e4-90f8-62a429d9bc6f",
       "credits": 30,
-      "fbx": "Docs/PropArt/cursed_ring/cursed_ring.fbx"
+      "fbx": "Docs/PropArt/cursed_ring/cursed_ring.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/mine_bridge/SM_CursedRing",
+        "bounds_cm": [
+          184.1,
+          95.7,
+          190.3
+        ],
+        "min_z": -95.2,
+        "tris": 15515,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "glowing_staff",
@@ -312,7 +541,19 @@
       "ref": "Docs/PropArt/glowing_staff/ref.png",
       "task": "01a1de3e-e2f1-707c-b634-4340d3454140",
       "credits": 30,
-      "fbx": "Docs/PropArt/glowing_staff/glowing_staff.fbx"
+      "fbx": "Docs/PropArt/glowing_staff/glowing_staff.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/mine_bridge/SM_GlowingStaff",
+        "bounds_cm": [
+          21.4,
+          20.9,
+          190.3
+        ],
+        "min_z": -95.2,
+        "tris": 15379,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "water_bucket",
@@ -329,7 +570,19 @@
       "ref": "Docs/PropArt/water_bucket/ref.png",
       "task": "01a1de3e-e2f0-71e2-a155-c002a494f637",
       "credits": 15,
-      "fbx": "Docs/PropArt/water_bucket/water_bucket.fbx"
+      "fbx": "Docs/PropArt/water_bucket/water_bucket.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/mine_bridge/SM_WaterBucket",
+        "bounds_cm": [
+          189.6,
+          157.8,
+          144.4
+        ],
+        "min_z": -72.3,
+        "tris": 8086,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "frying_pan",
@@ -346,7 +599,19 @@
       "ref": "Docs/PropArt/frying_pan/ref.png",
       "task": "01a1de42-ee5a-7140-931d-c06e292f6398",
       "credits": 15,
-      "fbx": "Docs/PropArt/frying_pan/frying_pan.fbx"
+      "fbx": "Docs/PropArt/frying_pan/frying_pan.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/mine_bridge/SM_FryingPan",
+        "bounds_cm": [
+          189.8,
+          134.1,
+          44.1
+        ],
+        "min_z": -22.0,
+        "tris": 8288,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "dino_egg",
@@ -363,7 +628,19 @@
       "ref": "Docs/PropArt/dino_egg/ref.png",
       "task": "01a1de3e-e2ef-7614-9de2-1ddbe1c0dfbf",
       "credits": 15,
-      "fbx": "Docs/PropArt/dino_egg/dino_egg.fbx"
+      "fbx": "Docs/PropArt/dino_egg/dino_egg.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/dino_island/SM_DinoEgg",
+        "bounds_cm": [
+          132.4,
+          132.4,
+          189.8
+        ],
+        "min_z": -95.0,
+        "tris": 8033,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "meaty_drumstick",
@@ -380,7 +657,19 @@
       "ref": "Docs/PropArt/meaty_drumstick/ref.png",
       "task": "01a1de3e-e2ef-75e1-a8a8-09be3fa5f3b5",
       "credits": 30,
-      "fbx": "Docs/PropArt/meaty_drumstick/meaty_drumstick.fbx"
+      "fbx": "Docs/PropArt/meaty_drumstick/meaty_drumstick.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/dino_island/SM_MeatyDrumstick",
+        "bounds_cm": [
+          149.3,
+          87.2,
+          190.3
+        ],
+        "min_z": -95.2,
+        "tris": 15562,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "safety_waiver",
@@ -397,7 +686,19 @@
       "ref": "Docs/PropArt/safety_waiver/ref.png",
       "task": "01a1de3f-9e14-7715-84df-abe5e1de6215",
       "credits": 15,
-      "fbx": "Docs/PropArt/safety_waiver/safety_waiver.fbx"
+      "fbx": "Docs/PropArt/safety_waiver/safety_waiver.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/dino_island/SM_SafetyWaiver",
+        "bounds_cm": [
+          189.8,
+          130.8,
+          18.7
+        ],
+        "min_z": -9.4,
+        "tris": 7757,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "dino_plush",
@@ -414,7 +715,19 @@
       "ref": "Docs/PropArt/dino_plush/ref.png",
       "task": "01a1de42-ee58-7066-907d-bf90cae0541a",
       "credits": 30,
-      "fbx": "Docs/PropArt/dino_plush/dino_plush.fbx"
+      "fbx": "Docs/PropArt/dino_plush/dino_plush.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/dino_island/SM_DinoPlush",
+        "bounds_cm": [
+          116.7,
+          190.3,
+          142.0
+        ],
+        "min_z": -71.0,
+        "tris": 15557,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "plush_horse_head",
@@ -431,7 +744,19 @@
       "ref": "Docs/PropArt/plush_horse_head/ref.png",
       "task": "01a1ddfe-67f5-7569-b1f1-b42b6d955dce",
       "credits": 30,
-      "fbx": "Docs/PropArt/plush_horse_head/plush_horse_head.fbx"
+      "fbx": "Docs/PropArt/plush_horse_head/plush_horse_head.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/favor_father/SM_PlushHorseHead",
+        "bounds_cm": [
+          111.8,
+          190.1,
+          176.3
+        ],
+        "min_z": -87.9,
+        "tris": 15584,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "cannoli_tray",
@@ -448,7 +773,19 @@
       "ref": "Docs/PropArt/cannoli_tray/ref.png",
       "task": "01a1de3f-b286-76a9-91b1-ec002538de7a",
       "credits": 30,
-      "fbx": "Docs/PropArt/cannoli_tray/cannoli_tray.fbx"
+      "fbx": "Docs/PropArt/cannoli_tray/cannoli_tray.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/favor_father/SM_CannoliTray",
+        "bounds_cm": [
+          190.2,
+          190.2,
+          79.4
+        ],
+        "min_z": -39.1,
+        "tris": 15365,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "wedding_envelope",
@@ -465,7 +802,19 @@
       "ref": "Docs/PropArt/wedding_envelope/ref.png",
       "task": "01a1de3f-b293-76ee-958e-5992f3ca7b97",
       "credits": 15,
-      "fbx": "Docs/PropArt/wedding_envelope/wedding_envelope.fbx"
+      "fbx": "Docs/PropArt/wedding_envelope/wedding_envelope.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/favor_father/SM_WeddingEnvelope",
+        "bounds_cm": [
+          189.9,
+          131.2,
+          33.7
+        ],
+        "min_z": -16.6,
+        "tris": 7712,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "bowl_of_oranges",
@@ -499,7 +848,19 @@
       "ref": "Docs/PropArt/glowing_briefcase/ref.png",
       "task": "01a1de3f-c548-768b-9f2e-661caf598ad9",
       "credits": 30,
-      "fbx": "Docs/PropArt/glowing_briefcase/glowing_briefcase.fbx"
+      "fbx": "Docs/PropArt/glowing_briefcase/glowing_briefcase.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/glowing_briefcase/SM_GlowingBriefcase",
+        "bounds_cm": [
+          190.2,
+          121.1,
+          184.0
+        ],
+        "min_z": -92.4,
+        "tris": 13410,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "gold_pocket_watch",
@@ -516,7 +877,19 @@
       "ref": "Docs/PropArt/gold_pocket_watch/ref.png",
       "task": "01a1de3f-c71e-7375-a5f8-bfb349d15fe2",
       "credits": 30,
-      "fbx": "Docs/PropArt/gold_pocket_watch/gold_pocket_watch.fbx"
+      "fbx": "Docs/PropArt/gold_pocket_watch/gold_pocket_watch.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/glowing_briefcase/SM_GoldPocketWatch",
+        "bounds_cm": [
+          154.4,
+          190.2,
+          134.1
+        ],
+        "min_z": -67.9,
+        "tris": 15356,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "giant_milkshake",
@@ -533,7 +906,19 @@
       "ref": "Docs/PropArt/giant_milkshake/ref.png",
       "task": "01a1de3f-da4e-7381-a9c7-6f5c380c0d9b",
       "credits": 30,
-      "fbx": "Docs/PropArt/giant_milkshake/giant_milkshake.fbx"
+      "fbx": "Docs/PropArt/giant_milkshake/giant_milkshake.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/glowing_briefcase/SM_GiantMilkshake",
+        "bounds_cm": [
+          66.0,
+          60.9,
+          190.2
+        ],
+        "min_z": -95.2,
+        "tris": 15440,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "giant_cheeseburger",
@@ -550,7 +935,19 @@
       "ref": "Docs/PropArt/giant_cheeseburger/ref.png",
       "task": "01a1de42-ee4e-7342-acb4-634aa6e27465",
       "credits": 30,
-      "fbx": "Docs/PropArt/giant_cheeseburger/giant_cheeseburger.fbx"
+      "fbx": "Docs/PropArt/giant_cheeseburger/giant_cheeseburger.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/glowing_briefcase/SM_GiantCheeseburger",
+        "bounds_cm": [
+          189.6,
+          190.0,
+          140.6
+        ],
+        "min_z": -70.5,
+        "tris": 15470,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "rolled_up_rug",
@@ -567,7 +964,19 @@
       "ref": "Docs/PropArt/rolled_up_rug/ref.png",
       "task": "01a1de3f-ef3c-7525-a4ca-114b8633d082",
       "credits": 15,
-      "fbx": "Docs/PropArt/rolled_up_rug/rolled_up_rug.fbx"
+      "fbx": "Docs/PropArt/rolled_up_rug/rolled_up_rug.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/league_night/SM_RolledUpRug",
+        "bounds_cm": [
+          189.4,
+          125.6,
+          96.8
+        ],
+        "min_z": -49.1,
+        "tris": 8002,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "bowling_ball",
@@ -584,7 +993,19 @@
       "ref": "Docs/PropArt/bowling_ball/ref.png",
       "task": "01a1de40-02cf-71c5-a47e-a7526b2822ed",
       "credits": 15,
-      "fbx": "Docs/PropArt/bowling_ball/bowling_ball.fbx"
+      "fbx": "Docs/PropArt/bowling_ball/bowling_ball.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/league_night/SM_BowlingBall",
+        "bounds_cm": [
+          189.6,
+          189.5,
+          189.6
+        ],
+        "min_z": -94.9,
+        "tris": 8299,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "ransom_bag",
@@ -601,7 +1022,19 @@
       "ref": "Docs/PropArt/ransom_bag/ref.png",
       "task": "01a1de40-a923-76be-bec4-a175bf2c3b18",
       "credits": 30,
-      "fbx": "Docs/PropArt/ransom_bag/ransom_bag.fbx"
+      "fbx": "Docs/PropArt/ransom_bag/ransom_bag.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/league_night/SM_RansomBag",
+        "bounds_cm": [
+          156.1,
+          158.3,
+          190.2
+        ],
+        "min_z": -95.2,
+        "tris": 15593,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "milk_carton",
@@ -618,7 +1051,19 @@
       "ref": "Docs/PropArt/milk_carton/ref.png",
       "task": "01a1de42-ee5c-7016-b2fb-7dd788801738",
       "credits": 15,
-      "fbx": "Docs/PropArt/milk_carton/milk_carton.fbx"
+      "fbx": "Docs/PropArt/milk_carton/milk_carton.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/league_night/SM_MilkCarton",
+        "bounds_cm": [
+          95.6,
+          101.9,
+          189.9
+        ],
+        "min_z": -95.1,
+        "tris": 8218,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "red_pill",
@@ -635,7 +1080,19 @@
       "ref": "Docs/PropArt/red_pill/ref.png",
       "task": "01a1de15-480c-7036-a46f-22321b87f28b",
       "credits": 15,
-      "fbx": "Docs/PropArt/red_pill/red_pill.fbx"
+      "fbx": "Docs/PropArt/red_pill/red_pill.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/pick_a_pill/SM_RedPill",
+        "bounds_cm": [
+          189.8,
+          72.4,
+          71.3
+        ],
+        "min_z": -35.9,
+        "tris": 8054,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "blue_pill",
@@ -652,7 +1109,19 @@
       "ref": "Docs/PropArt/blue_pill/ref.png",
       "task": "01a1de40-bd85-74fb-964d-a5688ac39c4d",
       "credits": 15,
-      "fbx": "Docs/PropArt/blue_pill/blue_pill.fbx"
+      "fbx": "Docs/PropArt/blue_pill/blue_pill.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/pick_a_pill/SM_BluePill",
+        "bounds_cm": [
+          189.8,
+          75.8,
+          74.8
+        ],
+        "min_z": -37.6,
+        "tris": 7811,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "ringing_phone",
@@ -669,7 +1138,19 @@
       "ref": "Docs/PropArt/ringing_phone/ref.png",
       "task": "01a1de40-bd93-76df-9cd1-fa6faa9a6bdb",
       "credits": 30,
-      "fbx": "Docs/PropArt/ringing_phone/ringing_phone.fbx"
+      "fbx": "Docs/PropArt/ringing_phone/ringing_phone.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/pick_a_pill/SM_RingingPhone",
+        "bounds_cm": [
+          190.2,
+          115.8,
+          95.8
+        ],
+        "min_z": -48.1,
+        "tris": 15448,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "bent_spoon",
@@ -686,7 +1167,19 @@
       "ref": "Docs/PropArt/bent_spoon/ref.png",
       "task": "01a1de40-e641-7708-a91a-d1781cc086fd",
       "credits": 30,
-      "fbx": "Docs/PropArt/bent_spoon/bent_spoon.fbx"
+      "fbx": "Docs/PropArt/bent_spoon/bent_spoon.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Props/pick_a_pill/SM_BentSpoon",
+        "bounds_cm": [
+          190.3,
+          56.5,
+          69.7
+        ],
+        "min_z": -35.0,
+        "tris": 15518,
+        "scale": 0.158,
+        "yaw": 90
+      }
     },
     {
       "id": "chandelier",
@@ -701,7 +1194,19 @@
       "ref": "Docs/PropArt/chandelier/ref.png",
       "task": "01a1de5c-faaa-76fe-a3d5-6cabeefe7cc7",
       "credits": 30,
-      "fbx": "Docs/PropArt/chandelier/chandelier.fbx"
+      "fbx": "Docs/PropArt/chandelier/chandelier.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Set/SM_Chandelier",
+        "bounds_cm": [
+          152.7,
+          151.4,
+          190.0
+        ],
+        "min_z": -95.1,
+        "tris": 14937,
+        "scale": 0.948,
+        "yaw": 90
+      }
     },
     {
       "id": "cherub",
@@ -716,7 +1221,19 @@
       "ref": "Docs/PropArt/cherub/ref.png",
       "task": "01a1de5c-faab-751c-ba56-7ac8a98ab36b",
       "credits": 30,
-      "fbx": "Docs/PropArt/cherub/cherub.fbx"
+      "fbx": "Docs/PropArt/cherub/cherub.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Set/SM_Cherub",
+        "bounds_cm": [
+          138.5,
+          190.2,
+          159.3
+        ],
+        "min_z": -79.7,
+        "tris": 15575,
+        "scale": 0.315,
+        "yaw": 90
+      }
     },
     {
       "id": "theater_box",
@@ -731,7 +1248,19 @@
       "ref": "Docs/PropArt/theater_box/ref.png",
       "task": "01a1de5c-fa97-7178-8ac9-a3e2fb75503d",
       "credits": 30,
-      "fbx": "Docs/PropArt/theater_box/theater_box.fbx"
+      "fbx": "Docs/PropArt/theater_box/theater_box.fbx",
+      "fit": {
+        "asset": "/Game/NHOS/Stage/Set/SM_TheaterBox",
+        "bounds_cm": [
+          190.3,
+          142.4,
+          183.6
+        ],
+        "min_z": -91.8,
+        "tris": 15027,
+        "scale": 1.577,
+        "yaw": 90
+      }
     }
   ]
 }

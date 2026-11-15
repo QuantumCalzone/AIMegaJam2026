@@ -78,6 +78,8 @@ AI tools we built the game with
   - Claude Sonnet 5.5: one repo-setup edit before the jam (adding the theme to the agent instructions).
 - Unreal MCP (Unreal Engine 5.8): the agents built every Blueprint, widget, material and the stage through the editor's MCP server.
 - Claude Docs: the game design document is a Claude Doc, kept in step with the game through its connector.
+- Leonardo.ai (the lucid-origin model, through its API): a reference image for each generated 3D model, four candidates per model, one picked by hand.
+- Meshy (Pro plan, image to 3D with Meshy 7.1 and Meshy 6 Lite): the clay-style 3D models, made from those reference images: the 13 costume headpieces, the story props and the opera-house set pieces. Props and set pieces keep Meshy's texture; the headpieces wear our own clay material.
 
 AI in the game (called live during every show)
 - Anthropic, Claude Haiku 5.5 (claude-haiku-5-5): Anthropic's AI player, the helper that turns the player's typing into stage actions, and the Director who breaks tied votes.
@@ -91,10 +93,10 @@ Other tools
 - Git, Git LFS and GitHub.
 - Visual Studio 2022 and the Windows 11 SDK, for packaging.
 
-No AI image, 3D, texture, music, sound or voice tools were used. [T20: confirm once the audio is in.]
+The only AI image and 3D tools were Leonardo.ai and Meshy, above. No AI texture, music, sound or voice tools were used. [T20: confirm once the audio is in.]
 ```
 
-None of the partner tools named on the jam page for prizes (Hyper3D Rodin, Meshy, Tripo, fal, PBRgen) were used, so there's nothing extra to list for those prizes. Add to this list if open question 7 turns something up.
+Of the partner tools named on the jam page for prizes (Hyper3D Rodin, Meshy, Tripo, fal, PBRgen), we used Meshy: every generated 3D model in the game (headpieces, story props and set pieces) is a Meshy image-to-3D model, as listed above and in Docs/Assets.md. Check the jam page for what the Meshy prize asks for. Add to this list if open question 7 turns something up.
 
 ### NVIDIA RTX Award (optional): NVIDIA features used, and how
 
@@ -123,7 +125,8 @@ Fonts
 - Droid Sans Fallback, shipped with Unreal Engine 5.8. Apache License 2.0. Draws characters Roboto lacks.
 
 Art
-- No outside or AI-generated art. The theater, the five robots and the six painted backdrops are built in the editor from the engine's basic shapes, with our own materials and no textures.
+- AI-generated 3D models, made by us: the costume headpieces, the story props and the opera-house set pieces were made with Meshy (Pro plan, which gives us ownership of the output) from reference images we generated with Leonardo.ai. Docs/Assets.md lists each one with its prompt. Props and set pieces keep Meshy's textures; the headpieces use our own clay material.
+- Everything else is built in the editor from the engine's basic shapes, with our own materials and no textures: the theater, the five robots and the six painted backdrops.
 
 Audio (pending: T20 imports these and makes the final choice)
 - Kenney (www.kenney.nl), from Kenney Game Assets All-in-1 3.8.0, CC0 1.0: music loops "Swinging Pants" and "Wacky Waiting", the idents "Serious ident" and "Retro Comedy", UI clicks and rollovers, a talk blip, footsteps, cloth, a woosh and a soft impact.

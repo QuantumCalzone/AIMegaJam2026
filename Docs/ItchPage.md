@@ -28,7 +28,7 @@ The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used f
 - **Yes, it does.**
 - **Text and dialogue:** yes. Four LLMs write the AI actors' lines live during every show. The prompts, scene cards and director's notes were written with Claude.
 - **Code:** yes. Claude agents built the Blueprints through Unreal MCP.
-- **Graphics:** no AI image or 3D generator was used. Claude agents built the theater, the robots and the backdrops in the editor from the engine's basic shapes. If itch.io counts agent-built scenes as AI graphics, say yes and explain it in one line.
+- **Graphics:** yes. The costume headpieces, the story props and the opera-house set pieces are 3D models we made with Meshy (image to 3D) from reference images we made with Leonardo.ai. Claude agents built the theater, the robots and the backdrops in the editor from the engine's basic shapes.
 - **Sound:** no **[T20: confirm once the audio is in]**.
 
 ---
