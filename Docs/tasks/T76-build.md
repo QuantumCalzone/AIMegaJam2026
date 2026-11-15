@@ -26,6 +26,8 @@ Back to [T76](T76.md). A PC prep session wrote this on 2026-11-15, without the e
 
 One question. My recommendation is first.
 
+> **My person answered** (2026-11-15, to the prep session): **edit Tech & Build too**, as recommended. Part 1c applies, and its three edits go with the same OK as parts 1a and 1b. Don't ask again; copy this answer under "Findings" in `T76.md`.
+
 1. **The Tech & Build tab.** T76 puts the emotion feature in the Rules and Bot Prompts tabs. The Tech & Build tab (rev 28) then disagrees in two places: "AI actors reply in that format: actions as tool calls, plus speech." (no emotion), and "Cut for the jam: voice acting, extra sets, animations beyond Move, Look, Grab, Throw and Give, ..." (T75's gestures are such animations). Its build list has no line for the emotions either.
    - **(Recommended) Make the three small edits in part 1c too,** with the same OK as the other doc edits. The doc is the only source of truth, and T70's itch page and the judges' read come from it.
    - **Or leave Tech & Build as it is,** and T76 edits only the two tabs its step 1 names.
@@ -55,8 +57,8 @@ My person asked prep sessions to take their own recommendation on calls that are
 3. **T75's ids.** `python -c "import json;print([e['id'] for e in json.load(open('Content/NHOS/Data/emotes.json',encoding='utf-8'))['emotes']])"` prints the ids in order. Expected: `['neutral', 'happy', 'sad', 'angry', 'worried', 'scared', 'surprised', 'confused', 'disgusted', 'suspicious', 'smug', 'embarrassed']`. If T75's rework changed them, use its list in part 2a's enum and part 4's lists (every id in part 4 must still exist; the checker says which doesn't). Check that `check_files` returns `"emotes": emotes` (T75-build part 4c).
 4. `python Tools/check_prompts.py --offline` passes before you start.
 5. **Ask my person, one question per call, with the multiple-choice tool** (CLAUDE.md, "Asking for input"):
-   1. Question 1 above, if my person hasn't answered it in this sheet.
-   2. **The doc edits:** show part 1's text (1a, 1b, and 1c with question 1's first answer). "Make these edits (Recommended)" or "Change the wording" (then take theirs, and use it word for word in part 3a and `DOC_EMOTION_LINE`).
+   1. Question 1 is answered (edit Tech & Build too); don't ask it again.
+   2. **The doc edits:** show part 1's text (1a, 1b and 1c). "Make these edits (Recommended)" or "Change the wording" (then take theirs, and use it word for word in part 3a and `DOC_EMOTION_LINE`).
    3. **The deploy push:** "Push free_mode.json and the relay with T76 (Recommended)": the push redeploys the relay, whose free replies gain an `emotion`; no paid call and no game behavior changes. Or "Not now" (part 8's two-commit path).
    4. **The paid run:** "Run every ask on the four providers, about 70 calls, about $0.10 (Recommended)" or "Not now" (then the task waits with a `Waiting:` line after its first commit).
 6. Status file `Agents/status/task-T76.md` in the repo folder's `Agents/status/`, with `- Editor: not using`.
@@ -96,7 +98,7 @@ In "Shared base prompt", the code block (id `.4986`), after its last line `- Kee
 - It covers every point of T76 step 3: the emotion its robot shows while its line plays; acted, not always felt, with the task's two examples; `neutral` when nothing moves it, but not stuck on one; a pass shows its emotion; never in the speech (the base's second line already bans tags).
 - The doc wraps it; `prompts.json` holds it as one line, with one space where each break is (part 3a). If my person changes the wording, change part 3a and `DOC_EMOTION_LINE` (part 6b) to match, word for word.
 
-### 1c. Tech & Build tab (rev 28), only with question 1's first answer
+### 1c. Tech & Build tab (rev 28): my person said yes (question 1)
 
 1. **"Game state & logs"**, the bullet "AI actors reply in that format: actions as tool calls, plus speech." (id `.264`) becomes "AI actors reply in that format: actions as tool calls, plus speech and the emotion their robot shows."
 2. **"Build list"**, a new item after "Cut reveal and reaction round" (id `.1820`): "Emotions: every robot shows a face and a gesture while its line plays, picked by each AI's reply, and from your line or by you".
@@ -525,7 +527,7 @@ Free by default (no `--real`). Every provider passes: it checks the free reply h
 
 ### 7d. The doc
 
-Read the Rules, Bot Prompts (and with question 1's first answer, Tech & Build) tabs back after the edits, and check `base`'s last line in `prompts.json` against the doc's, word for word: `--offline` already compares it with `DOC_EMOTION_LINE`, so check that constant against the doc's block once.
+Read the Rules, Bot Prompts and Tech & Build tabs back after the edits, and check `base`'s last line in `prompts.json` against the doc's, word for word: `--offline` already compares it with `DOC_EMOTION_LINE`, so check that constant against the doc's block once.
 
 ### 7e. The paid run (about $0.10, after my person's OK)
 
