@@ -53,7 +53,8 @@
 		"- The scene card: does each actor play their role and chase their want?",
 		"- The persona: every AI plays a parody of the leader of the lab that made it, with its quirks and grudges. The human has no persona and has to fake one. An actor with no clear persona, or a flat copy of another actor's, may be the human.",
 		"- Human slips: talking about hunger, sleep, feelings or family as their own, dodging questions, or echoing other actors' lines.",
-		"- How a line is typed is never evidence. Ignore punctuation, capitals, spelling and emoji, and judge what each actor says and does.",
+		"- Typing is never evidence: the converter fixes the human's spelling, so ignore typos, punctuation, capitals and emoji. Judge what each actor says and does, and how it sounds.",
+		"- Silence is evidence, and so is a line that sounds too polished. Notice who passes and who sounds unlike the rest.",
 		"- Judge each actor on everything in the log. Don't vote for someone just for speaking first or for being accused first. Change your mind when the evidence changes.",
 		"",
 		"How to reply:",
@@ -111,7 +112,7 @@
 	],
 	"asks": {
 		"scene_turn": "The scene, your turn. Play your role, chase your want, follow your note subtly without saying it, and react to what just happened in the log. Fill: actions (1 or 2) and speech.",
-		"free_talk": "Free Talk, your line. Say one short line, about 10 words, to the cast about who the human is: accuse one actor, defend yourself, or ask or answer a pointed question, with one piece of evidence from the log. The scene is over, so you may name the note. Talk about one actor, not a list. Pass only if you truly have nothing to add. Fill: speech, or pass. No actions.",
+		"free_talk": "Free Talk, your line. Say one short line, about 10 words, to the cast about who the human is: accuse one actor, defend yourself, or ask or answer a pointed question, with one piece of evidence from the log. The scene is over, so you may name the note. Talk about one actor, not a list. Pass only if you truly have nothing to add: everyone sees a pass, and silence is evidence. Fill: speech, or pass. No actions.",
 		"vote": "The Cut. Vote in secret for the actor you think is the human. Fill: vote (one name from options) and reason (why, in one sentence, in character). Everyone sees your reason after the vote.",
 		"reaction": "Reactions. The vote just ended, and the last of game_messages says how: an actor was cut and revealed, or the vote was tied and nobody was cut. React in character. If an AI was cut, or nobody was, the human is still among you. Fill: speech, and at most 1 action.",
 		"reaction_cut": "Reactions. You were just cut, and the reveal showed you are an AI. Say your last words to the cast, in character. Fill: speech, and at most 1 action.",

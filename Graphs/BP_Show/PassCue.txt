@@ -1,0 +1,14 @@
+; T57: a Free Talk pass shows "passed" by that actor's name (the Rules tab, Free Talk). ShowLine calls it
+; in Free Talk, before the line goes into the queue, so the marker changes as that line comes up.
+; A pass queues a "passed" cue; a spoken line from an actor whose marker is up queues "unpass".
+; PassSeats holds the seats whose marker is up, as the logic sees it (it runs ahead of the screen).
+(fn PassCue (Seat Does)
+  (set PassIdx (Utilities|Array|FindItem (V PassSeats) Seat))
+  (if (streq Does (V DoesPass))
+    (if (< (V PassIdx) 0)
+      (add (V PassSeats) Seat))
+    (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "passed" :Text (cat "scene=" (str (V SceneNum)) " round=" (str (V TalkRound))) :Num Seat)
+    (return))
+  (if (>= (V PassIdx) 0)
+    (Utilities|Array|RemoveIndex (V PassSeats) (V PassIdx))
+    (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "unpass" :Text "" :Num Seat)))
