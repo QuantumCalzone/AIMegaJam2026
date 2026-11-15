@@ -1,0 +1,22 @@
+; T72: one gibberish syllable in the speaker's own voice. T73 calls it once per syllable as a line types out.
+; VoiceSounds holds the five sets in this order (LoadVoices fills it on the first call): OpenAI 0-9,
+; Anthropic 10-19, SpaceXAI 20-30, Meta 31-40, Me 41-52. The set is found from the provider name like Blip does.
+; Slot K: 0 OpenAI, 1 Anthropic, 2 SpaceXAI, 3 Meta, 4 me, 5 an unknown name (it uses the OpenAI clips).
+; Never the same clip twice in a row for a slot, the pitch moves up to 6% at random, a new syllable stops
+; the slot's last one, and it prints nothing: a show plays thousands.
+(fn Syllable (Name IsMe)
+  (bind _k (select IsMe 4 (select (Utilities|String|StartsWith Name "Open") 0 (select (Utilities|String|StartsWith Name "Anth") 1 (select (Utilities|String|StartsWith Name "Space") 2 (select (Utilities|String|StartsWith Name "Meta") 3 5))))))
+  (if (== (len (V VoiceSounds)) 0)
+    (CallFunction|LoadVoices))
+  (if (< (len (V VoiceLast)) 6)
+    (Utilities|Array|Resize (V VoiceLast) 6)
+    (Utilities|Array|Resize (V VoiceComp) 6))
+  (bind _start (select (== _k 1) 10 (select (== _k 2) 20 (select (== _k 3) 31 (select (== _k 4) 41 0)))))
+  (bind _count (select (== _k 2) 11 (select (== _k 4) 12 10)))
+  ; roll among count - 1 clips, then step over the slot's last clip, so it never repeats
+  (set VoicePick (Math|Random|RandomIntegerinRange 0 (- _count 2)))
+  (set VoicePick (select (>= (V VoicePick) (get (V VoiceLast) _k)) (+ (V VoicePick) 1) (V VoicePick)))
+  (Utilities|Array|SetArrayElem (V VoiceLast) _k (V VoicePick))
+  (CallFunction|StopVoice :K _k)
+  (bind _c (Audio|SpawnSound2D :Sound (get (V VoiceSounds) (+ _start (V VoicePick))) :PitchMultiplier (Math|Random|RandomFloatinRange 0.94 1.06)))
+  (Utilities|Array|SetArrayElem (V VoiceComp) _k _c))

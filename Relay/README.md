@@ -116,6 +116,8 @@ python Tools/analytics_report.py --since 2026-11-20 --test
 
 `--since` starts at that UTC day. `--test` adds the test events, which are left out otherwise. It reads the key from `Local/stats.json` (an example is in `Docs/stats.example.json`), never from `Local/llm_key.json`, which ships next to the packaged game. The relay address comes from that file's `relay`, or else from `relay` in `Content/NHOS/Data/llm.json`.
 
+**Leaving out our own machines:** list their player ids in `Local/stats.json` under `ignore_players`. The report always leaves those players out and says how many events it left out; the events stay on the relay. The game prints its player id in the log (T68). The game sends events only from packaged builds, never from the Unreal Editor, except test-marked events for checks (T68).
+
 **Setting up the key (once):**
 
 1. `python Tools/analytics_report.py --new-key` writes `Local/stats.json` with a fresh 64-character key. It prints no key.
@@ -179,6 +181,8 @@ Cloudflare answers 403 to Python's default `Python-urllib` User-Agent, so the sc
 Cloudflare builds and deploys the relay from GitHub on its own machines, so nobody needs Node.js or wrangler on their computer. You need a Cloudflare account (the free Workers plan is enough: it includes Durable Objects with SQLite storage). Each deploy needs the person's OK, because every push to the connected branch deploys.
 
 **Status:** deployed on 2026-11-14 as `nhos-relay` in our Cloudflare account, built from `noHumansOnSet`, with all four secrets set. The curl tests passed against it (23 of 23), and `test/game_shape.py` passes for all four providers with the efforts in the table: `anthropic` 1.6 s, `openai` 1.8 s, `xai` 2.2 s, `meta` 2.3 s (one short reply each; times vary from run to run). The address is on the Worker's page in the dashboard.
+
+Since 2026-11-15 (T67) it also takes analytics events (`POST /event`) and keeps them in the `Stats` Durable Object; `STATS_KEY` is set, and the curl tests passed 49 of 49 against it.
 
 **Adding a secret in the dashboard:** use **Add variable and deploy**, not **Save**. Save only makes a new version; the live one keeps the old secrets until you promote the new version under **Deployments > (version) > Promote version**.
 

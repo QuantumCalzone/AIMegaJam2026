@@ -1,0 +1,7 @@
+; T72: stops the last syllable that slot K played, if it is still playing (Syllable keeps it in VoiceComp).
+(fn StopVoice (K)
+  (bind _c (get (V VoiceComp) K))
+  (Utilities|IsValid _c
+    (:"Is Valid"
+      (Audio|Components|Audio|StopDelayed :self _c :DelayTime 0.0))
+    (:"Is Not Valid")))
