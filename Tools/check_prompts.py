@@ -114,6 +114,13 @@ free_talk ask also goes out in round 2, after a round 1 with a pass. --log fails
 a show whose Free Talk passes (NHOS: LOG ... | passes |) and "passed" markers
 (NHOS: PASSED) don't match one for one.
 
+Last word (T58): anyone named with @ in the final Free Talk round gets one
+reply before the vote. Each persona answers a last_word ask (named by another
+actor in round 2). The file check fails an actor ask that free_mode.json would
+answer from another phase. --log fails a scene whose last words (NHOS: LOG
+scene n, last word) aren't exactly the actors on stage that someone else named
+with @ in its final round, one each, as NHOS: LASTWORDS says.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -152,12 +159,13 @@ PROVIDER_KEYS = ["format", "endpoint", "key_field", "model", "max_tokens_field",
 USER_AGENT = "nhos-check-prompts/1.0"
 # T52: about 7 calls per actor per scene (T26: 87 for a 3-scene show of 5, 4 and 3 actors), plus 4 closing.
 # A 4-scene show with one tie (5, 5, 4 and 3 actors) makes about 7 x 17 + 4 = 123; with a tie in every scene, 144.
-CALLS_PER_SHOW = 125
+# T58: plus about 2 last words a scene (the actors named in the final round).
+CALLS_PER_SHOW = 135
 
 PLACES = ["Center", "Left", "Right", "Front", "Back", "Riser", "Prop Table"]
 MIN_CARDS, MIN_NOTES = 6, 10
 VERBS = ["move", "look", "grab", "throw", "give"]
-ACTOR_ASKS = ["scene_turn", "free_talk", "vote", "reaction", "reaction_cut", "closing"]
+ACTOR_ASKS = ["scene_turn", "free_talk", "last_word", "vote", "reaction", "reaction_cut", "closing"]
 ALL_ASKS = ACTOR_ASKS + ["input"]
 MAX_WORDS = 15
 
@@ -739,6 +747,16 @@ def check_files(errors: list[str]):
         errors.append("prompts.json: 'game' lost the design doc's silence rule (DOC_SILENCE_LINE)")
     if any("How a line is typed is never evidence" in g for g in game):
         errors.append("prompts.json: 'game' still says how a line is typed is never evidence; since T57 a too-polished line is evidence")
+    # T58: free mode answers each ask from the phase of the same name: the first phase whose
+    # ask_contains is in the ask's text (case-sensitive, as in the game and the relay).
+    free = load_json("free_mode.json", errors) or {}
+    for k in ALL_ASKS:
+        text = prompts.get("asks", {}).get(k, "")
+        if k == "input" or not text:
+            continue
+        hit = next((ph.get("id") for ph in free.get("phases", []) if any(w in text for w in ph.get("ask_contains", []))), "scene_turn")
+        if hit != k:
+            errors.append(f"free_mode.json: asks.{k} would get a '{hit}' reply in free mode; put a '{k}' phase first, or change the ask")
     # T54: goal 1 names both ways the human wins.
     goal1 = next((g for g in game if g.startswith("1. ")), "")
     if "final two" not in goal1 or "last scene ends" not in goal1:
@@ -980,6 +998,14 @@ class Show:
         cases["vote"] = self.actor_state(pid, "vote", "the cut, voting", self.log(turns=3, talk=2), options=self.others(pid))
         # T57: round 2, after a round 1 in which visionary passed (TALK[0]), so the pass is in the log.
         cases["free_talk_r2"] = self.actor_state(pid, "free_talk", "free talk, round 2 of 2", self.log(turns=3, talk=1))
+        # T58: the last word. Another actor names this one with @ in round 2 (it takes that actor's line).
+        log = self.log(turns=3, talk=2)
+        accuser = self.name("worrier" if pid == "copycat" else "copycat")
+        for e in reversed(log):
+            if e["actor"] == accuser and e["when"] == "scene 1, free talk round 2":
+                e["says"] = f"@{self.name(pid)}, you never answered a single question. Who are you really?"
+                break
+        cases["last_word"] = self.actor_state(pid, "last_word", "free talk, last word", log)
 
         # Reaction to someone else's cut. SpaceXAI sees the human cut; the others see an AI cut.
         h, oc = self.name(HUMAN), self.name("overclocker")
@@ -1310,7 +1336,7 @@ def check_reply(reply, ask, ctx):
         unused(not passed and not vote and not reason, "pass, vote or reason filled in a scene turn")
         note = ctx.get("note", "").lower().rstrip(".")
         unused(not note or note not in speech.lower(), "said the note aloud during the scene")
-    elif ask == "free_talk":
+    elif ask in ("free_talk", "last_word"):
         need(not actions, "Free Talk has no actions")
         need(bool(speech.strip()) != passed, "Free Talk needs speech, or pass with no speech")
         unused(not vote and not reason, "vote or reason filled in Free Talk")
@@ -1358,7 +1384,7 @@ def check_reply(reply, ask, ctx):
 
 # ---------------------------------------------------------------- PIE log
 
-LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED)\b ?(.*)$")
+LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS)\b ?(.*)$")
 
 
 def check_log(path: Path, personas, all_shows: bool) -> int:
@@ -1393,14 +1419,24 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
     vote_bad = 0  # T52: scenes whose vote didn't end in exactly one CUT or TIE
     end_bad = 0  # T54: shows whose SHOW END reason doesn't match how they ended
     pass_bad = 0  # T57: shows whose passes and "passed" markers don't match
+    lw_bad = 0  # T58: scenes whose last words don't match the final round's @ mentions
     for i, show in enumerate(shows, 1):
         human = None
         cards = []
         seats = total = None
         cast_ids, passes, marks = [], [], []  # T57
+        talk, lastw, named, cut_at, sc_now = {}, {}, {}, {}, 0  # T58
         ends, scene, ties = [], 0, 0  # T52
         cuts, end = 0, None  # T54
         for kind, rest in show:
+            if kind == "CUT":
+                cut_at[rest.split()[0]] = sc_now  # T58: off stage after this scene (the CUT/TIE block below still runs)
+            if kind == "LASTWORDS":
+                # T58: "NHOS: LASTWORDS scene=<n> named=<ids|none>" (and "... DONE scene=<n> entries=<n>").
+                m = re.match(r"scene=(\d+) named=(\S+)", rest)
+                if m:
+                    named[int(m.group(1))] = [] if m.group(2) == "none" else m.group(2).split(",")
+                continue
             if kind == "PASSED":
                 # T57: "NHOS: PASSED <seat id> scene=<n> round=<r>", printed when the marker shows.
                 m = re.match(r"(\S+) scene=(\d+) round=(\S+)", rest)
@@ -1451,13 +1487,22 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 continue
             if kind == "LOG":
                 parts = rest.split(" | ", 3)
+                m = re.match(r"scene (\d+),", parts[0])
+                sc_now = int(m.group(1)) if m else sc_now  # T58
                 # T57: every Free Talk pass shows a "passed" marker (NHOS: PASSED, with the seat id).
                 # A pass's line ends "| passes |", which the strip above leaves as 3 parts.
-                m = re.match(r"scene (\d+), free talk round (\d+)$", parts[0])
+                m = re.match(r"scene (\d+), (?:free talk round (\d+)|last word)$", parts[0])
                 if m and len(parts) >= 3 and parts[2].rstrip(" |") == "passes":
                     pn = re.match(r"Player (\d+)$", parts[1])
                     k = int(pn.group(1)) if pn else 0
-                    passes.append((cast_ids[k - 1] if 0 < k <= len(cast_ids) else parts[1], m.group(1), m.group(2)))
+                    passes.append((cast_ids[k - 1] if 0 < k <= len(cast_ids) else parts[1], m.group(1), m.group(2) or "last"))
+                if m:
+                    # T58: the final round's lines (who names whom) and the last words, by scene.
+                    sc = int(m.group(1))
+                    if m.group(2):
+                        talk.setdefault(sc, []).append((int(m.group(2)), parts[1], parts[3] if len(parts) > 3 else ""))
+                    else:
+                        lastw.setdefault(sc, []).append(parts[1])
                 if len(parts) < 4:
                     continue
                 if parts[1] == human:
@@ -1502,13 +1547,29 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
         if seats and total and total != seats - 1:
             clock_bad += 1
             print(f"[FAIL] show {i} | SETUP | scenes={total}, but {seats} seats means {seats - 1} scenes")
+        # T58: in each scene, the last words are the actors on stage that someone else named with @ in
+        # the final round, one each, and NHOS: LASTWORDS names the same seats.
+        pname = lambda sid: f"Player {cast_ids.index(sid) + 1}" if sid in cast_ids else sid
+        for sc in sorted(set(talk) | set(lastw) | set(named)):
+            lines = talk.get(sc, [])
+            top = max((r for r, _, _ in lines), default=0)
+            off = {pname(s) for s, k in cut_at.items() if k < sc}
+            on = {pname(s) for s in cast_ids} - off
+            want = sorted({p for p in on for r, who, says in lines
+                           if r == top and who != p and f"@{p}".lower() in says.lower()})
+            got = sorted(lastw.get(sc, []))
+            said = sorted(pname(s) for s in named.get(sc, [])) if sc in named else None
+            if got != want or (said is not None and said != want):
+                lw_bad += 1
+                print(f"[FAIL] show {i} | LAST WORD | scene {sc}: named in the final round {want}, "
+                      f"last words {got}, NHOS: LASTWORDS {said if said is not None else 'missing'}")
         if sorted(passes) != sorted(marks):
             pass_bad += 1
             print(f"[FAIL] show {i} | PASSED | Free Talk passes {sorted(passes)}, but markers {sorted(marks)}")
         print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}, ties = {ties}, "
-              f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}.")
+              f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}, last words = {sum(len(v) for v in lastw.values())}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad else 0
+    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad else 0
 
 
 # ---------------------------------------------------------------- main

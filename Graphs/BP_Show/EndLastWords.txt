@@ -1,0 +1,6 @@
+; T58: the last words are done; Free Talk ends as it did before T58 (EndFreeTalk, then The Cut).
+; TalkPos counts the last words played, since PlayTalk adds 1 for each.
+(fn EndLastWords ()
+  (print (cat "NHOS: LASTWORDS DONE scene=" (str (V SceneNum)) " entries=" (str (V TalkPos))))
+  (set LastWordOn false)
+  (CallFunction|EndFreeTalk))

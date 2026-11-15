@@ -1,0 +1,10 @@
+; T58: my canned last words for autoplay, from autoplay.json's last_word list. A missing or empty list makes my seat pass.
+(fn LoadCannedLast ()
+  (clear (V CannedLast))
+  (bind _cdir (Utilities|Paths|GetProjectContentDirectory))
+  (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _cdir "NHOS/Data/autoplay.json"))))
+  (if _ok
+    (bind _h (Json|HasField _o "last_word"))
+    (if _h
+      (bind _l (Json|GetField _o "last_word"))
+      (set CannedLast _l))))

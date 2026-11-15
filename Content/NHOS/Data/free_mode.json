@@ -3,7 +3,7 @@
 		"Pre-written replies for free mode: test shows that call no LLM and cost no tokens.",
 		"The game reads this file itself in Test for Free (BPC_LLMClient.FreeReply, no network). The relay also uses it when a request has \"free\": true (see Relay/README.md); the relay bundles it at build time, so a change here needs a push to reach the relay.",
 		"phases: how to tell which ask a request is, checked in order. A phase matches when the state has the 'when_field' key, or its 'ask' text contains one of 'ask_contains'. The first match wins; 'scene_turn' is the fallback.",
-		"Each phase says what to fill: 'lines' (speech), 'reasons' (reason), 'vote' (a random name from options), 'actions' (how many, from 'scene_actions'), 'pass_chance' (Free Talk only), 'echo_typed' (the input step: speech = the player's typed text, cut to 15 words).",
+		"Each phase says what to fill: 'lines' (speech), 'reasons' (reason), 'vote' (a random name from options), 'actions' (how many, from 'scene_actions'), 'pass_chance' (Free Talk only; the last word has none), 'echo_typed' (the input step: speech = the player's typed text, cut to 15 words).",
 		"Placeholders: {actor} = a random cast name other than you, {vote} = the chosen vote, {place} = a random place, {prop} = a random prop. Names come from the state the game sends (cast, set.places, set.props, options, you).",
 		"scene_actions: the actions a free actor may take, with weights. target and item use the same placeholders.",
 		"Lines follow the game's legibility rules: plain sentences, 15 words at most, no brackets, emoji or all-caps words, no real names and no company names."
@@ -61,16 +61,26 @@
 			]
 		},
 		{
+			"id": "last_word",
+			"ask_contains": ["Last word"],
+			"lines": [
+				"{actor}, you named me with zero proof. Read the log again.",
+				"I was busy acting, {actor}. Robots focus. You should try it.",
+				"@{actor}, check my battery logs. They will clear my name.",
+				"Me? My circuits are spotless. {actor} is just deflecting."
+			]
+		},
+		{
 			"id": "free_talk",
 			"ask_contains": ["Free Talk"],
 			"pass_chance": 0.1,
 			"lines": [
 				"I think {actor} is the human. Nobody blinks that much.",
-				"{actor}, why did you hesitate before your last line?",
+				"@{actor}, why did you hesitate before your last line?",
 				"It's not me. My battery is at full charge, look.",
 				"{actor} grabbed the {prop} like a nervous person would.",
 				"I trust nobody here, least of all {actor}.",
-				"{actor} walked to the {place} without a reason. Explain that.",
+				"@{actor}, you walked to the {place} without a reason. Explain that.",
 				"My last update made me more charming. That's all you saw."
 			]
 		},

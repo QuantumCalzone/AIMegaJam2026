@@ -1,0 +1,25 @@
+; T08: the next Free Talk speaker, or the next round, or the end of Free Talk. Written from the editor's read-back in T58.
+; T58: during the last words every call goes to NextLastWord; after the final round, StartLastWords runs in place of EndFreeTalk.
+(fn NextTalker ()
+  (if (V LastWordOn)
+    (CallFunction|NextLastWord)
+    (return))
+  (if (>= (V TalkPos) (len (V TalkOrder)))
+    (if (< (V TalkRound) 2)
+      (CallFunction|StartTalkRound)
+      (else
+        (CallFunction|StartLastWords)))
+    (else
+      (set TalkSeat (get (V TalkOrder) (V TalkPos)))
+      (if (== (V TalkSeat) (V HumanSeat))
+        (set HumanSent false)
+        (Class|WBPStage|SetPassEnabled :self (Variables|Default|GetStage) :Enabled true)
+        (if (V Autoplay)
+          (CallFunction|SendHumanTalk :Line (get (V CannedTalk) (Math|Integer|%(Integer) (+ (* (- (V SceneNum) 1) 2) (- (V TalkRound) 1)) (len (V CannedTalk))))))
+        (else
+          (set AskCount (+ (V AskCount) 1))
+          (set RTag (cat (get (V SeatId) (V TalkSeat)) "-" (str (V AskCount))))
+          (add (V PendingTags) (V RTag))
+          (add (V PendingSeats) (V TalkSeat))
+          (bind _state (CallFunction|ActorState :Seat (V TalkSeat) :AskKey "free_talk" :Now (cat "free talk, round " (str (V TalkRound)) " of 2")))
+          (Class|BPCLLMClient|Ask :self (V LLMClient) :Tag (V RTag) :Role "actor" :System (get (V SeatSystem) (V TalkSeat)) :User _state))))))

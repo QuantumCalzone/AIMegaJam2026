@@ -1,0 +1,18 @@
+; T08: one Free Talk line (or a pass) goes into the shared log and the line queue, then the next speaker. Written from the editor's read-back in T58.
+; T58: the entry's "when" comes from TalkWhen ("scene n, last word" during the last words).
+(fn PlayTalk (Seat Ok Speech Pass)
+  (bind _seatname (V SeatName))
+  (bind _output (Utilities|Array|Get(acopy) _seatname Seat))
+  (bind _out (CallFunction|CapWords :Text Speech))
+  (set TalkPassed (or (not Ok) (or Pass (Utilities|String|IsEmpty _out))))
+  (set TalkSays (select (V TalkPassed) "" _out))
+  (set TalkDoes (select (V TalkPassed) (V DoesPass) (V DoesNothing)))
+  (bind _when (CallFunction|TalkWhen))
+  (set TmpStr2 _when)
+  (bind _entry (CallFunction|MakeEntry :When (V TmpStr2) :Actor _output :Does (V TalkDoes) :Says (V TalkSays)))
+  (CallFunction|ActorLine :Seat Seat :Entry _entry)
+  (CallFunction|ShowLine :Seat Seat :Does (V TalkDoes) :Says (V TalkSays))
+  (print (cat "NHOS: LOG " (V TmpStr2) " | " _output " | " (V TalkDoes) " | " (V TalkSays)))
+  (set TalkCount (+ (V TalkCount) 1))
+  (set TalkPos (+ (V TalkPos) 1))
+  (CallFunction|NextTalker))
