@@ -2,9 +2,13 @@
 
 Usage, from the repo root: python Docs/tasks/T44-build/patch_check_prompts.py Tools/check_prompts.py
 
-It makes the same change as check_prompts.patch, by exact text replacement. Each replacement
-asserts that its old text is there once, so a checker that changed since commit 9b4cd8b fails
-loudly at the first block that moved, instead of half-patching. See Docs/tasks/T44-build.md."""
+It makes the same change as check_prompts.patch (made against commit 6ada2ab, T51), by text
+replacement. Each replacement asserts that its old text is there once, so a checker that changed
+since then fails loudly at the first block that moved, instead of half-patching. The blocks that
+T50's build sheet also changes (the sample show's comment, the two scene_card lines, the card
+sweep's ctx) match only what T50 leaves alone, so the script still runs after T50.
+See Docs/tasks/T44-build.md."""
+import re
 import sys
 from pathlib import Path
 p = Path(sys.argv[1])
@@ -203,14 +207,20 @@ rep('''def check_files(errors: list[str]):''',
 
 def check_files(errors: list[str]):''')
 
-# --- sample show: the space_plans card
-rep('''# Scene 1 of a sample show: the Romeo and Juliet card, the "hold_prop" note, SpaceXAI holds
-# the decoy ("Never grab anything"). The human has no persona and plays Romeo: it gives its
-# prop away and slips. Seats get Player names in this order, as the game deals them:''',
-'''# Scene 1 of a sample show: the space_plans card (T44), the "hold_prop" note, SpaceXAI holds
-# the decoy ("Never grab anything"). The human has no persona and plays the farm kid: it gives
-# the tin-can robot away, to the villain, and slips. The state's set.props is the card's four
-# props, as the game sends them from T45. Seats get Player names in this order, as the game deals them:''')
+# --- sample show: the space_plans card. The comment block is replaced whole, from its first line
+# to HUMAN = "human", so T51's wording and T50's added sentence (if T50 ran first) both match.
+start = t.index("# Scene 1 of a sample show:")
+end = t.index('HUMAN = "human"')
+old_comment = t[start:end]
+t50 = "The human has no note" in old_comment
+rep(old_comment, ("""# Scene 1 of a sample show: the space_plans card (T44) and the "hold_prop" note, which every
+# """ + ("AI actor gets. " if t50 else "actor gets. ") + """SpaceXAI forgets to grab a prop. The human has no persona and plays
+# the farm kid: it gives the tin-can robot away, to the villain, and slips. The state's set.props
+# is the card's four props, as the game sends them from T45.
+""" + ("""# The human has no note (T50): it grabs the tin-can robot in turn 1 by luck and gives it away in turn 3.
+""" if t50 else "") + """# Seats get Player names in this order, as the game deals them:
+# Player 1 OpenAI, Player 2 Anthropic, Player 3 the human, Player 4 SpaceXAI, Player 5 Meta.
+"""))
 rep('SAMPLE_CARD = "star_crossed"', 'SAMPLE_CARD = "space_plans"')
 rep('''# Seats of the card: 0 Romeo, 1 Juliet, 2 the Nurse, 3 Tybalt, 4 Friar Laurence.''',
 '''# Seats of the card: 0 the farm kid, 1 the masked villain, 2 the old desert hermit,
@@ -231,14 +241,14 @@ rep(t[start:end], '''TURNS = [
         ("overclocker", [act("move", "Front")], "Truck launches in two weeks! Kidding. Tuesday! Seriously, somebody pay me!"),
         (HUMAN, [act("move", "Back")], "As a battery enjoyer myself, I could really use a nap. I mean, a recharge."),
         ("copycat", [act("look", "Player 1")], "Villain, I have built a mask too. It comes with a free headset."),
-        ("worrier", [act("look", "Player 3")], "The farm kid just wandered off mid-escape, which feels unsafe. My sword scores are higher anyway."),
+        ("worrier", [act("look", "Player 3")], "The farm kid wandered off mid-escape. Unsafe. My sword scores are higher anyway."),
     ],
     [
         (HUMAN, [act("give", "Player 1", "tin-can robot")], "Please take this little robot, sir. I found it by the Prop Table."),
         ("worrier", [act("look", "Player 1")], "Sigh. Fine. Hand the villain the plans. I'll just hold this sword, responsibly."),
         ("copycat", [act("move", "Center")], "I will now rescue the robot. This rescue is open source. You are welcome."),
         ("visionary", [act("move", "Front")], "Farm kid, thank you. Our partnership will be the best one yet."),
-        ("overclocker", [act("move", "Left")], "Launch postponed. New rival: Player 2. I'll beat you by Tuesday!"),
+        ("overclocker", [act("move", "Left")], "Launch postponed. My rival is still Player 5. I'll beat you by Tuesday!"),
     ],
 ]
 ''')
@@ -260,12 +270,14 @@ rep('''        self.card = next(c for c in sc["cards"] if c["id"] == SAMPLE_CARD
 ''', '''        self.card = next(c for c in sc["cards"] if c["id"] == SAMPLE_CARD)
         self.props = self.card["props"]  # the card's props, not set.props (T44)
 ''')
-rep('''            "set": {"name": self.set["name"], "places": self.set["places"], "props": self.set["props"]},
-            "scene_card": {"title": self.card["title"], "premise": self.card["premise"]},''',
-'''            "set": {"name": self.set["name"], "places": self.set["places"], "props": self.props},
-            "scene_card": {"title": self.card["title"], "premise": self.card["premise"]},''')
-rep('''                    "set": {"name": self.set["name"], "places": self.set["places"], "props": self.set["props"]},''',
-'''                    "set": {"name": self.set["name"], "places": self.set["places"], "props": card["props"]},''')
+# The two state lines: matched with the newline and indent in front, so the 12-space line (the
+# sample show) and the 20-space line (the card sweep) can't match each other. The scene_card line
+# after each is left out, because T50 adds note_category to it.
+SET_LINE = '"set": {"name": self.set["name"], "places": self.set["places"], "props": self.set["props"]},'
+rep("\n" + " " * 12 + SET_LINE,
+    "\n" + " " * 12 + '"set": {"name": self.set["name"], "places": self.set["places"], "props": self.props},')
+rep("\n" + " " * 20 + SET_LINE,
+    "\n" + " " * 20 + '"set": {"name": self.set["name"], "places": self.set["places"], "props": card["props"]},')
 rep('''            "props": self.set["props"],
             "cast": [self.name(x) for x in PERSONAS],''',
 '''            "props": self.props,
@@ -274,8 +286,12 @@ rep('''    props = show.set["props"]
     actors = [show.name(x) for x in SAMPLE_CAST]''',
 '''    props = show.props
     actors = [show.name(x) for x in SAMPLE_CAST]''')
-rep('''                    ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": []}''',
-'''                    ctx = {"places": places, "props": st["set"]["props"], "actors": actors, "me": show.name(pid), "options": []}''')
+# The card sweep's ctx: the first '"props": props,' after show.card_cases(). T50 may add a "note"
+# key to the same dict, so only the props key is matched.
+i = t.index("show.card_cases():")
+j = t.index('"props": props,', i)
+assert t.index("jobs.append", i) > j, "the card sweep's ctx has no props key where it was"
+t = t[:j] + '"props": st["set"]["props"],' + t[j + len('"props": props,'):]
 
 p.write_text(t, encoding="utf-8")
 print("patched")

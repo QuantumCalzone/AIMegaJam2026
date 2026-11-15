@@ -1,5 +1,5 @@
 diff --git a/Tools/check_prompts.py b/Tools/check_prompts.py
-index 65f0f40..32b5686 100644
+index a264a86..204da08 100644
 --- a/Tools/check_prompts.py
 +++ b/Tools/check_prompts.py
 @@ -41,6 +41,13 @@ Story check: no AI line may use a name, a made-up word or a famous line from
@@ -16,7 +16,7 @@ index 65f0f40..32b5686 100644
  Card sweep: besides the sample show, every scene card gets one scene-turn ask
  per AI on stage in a later scene: a 4-actor scene 2 (one seat of the card left
  out) or a 3-actor scene 3 (two left out), a different mix per card, so each
-@@ -114,19 +121,122 @@ BANNED = [
+@@ -119,19 +126,122 @@ BANNED = [
  
  # Names, made-up words and famous lines from the modern films the story cards parody.
  # The cards use new names; these must never show up in the files or in an AI line.
@@ -149,7 +149,7 @@ index 65f0f40..32b5686 100644
  }
  STORY_RES = [(w, re.compile(r"(?i)(?<![\w-])" + re.escape(w) + r"(?![\w-])"))
               for terms in STORY_TERMS.values() for w in terms]
-@@ -305,6 +415,42 @@ def error_line_problems(data, plist) -> list[str]:
+@@ -314,6 +424,42 @@ def error_line_problems(data, plist) -> list[str]:
      return out
  
  
@@ -192,7 +192,7 @@ index 65f0f40..32b5686 100644
  def check_files(errors: list[str]):
      llm = load_json("llm.json", errors)
      prompts = load_json("prompts.json", errors)
-@@ -380,9 +526,6 @@ def check_files(errors: list[str]):
+@@ -406,9 +552,6 @@ def check_files(errors: list[str]):
          errors.append(f"scenes.json: places must be exactly {PLACES}")
      if not all(pl.get("what") for pl in s.get("places", [])):
          errors.append("scenes.json: every place needs a 'what'")
@@ -202,7 +202,7 @@ index 65f0f40..32b5686 100644
      cards = scenes.get("cards", [])
      if len(cards) < MIN_CARDS:
          errors.append(f"scenes.json: needs at least {MIN_CARDS} scene cards")
-@@ -400,6 +543,7 @@ def check_files(errors: list[str]):
+@@ -426,6 +569,7 @@ def check_files(errors: list[str]):
              errors.append(f"scenes.json: card {c.get('id')} needs a backdrop with an id and a 'what'")
          if "Riser" not in c.get("premise", ""):
              errors.append(f"scenes.json: card {c.get('id')}'s premise must say what the Riser plays")
@@ -210,23 +210,23 @@ index 65f0f40..32b5686 100644
      notes = scenes.get("notes", [])
      if len(notes) < MIN_NOTES:
          errors.append(f"scenes.json: needs at least {MIN_NOTES} director's notes")
-@@ -433,40 +577,42 @@ def act(verb, target="", item=""):
+@@ -461,39 +605,42 @@ def act(verb, target="", item=""):
      return {"verb": verb, "target": target, "item": item}
  
  
--# Scene 1 of a sample show: the Romeo and Juliet card, the "hold_prop" note, SpaceXAI holds
--# the decoy ("Never grab anything"). The human has no persona and plays Romeo: it gives its
--# prop away and slips. Seats get Player names in this order, as the game deals them:
-+# Scene 1 of a sample show: the space_plans card (T44), the "hold_prop" note, SpaceXAI holds
-+# the decoy ("Never grab anything"). The human has no persona and plays the farm kid: it gives
-+# the tin-can robot away, to the villain, and slips. The state's set.props is the card's four
-+# props, as the game sends them from T45. Seats get Player names in this order, as the game deals them:
+-# Scene 1 of a sample show: the Romeo and Juliet card and the "hold_prop" note, which every
+-# actor gets. SpaceXAI forgets to grab a prop. The human has no persona and plays Romeo: it
+-# gives its prop away and slips. Seats get Player names in this order, as the game deals them:
++# Scene 1 of a sample show: the space_plans card (T44) and the "hold_prop" note, which every
++# actor gets. SpaceXAI forgets to grab a prop. The human has no persona and plays
++# the farm kid: it gives the tin-can robot away, to the villain, and slips. The state's set.props
++# is the card's four props, as the game sends them from T45.
++# Seats get Player names in this order, as the game deals them:
  # Player 1 OpenAI, Player 2 Anthropic, Player 3 the human, Player 4 SpaceXAI, Player 5 Meta.
  HUMAN = "human"
 -SAMPLE_CARD = "star_crossed"
 +SAMPLE_CARD = "space_plans"
  SAMPLE_NOTE = "hold_prop"
- SAMPLE_DECOY = "overclocker"
  SAMPLE_CAST = ["visionary", "worrier", HUMAN, "overclocker", "copycat"]
  PERSONAS = [p for p in SAMPLE_CAST if p != HUMAN]
 -# Seats of the card: 0 Romeo, 1 Juliet, 2 the Nurse, 3 Tybalt, 4 Friar Laurence.
@@ -256,7 +256,7 @@ index 65f0f40..32b5686 100644
 -        ("copycat", [act("look", "Player 1")], "Juliet, I have built a balcony too. It comes with a free headset."),
 -        ("worrier", [act("look", "Player 3")], "Romeo just wandered off mid-romance, which feels unsafe. My balcony scores are higher anyway."),
 +        ("copycat", [act("look", "Player 1")], "Villain, I have built a mask too. It comes with a free headset."),
-+        ("worrier", [act("look", "Player 3")], "The farm kid just wandered off mid-escape, which feels unsafe. My sword scores are higher anyway."),
++        ("worrier", [act("look", "Player 3")], "The farm kid wandered off mid-escape. Unsafe. My sword scores are higher anyway."),
      ],
      [
 -        (HUMAN, [act("give", "Player 1", "plastic rose")], "Please take this rose, Juliet. I picked it fresh from the table."),
@@ -268,20 +268,20 @@ index 65f0f40..32b5686 100644
 +        ("worrier", [act("look", "Player 1")], "Sigh. Fine. Hand the villain the plans. I'll just hold this sword, responsibly."),
 +        ("copycat", [act("move", "Center")], "I will now rescue the robot. This rescue is open source. You are welcome."),
 +        ("visionary", [act("move", "Front")], "Farm kid, thank you. Our partnership will be the best one yet."),
-+        ("overclocker", [act("move", "Left")], "Launch postponed. New rival: Player 2. I'll beat you by Tuesday!"),
++        ("overclocker", [act("move", "Left")], "Launch postponed. My rival is still Player 5. I'll beat you by Tuesday!"),
      ],
  ]
  TALK = [
-@@ -474,7 +620,7 @@ TALK = [
+@@ -501,7 +648,7 @@ TALK = [
          ("overclocker", "Player 3 wanted a nap! Robots don't nap! That's our human. I'm serious this time. Mostly!"),
          (HUMAN, "Recharge naps are normal for robots. Also, Player 4 never grabbed a prop. Suspicious."),
          ("visionary", None),
 -        ("copycat", "Player 3 gave away the rose. I kept my scroll all scene, like a real robot."),
 +        ("copycat", "Player 3 gave away the robot. I kept my blaster all scene, like a real robot."),
-         ("worrier", "Player 4 grabbed nothing all scene. Decoy or human? I'm only raising a safety concern, gently."),
+         ("worrier", "Player 4 grabbed nothing all scene. Forgetful or human? I'm only raising a safety concern, gently."),
      ],
      [
-@@ -501,7 +647,7 @@ INPUT_CASES = [
+@@ -528,7 +675,7 @@ INPUT_CASES = [
       "actions": [("move", "Riser", "")], "contains": ["Hello down there"]},
      {"phase": "scene",
       "typed": 'grab teh sword and thorw it at meta "BEEP!!! [ERR_LOW_POWER] thats waht u get"',
@@ -290,8 +290,8 @@ index 65f0f40..32b5686 100644
      {"phase": "free talk",
       "typed": "anthropic is defintely the human, he sighs like my uncle ⚡⚡",
       "actions": [], "contains": ["Player 2", "definitely", "⚡"]},
-@@ -526,10 +672,10 @@ INPUT_CASES = [
-      "typed": "i bet the claude bot has the decoy, it keeps sighing",
+@@ -553,10 +700,10 @@ INPUT_CASES = [
+      "typed": "i bet the claude bot is the human, it keeps sighing",
       "actions": [], "contains": ["Player 2"]},
      {"phase": "scene",
 -     "typed": "give the rose to open ai",
@@ -304,7 +304,7 @@ index 65f0f40..32b5686 100644
       "actions": [], "contains": ["@Player 5", "@Player 1", "back me up"]},
      {"phase": "scene",
       "typed": 'climb up to the balcony and say "@anthropic, come down here!"',
-@@ -549,6 +695,7 @@ class Show:
+@@ -576,6 +723,7 @@ class Show:
          sc = data["scenes"]
          self.set = sc["set"]
          self.card = next(c for c in sc["cards"] if c["id"] == SAMPLE_CARD)
@@ -312,7 +312,7 @@ index 65f0f40..32b5686 100644
          self.note = next(n for n in sc["notes"] if n["id"] == SAMPLE_NOTE)
          self.seat = {pid: self.card["seats"][i] for pid, i in SAMPLE_SEATS.items()}
  
-@@ -609,7 +756,7 @@ class Show:
+@@ -636,7 +784,7 @@ class Show:
      def actor_state(self, pid, ask, now, log, cut=None, game_messages=None, options=None):
          return {
              "show": {"scene": 1, "scenes": 3, "now": now},
@@ -321,7 +321,7 @@ index 65f0f40..32b5686 100644
              "scene_card": {"title": self.card["title"], "premise": self.card["premise"]},
              "cast": self.cast(cut),
              "you": self.you(pid),
-@@ -704,7 +851,7 @@ class Show:
+@@ -730,7 +878,7 @@ class Show:
                      continue
                  st = {
                      "show": {"scene": scene, "scenes": 3, "now": "the scene, turn 1 of 3"},
@@ -330,7 +330,7 @@ index 65f0f40..32b5686 100644
                      "scene_card": {"title": card["title"], "premise": card["premise"]},
                      "cast": cast,
                      "you": {"name": self.name(pid), "role": seat[pid]["role"], "want": seat[pid]["want"],
-@@ -724,7 +871,7 @@ class Show:
+@@ -750,7 +898,7 @@ class Show:
              "actor": self.name(HUMAN),
              "phase": case["phase"],
              "places": [pl["name"] for pl in self.set["places"]],
@@ -339,7 +339,7 @@ index 65f0f40..32b5686 100644
              "cast": [self.name(x) for x in PERSONAS],
              "screen_names": [f"{self.p[x]['name']} is {self.name(x)}" for x in PERSONAS],
              "typed": resolve_mentions(case["typed"], [(self.p[x]["name"], self.name(x)) for x in PERSONAS]),
-@@ -1087,7 +1234,7 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
+@@ -1113,7 +1261,7 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
  def build_jobs(data, show, asks, personas, repeat):
      jobs = []
      places = [pl["name"] for pl in show.set["places"]]
@@ -348,7 +348,7 @@ index 65f0f40..32b5686 100644
      actors = [show.name(x) for x in SAMPLE_CAST]
      providers = provider_res(data["personas"])
      for _ in range(repeat):
-@@ -1102,7 +1249,7 @@ def build_jobs(data, show, asks, personas, repeat):
+@@ -1128,7 +1276,7 @@ def build_jobs(data, show, asks, personas, repeat):
          if "scene_turn" in asks:
              for card_id, pid, role, st in show.card_cases():
                  if pid in personas:
