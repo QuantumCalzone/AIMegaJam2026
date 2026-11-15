@@ -47,6 +47,8 @@ cards, a want or premise that names a prop its card doesn't bring, and a card
 whose wants name all four props (one, the spare, must be named by no want, so
 the card still works without it). The sample show and the card sweep send the
 card in play's props as the state's set.props, as the game does from T45.
+props.json (T45) gives each card prop its model on the Prop Table; the file check
+matches it to the cards and finds each mesh on disk.
 
 Card sweep: besides the sample show, every scene card gets one scene-turn ask
 per AI on stage in a later scene: a 4-actor scene 2 (one seat of the card left
@@ -541,6 +543,42 @@ def card_prop_problems(cards, shared=()) -> list[str]:
     return out
 
 
+def props_file_problems(cards, pdata) -> list[str]:
+    """props.json (T45): every card prop has a look on the Prop Table, and every look is on a card.
+    A model's mesh must be on disk; a prop with no model must be listed in missing_models."""
+    out, looks = [], pdata.get("props", {})
+    if not isinstance(looks, dict) or not looks:
+        return ["props.json: needs a 'props' object keyed by prop name"]
+    missing = {m.get("name") for m in pdata.get("missing_models", []) if isinstance(m, dict)}
+    on_cards = {p: c.get("id") for c in cards for p in c.get("props", []) if isinstance(p, str)}
+    for name, cid in on_cards.items():
+        e = looks.get(name)
+        if not isinstance(e, dict):
+            out.append(f"props.json: no entry for {cid}'s prop {name!r}")
+            continue
+        mesh = e.get("mesh", "")
+        if not isinstance(mesh, str) or not re.fullmatch(r"/(Game|Engine)/[\w/]+\.\w+", mesh):
+            out.append(f"props.json: {name!r} needs a mesh object path (/Game/.../SM_X.SM_X)")
+        elif mesh.startswith("/Game/") and not (ROOT / "Content" / (mesh[6:].rsplit(".", 1)[0] + ".uasset")).exists():
+            out.append(f"props.json: {name!r}'s mesh {mesh} is not in Content/")
+        elif mesh.startswith("/Engine/") and name not in missing:
+            out.append(f"props.json: {name!r} uses an engine shape, so list it in missing_models")
+        mat = e.get("material")
+        if mat is not None and (not isinstance(mat, str) or not mat.startswith("/Game/")
+                                or not (ROOT / "Content" / (mat[6:].rsplit(".", 1)[0] + ".uasset")).exists()):
+            out.append(f"props.json: {name!r}'s material {mat!r} is not in Content/")
+        if (not all(isinstance(e.get(k), (int, float)) and not isinstance(e.get(k), bool) for k in ("scale", "yaw", "z", "grip_z"))
+                or not e.get("scale", 0) > 0):
+            out.append(f"props.json: {name!r} needs a scale above 0 and numbers for yaw, z and grip_z")
+        if e.get("wear") not in ("hand", "head", "back"):
+            out.append(f"props.json: {name!r}'s wear must be hand, head or back")
+        if e.get("card") != cid:
+            out.append(f"props.json: {name!r} says card {e.get('card')!r}, but it is on {cid}")
+    for name in sorted(set(looks) - set(on_cards)):
+        out.append(f"props.json: {name!r} is on no card")
+    return out
+
+
 def check_files(errors: list[str]):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
@@ -651,6 +689,7 @@ def check_files(errors: list[str]):
         if "Riser" not in c.get("premise", ""):
             errors.append(f"scenes.json: card {c.get('id')}'s premise must say what the Riser plays")
     errors.extend(card_prop_problems(cards, s.get("props", [])))
+    errors.extend(props_file_problems(cards, load_json("props.json", errors) or {}))
     notes = scenes.get("notes", [])
     if len(notes) < MIN_NOTES:
         errors.append(f"scenes.json: needs at least {MIN_NOTES} director's notes")
@@ -1515,7 +1554,7 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, props.json and the relay's allow-list")
     if args.log:
         return check_log(Path(args.log), data["personas"], args.all_shows)
 

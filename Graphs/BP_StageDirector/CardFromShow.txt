@@ -1,0 +1,16 @@
+; T45: the card in play is BP_Show's CardId, and its props are that card's "props" in BP_Show's
+; CardArr (scenes.json, loaded by BP_Show.LoadData). This only reads BP_Show. With no show or no
+; matching card, CardProps stays as it was, so the props keep their names.
+(fn CardFromShow ()
+  (bind _show (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (Utilities|IsValid _show
+    (:"Is Valid"
+      (bind _cid (Class|BPShow|GetCardId :self _show))
+      (set CardId _cid)
+      (for _c (Class|BPShow|GetCardArr :self _show)
+        (bind _id (Json|GetField _c "id"))
+        (set CStr _id)
+        (if (streq (V CStr) (V CardId))
+          (bind _pr (Json|GetField _c "props"))
+          (set CardProps _pr))))
+    (:"Is Not Valid")))

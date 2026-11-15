@@ -1,10 +1,19 @@
+; T45: dresses the table with the card in play's props (CardFromShow), in order; an actor past the
+; card's list goes empty. Every prop goes home now, held or not, so no robot carries the old card's
+; prop as a new one. BP_Show reads CardProps afterwards for the state's set.props (T45 step 4).
 (fn ResetStage ()
   (if (not (V Ready))
     (CallFunction|Init))
   (for _b (V AllBots)
     (Class|BPRobot|GoHome :self _b))
-  (for _p (V Props)
-    (bind _h (Class|BPProp|IsHeld :self _p))
-    (if (not _h)
-      (Class|BPProp|GoTable :self _p :Dur 0.9)))
-  (print "NHOS: ACT reset"))
+  (CallFunction|CardFromShow)
+  (bind _n (len (V CardProps)))
+  (for _i (range (len (V Props)))
+    (bind _p (get (V Props) _i))
+    (if (> _n 0)
+      (if (< _i _n)
+        (Class|BPProp|SetProp :self _p :Name (get (V CardProps) _i))
+        (else
+          (Class|BPProp|SetProp :self _p :Name ""))))
+    (Class|BPProp|GoTable :self _p :Dur 0.9))
+  (print (cat "NHOS: ACT reset card=" (V CardId) " props=" (Utilities|String|JoinStringArray :SourceArray (V CardProps) :Separator ", "))))
