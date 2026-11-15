@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 08:07 UTC",
+    "generation": "1f1e0cb9-20ce-6ea0-b2ae-c5948241d28a",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A cuddly plush toy dinosaur, a small green tyrannosaur with tiny arms, button eyes and stitched seams. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 450419625,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

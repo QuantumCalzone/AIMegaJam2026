@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 08:04 UTC",
+    "generation": "1f1e0cb1-cf55-68a0-a206-e8324a4ccf2b",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A black briefcase with gold latches, its lid open a crack with a warm golden glow spilling out. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 888944449,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

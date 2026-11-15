@@ -1,0 +1,17 @@
+[
+  {
+    "time": "2026-11-15 08:10 UTC",
+    "task": "01a1de40-a923-76be-bec4-a175bf2c3b18",
+    "image": "ref.png",
+    "consumed_credits": 30,
+    "should_texture": true,
+    "ai_model": "meshy-7.1",
+    "should_remesh": true,
+    "topology": "triangle",
+    "target_polycount": 15000,
+    "target_formats": [
+      "fbx",
+      "glb"
+    ]
+  }
+]

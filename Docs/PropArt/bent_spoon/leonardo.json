@@ -1,0 +1,82 @@
+[
+  {
+    "time": "2026-11-15 08:04 UTC",
+    "generation": "1f1e0cb2-bb74-6510-a855-43eb6b70b755",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A silver teaspoon bent in the middle at a sharp angle. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1415182512,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 08:05 UTC",
+    "generation": "1f1e0cb5-9652-65e0-b75d-cb6c02d5c70b",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A single chunky silver teaspoon, bent sharply in the middle of its thick handle into a V shape like a magician's trick spoon, lying on its back on a table. The round bowl and the end of the handle both point up, so the bend is plain to see. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 650597328,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 08:06 UTC",
+    "generation": "1f1e0cb6-f3b5-6ba0-be82-141b7028226a",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "One single thick silver spoon in one piece, seen from the side, its handle bent backwards in a smooth curve so the whole spoon makes a hook shape, like a spoon bent by mind power. Only one spoon, nothing else on the table. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 647322652,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 08:06 UTC",
+    "generation": "1f1e0cb7-b5e8-6150-9487-c045988bdf5c",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A big chunky silver spoon lying on a table with a kink in its handle: halfway along, the thick handle bends upward at a sharp angle, so the back half of the handle sticks up into the air while the round bowl rests flat. One spoon, in one piece. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 808012698,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "time": "2026-11-15 08:03 UTC",
+    "generation": "1f1e0cb0-9e17-6730-b3b7-18631c9f3ad5",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A chunky, oversized gold ring lying flat, with a faint red glow around it. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1693911463,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 08:05 UTC",
+    "generation": "1f1e0cb5-96ee-69e0-a60a-b5b53561acda",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A single chunky, oversized gold finger ring standing upright on its edge: a thick, smooth band of bright metallic gold, with one small deep red gem set on top. The ring is empty: no finger, no hand, nothing inside it, no glow. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1125063994,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 08:07 UTC",
+    "generation": "1f1e0cb9-2129-63f0-a6f0-823dfb865fb2",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A round pink piggy bank with a coin slot on its back, little ears and a curly tail. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1885489807,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

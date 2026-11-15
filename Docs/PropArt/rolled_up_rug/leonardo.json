@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 08:04 UTC",
+    "generation": "1f1e0cb2-17dc-66f0-8073-af645c9226ec",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A rolled-up patterned rug tied with string, red and gold with a fringed end. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1083428349,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]
