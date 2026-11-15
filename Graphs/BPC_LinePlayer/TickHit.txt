@@ -1,0 +1,5 @@
+; T73: letter I shows this tick; if it is new and starts a syllable, this tick plays a sound.
+(fn TickHit (I)
+  (set TypeNext (+ I 1))
+  (if (and (>= I (V TypePos)) (get (V TypeSyl) I))
+    (set TypeHit true)))

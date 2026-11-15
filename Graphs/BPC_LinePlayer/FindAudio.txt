@@ -1,0 +1,5 @@
+; T73: the show's BPC_ShowAudio, on the same actor as this component (BP_Show).
+(fn FindAudio ()
+  (if (== (V Audio) (V NullAudio))
+    (bind _a (Actor|GetComponentbyClass :self (Components|GetOwner) :ComponentClass "/Game/NHOS/Core/BPC_ShowAudio.BPC_ShowAudio_C"))
+    (set Audio _a)))

@@ -1,0 +1,4 @@
+; T73: letter I is due if its time has come.
+(fn TickChar (I El K)
+  (if (<= (* (get (V TypeAt) I) K) El)
+    (CallFunction|TickHit :I I)))

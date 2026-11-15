@@ -1,0 +1,11 @@
+; T73: the word ends at letter Last. A lone final e (its run starts at Last, so a consonant is before it) is
+; silent when the word has another syllable; a word with none gets one on its first letter.
+(fn EndWord (Last)
+  (bind _e (Utilities|String|Equal,CaseInsensitive(String) :A (Utilities|String|GetSubstring :SourceString (V TypeText) :StartIndex Last :Length 1) :B "e"))
+  (if (and (== (V PLastRun) Last) (and _e (> (V PWordSyl) 1)))
+    (Utilities|Array|SetArrayElem (V TypeSyl) Last false)
+    (set PWordSyl (- (V PWordSyl) 1)))
+  (if (== (V PWordSyl) 0)
+    (Utilities|Array|SetArrayElem (V TypeSyl) (V PWordStart) true)
+    (set PWordSyl 1))
+  (set TypeSylN (+ (V TypeSylN) (V PWordSyl))))

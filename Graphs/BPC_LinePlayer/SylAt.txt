@@ -1,0 +1,5 @@
+; T73: letter I starts a vowel run, so a syllable.
+(fn SylAt (I)
+  (Utilities|Array|SetArrayElem (V TypeSyl) I true)
+  (set PWordSyl (+ (V PWordSyl) 1))
+  (set PLastRun I))

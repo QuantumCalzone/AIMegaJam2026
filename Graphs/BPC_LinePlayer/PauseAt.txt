@@ -1,0 +1,14 @@
+; T73: the pause after letter I: type_pause_comma after , ; : and type_pause_stop after . ? ! (once, after the
+; last mark of a run), none after the last letter. Every if returns (T30's DSL rule).
+(fn PauseAt (I)
+  (if (>= (+ I 1) (V TypeLen))
+    (return 0.0))
+  (bind _c (Utilities|String|GetSubstring :SourceString (V TypeText) :StartIndex I :Length 1))
+  (bind _n (Utilities|String|GetSubstring :SourceString (V TypeText) :StartIndex (+ I 1) :Length 1))
+  (if (Utilities|String|Contains :SearchIn ",;:.?!" :Substring _n)
+    (return 0.0))
+  (if (Utilities|String|Contains :SearchIn ",;:" :Substring _c)
+    (return (V PauseComma)))
+  (if (Utilities|String|Contains :SearchIn ".?!" :Substring _c)
+    (return (V PauseStop)))
+  (return 0.0))

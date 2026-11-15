@@ -1,4 +1,5 @@
 ; T30: empties the queue (BP_Show.RestartShow).
+; T73: also stops a line that is still typing.
 (fn Clear ()
   (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "Pump")
   (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "PlayCur")
@@ -14,5 +15,6 @@
   (clear (V LTyping))
   (clear (V CText))
   (clear (V CNum))
+  (CallFunction|StopType)
   (set Busy false)
   (CallFunction|ClearTyping))

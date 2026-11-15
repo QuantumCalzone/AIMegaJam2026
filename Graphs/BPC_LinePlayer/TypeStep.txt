@@ -1,0 +1,19 @@
+; T73: shows every letter whose time has come (real time since the start, against TypeAt x fast_scale), plays
+; one syllable if a letter that starts one appeared and the last sound is at least 1/syl_max_rate s old, and
+; ends the typing when the plan's time is up. Only the letters not shown yet are walked. No early return.
+(fn TypeStep ()
+  (bind _now (Utilities|Time|GetRealTimeSeconds))
+  (bind _k (select (V Fast) (V FastScale) 1.0))
+  (bind _el (- _now (V TypeT0)))
+  (set TypeHit false)
+  (set TypeNext (V TypePos))
+  (for _i (range (V TypePos) (V TypeLen))
+    (CallFunction|TickChar :I _i :El _el :K _k))
+  (if (> (V TypeNext) (V TypePos))
+    (set TypePos (V TypeNext))
+    (Class|WBPChatLine|TypeTo :self (V TypeW) :N (V TypePos)))
+  (if (and (V TypeHit) (>= (- _now (V LastSyl)) (/ 1.0 (V SylRate))))
+    (set LastSyl _now)
+    (CallFunction|SayVoice))
+  (if (>= _el (* (V TypeSecs) _k))
+    (CallFunction|EndType)))
