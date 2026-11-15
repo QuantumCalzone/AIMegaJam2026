@@ -6,7 +6,7 @@ The design doc was read, not changed. No tab names a Director AI any more: Rules
 
 ## In short
 
-- **`BP_Show`:** delete `AskDirector`, `PlayTiebreak`, `DirectorCut` and `DirectorState`; take the `"tiebreak"` branch out of `HandleReply` and `ComputePrompt`; drop ` tiebreak=` from `CutActor`'s `NHOS: CUT` line and ", after the Director broke a tie." from `ShowEndScreen`; remove the `Tiebreak` variable, and `TiedSeats` and `TiedNames` only if `Tally` no longer reads them (part 1). None of these graphs has a `Graphs/` file, so every change is a node edit and no file is deleted. A byte search of the saved `.uasset` proves nothing is left (part 1i).
+- **`BP_Show`:** delete `AskDirector`, `PlayTiebreak`, `DirectorCut` and `DirectorState`; take the `"tiebreak"` branch out of `HandleReply` and `ComputePrompt`; drop ` tiebreak=` from `CutActor`'s `NHOS: CUT` line and ", after the Director broke a tie." from `ShowEndScreen`; remove the `Tiebreak` variable, and keep `TiedSeats` and `TiedNames`, which T52's `TieCut` reads (part 1). None of these graphs has a `Graphs/` file, so every change is a node edit and no file is deleted. A byte search of the saved `.uasset` proves nothing is left (part 1i).
 - **`BPC_LLMClient`:** nothing to change (part 2).
 - **`prompts.json`:** delete `director` and `asks.tiebreak`; four Director sentences leave `_readme` and `input` (part 3). After T52, `game` names no Director.
 - **`llm.json`:** delete `roles.director`; three sentences in the two `_readme` texts (part 4).
@@ -29,7 +29,7 @@ The T55 session shows this list to my person when it closes the task.
    The other two lines stay. The new ones pass the checker's word cap and legibility rules.
 5. **The checker guards against the Director coming back** without the word the Done-when grep looks for: a `director` role in `llm.json`, a `director` prompt in `prompts.json`, or any ask in `asks` that isn't in `ALL_ASKS`. T52's "Director breaks" guard on `game` stays.
 6. **Files outside T55's Touches get one line each** (part 8): `Docs/Submission.md`, `Docs/llm_key.example.json`, `personas.json` `_readme`, two build notes in `Docs/Plan.md`, and the comment in `Graphs/BP_Show/TieCut.txt`. T59 set the precedent (it fixed `Submission.md` off its Touches). The `TieCut.txt` comment must change, or the Done-when grep fails on `Graphs`.
-7. **`TiedSeats` and `TiedNames` stay if `Tally` uses them to find the tie.** They are the tie's detection, not the Director's. The Director only read them.
+7. **`TiedSeats` and `TiedNames` stay.** `Tally` fills them and T52's `TieCut` reads them, so they belong to the tie now, not the Director.
 
 ## Questions for my person
 
@@ -73,7 +73,7 @@ None. The design doc settles the rule, and no step needs a design call. The rela
    The same search over every other `.uasset` and `.umap` under `Content/NHOS/` finds no Director AI text: `WBP_Title`'s How to play names only the director's note, and `WBP_Keys` lost its Director sentence in T33. A UTF-16 search finds nothing either.
 5. **One survey script in `BP_Show`** (`find_nodes` needs the full class path, T30; a call's title has no spaces, T28):
    - `K2Node_CallFunction` titled `AskDirector`, `PlayTiebreak`, `DirectorCut`, `DirectorState`: the graph of each. Expected after T52: `PlayTiebreak` in `HandleReply`; `DirectorCut` and maybe `AskDirector` (the one retry) in `PlayTiebreak`; `DirectorState` in `AskDirector`. **A call in any other graph needs its own edit before part 1d.**
-   - `K2Node_VariableGet` and `K2Node_VariableSet` titled `Get Tiebreak` / `Set Tiebreak`, `Get TiedSeats` / `Set TiedSeats`, `Get TiedNames` / `Set TiedNames`. Expected: `Tiebreak` read in `CutActor` and `ShowEndScreen`, maybe set in `StartCut` or `RestartShow`; `TiedSeats` and `TiedNames` filled in `Tally`, read in `AskDirector`, `PlayTiebreak` and `DirectorState`.
+   - `K2Node_VariableGet` and `K2Node_VariableSet` titled `Get Tiebreak` / `Set Tiebreak`, `Get TiedSeats` / `Set TiedSeats`, `Get TiedNames` / `Set TiedNames`. Expected: `Tiebreak` read in `CutActor` and `ShowEndScreen`, maybe set in `StartCut` or `RestartShow`; `TiedSeats` and `TiedNames` filled in `Tally`, read in `TieCut` (T52), `AskDirector`, `PlayTiebreak` and `DirectorState`.
    - `K2Node_VariableGet` titled `Get Phase` in `HandleReply` and `ComputePrompt`: the compare nodes next to them, to find the `"tiebreak"` branch (`get_node_infos` shows each compare's literal).
    - **Other Director-only variables:** list `BP_Show`'s variables (`ObjectTools.list_properties` on the Blueprint) and look for any other name the four functions use, such as a retry count. Treat each like `Tiebreak` in part 1h.
 
@@ -145,7 +145,7 @@ T14: `UpdatePrompt` (Event Tick) calls `ComputePrompt`, which turns `Phase` and 
 ### 1h. The variables
 
 - **`Tiebreak`:** after 1e and 1f, `find_nodes` `Get Tiebreak` and `Set Tiebreak` again. Delete any `Set Tiebreak` that is left (a reset in `StartCut` or `RestartShow`): link its exec in to its exec out first. Then `remove_variable` `Tiebreak`.
-- **`TiedSeats`, `TiedNames`:** with the four functions gone, if `Tally` still fills and reads one of them to decide the tie (for example "two or more top seats"), keep it (decision 7). Remove a variable only if nothing reads it; delete its leftover `Set` nodes first.
+- **`TiedSeats`, `TiedNames`: keep both.** T52's `TieCut` (its working copy at 15:30Z) reads them, with `MaxVotes`, after `Tally` fills them (decision 7). Remove one only if T52's final `TieCut.txt` and the survey show nothing reads it.
 - **Any other variable from the survey** used only by the four functions: `remove_variable`.
 - Compile after the removals.
 
@@ -414,7 +414,7 @@ A search of the repo for "director" and "tiebreak" (outside `.uasset` files, and
 
 | Where | Text | T55 does |
 |---|---|---|
-| `Graphs/BP_Show/TieCut.txt` (T52), comment lines 1–2 | the end of line 1, `Tally calls it in place`, and the start of line 2, `; of the Director's tiebreak.` | Make them `Tally calls it when two or more` and `; actors tie for the most votes.`; the rest of each line stays. A comment, so the graph is unchanged and needs no write. **Without this the Done-when grep fails on `Graphs`.** Check T52's file for any other "tiebreak". |
+| `Graphs/BP_Show/TieCut.txt` (T52), comment lines 1–2 | In T52's working copy at 15:30Z: the end of line 1, `Tally calls it in place of`, and the start of line 2, `; the Director's tiebreak, with TiedSeats, TiedNames and MaxVotes filled.` | Make them `Tally calls it when two or more` and `; actors tie for the most votes, with TiedSeats, TiedNames and MaxVotes filled.`; the rest of each line stays. Find it by `Director's tiebreak` in case T52's final file wraps differently. A comment, so the graph is unchanged and needs no write. **Without this the Done-when grep fails on `Graphs`.** Check T52's file for any other "tiebreak". |
 | `Content/NHOS/Data/personas.json` `_readme` | `The AIs, the Director and the log never see it:` | `The AIs and the log never see it:` |
 | `Docs/Submission.md` line 85 | `Anthropic's AI player, the helper that turns the player's typing into stage actions, and the Director who breaks tied votes.` | `Anthropic's AI player, and the helper that turns the player's typing into stage actions.` |
 | `Docs/llm_key.example.json` `_readme` | `(it pays for the Anthropic actor, the input LLM and the Director)` | `(it pays for the Anthropic actor and the input LLM)` |
