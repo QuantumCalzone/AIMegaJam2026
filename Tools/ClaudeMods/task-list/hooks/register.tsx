@@ -1,11 +1,12 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type { SessionRef, Snapshot, Task, TaskFlag } from '../types'
+import type { Machine, SessionRef, Snapshot, Task, TaskFlag } from '../types'
 
 // The task list of Docs/Plan.md in a pane beside the chat:
-// done tasks collapsed and crossed out, in-progress tasks with the Code
-// sessions that work on them (a click opens one), and the tasks not started,
+// done tasks collapsed and crossed out, in-progress tasks with the machine
+// that has each (🪟 or 🍎) and the Code sessions that work on them (a click
+// opens one), and the tasks not started,
 // each nested under the task it waits on. Tasks keep the plan's order, which
 // is the priority order: a new task can sit anywhere in the plan, whatever
 // its number.
@@ -26,8 +27,11 @@ const snapshot = atom({ plugin: 'task-list', key: 'snapshot' } as const, EMPTY, 
 })
 const isDoneOpen = atom({ plugin: 'task-list', key: 'isDoneOpen' } as const, false)
 
+type Claim = { owner: string; isOurs: boolean }
+type LfsLock = { path?: string; owner?: { name?: string } }
+
 // Module state: lost on a reload, and rebuilt by the refresh at session.start.
-let claims = new Map<string, string>()
+let claims = new Map<string, Claim>()
 let tick = 0
 let isBusy = false
 // The repo folder of each session folder: found once, as it does not move.
@@ -141,20 +145,43 @@ async function repoRoot($: Engine, root: string) {
   }
 }
 
+const isWindowsPath = (path: string) => /^[A-Za-z]:[\\/]/.test(path) || path.includes('\\')
+
 const samePath = (a: string, b: string) =>
   a.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase() ===
   b.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase()
 
+// The claims. `git lfs locks --verify` splits your own locks from a
+// teammate's. Both of your machines lock as you, so a lock of yours says only
+// that one of them has the task. If --verify fails (it needs push access),
+// the plain list stands in and every claim counts as yours.
 async function readClaims($: Engine, root: string) {
+  const run = (argv: string[]) =>
+    $.process.run(argv, { cwd: root, timeoutMs: 45_000, env: { GIT_TERMINAL_PROMPT: '0' } })
+  const found = new Map<string, Claim>()
+  const add = (locks: LfsLock[] | undefined, isOurs: boolean) => {
+    for (const lock of locks ?? []) {
+      const id = /^Docs\/claims\/(T\d+)$/.exec(lock.path ?? '')?.[1]
+      if (id) found.set(id, { owner: lock.owner?.name ?? '', isOurs })
+    }
+  }
   try {
-    const ran = await $.process.run(['git', 'lfs', 'locks'], {
-      cwd: root,
-      timeoutMs: 45_000,
-      env: { GIT_TERMINAL_PROMPT: '0' },
-    })
+    const verified = await run(['git', 'lfs', 'locks', '--verify', '--json'])
+    if (verified.exitCode === 0) {
+      const split = JSON.parse(verified.stdout) as { ours?: LfsLock[]; theirs?: LfsLock[] }
+      add(split.ours, true)
+      add(split.theirs, false)
+      return found
+    }
+  } catch {
+    // The plain list below stands in.
+  }
+  try {
+    const ran = await run(['git', 'lfs', 'locks'])
     if (ran.exitCode !== 0) return undefined
-    const found = new Map<string, string>()
-    for (const m of ran.stdout.matchAll(/^Docs\/claims\/(T\d+)\s+(\S+)/gm)) if (m[1] && m[2]) found.set(m[1], m[2])
+    for (const m of ran.stdout.matchAll(/^Docs\/claims\/(T\d+)\s+(\S+)/gm)) {
+      if (m[1] && m[2]) found.set(m[1], { owner: m[2], isOurs: true })
+    }
     return found
   } catch {
     return undefined
@@ -238,16 +265,20 @@ async function refresh($: Engine, options: { withClaims?: boolean } = {}) {
       sessionsError = err instanceof Error ? err.message : String(err)
     }
     const doneIds = new Set(plan.filter(t => t.isDone).map(t => t.id))
+    // With two machines, the other one is taken to run the other system.
+    const here: Machine = isWindowsPath(root) ? 'windows' : 'mac'
+    const there: Machine = here === 'windows' ? 'mac' : 'windows'
     const tasks: Task[] = plan.map(t => {
       const own = sessions.get(t.id) ?? []
-      const claimedBy = claims.get(t.id)
+      const claim = claims.get(t.id)
+      const claimedBy = claim?.owner
       const status = notes.get(t.id)
       const isRunning = own.some(s => s.isRunning)
       const isActive =
         t.blocked !== undefined ||
         t.waiting !== undefined ||
         status !== undefined ||
-        claimedBy !== undefined ||
+        claim !== undefined ||
         isRunning
       const flag: TaskFlag =
         t.blocked !== undefined
@@ -256,15 +287,31 @@ async function refresh($: Engine, options: { withClaims?: boolean } = {}) {
             ? 'waiting'
             : isRunning
               ? 'running'
-              : claimedBy !== undefined
+              : claim !== undefined
                 ? 'claimed'
                 : 'idle'
+      // The machine that has the task: this one if its status file is here or
+      // a session here runs it. Else your other one if the claim is yours, as
+      // "Two machines at once" in CLAUDE.md says: a claim with no status file
+      // here is the other machine's. Else this one if only an idle session
+      // here names it. A teammate's claim names no machine.
+      const machine =
+        t.isDone || !isActive
+          ? undefined
+          : status !== undefined || isRunning
+            ? here
+            : claim?.isOurs
+              ? there
+              : claim === undefined && own.length > 0
+                ? here
+                : undefined
       return {
         id: t.id,
         title: t.title,
         section: t.section,
         state: t.isDone ? 'done' : isActive ? 'progress' : 'todo',
         flag: t.isDone || !isActive ? undefined : flag,
+        machine,
         note: t.blocked || t.waiting || status || undefined,
         waitsOn: t.deps.filter(d => !doneIds.has(d)),
         claimedBy,
@@ -351,7 +398,7 @@ async function openSession($: Engine, session: SessionRef) {
   }
   if (session.link) {
     const root = await $.session.root()
-    const isWindows = /^[A-Za-z]:[\\/]/.test(root) || root.includes('\\')
+    const isWindows = isWindowsPath(root)
     const argv = isWindows ? ['cmd', '/c', 'start', '', session.link] : ['open', session.link]
     try {
       const ran = await $.process.run(argv, { timeoutMs: 15_000 })
@@ -378,6 +425,8 @@ const FLAG_COLOR: Record<TaskFlag, string> = {
   claimed: 'suggestion',
   idle: 'inactive',
 }
+
+const MACHINE_MARK: Record<Machine, string> = { windows: '🪟', mac: '🍎' }
 
 const clock = (ms: number) => {
   const d = new Date(ms)
@@ -478,10 +527,12 @@ export const register: Register = on => {
                   plain
                   onPress={() => {
                     if (first) void openSession($, first)
-                    else $.ui.toast(`No session found for ${t.id}.`)
+                    else $.ui.toast(`No session on this machine for ${t.id}.`)
                   }}
                 >
-                  <Text color={FLAG_COLOR[flag]}>●</Text> <Text weight="semibold">{t.id}</Text>{' '}
+                  <Text color={FLAG_COLOR[flag]}>●</Text>{' '}
+                  {t.machine ? `${MACHINE_MARK[t.machine]} ` : ''}
+                  <Text weight="semibold">{t.id}</Text>{' '}
                   {t.title} <Text color={FLAG_COLOR[flag]}>· {FLAG_LABEL[flag]}</Text>
                 </Button>
                 {t.note !== undefined && (
@@ -494,7 +545,7 @@ export const register: Register = on => {
                 {t.sessions.length === 0 && (
                   <Box paddingLeft={2}>
                     <Text dimColor italic>
-                      No session found{t.claimedBy ? ` · claimed by ${t.claimedBy}` : ''}
+                      No session on this machine{t.claimedBy ? ` · claimed by ${t.claimedBy}` : ''}
                     </Text>
                   </Box>
                 )}
