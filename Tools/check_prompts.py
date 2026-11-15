@@ -15,7 +15,7 @@ It reads Content/NHOS/Data/{llm,prompts,personas,scenes,errors}.json and the key
 Local/llm_key.json, and never prints a key.
 
 Providers (T16): each actor ask goes to its persona's 'provider' (personas.json),
-and the input LLM and Director asks go to their role's provider, as llm.json
+and the input LLM's asks go to its role's provider, as llm.json
 'providers' says: the Messages API for 'anthropic', the Chat Completions shape
 for 'openai_chat'. Direct calls need each provider's key in Local/llm_key.json
 (the field named by key_field). --relay sends {provider, session, body} to the
@@ -29,11 +29,11 @@ Each ask goes out as the same raw HTTP request the game's BPC_LLMClient sends
 this file. That is why it uses urllib and not a provider SDK: the point is
 to test the exact body the Blueprint client builds.
 
-Legibility check: every AI line (an actor's speech or reason, and the
-Director's reason) must read like a normal chat. A line fails if it has a
+Legibility check: every AI line (an actor's speech or reason) must read
+like a normal chat. A line fails if it has a
 bracket, "//", "*", an emoji or pictograph, "beep" or "boop", or a word of 4
 or more capital letters. The input LLM is not checked: it keeps the player's
-own words. --log runs the same check on the NHOS: LOG, CLOSING and DIRECTOR
+own words. --log runs the same check on the NHOS: LOG and CLOSING
 lines of a PIE show, skipping the human seat's lines, and also fails a line
 the game cut off at 15 words.
 
@@ -53,10 +53,10 @@ per AI on stage in a later scene: a 4-actor scene 2 (one seat of the card left
 out) or a 3-actor scene 3 (two left out), a different mix per card, so each
 story is tried with each persona and missing seats.
 
-Player names (T26): the AIs and the Director know every actor only as
+Player names (T26): the AIs know every actor only as
 "Player 1" to "Player 5". The sample show seats five actors, the human (no
 persona) as Player 3. A check fails if a provider name (a persona's 'name')
-is in any system text or state an actor or the Director reads, or in a reply
+is in any system text or state an actor reads, or in a reply
 of the input converter, which must turn provider names into Player names.
 --offline runs that check too, since it needs no API calls.
 
@@ -99,6 +99,10 @@ with three actors left (SpaceXAI). The file check fails a 'game' goal 1 that
 doesn't name both wins. --log fails a show whose NHOS: SHOW END reason= doesn't
 match how it ended: caught (the human was cut), final_two (two actors left)
 or last_scene (the last scene ended with more than two on stage).
+
+No Director (T55): no AI outside the cast is ever asked anything. The file
+check fails if llm.json has a 'director' role, prompts.json a 'director'
+prompt, or prompts.json an ask the game doesn't send (not in ALL_ASKS).
 
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
@@ -144,7 +148,7 @@ PLACES = ["Center", "Left", "Right", "Front", "Back", "Riser", "Prop Table"]
 MIN_CARDS, MIN_NOTES = 6, 10
 VERBS = ["move", "look", "grab", "throw", "give"]
 ACTOR_ASKS = ["scene_turn", "free_talk", "vote", "reaction", "reaction_cut", "closing"]
-ALL_ASKS = ACTOR_ASKS + ["input", "tiebreak"]
+ALL_ASKS = ACTOR_ASKS + ["input"]
 MAX_WORDS = 15
 
 # T50: the design doc's note rules (Bot Prompts, "Opening prompt: game rules"), word for word.
@@ -314,7 +318,7 @@ LEGIBILITY = [
 
 
 def provider_res(personas):
-    """One regex per provider name (a persona's 'name'), which no actor or the Director may read."""
+    """One regex per provider name (a persona's 'name'), which no actor may read."""
     return [(p["name"], re.compile(r"(?i)\b" + re.escape(p["name"]) + r"\b")) for p in personas]
 
 
@@ -562,7 +566,7 @@ def check_files(errors: list[str]):
     schema = llm.get("reply_schema", {})
     if sorted(schema.get("required", [])) != sorted(["actions", "speech", "pass", "vote", "reason"]):
         errors.append("llm.json: reply_schema must require actions, speech, pass, vote and reason")
-    for role in ["actor", "input", "director"]:
+    for role in ["actor", "input"]:
         r = llm.get("roles", {}).get(role)
         if not r or not all(k in r for k in ["model", "effort", "max_tokens"]):
             errors.append(f"llm.json: roles.{role} needs model, effort and max_tokens")
@@ -580,18 +584,24 @@ def check_files(errors: list[str]):
             errors.append(f"llm.json: providers.{pid}.format must be one of {FORMATS}")
         if pv.get("format") == "anthropic" and not pv.get("api_version"):
             errors.append(f"llm.json: providers.{pid} needs api_version")
-    for role in ["input", "director"]:
-        if llm.get("roles", {}).get(role, {}).get("provider") not in providers:
-            errors.append(f"llm.json: roles.{role}.provider must name an entry in providers")
+    if llm.get("roles", {}).get("input", {}).get("provider") not in providers:
+        errors.append("llm.json: roles.input.provider must name an entry in providers")
+    if "director" in llm.get("roles", {}):
+        errors.append("llm.json: roles.director is back; since T55 no AI outside the cast is asked anything")
 
     # prompts.json
-    for k in ["game", "base", "input", "director"]:
+    for k in ["game", "base", "input"]:
         if not is_lines(prompts.get(k)):
             errors.append(f"prompts.json: {k} must be an array of lines")
+    if "director" in prompts:
+        errors.append("prompts.json: 'director' is back; since T55 no AI outside the cast is asked anything")
     asks = prompts.get("asks", {})
     for k in ALL_ASKS:
         if not isinstance(asks.get(k), str) or not asks[k].strip():
             errors.append(f"prompts.json: asks.{k} is missing")
+    for k in asks:
+        if k not in ALL_ASKS and not k.startswith("_"):
+            errors.append(f"prompts.json: asks.{k} is not an ask the game sends (ALL_ASKS)")
     templates = prompts.get("does_templates", {})
     for k in VERBS + ["look_around", "nothing", "pass", "vote"]:
         if k not in templates:
@@ -817,8 +827,6 @@ INPUT_CASES = [
      "actions": [("move", "Riser", "")], "contains": ["@Player 2, come down here!"]},
 ]
 
-TIE_PAIRS = [("overclocker", HUMAN), ("visionary", "worrier"), ("worrier", "copycat"), (HUMAN, "visionary")]
-
 
 class Show:
     """Builds the state objects the game would send, from the data files."""
@@ -1040,19 +1048,6 @@ class Show:
             "ask": self.d["prompts"]["asks"]["input"],
         }
 
-    def tiebreak_state(self, a, b):
-        c, d, e = [x for x in SAMPLE_CAST if x not in (a, b)]
-        votes = [(a, b, self.vote_reason(self.name(b))), (b, a, self.vote_reason(self.name(a))),
-                 (c, a, self.vote_reason(self.name(a))), (d, b, self.vote_reason(self.name(b))),
-                 (e, c, self.vote_reason(self.name(c)))]
-        return {
-            "show": {"scene": 1, "scenes": SAMPLE_SCENES, "now": "the cut, tiebreak"},
-            "cast": self.cast(),
-            "log": self.log(turns=3, talk=2, votes=votes),
-            "game_messages": [f"The vote is tied 2 to 2 between {self.name(a)} and {self.name(b)}."],
-            "options": [self.name(a), self.name(b)],
-            "ask": self.d["prompts"]["asks"]["tiebreak"],
-        }
 
 
 # ---------------------------------------------------------------- requests
@@ -1082,10 +1077,10 @@ def provider_for(data, role, pid=None):
 
 def request_body(data, provider, role, system, state):
     """The exact body the game sends to this provider. role None or 'actor' takes the provider's
-    model, effort and token limit; 'input' and 'director' take their role's (llm.json _readmes)."""
+    model, effort and token limit; 'input' takes its role's (llm.json _readmes)."""
     llm = data["llm"]
     pv = llm["providers"][provider]
-    r = llm["roles"].get(role, {}) if role in ("input", "director") else {}
+    r = llm["roles"].get(role, {}) if role == "input" else {}
     model, effort, max_tokens = r.get("model", pv["model"]), r.get("effort", pv["effort"]), r.get("max_tokens", pv["max_tokens"])
     content = json.dumps(state, ensure_ascii=False)
     if pv["format"] == "anthropic":
@@ -1263,7 +1258,7 @@ def check_reply(reply, ask, ctx):
         need(not actions, "Free Talk has no actions")
         need(bool(speech.strip()) != passed, "Free Talk needs speech, or pass with no speech")
         unused(not vote and not reason, "vote or reason filled in Free Talk")
-    elif ask in ("vote", "closing", "tiebreak"):
+    elif ask in ("vote", "closing"):
         # The game drops a stray "@" from a vote before it looks the name up (BP_Show.HandleReply).
         need(vote.replace("@", "") in ctx["options"], f"vote {vote!r} is not in options")
         need(reason.strip(), "no reason")
@@ -1307,7 +1302,7 @@ def check_reply(reply, ask, ctx):
 
 # ---------------------------------------------------------------- PIE log
 
-LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|DIRECTOR|CUT|TIE|REACTIONS DONE)\b ?(.*)$")
+LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE)\b ?(.*)$")
 
 
 def check_log(path: Path, personas, all_shows: bool) -> int:
@@ -1401,12 +1396,9 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                         print(f"    FAIL: a provider name reached the AIs: {', '.join(leaks)}")
                     continue
                 who, text = parts[1], parts[3]
-            elif kind == "CLOSING":
+            else:  # CLOSING
                 head, _, text = rest.partition(" | ")
                 who = names.get(head.split()[0], head.split()[0]) if head else "?"
-            else:  # DIRECTOR
-                _, _, text = rest.partition(" | ")
-                who = "The Director"
             n += 1
             problems = legibility(text) + story_problems(text)
             # The game keeps the first 15 words, so a line it cut has 15 words and no end mark.
@@ -1482,18 +1474,11 @@ def build_jobs(data, show, asks, personas, repeat):
                 label = f"{show.name(HUMAN)}: {case['typed'][:40]}"
                 pv = provider_for(data, "input")
                 jobs.append(("input", label, pv, request_body(data, pv, "input", system_text(data, "input"), show.input_state(case)), ctx))
-        if "tiebreak" in asks:
-            for a, b in TIE_PAIRS:
-                if a in personas or b in personas:
-                    st = show.tiebreak_state(a, b)
-                    ctx = {"places": places, "props": props, "actors": actors, "options": st["options"]}
-                    pv = provider_for(data, "director")
-                    jobs.append(("tiebreak", " vs ".join(st["options"]), pv, request_body(data, pv, "director", system_text(data, "director"), st), ctx))
     return jobs
 
 
 def check_leaks(data, jobs) -> int:
-    """No provider name in anything an actor or the Director reads. Returns the number of leaks."""
+    """No provider name in anything an actor reads. Returns the number of leaks."""
     res = provider_res(data["personas"])
     bad = 0
     for ask, label, _, body, _ in jobs:
@@ -1520,7 +1505,7 @@ def check_note_deal(show, jobs) -> int:
             if note in text or '"note' in text:
                 bad += 1
                 print(f"FAIL note: the input converter got the note or its category | {label}")
-        elif ask != "tiebreak" and '"note_category"' not in text:
+        elif '"note_category"' not in text:
             bad += 1
             print(f"FAIL note: no scene_card.note_category in {ask} | {label}")
     return bad
@@ -1577,7 +1562,7 @@ def main():
     leaks = check_leaks(data, jobs)
     if leaks:
         return 1
-    print("No provider name in what the actors and the Director read.")
+    print("No provider name in what the actors read.")
     if check_note_deal(show, jobs):
         return 1
     print("Only the AI seats get the note, and every actor state carries its category.")
