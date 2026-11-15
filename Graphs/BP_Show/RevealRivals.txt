@@ -1,0 +1,28 @@
+; T60: the win screen's rivals (the Rules tab: "The rivals are revealed at the end"). For each AI seat, its persona's
+; 'rival' (personas.json, T56) goes on that AI's end card (WBP_EndScreen.SetRival, by the card's name, SeatLabel) by
+; the name the player sees: the rival's provider name, with "(not in this show)" when the rival has no seat.
+; Prints NHOS: RIVALS <id>=<rival id> for each AI seat, in seat order.
+(fn RevealRivals ()
+  (clear (V RivalPairs))
+  (for _s (range (V SeatCount))
+    (if (not (== _s (V HumanSeat)))
+      (set RivalId "")
+      (set RivalName "")
+      (for _p (V AllPersonas)
+        (bind _pid (Json|GetField _p "id"))
+        (set PersonaTmp _pid)
+        (if (streq (V PersonaTmp) (get (V SeatId) _s))
+          (bind _rv (Json|GetField _p "rival"))
+          (set RivalId _rv)))
+      (for _q (V AllPersonas)
+        (bind _qid (Json|GetField _q "id"))
+        (set PersonaTmp _qid)
+        (if (streq (V PersonaTmp) (V RivalId))
+          (bind _qn (Json|GetField _q "name"))
+          (set RivalName _qn)))
+      (set RivalSeat (Utilities|Array|FindItem (V SeatId) (V RivalId)))
+      (set RivalShown (select (>= (V RivalSeat) 0) (V RivalName) (cat (V RivalName) " (not in this show)")))
+      (if (not (Utilities|String|IsEmpty (V RivalName)))
+        (Class|WBPEndScreen|SetRival :self (V EndScreen) :Name (get (V SeatLabel) _s) :Rival (V RivalShown))
+        (add (V RivalPairs) (cat (get (V SeatId) _s) "=" (V RivalId))))))
+  (print (cat "NHOS: RIVALS " (Utilities|String|JoinStringArray (V RivalPairs) " "))))

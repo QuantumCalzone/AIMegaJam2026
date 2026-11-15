@@ -1,0 +1,15 @@
+; T60: keeps each vote's tell, the kind of evidence its reason gives (llm.json reply_schema 'tell'), with its
+; scene and voter seat. HandleReply calls it for every reply in The Cut, right before StoreVote: OnAnswer runs
+; HandleReply at once, so the LLM client still holds this reply's tell (RTell). A retried vote adds a second
+; entry; TopReason takes the last one. A new show (ShowNum) starts the lists again. TopReason matches these
+; entries to the vote history (HistScene, HistVoter), which RecordVotes fills at the cut.
+(fn StoreTell (Seat)
+  (if (not (== (V TellShow) (V ShowNum)))
+    (clear (V TellScene))
+    (clear (V TellVoter))
+    (clear (V TellText))
+    (set TellShow (V ShowNum)))
+  (bind _t (Class|BPCLLMClient|GetRTell :self (V LLMClient)))
+  (add (V TellScene) (V SceneNum))
+  (add (V TellVoter) Seat)
+  (add (V TellText) (select (== Seat (V HumanSeat)) "" _t)))

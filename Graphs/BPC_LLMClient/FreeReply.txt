@@ -68,9 +68,17 @@
     (bind _rs (Json|GetField (V FreePhase) "reasons"))
     (set TmpArr2 _rs)
     (if (> (len (V TmpArr2)) 0)
-      (set TmpStr (get (V TmpArr2) (Math|Random|RandomIntegerinRange 0 (- (len (V TmpArr2)) 1))))
+      (set FreeIdx (Math|Random|RandomIntegerinRange 0 (- (len (V TmpArr2)) 1)))
+      (set TmpStr (get (V TmpArr2) (V FreeIdx)))
       (bind _rf (CallFunction|FreeFill :Text (V TmpStr)))
-      (set RReason _rf))
+      (set RReason _rf)
+      ; T60: the vote's tell, from the phase's 'tells' at the same index (free_mode.json). The closing phase has none.
+      (bind _hts (Json|HasField (V FreePhase) "tells"))
+      (if _hts
+        (bind _ts (Json|GetField (V FreePhase) "tells"))
+        (set TmpArr _ts)
+        (if (> (len (V TmpArr)) (V FreeIdx))
+          (set RTell (get (V TmpArr) (V FreeIdx))))))
     (return))
   (bind _hpc (Json|HasField (V FreePhase) "pass_chance"))
   (if _hpc

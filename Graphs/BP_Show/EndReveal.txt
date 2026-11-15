@@ -1,0 +1,11 @@
+; T60: the end screen's reveal, once its cards are in (ShowEndScreen calls it right after the AddCard loop, so
+; TOP REASON and RIVALS print before SHOW END). A loss names the top reason (TopReason, from the votes that cut the
+; human) in one large gold line under the cards; a win reveals each AI's rival on its card (RevealRivals).
+; TopLine stays set after the show, for T61's earpiece; it is "" on a win.
+(fn EndReveal ()
+  (set TopLine "")
+  (if (V ShowWin)
+    (CallFunction|RevealRivals)
+    (else
+      (CallFunction|TopReason)
+      (Class|WBPEndScreen|SetReason :self (V EndScreen) :Reason (V TopLine)))))
