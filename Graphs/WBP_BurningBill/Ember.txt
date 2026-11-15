@@ -1,0 +1,6 @@
+(fn Ember (Img I)
+  (bind _st (* I 0.25))
+  (bind _ph (Math|Float|Fraction (/ (- (V T) _st) 0.6)))
+  (bind _on (and (> (V T) _st) (< (V T) 1.55)))
+  (Layout|CanvasSlot|SetPosition :self (Slot|SlotasCanvasSlot Img) :InPosition (Math|Vector2D|MakeVector2D (+ (+ 11.0 (V Front)) (* 10.0 (Math|Trig|Sin(Radians) (+ (V Seed) (+ (* I 1.9) (* _ph 2.0)))))) (- 85.0 (* _ph 70.0))))
+  (Widget|SetRenderOpacity :self Img :InOpacity (select _on (- 1.0 _ph) 0.0)))

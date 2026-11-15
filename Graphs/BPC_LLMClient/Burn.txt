@@ -1,0 +1,8 @@
+(fn Burn (Tag)
+  (print (cat "NHOS: BURN " Tag))
+  (if (not (V BurnMade))
+    (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_MoneyBurn.WBP_MoneyBurn_C" (Game|GetPlayerController 0)))
+    (set MoneyBurnW _w)
+    (set BurnMade true)
+    (UserInterface|Viewport|AddtoViewport :self _w :ZOrder 10))
+  (Class|WBPMoneyBurn|Burn :self (V MoneyBurnW)))

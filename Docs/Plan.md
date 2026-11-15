@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T27 (the screen floats over the stage) is done: I played a show in a game window and the screen no longer feels blocked. Its locks are released. The first free task is T35 (Opus 5.5 · xhigh): a bill burns in the bottom-right corner for every relay call. Its widget needs no lock, and T21 has pushed and released the lock on `BPC_LLMClient` that its one call needs. T21 itself waits only for a key-mode show with my real keys. After it comes T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows it, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time) and T34 (the in-show screen) come after T32, and T33 (the title, key entry and end screens) comes after T21. T20 (audio) is free too, and T21 (how a judge plays) is in progress, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T35 (the money burn) is done: one relay show in a game window burned a bill for each of its 89 paid replies, and I said it reads as "that cost me". Its locks are released. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T21 (how a judge plays) waits only for a key-mode show with my real keys. T29 follows T28, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time) and T34 (the in-show screen) come after T32, and T33 (the title, key entry and end screens) comes after T21. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -115,13 +115,6 @@ These hold for every task, and for editor work outside the task list too. If one
 "Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. A new task goes wherever it belongs in that order (see "Changing the plan"), so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its entry moves to the end of "Done" (see "How to run a task", step 6). Each entry links its file in `Docs/tasks/`, which holds the task's Why, Steps, Done-when check, Result and findings.
 
 ### Open
-
-- [ ] **T35 A bill burns in the bottom-right corner for every relay call**
-  - **Model and effort:** Sonnet 5.5, medium. One small widget with one animation, and one call from the client.
-  - **Depends on:** nothing open. The relay path (T18) and the screen's layout (T27) are done.
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE checks, and one relay show (about $0.11 on my keys, so my OK first). Step 3 needs the `BPC_LLMClient` lock, which T21 holds while it runs (`git lfs locks`, `Agents/status/task-T21.md`): do steps 1, 2 and 4 first, and take the lock once T21 has pushed.
-  - **Touches:** new `Content/NHOS/UI/WBP_MoneyBurn.uasset` and its art, `Content/NHOS/Core/BPC_LLMClient.uasset` (the widget's creation, the call in `HandleHttp`, and the `burn_test` call in `FlushLocal`), `Docs/Assets.md`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes.
-  - **Details:** [Docs/tasks/T35.md](tasks/T35.md)
 
 - [ ] **T28 Scene Prep shows the whole card, the scene shows only mine**
   - **Model and effort:** Opus 5.5, high. It adds a pause to the show loop and splits the info card by phase.
@@ -247,6 +240,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T27.md](tasks/T27.md)
 - [x] **T25 The design docs point to the Claude Doc**
   - **Details:** [Docs/tasks/T25.md](tasks/T25.md)
+- [x] **T35 A bill burns in the bottom-right corner for every relay call**
+  - **Details:** [Docs/tasks/T35.md](tasks/T35.md)
 
 ## Not planned yet
 

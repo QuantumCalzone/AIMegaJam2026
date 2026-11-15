@@ -9,6 +9,8 @@
     (CallFunction|ClearReply)
     (set CurProv (get (V FlushProv) _i))
     (CallFunction|FreeReply :User (get (V FlushUsers) _i))
+    (if (V BurnTest)
+      (CallFunction|Burn :Tag (get (V FlushTags) _i)))
     (set UsageIn "0")
     (set UsageOut "0")
     (CallFunction|Deliver :Tag (get (V FlushTags) _i) :Ok true :Error "" :Seconds "0.3")))

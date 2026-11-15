@@ -13,10 +13,19 @@ Neither font draws emoji or pictographs. `WBP_Stage.CleanText` removes them, and
 
 ## Art
 
-No outside or generated art. Everything on stage is built in the editor from the engine's basic shapes (`/Engine/BasicShapes/` Cube, Cylinder, Sphere, Cone) with our own Substrate materials:
+Everything on stage is built in the editor from the engine's basic shapes (`/Engine/BasicShapes/` Cube, Cylinder, Sphere, Cone) with our own Substrate materials:
 
 - T11: the robots' first look (`M_Robot`, `MI_StageFloor`, `MI_StageWall`).
 - T17: the improv theater, the persona robots' parts and the six scene backdrops. `M_Set` (one material for the set and the robots' accessories; its wood planks are drawn by a small HLSL node, not a texture), `M_Backdrop` (a two-color painted sky) and the instances in `Content/NHOS/Stage/Materials/`. No textures.
+
+The money burn (T35) is the only 2D art: four textures in `Content/NHOS/UI/MoneyBurn/`, imported from `Docs/MoneyBurnArt/`. `Docs/MoneyBurnArt.md` has how each was made, the script that made them and their colors.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Content/NHOS/UI/MoneyBurn/T_Bill` (`bill.png`) | The banknote: a muted sage bill with a robot head in a round medallion and "100" in each corner. No real currency's design, portrait or symbol. | Drawn by our script `makeart.swift` during the jam (2026-11-14). No outside art, no AI image tool. | Ours, made during the jam. |
+| `Content/NHOS/UI/MoneyBurn/T_BillChar` (`bill_char.png`) | The same bill, charred to ash, for the wipe as it burns. | Drawn by `makeart.swift` from `bill.png`. | Ours, made during the jam. |
+| `Content/NHOS/UI/MoneyBurn/T_FlameSheet` (`flame_sheet.png`) | The flame flipbook: one row of 8 frames, played at 14 fps. | Kenney, Particle Pack 1.1, `muzzle_02/03/05.png`, scaled, mirrored and recolored by `makeart.swift`. https://kenney.nl/assets/particle-pack | CC0 1.0 (the pack's `License.txt`). |
+| `Content/NHOS/UI/MoneyBurn/T_Ember` (`ember.png`) | One soft ember for the sparks that rise from the burn. | Kenney, Particle Pack 1.1, `circle_05.png`, scaled and recolored by `makeart.swift`. https://kenney.nl/assets/particle-pack | CC0 1.0. |
 
 ## Audio
 

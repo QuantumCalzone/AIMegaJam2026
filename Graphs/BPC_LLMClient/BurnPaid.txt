@@ -1,0 +1,3 @@
+(fn BurnPaid (Tag ParseOk ParseErr)
+  (if (and (streq (V Mode) "relay") (or ParseOk (and (Utilities|String|IsEmpty (V ErrType)) (not (Utilities|String|StartsWith :SourceString ParseErr :InPrefix "reply is not JSON")))))
+    (CallFunction|Burn :Tag Tag)))

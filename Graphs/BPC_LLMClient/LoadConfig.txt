@@ -57,12 +57,17 @@
     (else
       (bind _ke (Json|LoadJsonfromString "{}"))
       (set KeyObj _ke)))
+  (set BurnTest false)
   (bind (_so _sok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _dir "Local/switches.json"))))
   (if _sok
     (bind _hm (Json|HasField _so "mode"))
     (if _hm
       (bind _sm (Json|GetField _so "mode"))
-      (set Mode _sm)))
+      (set Mode _sm))
+    (bind _hb (Json|HasField _so "burn_test"))
+    (if _hb
+      (bind _sb (Json|GetField _so "burn_test"))
+      (set BurnTest _sb)))
   (set Relaunched false)
   (bind _gm (Game|GetGameMode))
   (bind _opt (GameOptions|ParseOption :Options (Class|GameModeBase|GetOptionsString :self _gm) :Key "nhosmode"))
@@ -78,5 +83,5 @@
   (set Session (Guid|ToString(Guid) (Guid|NewGuid)))
   (set Ready true)
   (bind _n (CallFunction|KeyCount))
-  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n)))
+  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest))))
   (return true ""))

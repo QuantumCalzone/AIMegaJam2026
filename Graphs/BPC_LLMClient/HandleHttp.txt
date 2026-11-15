@@ -36,6 +36,7 @@
     (set HErr (cat "transport " Response))
     (else
       (bind (_ok _text _error) (CallFunction|ParseReply :Response Response))
+      (CallFunction|BurnPaid :Tag Tag :ParseOk _ok :ParseErr _error)
       (if (not _ok)
         (set HErr _error)
         (else
