@@ -1,0 +1,12 @@
+; T45: props.json, read once per actor. A missing or broken file leaves PropsObj empty,
+; so every name falls back to T19's shape parts.
+(fn LoadProps ()
+  (if (V PropsLoaded)
+    (return))
+  (set PropsLoaded true)
+  (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectContentDirectory) "NHOS/Data/props.json"))))
+  (if (not _ok)
+    (print "NHOS: ACT prop props.json missing or not valid JSON")
+    (return))
+  (bind _p (Json|GetField _o "props"))
+  (set PropsObj _p))
