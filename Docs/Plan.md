@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T27 (the screen floats over the stage) is done: I played a show in a game window and the screen no longer feels blocked. Its locks are released. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows it, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time) and T34 (the in-show screen) come after T32, and T33 (the title, key entry and end screens) comes after T21. T20 (audio) is free too, and T21 (how a judge plays) is in progress, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T27 (the screen floats over the stage) is done: I played a show in a game window and the screen no longer feels blocked. Its locks are released. The first free task is T35 (Opus 5.5 · xhigh): a bill burns in the bottom-right corner for every relay call. Its widget needs no lock, but its one call in `BPC_LLMClient` waits for T21's push, because T21 holds that lock. After it comes T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows it, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time) and T34 (the in-show screen) come after T32, and T33 (the title, key entry and end screens) comes after T21. T20 (audio) is free too, and T21 (how a judge plays) is in progress, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -20,7 +20,7 @@ First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), 
 |---|---|
 | Plain speech (T13), UI/UX polish (T14) and story scenes (T15) | Sat Nov 14, by noon |
 | One LLM per AI player (T16, T18) and the stage art (T17) | Sat Nov 14, by 6 PM |
-| Robots act out their actions (T19), the UI fixes from my playtest (T27 to T31), the UI/UX sweep (T32 to T34), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
+| Robots act out their actions (T19), the UI fixes from my playtest (T27 to T31), the money burn (T35), the UI/UX sweep (T32 to T34), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
 | Packaged and played (T22), submission ready (T23) | Sun Nov 15, by 2 PM |
 | Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
 
@@ -116,6 +116,19 @@ These hold for every task, and for editor work outside the task list too. If one
 
 ### Open
 
+- [ ] **T35 A bill burns in the bottom-right corner for every relay call**
+  - **Model and effort:** Sonnet 5.5, medium. One small widget with one animation, and one call from the client.
+  - **Depends on:** nothing open. The relay path (T18) and the screen's layout (T27) are done.
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE checks, and one relay show (about $0.11 on my keys, so my OK first). Step 3 needs the `BPC_LLMClient` lock, which T21 holds while it runs (`git lfs locks`, `Agents/status/task-T21.md`): do steps 1, 2 and 4 first, and take the lock once T21 has pushed.
+  - **Why:** my request on 2026-11-14. Every ask that goes through the relay spends my money, and I want to see it go. A burning bill in the corner says "that cost me", as a joke.
+  - **Steps:**
+    1. **A widget of its own, `WBP_MoneyBurn`** (new, in `Content/NHOS/UI/`; `WBP_Stage` and `BP_Show` stay untouched). A full-screen overlay that holds one slot at the bottom right, the same distance from the window edge as the chat panel's gap on the left. It is not hit-testable and not focusable, so it never takes a click or the input box's focus, and its Z-order is above `WBP_Stage`. A function `Burn` adds one burning bill to the slot: it shows at once, burns for about 1.4 s (the bill blackens from one edge, the flame flickers, a few embers rise) and fades out. A scene turn sends five or six asks at once, so each bill gets a small random offset and tilt, up to 6 show at a time, and a seventh replaces the oldest. Each bill removes itself when it is done.
+    2. **The art:** one banknote and a flame in the theater's look, as a flame flipbook (6 to 8 frames) or an animated flame material, played in UMG. Take it from an AI image tool or a free sprite sheet whose license allows use in a game. Record what it is, where it came from (the tool and prompt, or the link) and its license in `Docs/Assets.md`. Import it next to the widget under `Content/NHOS/UI/`, and check that `.gitattributes` stores its file type in LFS.
+    3. **The hook.** `BPC_LLMClient` calls `Burn` once for each reply that the relay sends back with status 200, because by then the provider has spent tokens. It is one node where `HandleHttp` reads a relay reply, and it sits on that graph as T21 leaves it (start from the pushed `Graphs/BPC_LLMClient/HandleHttp.txt`). A retry is a new call, so it burns again. Nothing burns in Test for Free or key mode (those cost me nothing), for a relay error reply (`session_limit`, `player_limit`, `budget_used_up`, or a failed call), or for T21's `GET /health`. `BPC_LLMClient` creates the widget once, the first time it needs it, and adds it to the viewport. Print `NHOS: BURN <tag>` for each burn.
+    4. **A test switch, so the look checks cost nothing.** `"burn_test": true` in `Local/switches.json` makes Test for Free call `Burn` for every ask too, as if it went through the relay. Add it to `Docs/switches.example.json`. Set it back to `false` before a person plays.
+  - **Done when:** in a free autoplay show with `burn_test` on, the `NHOS: BURN` lines match the `NHOS: LLM ... ok` lines one for one, and screenshots at 1600 × 900 and 1280 × 720 show bills burning at the bottom right, clear of the chat panel, the vote row and every robot's label, with the input box still taking typing while a bill burns; with `burn_test` off, a free show prints no `NHOS: BURN` line; after my OK, one relay autoplay show reaches `NHOS: SHOW END` with a `NHOS: BURN` line for each relay reply, and I see the money burn and say it reads as "that cost me".
+  - **Touches:** new `Content/NHOS/UI/WBP_MoneyBurn.uasset` and its art, `Content/NHOS/Core/BPC_LLMClient.uasset` (the widget's creation, the call in `HandleHttp`, and the `burn_test` call in `FlushLocal`), `Docs/Assets.md`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes.
+
 - [ ] **T28 Scene Prep shows the whole card, the scene shows only mine**
   - **Model and effort:** Opus 5.5, high. It adds a pause to the show loop and splits the info card by phase.
   - **Depends on:** T27 (the card's place and size), T19 (the lock on `BP_Show`)
@@ -148,12 +161,12 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T32 UI/UX audit, style guide and shared pieces**
   - **Model and effort:** Opus 5.5, high. Design judgment across every screen, and one style that all the widgets share.
-  - **Depends on:** T28, T29 (Scene Prep, my card and the chat's content are final, and `WBP_Stage` is unlocked). T27 is done. T30 comes after this task, so its typing line is T34's to check.
+  - **Depends on:** T28, T29, T35 (Scene Prep, my card and the chat's content are final, `WBP_Stage` is unlocked, and the money-burn overlay exists to audit). T27 is done. T30 comes after this task, so its typing line is T34's to check.
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows. No playtest: I read the findings and the style guide and say go.
   - **Why:** my playtests keep finding text that is hard to read and screens that look unfinished (T14, T27), and visuals is a judging criterion. This task checks the whole UI the way a senior game UI/UX designer would. T34 and T33 fix what it finds.
   - **Steps:**
     1. **Decide before you change.** For each screen below, write the one thing I must see and the one thing I must do next, and rank everything else (primary, secondary, tertiary). Size, weight, color and position follow the rank. Look at one or two comparable chat-heavy party games for what readable looks like.
-       The screens: title, key entry, Scene Prep, a scene turn (mine and the AIs'), Free Talk, the vote (before and after a pick), the reveal stamp, a cut, the last reactions with "See the results", the win and lose end screens, and the unavailable screen T21 adds, if T21 is done.
+       The screens: title, key entry, Scene Prep, a scene turn (mine and the AIs'), Free Talk, the vote (before and after a pick), the reveal stamp, a cut, the last reactions with "See the results", the win and lose end screens, the money burn (T35) over a scene turn, and the unavailable screen T21 adds, if T21 is done.
     2. **Screenshot every screen and state** at 1600 × 900 and 1280 × 720, with the methods that "T27: the screen floats over the stage" in Findings lists (PIE by hand through the Slate inspector for the phases, a game window for the real look). Test the worst cases: the longest provider name, a long AI line, a full cast of five. Save them in `Saved/T32/shots/` (not in git).
     3. **Audit against known rules, and name the rule for each problem:** visual hierarchy, contrast (WCAG), a type scale, a spacing grid, alignment, consistent components, clear states and feedback (Nielsen's heuristics), safe margins from the window edge, and no meaning carried by color alone. Write the result under "T32: UI audit" in Findings, as a table: for each screen its primary focus and next action, then each problem with its rule, ranked by how much it hurts a player, with the fix and the task that does it (T32, T34 or T33).
     4. **Write the design system** in new `Docs/UIStyle.md`: the palette by role (not only colors), the type scale, the spacing steps, the button, panel and input styles with every state (enabled, disabled, hover, pressed, focused), and the motion times. Keep what already works (the seat colors, gold for my move, the `F_UI` font) and match the theater look. Record any new font or art in `Docs/Assets.md`.
@@ -182,14 +195,14 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Depends on:** T32, T30 (the line pacing and its typing line are in, so this task polishes the final screen)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
   - **Steps:**
-    1. **Take T34's rows from T32's table,** highest impact first, for every part of `WBP_Stage`: the header and turn line, the chat and its typing line (T30), the input row and its buttons, the vote row, my card, the banner, the reveal stamp, the robot labels and the "See the results" button. Fix hierarchy, spacing and contrast before you add any decoration, and cut anything that doesn't help me read or act.
+    1. **Take T34's rows from T32's table,** highest impact first, for every part of `WBP_Stage`: the header and turn line, the chat and its typing line (T30), the input row and its buttons, the vote row, my card, the banner, the reveal stamp, the robot labels, the "See the results" button and T35's money burn. Fix hierarchy, spacing and contrast before you add any decoration, and cut anything that doesn't help me read or act.
     2. **Use the style.** Colors, sizes, spacing and states come from the style Blueprint and `Docs/UIStyle.md`. A change to a panel, a text size or a color goes through the style Blueprint, not a one-off edit.
     3. **Go phase by phase** (Scene Prep, a scene turn, Free Talk, the vote, a cut and its reactions): screenshot, critique it as a design reviewer, change, screenshot again. Each phase ends with one clear primary focus and one clear next action. No robot, label, prop or the stamp sits behind a panel (T27's rule).
     4. **Mark each row fixed** in "T32: UI audit", with the before and after screenshot names. Add a row for anything new you find.
     5. **A cold review.** A subagent reads the final screenshots without your reasoning. Fix what it finds that matters, and note the rest.
     6. **Check without color.** Make a grayscale and a deuteranopia version of each screenshot with a small script, and look at them.
   - **Done when:** every T34 row is fixed; screenshots at 1600 × 900 and 1280 × 720 of every phase show no clipped, overlapping or hidden text and all five robots and their labels clear of the panels; in the grayscale and deuteranopia versions, who is speaking, whose turn it is and which vote button is which still show; body text is 18 pt or larger, text contrast is 4.5:1 or better, and button and border contrast is 3:1 or better, measured from the screenshots and written in Findings; a free autoplay show reaches `NHOS: SHOW END` with no new `LogScript` warning and its `NHOS: LOG` lines in the same form; I play one show in a game window and say it is readable and polished.
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_ChatLine.uasset` if T32 left a row there, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, the Findings section.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, the Findings section.
 
 - [ ] **T20 Audio**
   - **Model and effort:** Sonnet 5.5, medium. Finding sounds and playing them at points the show loop already has.
@@ -245,7 +258,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T22 Package a Windows Development build and play a show in it**
   - **Model and effort:** Sonnet 5.5, medium. It repeats T02's steps with the whole game.
-  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T24 if it is done, and T31 if it is done
+  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, and T31 if it is done
   - **Needs:** a Windows machine, the editor closed, my playtest (one show).
   - **Steps:**
     1. Run the package command from `CLAUDE.local.md` in the background.
