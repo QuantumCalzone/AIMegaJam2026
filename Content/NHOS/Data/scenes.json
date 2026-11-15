@@ -1,8 +1,8 @@
 {
 	"_readme": [
 		"The improv stage, its story scene cards and the director's notes.",
-		"set: one stage for every story. 'places' are the only places an action may name, and the game turns any other name into 'looks around'. The places stand in for whatever a story needs, and each card's premise says what the Riser plays. The 'what' text of a place is public, like the rest of the set and the card. Keep the names short: the input LLM and the robots' actions (T19) use them. 'props' is the shared list the game still sends as the state's set.props until T45 puts each card's own props on the Prop Table; T45 removes it.",
-		"cards: each one is a comedy version of a famous story. A card's 'seats' are dealt in random order to the actors on stage at Scene Prep, and a card has 5 seats, one for each actor in a full show, and a scene with fewer actors on stage uses fewer of them. Every want must work when any one or two seats are left out. 'backdrop' is the scene's painted backdrop flat (T17): an id and one line that describes it. 'props' is the four props the card brings to the Prop Table. A want names only its own card's props and the places, and at least one prop, the spare, is named by no want, so the card still works if the spare is dropped. The game sends actors only the card's title and premise, plus each seat's role and want (and, from T45, the card's props as set.props).",
+		"set: one stage for every story. 'places' are the only places an action may name, and the game turns any other name into 'looks around'. The places stand in for whatever a story needs, and each card's premise says what the Riser plays. The 'what' text of a place is public, like the rest of the set and the card. Keep the names short: the input LLM and the robots' actions (T19) use them.",
+		"cards: each one is a comedy version of a famous story. A card's 'seats' are dealt in random order to the actors on stage at Scene Prep, and a card has 5 seats, one for each actor in a full show, and a scene with fewer actors on stage uses fewer of them. Every want must work when any one or two seats are left out. 'backdrop' is the scene's painted backdrop flat (T17): an id and one line that describes it. 'props' is the four props the card brings to the Prop Table. A want names only its own card's props and the places, and at least one prop, the spare, is named by no want, so the card still works if the spare is dropped. The game sends actors only the card's title and premise, plus each seat's role and want, and the card's props as the state's set.props (T45).",
 		"Story rules: public-domain stories (Shakespeare, fairy tales, classic novels) can stay close to the original. Modern films and books are parodied only: new names, no trademarked terms or made-up words from them, no quotes, no logos. No real people's names. Tools/check_prompts.py lists the words from each modern original that must never show up, in the files or in a reply.",
 		"notes: each scene draws one note, and every AI actor gets it; the human's seat gets none (T50). Its 'category' (Movement, Props, Looks or Speech) says what kind of thing the note is about and never what to do; T50 shows it to everyone. A note applies during the scene's 3 turns. Notes are mostly physical, so the log shows who follows them, and each one must work in every story, with any card's four props. Notes never ask everyone to grab the same single prop."
 	],
@@ -17,8 +17,7 @@
 			{ "name": "Back", "what": "the back of the stage, in front of the painted backdrop" },
 			{ "name": "Riser", "what": "a sturdy wooden box that plays whatever the story needs: a balcony, a throne, a cockpit, a lookout tower" },
 			{ "name": "Prop Table", "what": "the table at the side of the stage that holds the props" }
-		],
-		"props": ["cardboard sword", "paper crown", "plastic rose", "toy ray gun", "teacup", "cape", "rubber chicken", "scroll"]
+		]
 	},
 	"cards": [
 		{

@@ -519,10 +519,9 @@ def prewritten_problems(scenes, errors: list[str]) -> list[str]:
     return out
 
 
-def card_prop_problems(cards, shared=()) -> list[str]:
+def card_prop_problems(cards) -> list[str]:
     """Each card brings exactly four props of its own (T44). No prop is on two cards. A want or a
-    premise names only its own card's props (a prop from another card, or from the shared set.props
-    the game sends until T45, fails). At least one prop, the spare, is named by no want, so the card
+    premise names only its own card's props (a prop from another card fails). At least one prop, the spare, is named by no want, so the card
     still works without it: for that test a want also names a prop by its last word ("a pill" names
     the red pill and the blue pill). Places can't be told from plain words, so wants aren't checked for them."""
     out, owner = [], {}
@@ -536,7 +535,7 @@ def card_prop_problems(cards, shared=()) -> list[str]:
             if prop in owner:
                 out.append(f"scenes.json: prop {prop!r} is on two cards ({owner[prop]} and {cid})")
             owner.setdefault(prop, cid)
-    names = {x for x in list(owner) + list(shared) if isinstance(x, str) and x.strip()}
+    names = {x for x in owner if isinstance(x, str) and x.strip()}
     res = {x: re.compile(r"(?i)(?<![\w-])" + re.escape(x) + r"(?![\w-])") for x in names}
     last = {x: re.compile(r"(?i)(?<![\w-])" + re.escape(x.split()[-1].split("-")[-1]) + r"s?(?![\w-])") for x in names}
     for c in cards:
@@ -706,7 +705,9 @@ def check_files(errors: list[str]):
             errors.append(f"scenes.json: card {c.get('id')} needs a backdrop with an id and a 'what'")
         if "Riser" not in c.get("premise", ""):
             errors.append(f"scenes.json: card {c.get('id')}'s premise must say what the Riser plays")
-    errors.extend(card_prop_problems(cards, s.get("props", [])))
+    if "props" in s:  # T45: each card's props are the state's set.props; the shared list is gone
+        errors.append("scenes.json: 'set' still has 'props'; since T45 the game sends the card's props as set.props")
+    errors.extend(card_prop_problems(cards))
     errors.extend(props_file_problems(cards, load_json("props.json", errors) or {}))
     notes = scenes.get("notes", [])
     if len(notes) < MIN_NOTES:
