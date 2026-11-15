@@ -1,0 +1,194 @@
+{
+  "film": "Pulp Fiction",
+  "card": {
+    "id": "glowing_briefcase",
+    "title": "What's in the Glowing Briefcase?",
+    "premise": "A retro diner on dance-contest night, and everyone inside is up to something. A glowing briefcase that nobody may open sits on the Prop Table, which is the diner counter. The Riser is the dance-contest stage.",
+    "backdrop": {
+      "id": "retro_diner",
+      "what": "A retro diner: a chrome counter with cherry-red stools, a checkered floor, plump booths, a big wall clock and wide windows onto a sunny parking lot."
+    },
+    "props": ["glowing briefcase", "gold pocket watch", "giant milkshake", "giant cheeseburger"],
+    "seats": [
+      {
+        "role": "A chatty errand man in a black suit",
+        "want": "Carry the glowing briefcase to the boss's booth at the Back, chatting about burgers all the way, and let nobody open it."
+      },
+      {
+        "role": "A nosy errand man in a black suit",
+        "want": "Get the glowing briefcase to yourself at the Front and peek inside it while nobody is looking."
+      },
+      {
+        "role": "The boss's bored wife",
+        "want": "Win the dance contest on the Riser, pull anyone you like up to be your partner, and claim the giant milkshake as your prize."
+      },
+      {
+        "role": "A runaway boxer who refused to lose",
+        "want": "Grab your lucky gold pocket watch before anyone else can and keep it safe at Left, dodging anyone who asks about the big fight."
+      },
+      {
+        "role": "A smooth fixer in a tuxedo",
+        "want": "Clean up the chaos in record time: take back any prop that gets carried or thrown and put it neatly on the Prop Table."
+      }
+    ]
+  },
+  "props": [
+    {
+      "name": "glowing briefcase",
+      "clay_look": "A chunky black clay briefcase, a rounded slab with a fat loop handle and two brass latches, with warm golden light leaking from the seam.",
+      "build": "shapes",
+      "used_by": "Chatty errand man carries it to the Back; nosy errand man takes it to the Front to peek (looks at the glowing briefcase); fixer takes it back to the Prop Table; anyone can grab, give or throw it to keep it away from someone."
+    },
+    {
+      "name": "gold pocket watch",
+      "clay_look": "An oversized gold clay disc with a white face, two black hands, a knob and ring on top and a short fat chain, so it does not read as a coin.",
+      "build": "shapes",
+      "used_by": "Boxer grabs it and guards it at Left; fixer takes it back to the Prop Table; anyone can pocket it, give it away as a bribe or throw it to tease the boxer."
+    },
+    {
+      "name": "giant milkshake",
+      "clay_look": "A tall flared soda-fountain glass of bubblegum-pink clay shake with a big white cream swirl, a red cherry and a red-and-white striped straw.",
+      "build": "shapes",
+      "used_by": "Boss's wife claims it as her dance prize; anyone can grab it first for a milkshake standoff, give it to a dance partner or throw it; fixer returns it to the Prop Table."
+    },
+    {
+      "name": "giant cheeseburger",
+      "clay_look": "A fat stacked clay burger: tan sesame bun, brown patty, a square of yellow cheese drooping at the corners and a green lettuce frill.",
+      "build": "shapes",
+      "used_by": "Spare. Props up the chatty errand man's burger talk; a peace offering to give to whoever saw the briefcase peek; a slapstick throw; fixer returns it to the Prop Table."
+    }
+  ],
+  "costumes": [
+    {
+      "role": "A chatty errand man in a black suit",
+      "headpiece": "dark shades",
+      "color": "glossy black",
+      "why": "Reads as a cool suited errand man at a glance without copying either errand man's actual look."
+    },
+    {
+      "role": "A nosy errand man in a black suit",
+      "headpiece": "fedora",
+      "color": "dark gray with a skinny black band",
+      "why": "Pairs with the shades as a matching suited duo while staying easy to tell apart on stage."
+    },
+    {
+      "role": "The boss's bored wife",
+      "headpiece": "bob wig",
+      "color": "jet black",
+      "why": "A blunt black bob instantly suggests the glamorous boss's wife; it is a stock wardrobe piece, not a copied outfit. If the editor finds it too close, use a gold tiara (dance-contest queen)."
+    },
+    {
+      "role": "A runaway boxer who refused to lose",
+      "headpiece": "hood",
+      "color": "red with gold trim",
+      "why": "A boxer's robe hood says prize fighter on the run, and the red pops against the diner backdrop."
+    },
+    {
+      "role": "A smooth fixer in a tuxedo",
+      "headpiece": "top hat",
+      "color": "black with a white band",
+      "why": "Formal evening wear for the tuxedo-clad fixer who arrives to tidy everything up."
+    }
+  ],
+  "new_wardrobe_pieces": [],
+  "banned_terms": [
+    "pulp fiction",
+    "pulp",
+    "vincent",
+    "vega",
+    "jules",
+    "winnfield",
+    "mia",
+    "wallace",
+    "marsellus",
+    "butch",
+    "coolidge",
+    "winston",
+    "wolfe",
+    "mr. wolf",
+    "the wolf",
+    "pumpkin",
+    "honey bunny",
+    "ringo",
+    "yolanda",
+    "fabienne",
+    "marvin",
+    "jimmie",
+    "bonnie",
+    "the bonnie situation",
+    "the gold watch",
+    "captain koons",
+    "koons",
+    "zed",
+    "maynard",
+    "lance",
+    "jody",
+    "brett",
+    "esmeralda",
+    "esmarelda",
+    "villalobos",
+    "monster joe",
+    "jack rabbit slim's",
+    "jack rabbit slims",
+    "jack rabbit",
+    "hawthorne grill",
+    "big kahuna",
+    "kahuna",
+    "kahuna burger",
+    "royale",
+    "royale with cheese",
+    "le big mac",
+    "big mac",
+    "quarter pounder",
+    "five dollar shake",
+    "five-dollar shake",
+    "$5 shake",
+    "tasty burger",
+    "tasty beverage",
+    "pretty good milkshake",
+    "cornerstone of any nutritious breakfast",
+    "red apple",
+    "ezekiel",
+    "25:17",
+    "path of the righteous man",
+    "say what again",
+    "everybody be cool",
+    "this is a robbery",
+    "i solve problems",
+    "pretty please with sugar on top",
+    "be there in ten",
+    "zed's dead",
+    "uncomfortable silences",
+    "foot massage",
+    "metric system",
+    "666",
+    "quentin tarantino",
+    "tarantino",
+    "john travolta",
+    "travolta",
+    "samuel l. jackson",
+    "samuel jackson",
+    "uma thurman",
+    "thurman",
+    "bruce willis",
+    "willis",
+    "harvey keitel",
+    "keitel",
+    "tim roth",
+    "amanda plummer",
+    "ving rhames",
+    "christopher walken",
+    "walken",
+    "eric stoltz",
+    "rosanna arquette",
+    "steve buscemi",
+    "buscemi",
+    "miramax",
+    "misirlou",
+    "son of a preacher man",
+    "you never can tell",
+    "jungle boogie"
+  ],
+  "backdrop_prompt": "Stop-motion claymation diorama, wide 2:1 panoramic stage backdrop, sculpted matte modeling clay relief of a retro roadside diner interior at night: a long chrome-edged counter with round cherry-red stools, a black-and-white checkered floor, turquoise and cream walls, a row of plump red vinyl booths, a big round wall clock, glass pie domes on the counter, a chunky jukebox shape glowing with colored lights, wide windows showing a parking lot under a deep blue night sky with a fat paper-clay moon, a glowing neon arrow with no lettering. Chunky rounded shapes, saturated slightly chalky colors, visible thumbprints and sculpting tool marks, soft warm studio lighting, shallow relief like a painted theatre flat, straight-on front view, empty scene, no characters, no people, no text, no letters, no numbers, no logos, no signs with words.",
+  "notes": "Staging choice: the diner on dance-contest night, where the briefcase errand, the boss's wife's dance contest, the boxer's watch and the fixer all collide. The premise keeps every role secret ('everyone inside is up to something') so no seat is named before it is dealt. Built-in conflicts: the chatty errand man wants the briefcase at the Back unopened, the nosy errand man wants it at the Front to peek, and the fixer keeps taking everything back to the Prop Table, so the briefcase changes hands every turn. With only 3 seats every want still works alone: the fixer can grab and re-shelve props himself if nobody else moves them, and the wife can dance solo. The peek is staged as 'looks at the glowing briefcase'; the game has no open action, which fits the joke that nobody ever sees inside. The briefcase glow needs an emissive golden seam in its material, or it reads as a plain black box at 30 px. The pocket watch is the weakest silhouette: build it oversized (about briefcase-handle size) with a visible chain and white face. Cut strand: the diner tip-jar robbery. If the editor wants it, swap the nosy errand man for 'A jittery tip-jar thief' who wants to 'Sneak the glowing briefcase out by the Front while everyone is busy watching the dance contest.' Alternative titles: 'Don't Open the Glowing Briefcase', 'Two Suits and a Glowing Case'. Avoided on purpose: the word twist (the contest is just a dance contest), car-shaped booths, the briefcase lock combination, any burger-name or price joke, and the scripture speech. Costume risk: the jet black bob wig is the closest thing to a signature look; the tiara is the safe fallback. The milkshake standoff happens naturally when someone grabs the giant milkshake before the wife wins it."
+}

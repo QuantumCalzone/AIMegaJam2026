@@ -1,0 +1,193 @@
+{
+  "film": "The Godfather (1972), parody",
+  "card": {
+    "id": "favor_father",
+    "title": "The Favor Father",
+    "premise": "The family boss's daughter is getting married in the garden. Tradition says nobody may say no to a favor on her wedding day, so every guest is asking for one. The Riser is the boss's big chair at the head table.",
+    "backdrop": {
+      "id": "garden_wedding",
+      "what": "A sunny garden wedding: a striped party tent, paper lanterns, lemon trees, a tiered cake and a pink stucco villa."
+    },
+    "props": ["plush horse head", "cannoli tray", "wedding envelope", "bowl of oranges"],
+    "seats": [
+      {
+        "role": "The family boss, father of the bride",
+        "want": "Sit on the Riser like a king, say yes to every favor anyone asks, and seal each deal by handing over the cannoli tray."
+      },
+      {
+        "role": "The hot-headed eldest son",
+        "want": "Take offense at every tiny insult to the family, throw the cannoli tray at whoever said it, then storm off to sulk at the Back."
+      },
+      {
+        "role": "The reluctant youngest son",
+        "want": "Stay out of the family business: hide at the Front by the footlights and dodge anyone who comes over to ask a favor, because today you cannot say no."
+      },
+      {
+        "role": "The family adviser",
+        "want": "Fix every problem the same quiet way: grab the plush horse head and put it down right next to whoever is causing trouble."
+      },
+      {
+        "role": "A washed-up crooner",
+        "want": "Win a starring movie role: croon a sad song at the Front, then give the wedding envelope to whoever looks most in charge and beg for help."
+      }
+    ]
+  },
+  "props": [
+    {
+      "name": "plush horse head",
+      "clay_look": "A floppy, cuddly brown plush horse head with a cream nose blaze, a shaggy black yarn mane, stubby ears and big shiny button eyes; plainly a stuffed toy, never a real animal.",
+      "build": "generated",
+      "used_by": "The family adviser's want (grab it, then put it down next to a troublemaker). Anyone can leave it on the Riser as a petty warning, give it as a gift, or throw it in a sulk."
+    },
+    {
+      "name": "cannoli tray",
+      "clay_look": "A round silver-grey platter heaped with five fat golden-tan pastry tubes, white cream bulging from both ends, dotted with chunky green crumbs.",
+      "build": "shapes",
+      "used_by": "The family boss seals each favor by giving it away; the eldest son throws it at whoever insults the family. Food-fight ammo and a peace gift for anyone."
+    },
+    {
+      "name": "wedding envelope",
+      "clay_look": "An oversized, brick-thick white envelope stuffed until it bulges, with a big pink heart seal and a pink ribbon around it.",
+      "build": "shapes",
+      "used_by": "The crooner gives it to whoever looks most in charge; the boss receives it with each favor. Anyone can give it as a bribe or snatch it back."
+    },
+    {
+      "name": "bowl of oranges",
+      "clay_look": "A wide cobalt-blue bowl heaped with bright orange balls, each with a tiny green leaf on top.",
+      "build": "shapes",
+      "used_by": "Spare. No want needs it: throwable food-fight ammo for the eldest son or anyone, and a quiet nod to the film's oranges."
+    }
+  ],
+  "costumes": [
+    {
+      "role": "The family boss, father of the bride",
+      "headpiece": "fedora",
+      "color": "charcoal black with a red band",
+      "why": "The genre's shorthand for an old-school boss, readable at a glance. Keep it a plain homemade fedora: no tuxedo, no lapel rose, nothing copied from the film's look."
+    },
+    {
+      "role": "The hot-headed eldest son",
+      "headpiece": "ball cap",
+      "color": "tomato red, worn backwards",
+      "why": "A red cap worn backwards says hothead and show-off, and it reads apart from the boss's fedora."
+    },
+    {
+      "role": "The reluctant youngest son",
+      "headpiece": "hood",
+      "color": "olive green",
+      "why": "A hood is for someone who wants to disappear from the family; olive green gives a soft nod to his army past without copying a uniform."
+    },
+    {
+      "role": "The family adviser",
+      "headpiece": "dark shades",
+      "color": "black",
+      "why": "Calm, discreet and unreadable: the quiet fixer who never raises his voice."
+    },
+    {
+      "role": "A washed-up crooner",
+      "headpiece": "top hat",
+      "color": "glittery purple",
+      "why": "Faded showbiz sparkle, the loudest silhouette on stage, and different from every other headpiece in the scene."
+    }
+  ],
+  "new_wardrobe_pieces": [],
+  "banned_terms": [
+    "godfather",
+    "the godfather",
+    "corleone",
+    "don corleone",
+    "the don",
+    "vito",
+    "michael corleone",
+    "michael",
+    "sonny",
+    "santino",
+    "fredo",
+    "tom hagen",
+    "hagen",
+    "kay adams",
+    "connie",
+    "carlo",
+    "carlo rizzi",
+    "rizzi",
+    "luca brasi",
+    "brasi",
+    "clemenza",
+    "peter clemenza",
+    "tessio",
+    "sollozzo",
+    "the turk",
+    "barzini",
+    "tattaglia",
+    "moe greene",
+    "johnny fontane",
+    "fontane",
+    "jack woltz",
+    "woltz",
+    "khartoum",
+    "apollonia",
+    "fabrizio",
+    "mccluskey",
+    "bonasera",
+    "amerigo bonasera",
+    "paulie gatto",
+    "rocco lampone",
+    "al neri",
+    "genco",
+    "genco pura",
+    "consigliere",
+    "caporegime",
+    "cosa nostra",
+    "omerta",
+    "mafia",
+    "mafioso",
+    "mario puzo",
+    "puzo",
+    "francis ford coppola",
+    "coppola",
+    "marlon brando",
+    "brando",
+    "al pacino",
+    "pacino",
+    "james caan",
+    "caan",
+    "robert duvall",
+    "duvall",
+    "diane keaton",
+    "john cazale",
+    "cazale",
+    "talia shire",
+    "richard castellano",
+    "abe vigoda",
+    "sterling hayden",
+    "john marley",
+    "nino rota",
+    "frank sinatra",
+    "sinatra",
+    "paramount",
+    "an offer he can't refuse",
+    "an offer you can't refuse",
+    "make him an offer",
+    "offer he can't refuse",
+    "leave the gun",
+    "take the cannoli",
+    "sleeps with the fishes",
+    "sleep with the fishes",
+    "it's not personal",
+    "strictly business",
+    "keep your friends close",
+    "your enemies closer",
+    "i know it was you",
+    "they pull me back in",
+    "that day may never come",
+    "on the day my daughter is to be married",
+    "i believe in america",
+    "go to the mattresses",
+    "look how they massacred my boy",
+    "never take sides with anyone against the family",
+    "a sicilian message",
+    "kiss the ring"
+  ],
+  "backdrop_prompt": "Stop-motion clay relief diorama, wide 2:1 panorama of a sunny garden wedding party: a big red-and-white striped party tent, strings of round paper lanterns, a long banquet table with a white tablecloth and a tall tiered white wedding cake, potted lemon trees with fat yellow lemons, a pink stucco villa with green shutters and a terracotta roof, rolling green hills and puffy clay clouds in a bright blue sky. Everything sculpted from matte modeling clay with visible thumbprints and tool marks, chunky rounded shapes, saturated slightly chalky colors, soft warm studio lighting, handmade miniature theater backdrop, flat frontal view, shallow relief. No characters, no people, no animals, no text, no letters, no logos.",
+  "notes": "Situation: the daughter's wedding, with the tradition widened so nobody at all may say no to a favor today. That gives every actor, the human included, an easy engine (ask anyone a favor, they must say yes) and turns the youngest son's want into a dodging game rather than a refusal. Sharing is on purpose: the boss and the eldest son both want the cannoli tray (one gives it away, the other throws it), and the youngest son and the crooner both start at the Front, so the crooner tends to beg a favor from the one actor trying to avoid favors. All 5 wants name a prop or a place, and none needs a specific other role: with the boss gone, the Riser is just an empty big chair anyone can climb into, and the crooner gives the envelope to whoever looks most in charge. Props: the plush horse head needs a generated model; a shapes fallback (sphere head, cylinder snout, cone ears, box mane) risks reading as a dog, so keep the yarn mane and the cream blaze. The wedding envelope is the weakest silhouette at 30 px, so build it oversized, bright white, with the pink heart seal facing the camera; a fallback is a white silk gift purse (a drawstring pouch, shapes). The spare can be swapped for a tiered wedding cake (stacked cylinders, the most readable wedding prop and the best thing to throw) if the oranges read as plain balls; the backdrop already shows a cake, so drop it from the prompt if the cake becomes a prop. Wording choices: 'say no to a favor' instead of 'refuse' to stay well away from the film's most famous line; 'Don' and 'godson' are kept out of the card; 'don' is not in the banned list as a bare word because a whole-word check would also flag every 'don't'. Title alternatives: 'Nobody Says No Today' and 'Cannoli Before Business'. 'The Favor Father' is a pun on the original title using only plain words; if the editor wants more distance, use 'Nobody Says No Today'. Alternative fifth seat if the crooner falls flat: 'A rival boss who was not invited', want 'Sneak onto the Riser while nobody is looking and swipe the cannoli tray, then act innocent at the Prop Table.'"
+}

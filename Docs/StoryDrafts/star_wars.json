@@ -1,0 +1,77 @@
+{
+  "film": "Star Wars: Episode IV - A New Hope",
+  "card": {
+    "id": "space_plans",
+    "title": "Who Hid the Plans in the Robot?",
+    "premise": "Planet Dust, a desert world with two suns. A rebel hid the stolen plans to a moon-sized battle station inside a tin-can robot, and a masked villain who breathes very loudly is coming to get them back. The Riser is the cockpit of a battered space truck.",
+    "backdrop": {
+      "id": "desert_planet",
+      "what": "A desert at dusk under two suns, with a rusty dome hut, a battered space truck and a suspicious grey moon."
+    },
+    "props": ["tin-can robot", "glow-stick sword", "toy blaster", "piggy bank"],
+    "seats": [
+      {"role": "A farm kid", "want": "Climb into the space truck on the Riser and leave this dusty planet today, taking the tin-can robot with you if you can."},
+      {"role": "A masked villain", "want": "Breathe very loudly while you hunt for the tin-can robot, then grab it and march it to the Back, where your shuttle waits."},
+      {"role": "An old desert hermit", "want": "Teach anyone who will listen your ancient art of waving the glow-stick sword, then give it to your best student."},
+      {"role": "A smuggler pilot", "want": "Guard your space truck on the Riser with the toy blaster, and let nobody aboard until they hand you something valuable up front."},
+      {"role": "A rebel princess", "want": "Grab the toy blaster and keep the tin-can robot out of the wrong hands until you can give it to the one actor you trust."}
+    ]
+  },
+  "props": [
+    {
+      "name": "tin-can robot",
+      "clay_look": "A lunchbox-sized squat tin can on two stubby legs, tangerine orange with a teal dome lid and one big round red eye, clearly homemade; never white and blue.",
+      "build": "shapes",
+      "used_by": "Core prop, it carries the stolen plans. Villain hunts and grabs it, princess guards and gives it, farm kid takes it to the Riser, anyone can hand it to the smuggler as payment or throw it in a panic."
+    },
+    {
+      "name": "glow-stick sword",
+      "clay_look": "A fat brown clay hilt with a long, chunky hot-pink glowing tube for a blade (emissive), like a party glow stick taped to a handle.",
+      "build": "shapes",
+      "used_by": "Hermit teaches with it and gives it to a student; villain or farm kid can grab it to duel; it is a valuable item to pay the smuggler; throwable."
+    },
+    {
+      "name": "toy blaster",
+      "clay_look": "A stubby lemon-yellow toy pistol with a fat orange barrel ring and a round knob on top, like a bath-time squirt gun.",
+      "build": "shapes",
+      "used_by": "Smuggler guards the Riser with it, princess grabs it, villain can snatch it; good for throwing and for handing over in a standoff."
+    },
+    {
+      "name": "piggy bank",
+      "clay_look": "A round bubblegum-pink clay pig with four stubby legs, a flat snout disc, two triangle ears and a coin slot on its back.",
+      "build": "shapes",
+      "used_by": "Spare. The farm kid's savings, the obvious way to pay the smuggler up front; anyone can grab, give or throw it, and the villain can confiscate it."
+    }
+  ],
+  "costumes": [
+    {"role": "A farm kid", "headpiece": "wide-brim hat", "color": "sandy straw yellow", "why": "Reads as a farm worker at a glance, and the light color pops against the dark villain and the brown hermit."},
+    {"role": "A masked villain", "headpiece": "saucepan helmet", "color": "black", "why": "A kitchen-pot take on the dark helmeted villain, homemade rather than the real helmet; black reads as the bad guy at 30 px."},
+    {"role": "An old desert hermit", "headpiece": "hood", "color": "earthy brown", "why": "A robed desert hermit in one shape; the hood reads old and mysterious without copying anything signature."},
+    {"role": "A smuggler pilot", "headpiece": "dark shades", "color": "black lenses", "why": "Cocky, too-cool pilot energy, and a face accessory keeps the silhouette distinct from the four hats and hoods."},
+    {"role": "A rebel princess", "headpiece": "tiara", "color": "silver and white", "why": "Says princess instantly and avoids copying the famous side-bun hairdo."}
+  ],
+  "new_wardrobe_pieces": [],
+  "banned_terms": [
+    "star wars", "vader", "darth", "skywalker", "luke", "jedi", "sith", "lightsaber", "light saber", "wookiee", "wookie",
+    "droid", "droids", "tatooine", "millennium falcon", "han solo", "obi-wan", "kenobi", "yoda", "death star",
+    "stormtrooper", "stormtroopers", "i am your father", "may the force", "use the force", "the dark side",
+    "leia", "organa", "han", "chewbacca", "chewie", "r2-d2", "r2d2", "r2", "artoo", "c-3po", "c3po", "threepio",
+    "tarkin", "grand moff", "moff", "owen lars", "uncle owen", "aunt beru", "beru", "old ben", "ben kenobi",
+    "greedo", "jabba", "biggs", "wedge antilles", "red five", "red leader", "gold leader",
+    "alderaan", "yavin", "mos eisley", "jawa", "jawas", "sandcrawler", "tusken", "tusken raider", "sand people",
+    "bantha", "dewback", "landspeeder", "speeder", "x-wing", "y-wing", "tie fighter", "tie fighters",
+    "moisture farm", "vaporator", "vaporators", "kessel run", "parsec", "parsecs", "corellian", "rebel alliance",
+    "galactic empire", "the empire", "imperial senate", "thermal exhaust port", "exhaust port", "tractor beam",
+    "the force", "padawan", "midi-chlorians", "sabacc", "hoth", "endor", "ewok", "ewoks", "dagobah", "bespin",
+    "a new hope", "new hope", "only hope", "my only hope", "help me obi-wan", "that's no moon", "thats no moon",
+    "these aren't the droids", "the droids you're looking for", "move along", "bad feeling about this",
+    "i have a bad feeling", "we're doomed", "the force is strong", "lack of faith", "stay on target",
+    "great shot kid", "you're all clear", "never tell me the odds", "punch it", "scruffy-looking", "nerf herder",
+    "laugh it up, fuzzball", "walking carpet", "aren't you a little short",
+    "george lucas", "lucas", "lucasfilm", "mark hamill", "hamill", "harrison ford", "carrie fisher",
+    "alec guinness", "james earl jones", "peter cushing", "cushing", "anthony daniels", "kenny baker",
+    "peter mayhew", "mayhew", "david prowse", "prowse", "john williams"
+  ],
+  "backdrop_prompt": "Stop-motion claymation diorama, a handmade clay relief backdrop, wide panoramic 2:1 composition. A sandy orange desert at dusk under two glowing suns low on the horizon, one big and golden, one smaller and coral pink. Rolling dunes in chunky sculpted modeling clay with visible thumbprints and tool marks. On the left, a small rusty dome-shaped clay hut with a round wooden door. On the right, a battered, patched, boxy space truck with dents, rivets, a round cockpit window and stubby tail fins, resting on short landing legs. High in the lavender and dusty pink sky, a big pale grey moon with a tiny door and two little square windows, looking suspicious. Matte modeling clay, chunky rounded shapes, saturated slightly chalky colors (sand orange, dusty pink, lavender, teal shadows), soft warm stage lighting, shallow layered relief like a painted theater backdrop, the middle kept open and uncluttered. No characters, no people, no robots, no animals, no text, no letters, no logos.",
+  "notes": "What changed from today's card: the father reveal (Episode V) is gone; the villain now hunts the stolen plans, which a rebel hid in a little robot, as in Episode IV. Kept: Planet Dust and its two suns, the desert_planet backdrop id, the space truck cockpit on the Riser, the loud breathing gag, the farm kid, hermit, smuggler and princess wants. The space truck is now the smuggler's ship (as in the film), so the farm kid and the smuggler fight over the Riser. The old want props 'cardboard sword' and 'scroll' are replaced by the glow-stick sword and the tin-can robot. The princess is not on the desert planet in the film; that is parody license. Risks: (1) The tin-can robot is a prop, but LLM actors may talk to it like a character; that is funny and harmless, since the action set can only grab, give, throw or put it down. Keep its colors orange and teal, never white and blue, and keep the sword blade hot pink, not the film's blade colors. (2) The premise names the villain, but says he is coming, so it still works when that seat is not dealt; no want depends on another seat. (3) Trash compactor and the attack run are not used; actors may still riff on them in lines. A second card set aboard the moon-sized station (Riser as a garbage chute, everyone gets soaked) would cover them if the film ever gets two cards. Alternative title that keeps the old gag: 'The Heavy Breather Wants His Plans' (it names a seat that may not be dealt). Banned list: I left out common words that would cause false hits (force, solo, empire, rebel, blaster, ford, fisher, hope, owen, ben); 'rebel' and 'battle station' appear in the card on purpose. 'r2', 'han' and 'speeder' are whole-word bans that should rarely misfire; drop them if the checker is too strict."
+}

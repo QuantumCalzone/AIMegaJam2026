@@ -1,0 +1,189 @@
+{
+  "film": "The Matrix",
+  "card": {
+    "id": "pick_a_pill",
+    "title": "Pick a Pill, Any Pill",
+    "premise": "Midnight in a gray office that is secretly a computer program. Someone here is about to be offered a red pill or a blue pill, agents in dark suits are closing in, and the ringing phone is the only way out. The Riser is the boss's big leather armchair.",
+    "backdrop": {
+      "id": "midnight_cubicles",
+      "what": "A gray office after midnight: rows of clay cubicles, one buzzing ceiling light, a rainy window and old computer screens dripping with green light."
+    },
+    "props": [
+      "red pill",
+      "blue pill",
+      "ringing phone",
+      "bent spoon"
+    ],
+    "seats": [
+      {
+        "role": "A sleepy office worker",
+        "want": "Refuse to choose: give away any pill or prop that reaches you, and keep sneaking back to the Riser for a nap."
+      },
+      {
+        "role": "A grand leader in a long coat",
+        "want": "Grab a pill, settle into the Riser, and give it to whoever looks most confused, swishing your coat dramatically."
+      },
+      {
+        "role": "A rebel in black leather",
+        "want": "Grab the ringing phone and give it to whoever seems ready to escape, and dodge in slow motion at Center whenever anything is thrown."
+      },
+      {
+        "role": "A stern agent in a dark suit",
+        "want": "Confiscate every pill and the ringing phone, put them back on the Prop Table, and glare at any actor who looks suspiciously like a pill."
+      },
+      {
+        "role": "A fortune-teller baking cookies",
+        "want": "Stir your cookie dough with the bent spoon at the Back, then give the spoon to whoever you predict will pick the wrong pill."
+      }
+    ]
+  },
+  "props": [
+    {
+      "name": "red pill",
+      "clay_look": "An oversized, solid tomato-red matte clay capsule about the size of an actor's head, a smooth rounded rod that looks like a tiny cousin of the robot actors but with no face.",
+      "build": "shapes",
+      "used_by": "Leader grabs and gives it; agent confiscates it to the Prop Table; office worker gives it away; fortune-teller predicts who picks wrong; anyone can throw it."
+    },
+    {
+      "name": "blue pill",
+      "clay_look": "The same oversized capsule in solid cobalt-blue matte clay, faceless, so the pair reads as a matching set from the house camera.",
+      "build": "shapes",
+      "used_by": "Leader grabs and gives it; agent confiscates it to the Prop Table; office worker gives it away; fortune-teller predicts who picks wrong; anyone can throw it."
+    },
+    {
+      "name": "ringing phone",
+      "clay_look": "A chunky old rotary desk phone in bright code-green clay with a fat black handset on top and a curly cord, tilted as if hopping from the ring.",
+      "build": "generated",
+      "used_by": "Rebel grabs it and gives it to an escapee; agent confiscates it; office worker passes it on; anyone can throw it. Fallback from shapes: box body, flattened cylinder dial, capsule handset."
+    },
+    {
+      "name": "bent spoon",
+      "clay_look": "A giant brass-gold clay spoon as long as an actor's arm, with a fat round bowl and the handle bent at a sharp right angle.",
+      "build": "shapes",
+      "used_by": "Fortune-teller stirs with it and gives it away; office worker passes it on; anyone can grab or throw it, and the rebel dodges it in slow motion."
+    }
+  ],
+  "costumes": [
+    {
+      "role": "A sleepy office worker",
+      "headpiece": "beanie",
+      "color": "dull office gray-blue",
+      "why": "A slouchy beanie reads as a tired night owl who half lives in a nightcap, and the dull color matches the gray cubicles."
+    },
+    {
+      "role": "A grand leader in a long coat",
+      "headpiece": "wide-brim hat",
+      "color": "deep maroon",
+      "why": "A wide brim gives a mysterious stranger silhouette that suits a dramatic offer, and maroon keeps it apart from the black-clad seats."
+    },
+    {
+      "role": "A rebel in black leather",
+      "headpiece": "bob wig",
+      "color": "glossy black",
+      "why": "A sleek short black bob reads as the cool rebel at a glance without copying any costume; black ties to the leather in the role."
+    },
+    {
+      "role": "A stern agent in a dark suit",
+      "headpiece": "dark shades",
+      "color": "black",
+      "why": "Suit and shades is the universal secret agent read, and this is the only seat that wears shades, so it stays unmistakable."
+    },
+    {
+      "role": "A fortune-teller baking cookies",
+      "headpiece": "wizard hat",
+      "color": "soft lavender",
+      "why": "A pointed hat is the fastest mystic read at 30 px; the soft color keeps her cozy rather than spooky."
+    }
+  ],
+  "new_wardrobe_pieces": [],
+  "banned_terms": [
+    "matrix",
+    "the matrix",
+    "neo",
+    "morpheus",
+    "trinity",
+    "agent smith",
+    "smith",
+    "agent brown",
+    "agent jones",
+    "anderson",
+    "mr. anderson",
+    "mister anderson",
+    "thomas anderson",
+    "oracle",
+    "cypher",
+    "mr. reagan",
+    "reagan",
+    "tank",
+    "dozer",
+    "apoc",
+    "switch",
+    "mouse",
+    "niobe",
+    "nebuchadnezzar",
+    "zion",
+    "merovingian",
+    "persephone",
+    "seraph",
+    "keymaker",
+    "the architect",
+    "sentinels",
+    "squiddies",
+    "the construct",
+    "metacortex",
+    "operator",
+    "the source",
+    "reloaded",
+    "revolutions",
+    "resurrections",
+    "animatrix",
+    "bullet time",
+    "digital rain",
+    "woman in the red dress",
+    "lady in the red dress",
+    "jack in",
+    "jacked in",
+    "unplugged",
+    "there is no spoon",
+    "do not try and bend the spoon",
+    "follow the white rabbit",
+    "white rabbit",
+    "rabbit hole",
+    "down the rabbit hole",
+    "whoa",
+    "i know kung fu",
+    "kung fu",
+    "welcome to the real world",
+    "free your mind",
+    "what is real",
+    "how do you define real",
+    "wake up",
+    "knock knock",
+    "dodge this",
+    "deja vu",
+    "glitch in the matrix",
+    "the story ends",
+    "believe whatever you want to believe",
+    "guns, lots of guns",
+    "not like this",
+    "keanu reeves",
+    "keanu",
+    "reeves",
+    "laurence fishburne",
+    "fishburne",
+    "carrie-anne moss",
+    "hugo weaving",
+    "joe pantoliano",
+    "gloria foster",
+    "marcus chong",
+    "lana wachowski",
+    "lilly wachowski",
+    "wachowski",
+    "wachowskis",
+    "joel silver",
+    "warner bros",
+    "village roadshow"
+  ],
+  "backdrop_prompt": "Stop-motion clay relief diorama, wide 2:1 panoramic theater backdrop, handmade matte modeling clay with soft thumbprints, chunky rounded shapes, saturated slightly chalky colors. A gloomy office floor after midnight seen straight on: rows of low gray cubicle walls, chunky beige boxy computer monitors on desks, each screen glowing with soft green streaks trickling down like rain, one flickering fluorescent ceiling light, a tall back window with blue rain streaks and a dark skyline of simple blocky buildings, a water cooler and a potted plant at the sides, deep teal and gray shadows with sickly green glow accents. Flat front-facing painted stage backdrop, shallow relief depth, even soft lighting, no characters, no people, no robots, no text, no letters, no numbers, no logos.",
+  "notes": "Core joke: every actor is a pill-shaped capsule, so the agent's want to confiscate every pill and glare at anyone who looks like one gives the AIs an easy running gag, and the title plays on it. Keep the pill props faceless, solid one-color and clearly bigger or smaller than a robot head so the camera never mistakes a pill for an actor. The leader and the office worker both want the Riser armchair; that clash is on purpose. The leader's want says grab a pill, not both, in case an actor can hold only one prop at a time. The ringing phone has no ring action, so a looping ring sound on the prop would sell it; if that is out of scope, the premise still says it rings. Agent is used as a plain English word for the suits, not as a title or name; if the editor wants zero overlap with the film's term, swap the role to A stern security program in a dark suit and the premise to stern security programs in dark suits. The bent spoon is the weakest silhouette at 30 px, so build it oversized and brass-gold against the gray backdrop; a tray of fortune cookies is the alternative spare prop. Alternative headpiece for the fortune-teller: a saucepan helmet in cheerful yellow, as if she came straight from her oven. Alternative Riser: the office photocopier. The scene never touches any real-world political meaning of the pills; the wants are only about who holds which prop. The green screens in the backdrop are abstract streaks, not characters, so no text appears."
+}

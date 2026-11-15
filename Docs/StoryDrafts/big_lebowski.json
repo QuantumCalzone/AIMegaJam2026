@@ -1,0 +1,122 @@
+{
+  "film": "The Big Lebowski (1998), parody",
+  "card": {
+    "id": "league_night",
+    "title": "League Night, Bathrobe Optional",
+    "premise": "League night at the neighborhood bowling alley, the night of the big semifinal. A slacker in a bathrobe has been mistaken for a millionaire with the same name, and now somebody has to drop off a ransom bag at the Back before the last frame. The Riser is the winners' podium.",
+    "backdrop": {
+      "id": "bowling_lanes",
+      "what": "A retro bowling alley on league night: shiny wooden lanes, rows of white pins, a ball return and a starry ceiling."
+    },
+    "props": ["rolled-up rug", "bowling ball", "ransom bag", "milk carton"],
+    "seats": [
+      {
+        "role": "A laid-back slacker in a bathrobe",
+        "want": "Replace your ruined rug with the rolled-up rug, put it down at Center, and stay relaxed no matter who yells at you."
+      },
+      {
+        "role": "A hot-headed teammate who knows every rule",
+        "want": "Take charge of the ransom bag, throw it at the Back yourself, and call a foul on anyone who questions your plan."
+      },
+      {
+        "role": "A quiet bowler nobody listens to",
+        "want": "Get the bowling ball and finally take your turn, rolling it at the pins at the Back, before anyone cuts you off."
+      },
+      {
+        "role": "A flashy rival bowler",
+        "want": "Claim the Riser as your winners' podium before a single frame is bowled, and hold up the bowling ball like you already won."
+      },
+      {
+        "role": "An avant-garde artist",
+        "want": "Take back the rolled-up rug, which was your mother's, and display it on the Riser as your newest work of art."
+      }
+    ]
+  },
+  "props": [
+    {
+      "name": "rolled-up rug",
+      "clay_look": "A fat clay log rolled tight, burnt orange with chunky teal zigzag stripes, a darker spiral on each end and a row of stubby cream tassels.",
+      "build": "shapes",
+      "used_by": "The slacker's want (put it down at Center) and the artist's want (display it on the Riser) fight over it; anyone can grab it, give it away or throw it."
+    },
+    {
+      "name": "bowling ball",
+      "clay_look": "A cherry-red clay sphere with a lighter swirl and three dark finger holes on top.",
+      "build": "shapes",
+      "used_by": "The quiet bowler's want (roll it at the Back) and the rival's want (hold it up on the Riser) fight over it; the rule-keeper teammate can confiscate it; anyone can grab, give or throw it."
+    },
+    {
+      "name": "ransom bag",
+      "clay_look": "A lumpy mustard-yellow drawstring sack, cinched at the neck with a red cord and bulging at the bottom, with a chunky dark-green dollar sign pressed into the front.",
+      "build": "generated",
+      "used_by": "The premise makes it everyone's problem; the teammate's want (throw it at the Back) drives it; anyone can grab it, hide it by putting it down, hand it to the wrong actor or throw it."
+    },
+    {
+      "name": "milk carton",
+      "clay_look": "A chunky white clay carton with a peaked gable top and a wide sky-blue band around the middle.",
+      "build": "shapes",
+      "used_by": "Spare, named by no want: the slacker's drink in spirit, a peace offering to give, or a petty thing to throw at a rival."
+    }
+  ],
+  "costumes": [
+    {
+      "role": "A laid-back slacker in a bathrobe",
+      "headpiece": "hood",
+      "color": "oatmeal beige",
+      "why": "A soft hood in terry-cloth beige reads as a bathrobe hood, the cheapest way to say bathrobe with a shared piece, without copying any film look."
+    },
+    {
+      "role": "A hot-headed teammate who knows every rule",
+      "headpiece": "saucepan helmet",
+      "color": "olive green",
+      "why": "A homemade army-style helmet sells the drill-sergeant rule keeper and gives a hard, blunt silhouette next to the soft hood."
+    },
+    {
+      "role": "A quiet bowler nobody listens to",
+      "headpiece": "ball cap",
+      "color": "pale sky blue",
+      "why": "The plainest piece in the wardrobe for the actor everyone overlooks, in a mild color that blends in."
+    },
+    {
+      "role": "A flashy rival bowler",
+      "headpiece": "top hat",
+      "color": "hot pink",
+      "why": "A showman's top hat in a loud color for the show-off; it stays away from the film rival's signature look and color."
+    },
+    {
+      "role": "An avant-garde artist",
+      "headpiece": "bob wig",
+      "color": "cobalt blue",
+      "why": "A sharp geometric bob in an unnatural color reads as gallery artist at a glance, with no need for a new beret piece."
+    }
+  ],
+  "new_wardrobe_pieces": [],
+  "banned_terms": [
+    "lebowski", "big lebowski", "lebowskis", "jeffrey lebowski", "bunny lebowski",
+    "the dude", "dude", "dudes", "duder", "dudeness", "his dudeness", "duderino", "el duderino",
+    "walter", "sobchak", "walter sobchak", "donny", "maude", "bunny", "brandt",
+    "jesus quintana", "quintana", "the jesus", "jackie treehorn", "treehorn",
+    "the stranger", "smokey", "marty", "da fino", "knox harrington", "larry sellers", "arthur digby sellers",
+    "uli", "kieffer", "franz", "karl hungus", "nihilist", "nihilists", "marmot", "pomeranian",
+    "little lebowski urban achievers", "urban achievers", "achievers",
+    "logjammin", "gutterballs", "the ringer", "white russian", "kahlua", "ralphs", "in-n-out",
+    "creedence", "creedence clearwater revival", "ccr", "kenny rogers", "bob dylan",
+    "hollywood star lanes", "shomer shabbos", "nam",
+    "abide", "abides", "the dude abides",
+    "that rug really tied the room together", "tied the room together", "really tied the room",
+    "this aggression will not stand", "mark it zero", "over the line",
+    "out of your element", "you're out of your element", "you're not wrong",
+    "new information has come to light", "the bums lost", "careful, man", "there's a beverage here",
+    "let's go bowling", "this is not nam", "strikes and gutters", "sometimes you eat the bar",
+    "the bar eats you", "lotta ins", "lotta outs", "lotta what-have-yous", "what-have-you",
+    "that's just, like, your opinion, man", "your opinion, man", "not a golfer",
+    "calmer than you are", "has the whole world gone crazy", "am i the only one around here",
+    "jeff bridges", "john goodman", "goodman", "steve buscemi", "buscemi", "julianne moore",
+    "philip seymour hoffman", "john turturro", "turturro", "sam elliott", "david huddleston", "huddleston",
+    "tara reid", "peter stormare", "stormare", "flea", "ben gazzara", "gazzara", "david thewlis", "thewlis",
+    "jon polito", "polito", "joel coen", "ethan coen", "coen", "coens", "coen brothers",
+    "roger deakins", "carter burwell", "working title films", "polygram", "gramercy pictures"
+  ],
+  "backdrop_prompt": "Stop-motion clay relief diorama of a retro 1960s bowling alley interior on league night, wide 2:1 panoramic flat theater backdrop. Glossy honey-colored wooden lanes stretching back in forced perspective, neat triangles of chunky white bowling pins with red stripes at the end of each lane, a rounded ball return holding colorful clay bowling balls, a curved space-age ceiling dotted with starburst lamps, teal and tangerine geometric wall panels, a row of blank pale-blue scoring screens. Matte modeling clay, chunky rounded shapes, visible thumbprints and sculpting tool marks, saturated slightly chalky colors, soft warm studio lighting, shallow relief depth, handmade miniature set. No characters, no people, no text, no letters, no numbers, no logos, no signs.",
+  "notes": "Situation: league night with the ransom drop happening between frames, so the sports plot and the caper plot collide on one stage, as in the film. Conflicts by design: slacker versus artist over the rug, quiet bowler versus rival over the ball, rival versus artist over the Riser; the ransom bag and the bowling ball both land at the Back, which invites a collision. All five wants name a prop or place, and none needs a specific other seat. No want depends on the spare milk carton, so it can be dropped. Risks: (1) 'ransom' implies a kidnapping, and an LLM may invent one; if that feels too dark, change the premise to a ransom for the millionaire's stolen poodle or rug. (2) 'the pins at the Back' are scenery, not a prop, so an actor who tries to grab the pins gets 'looks around'; the throw action at Back still works. (3) 'dude', 'walter', 'marty', 'franz', 'uli', 'nam', 'flea' and 'let's go bowling' are common enough to flag innocent AI lines; keep them only if a false alarm is acceptable, or trim the list to the full names. (4) The teammate calling fouls evokes the film's foul-line scene through situation only, with no quote. (5) The bowling ball can be thrown at an actor; it reads as clay slapstick, but the wants only aim it at the Back. Alternatives: a gold bowling trophy as the spare (gives the rival a second target), or a bowling pin (a very readable silhouette). The ransom bag can fall back to shapes (squashed sphere, small cylinder neck, torus tie) if no generated model is ready. Title alternative: Spare Me the Ransom."
+}

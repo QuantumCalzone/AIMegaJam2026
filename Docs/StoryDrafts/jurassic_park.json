@@ -1,0 +1,169 @@
+{
+  "film": "Jurassic Park",
+  "card": {
+    "id": "dino_island",
+    "title": "Dino Island Is Mostly Safe",
+    "premise": "A billionaire cloned dinosaurs for an island theme park, and today is opening day. The fences just lost power, a dino egg rolled out of the hatchery, and the tour group is still out in the jungle. The Riser is the park's lookout tower.",
+    "backdrop": {
+      "id": "jungle_park",
+      "what": "A steamy island jungle with a sagging electric fence, a tilted warning sign, giant muddy footprints and a smoking volcano far away."
+    },
+    "props": ["dino egg", "meaty drumstick", "safety waiver", "dino plush"],
+    "seats": [
+      {
+        "role": "The billionaire park owner",
+        "want": "Carry the dino egg to every guest in turn and insist it proves the park is perfectly safe."
+      },
+      {
+        "role": "A dinosaur expert",
+        "want": "Get every guest up on the Riser before something big shows up, and scold anyone who climbs back down."
+      },
+      {
+        "role": "A runaway dinosaur with tiny arms",
+        "want": "Get your dino egg back from wherever it ends up, and roar at anyone who touches it."
+      },
+      {
+        "role": "A kid on the tour",
+        "want": "Feed the meaty drumstick to a dinosaur, or to whoever looks most like one, no matter what the grown-ups say."
+      },
+      {
+        "role": "The park's nervous lawyer",
+        "want": "Hand the safety waiver to every guest to sign, then hide at the Back far from anything with teeth."
+      }
+    ]
+  },
+  "props": [
+    {
+      "name": "dino egg",
+      "clay_look": "A fat oval egg in pale mint clay with chunky purple speckles, about as big as a robot's head.",
+      "build": "shapes",
+      "used_by": "Owner carries it to each guest; dinosaur wants it back; kid may try to hug or hatch it; anyone can grab it, give it, put it down or throw it to keep it away from the dinosaur."
+    },
+    {
+      "name": "meaty drumstick",
+      "clay_look": "A cartoon drumstick: a big rounded caramel-brown lump of meat on a cream bone with two knobby ends.",
+      "build": "shapes",
+      "used_by": "Kid feeds it to whoever looks like a dinosaur; dinosaur grabs it; expert or lawyer can throw it far away as bait to clear a path to the Riser or the Back."
+    },
+    {
+      "name": "safety waiver",
+      "clay_look": "A chunky tan clipboard with a fat silver clip and a long white page curling off the bottom, marked with one bold red line to sign on.",
+      "build": "shapes",
+      "used_by": "Lawyer hands it to every guest; owner can wave it as proof of safety; guests give it back, pass it on, or throw it at the lawyer."
+    },
+    {
+      "name": "dino plush",
+      "clay_look": "A squat bright orange plush dinosaur with a yellow belly, button eyes and soft rounded back spikes, a cheap gift-shop toy.",
+      "build": "generated",
+      "used_by": "Spare. Owner can sell it as a souvenir, kid can hug it or feed it the drumstick, dinosaur can be offended by it, anyone can throw it as a decoy."
+    }
+  ],
+  "costumes": [
+    {
+      "role": "The billionaire park owner",
+      "headpiece": "top hat",
+      "color": "cream white",
+      "why": "A showman's top hat reads rich and pleased with himself; cream white hints at a summer-suit tycoon without copying the film's hat."
+    },
+    {
+      "role": "A dinosaur expert",
+      "headpiece": "wide-brim hat",
+      "color": "olive green",
+      "why": "Reads as a field scientist at a glance; olive instead of sandy tan keeps it a generic explorer hat, not the film's signature one."
+    },
+    {
+      "role": "A runaway dinosaur with tiny arms",
+      "headpiece": "dino hood",
+      "color": "grass green",
+      "why": "The obvious read; the robot's short noodle arms already sell the tiny-arms gag."
+    },
+    {
+      "role": "A kid on the tour",
+      "headpiece": "ball cap",
+      "color": "cherry red",
+      "why": "Worn backwards, it reads young and loud, and the red pops at 30 px."
+    },
+    {
+      "role": "The park's nervous lawyer",
+      "headpiece": "dark shades",
+      "color": "black",
+      "why": "Slick and shifty, as if hiding in plain sight, which pays off when he runs to the Back."
+    }
+  ],
+  "new_wardrobe_pieces": [],
+  "banned_terms": [
+    "jurassic",
+    "jurassic park",
+    "jurassic world",
+    "the lost world",
+    "hammond",
+    "john hammond",
+    "ian malcolm",
+    "malcolm",
+    "alan grant",
+    "ellie sattler",
+    "sattler",
+    "dennis nedry",
+    "nedry",
+    "lex murphy",
+    "tim murphy",
+    "robert muldoon",
+    "muldoon",
+    "donald gennaro",
+    "gennaro",
+    "henry wu",
+    "ray arnold",
+    "lewis dodgson",
+    "dodgson",
+    "gerry harding",
+    "nublar",
+    "isla nublar",
+    "isla sorna",
+    "sorna",
+    "ingen",
+    "biosyn",
+    "mr dna",
+    "mr. dna",
+    "rexy",
+    "barbasol",
+    "life finds a way",
+    "clever girl",
+    "spared no expense",
+    "hold on to your butts",
+    "hold onto your butts",
+    "welcome to jurassic park",
+    "must go faster",
+    "objects in mirror",
+    "you didn't say the magic word",
+    "unix system",
+    "chaos theory",
+    "an adventure 65 million years in the making",
+    "steven spielberg",
+    "spielberg",
+    "michael crichton",
+    "crichton",
+    "david koepp",
+    "sam neill",
+    "laura dern",
+    "jeff goldblum",
+    "goldblum",
+    "richard attenborough",
+    "attenborough",
+    "samuel l. jackson",
+    "samuel l jackson",
+    "wayne knight",
+    "bob peck",
+    "martin ferrero",
+    "ariana richards",
+    "joseph mazzello",
+    "bd wong",
+    "b. d. wong",
+    "john williams",
+    "stan winston",
+    "phil tippett",
+    "amblin",
+    "universal pictures"
+  ],
+  "backdrop_prompt": "Stop-motion clay relief diorama, wide 2:1 panoramic theater backdrop, handmade matte modeling clay with visible thumbprints and tool marks, chunky rounded shapes, saturated slightly chalky colors. A steamy tropical island jungle: big rounded ferns and fat palm trees in lime, teal and deep green; a sagging wire electric fence on chunky wooden posts with one post snapped and the wires drooping; a tilted blank yellow warning sign showing only a simple three-toed footprint symbol; a trail of giant three-toed footprints pressed into glossy brown mud; soft white puffs of mist; a small orange and brown volcano puffing one round smoke cloud on the far horizon; warm late-afternoon sky in peach and turquoise. Layered flat relief like a painted stage flat, soft even studio light, shallow depth, open uncluttered space in the middle. No characters, no people, no animals, no dinosaurs, no text, no letters, no numbers, no logos.",
+  "notes": "Title changed from 'Welcome to Dino Island, Mostly Safe' to 'Dino Island Is Mostly Safe': same joke, but it drops the echo of the film's famous welcome line; restore the old title if the team thinks 'Welcome to' is generic enough. Id and backdrop id kept so nothing else has to be renamed. The old scroll and souvenirs are gone: the lawyer's waiver is now the clipboard prop, and the souvenir joke lives in the spare plush. No want depends on the spare, so the card still works if the dino plush is dropped. The egg is wanted by two seats (owner and dinosaur) on purpose, for a tug of war; the drumstick sets the kid against anyone who wants to throw it away as bait. The kid's want works without the dinosaur seat (the kid feeds whoever looks most like one), and the dinosaur's want works without the owner (it just fetches the egg from the Prop Table). The expert is the only seat without a prop, but it is place-based and easy to read in the log. 'Pet a dinosaur' and 'grab whatever your tiny arms can reach' were replaced because neither maps to a visible stage action; the tiny-arms gag stays in the role name. Keep the plush orange, never purple, to stay clear of a famous purple TV dinosaur. Deliberately avoided: the amber-topped walking cane, the big log gate with torches, the park's logo, the white tycoon's panama hat and the expert's sandy fedora. Banned list skips bare common words like 'grant', 'wu', 'lex' and 'arnold' to avoid false positives; real dinosaur species names are allowed. Alternatives for the spare: a red road flare to distract the dinosaur, or a wobbly jelly cup that ripples when footsteps come (evokes the water-glass scene by situation only)."
+}

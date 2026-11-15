@@ -1,0 +1,75 @@
+{
+  "film": "The Lord of the Rings: The Fellowship of the Ring (parody)",
+  "card": {
+    "id": "mine_bridge",
+    "title": "The Ring Is Mine, I Mean Ours",
+    "premise": "Deep in an old dwarf mine, a band of travelers must cross a narrow stone bridge before a big, grumpy fire monster who hates noise wakes up. The cursed gold ring they are hauling to a volcano tempts everyone who touches it. The Riser is the narrow bridge, and the monster snores at the Back.",
+    "backdrop": {
+      "id": "dwarf_mine",
+      "what": "A huge old dwarf mine: carved stone pillars, a deep chasm with a thin stone bridge, and a warm orange glow rising from far below."
+    },
+    "props": ["cursed ring", "glowing staff", "water bucket", "frying pan"],
+    "seats": [
+      { "role": "A barefoot homebody", "want": "Grab the cursed ring, cross the Riser bridge to Right, and snatch the ring back from anyone else who gets hold of it." },
+      { "role": "A bossy old wizard", "want": "Grab the glowing staff, plant yourself on the Riser, and keep everyone off the bridge until you decide it is safe." },
+      { "role": "A brooding ranger", "want": "Get the cursed ring into your own hands for just a moment, from the Prop Table or from whoever has it, and swear you were only checking it for scratches." },
+      { "role": "A loud, proud dwarf", "want": "Prove this old mine has the best echo anywhere by throwing the water bucket at Back as hard as you can." },
+      { "role": "A vain elf", "want": "Keep your hair perfect in the footlights at Front, and take the water bucket away from anyone who might splash you." }
+    ]
+  },
+  "props": [
+    {
+      "name": "cursed ring",
+      "clay_look": "A chunky, donut-sized ring of bright yellow-gold clay with one fat cherry-red gem on top and no writing; the big hole plus the gem bump keep it reading as a ring, not a donut, at 30 px.",
+      "build": "generated",
+      "used_by": "Homebody want (grab, carry over the Riser, snatch back) and ranger want (grab or be given it); the premise makes everyone tempted, so anyone may grab it, give it to a friend to get rid of it, or throw it across the bridge in a panic. Can also be made in the editor's modeling mode as a torus plus a sphere if no generated model is wanted."
+    },
+    {
+      "name": "glowing staff",
+      "clay_look": "A tall, knobbly brown clay walking stick, taller than a robot, topped with a big pale blue-white clay ball that glows.",
+      "build": "shapes",
+      "used_by": "Wizard want (grab it and plant it on the Riser); anyone can grab it to light the way, throw it at the Back to shoo the monster, or give it back to whoever is blocking the bridge. Build from two or three slightly angled cylinders and an emissive sphere."
+    },
+    {
+      "name": "water bucket",
+      "clay_look": "A chunky, dented tin-blue clay bucket with a thick handle and a blob of bright cyan water sloshing over the rim.",
+      "build": "shapes",
+      "used_by": "Dwarf want (throw it at Back for the echo, which wakes the monster), elf want (take it away from splashers and put it down); anyone can throw it at the Back to douse the fire monster or at a ring thief to soak them. Build from a tapered cylinder, a flattened sphere for the water and a bent thin cylinder for the handle."
+    },
+    {
+      "name": "frying pan",
+      "clay_look": "A big round black clay frying pan with a long fire-engine-red handle.",
+      "build": "shapes",
+      "used_by": "Spare. Grab it and throw it at whoever snatches the ring, give it to a friend as a shield, or hold it up as a mirror (the elf). Build from a flat cylinder and a long thin box or cylinder."
+    }
+  ],
+  "costumes": [
+    { "role": "A barefoot homebody", "headpiece": "bob wig", "color": "chestnut brown", "why": "A brown mop of hair makes the capsule read as a small, cozy homebody without copying any costume; the bare feet stay in the role text, since the robots have none." },
+    { "role": "A bossy old wizard", "headpiece": "wizard hat", "color": "dusty grey", "why": "A droopy grey pointed hat says traveling wizard at a glance. The Merlin seat on the sword-in-the-stone card also uses the wizard hat, so keep this variant grey and that one a different color." },
+    { "role": "A brooding ranger", "headpiece": "hood", "color": "moss green", "why": "A weathered hood says wanderer who sleeps outdoors and hides his face, and the green stands apart from the wizard's grey." },
+    { "role": "A loud, proud dwarf", "headpiece": "horned helmet with beard", "color": "iron grey helmet, ginger beard", "why": "The big beard and helmet say dwarf instantly; the cartoon horns keep it a homemade parody rather than the film's armor." },
+    { "role": "A vain elf", "headpiece": "tiara", "color": "pale silver", "why": "A thin silver circlet reads as elegant elf nobility and suits the hair-obsessed want. Dark shades are a funnier alternative (sunglasses in a pitch-black mine) if the tiara is already busy on other cards." }
+  ],
+  "new_wardrobe_pieces": [],
+  "banned_terms": [
+    "lord of the rings", "fellowship of the ring", "the two towers", "return of the king",
+    "tolkien", "peter jackson", "new line cinema", "weta",
+    "middle-earth", "middle earth", "hobbit", "hobbits", "halfling", "halflings",
+    "frodo", "baggins", "bilbo", "samwise", "gamgee", "meriadoc", "brandybuck", "pippin", "peregrin",
+    "gandalf", "mithrandir", "aragorn", "strider", "elessar", "isildur",
+    "legolas", "gimli", "gloin", "boromir", "faramir", "denethor", "elrond", "arwen", "galadriel", "celeborn",
+    "sauron", "saruman", "gollum", "smeagol", "sméagol", "balrog", "balrogs", "durin",
+    "moria", "khazad-dum", "khazad-dûm", "dwarrowdelf", "mordor", "mount doom", "orodruin",
+    "shire", "hobbiton", "bag end", "rivendell", "lothlorien", "lothlórien", "gondor", "rohan", "isengard", "bree", "prancing pony",
+    "nazgul", "nazgûl", "ringwraith", "ringwraiths", "uruk-hai", "uruk",
+    "mithril", "glamdring", "anduril", "andúril", "narsil", "lembas", "elevenses", "mellon",
+    "sindarin", "quenya",
+    "the one ring", "one ring to rule them all", "my precious", "you shall not pass", "fly, you fools", "fly you fools",
+    "one does not simply", "a wizard is never late", "second breakfast", "speak friend and enter", "flame of udun", "flame of udûn",
+    "elijah wood", "ian mckellen", "mckellen", "viggo mortensen", "mortensen", "sean astin", "sean bean",
+    "orlando bloom", "john rhys-davies", "rhys-davies", "billy boyd", "dominic monaghan", "cate blanchett", "blanchett",
+    "christopher lee", "andy serkis", "serkis", "hugo weaving", "liv tyler", "ian holm", "howard shore"
+  ],
+  "backdrop_prompt": "Stop-motion claymation diorama, handmade clay relief, wide 2:1 panoramic painted stage backdrop of a vast abandoned underground dwarf mine: rows of tall chunky carved stone pillars fading into dusty darkness, a deep chasm across the middle spanned by one thin arched stone bridge, a warm tangerine glow rising from far below the bridge, a few wall torches, old wooden mine carts, rope ladders and abandoned pickaxes on the rocky ledges, matte modeling clay with soft thumbprint texture, chunky rounded shapes, saturated slightly chalky colors, slate blue and deep plum shadows with glowing orange highlights, soft studio lighting, flat frontal view like a theater flat, no characters, no people, no creatures, no monster, no text, no letters, no logos, no watermark",
+  "notes": "Moment chosen: the bridge in the mines, with the ring's temptation as a second engine, because both play with the stage's own pieces (the Riser as the bridge, the Back as the dark mine) and give every seat a physical goal that clashes with another's: homebody wants to cross, wizard blocks the bridge, ranger wants the ring, dwarf makes noise that wakes the monster, elf hogs the footlights and fears the bucket. Nobody plays the fire monster: it stays offstage at the Back, only snoring and grumbling, so nothing is scary and no seat depends on it; dousing it with the water bucket is the family-friendly win. Nobody falls off the bridge. Every want works with any one or two seats missing (the ring and props start on the Prop Table, and the ranger may take the ring from there). Flipped from the source on purpose: in the film the ranger refuses the ring and another warrior is tempted; folding the temptation into the ranger keeps the cast at five. The frying pan nods to the homebody's gardener friend without naming him and is the spare; no want needs it. Common words left off banned_terms because they would trip the check on normal lines: ring, fellowship, precious, merry, sam, sting, ring-bearer, wizard, elf, dwarf, orc, goblin, troll; the card itself avoids fellowship, precious and ring-bearer. Title alternative if the 'mine' pun reads weakly: Take the Shortcut, They Said. Alternative moment if the bridge is cut: the council where everyone argues over who carries the ring, with the Riser as the stone table. The pillared mine hall in the backdrop is a generic fantasy image, but tell the image model to avoid any recognizable film set. The ring needs a generated model or a modeling-mode torus (no basic torus shape); the red gem is a deliberate change from the film's plain band so it reads at 30 px and is not a copy."
+}
