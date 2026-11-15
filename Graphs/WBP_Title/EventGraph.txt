@@ -1,6 +1,8 @@
 ; WBP_Title.EventGraph (T33). The title is a paper playbill over the stage, with How to play in an ink panel beside it
 ; until T61's How to play screen replaces it. Every color, size and font comes from UIStyle.
 ; While the title is up, the stage's own widgets (header, card, input row) are hidden, and they come back when it closes.
+; T68: the Play stats toggle (StatsButton) under the three ways to play. It finds BP_Show's analytics component by
+; class (ShowStats), so while BP_Show has none the row stays collapsed and the button does nothing.
 (event UserInterface|EventPreConstruct (IsDesignTime)
   (bind fCap (Class|UIStyle|UIFont :Role "Caption"))
   (bind fBody (Class|UIStyle|UIFont :Role "Body"))
@@ -28,6 +30,9 @@
   (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetFreeCap) :ColorAndOpacity cPaperQuiet)
   (Class|Text|SetFont :self (Variables|WBP_Title|GetKeysCap) :Font fCap)
   (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetKeysCap) :ColorAndOpacity cPaperQuiet)
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Title|GetStatsButton) :Label (Variables|WBP_Title|GetStatsLabel) :Kind "Secondary")
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetStatsCap) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetStatsCap) :ColorAndOpacity cPaperQuiet)
   (Class|Text|SetFont :self (Variables|WBP_Title|GetModeNote) :Font fBody)
   (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetModeNote) :ColorAndOpacity cPaperText)
   (Class|Text|SetFont :self (Variables|WBP_Title|GetCreditText) :Font fCap)
@@ -38,12 +43,14 @@
   (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetHowText) :ColorAndOpacity cText)
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetPlayRing) :On false)
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetFreeRing) :On false)
-  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetKeysRing) :On false))
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetKeysRing) :On false)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetStatsRing) :On false))
 
 (event UserInterface|EventConstruct
   (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
   (Widget|SetRenderOpacity :self (Class|BPShow|GetStage :self _show) :InOpacity 0.0)
-  (Widget|SetKeyboardFocus :self (Variables|WBP_Title|GetPlayButton)))
+  (Widget|SetKeyboardFocus :self (Variables|WBP_Title|GetPlayButton))
+  (CallFunction|ShowStats))
 
 (event UserInterface|EventDestruct
   (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
@@ -53,6 +60,7 @@
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetPlayRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetPlayButton)))
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetFreeRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetFreeButton)))
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetKeysRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetKeysButton)))
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetStatsRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetStatsButton)))
   (if (V Checking)
     (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
     (bind _cl (Class|BPShow|GetLLMClient :self _show))
@@ -94,3 +102,16 @@
   (print "NHOS: TITLE click keys")
   (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Keys.WBP_Keys_C" (Game|GetPlayerController 0)))
   (UserInterface|Viewport|AddtoViewport :self _w :ZOrder 30))
+
+; T68: the Play stats toggle. BPC_Analytics.SetOn sends one last analytics_off when it turns off, then nothing.
+(event OnClicked(StatsButton)
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _an (Actor|GetComponentbyClass :self _show :ComponentClass "/Game/NHOS/Core/BPC_Analytics.BPC_Analytics_C"))
+  (Utilities|IsValid _an
+    (:"Is Valid"
+      (bind _on (Class|BPCAnalytics|IsOn :self _an))
+      (Class|BPCAnalytics|SetOn :self _an :NewOn (not _on))
+      (print (cat "NHOS: TITLE click stats=" (select _on "off" "on")))
+      (CallFunction|ShowStats))
+    (:"Is Not Valid"
+      (print "NHOS: TITLE click stats, no analytics component"))))

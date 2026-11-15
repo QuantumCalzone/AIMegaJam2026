@@ -1,6 +1,13 @@
 ; T37: when a relay show goes down, the unavailable screen gets errors.json's line for the case (ErrorLine),
 ; with the relay's own error.message as the fallback for a relay type that has no line.
+; T68: an event- tag goes to BPC_Analytics.OnSent; the down branch counts the ask and reports the error.
 (fn HandleHttp (Tag SentAt TransportOk Response)
+  ; T68: an analytics event's reply (BPC_Analytics.Send tags its request event-<event>) goes straight back,
+  ; before anything of the ask state is touched.
+  (if (Utilities|String|StartsWith :SourceString Tag :InPrefix "event-")
+    (if (V HaveStats)
+      (Class|BPCAnalytics|OnSent :self (V Stats) :Tag Tag :TransportOk TransportOk :Response Response))
+    (return))
   (bind _now (Math|DateTime|UTCNow))
   (set Secs (Utilities|String|ToString(Float) (Math|Timespan|GetTotalSeconds (Math|DateTime|DateTime-DateTime _now SentAt))))
   (CallFunction|ClearReply)
@@ -58,8 +65,11 @@
   (set HDown (or (streq (V ErrType) "session_limit") (or (streq (V ErrType) "player_limit") (or (streq (V ErrType) "budget_used_up") (streq (V ErrType) "provider_unavailable")))))
   (if (and (streq (V Mode) "relay") (or (V HDown) (not TransportOk)))
     (print (cat "NHOS: LLM " Tag " fail " (V HErr) " provider=" (V CurProv) " mode=" (V Mode)))
+    (CallFunction|CountCall :Tag Tag :Ok false)
     (bind _dk (CallFunction|ErrorKind :Reason (V HErr)))
     (print (cat "NHOS: ERROR " _dk " provider=" (V CurProv) " where=down"))
+    (if (V HaveStats)
+      (Class|BPCAnalytics|Error :self (V Stats) :Kind (cat "down_" _dk)))
     (bind _dlab (CallFunction|LabName :Prov (V CurProv)))
     (bind _dl (CallFunction|ErrorLine :Kind (cat "down_" _dk) :Lab _dlab :N 0 :Type (V ErrType)))
     (if (Utilities|String|IsEmpty _dl)

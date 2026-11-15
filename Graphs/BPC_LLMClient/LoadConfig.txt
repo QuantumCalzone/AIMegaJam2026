@@ -1,4 +1,5 @@
 ; T37: also loads errors.json (cases, test_replies) and the error_test switch.
+; T68: also finds the analytics component (Stats, FindStats).
 (fn LoadConfig ()
   (bind _dir (Utilities|Paths|GetProjectDirectory))
   (bind _cdir (Utilities|Paths|GetProjectContentDirectory))
@@ -93,6 +94,7 @@
   (set FreeHeaders (V EmptyHeaders))
   (Http|AddHeader (V FreeHeaders) "content-type" "application/json")
   (set Session (Guid|ToString(Guid) (Guid|NewGuid)))
+  (CallFunction|FindStats)
   (set Ready true)
   (bind _n (CallFunction|KeyCount))
   (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest)) " error_test=" (V ErrTest)))
