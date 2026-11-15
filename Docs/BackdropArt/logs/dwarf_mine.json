@@ -1,0 +1,24 @@
+[
+  {
+    "time": "2026-11-15 15:51 UTC",
+    "generation": "1f1e10c7-0f3d-6080-ad84-b79fcfa2973d",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation diorama, handmade clay relief, wide 2:1 panoramic painted stage backdrop of a vast abandoned underground dwarf mine: rows of tall chunky carved stone pillars fading into dusty darkness, a deep chasm across the middle spanned by one thin arched stone bridge, a warm tangerine glow rising from far below the bridge, a few wall torches, old wooden mine carts, rope ladders and abandoned pickaxes on the rocky ledges, matte modeling clay with soft thumbprint texture, chunky rounded shapes, saturated slightly chalky colors, slate blue and deep plum shadows with glowing orange highlights, soft studio lighting, flat frontal view like a theater flat, no characters, no people, no creatures, no monster, no text, no letters, no logos, no watermark Composition for a theater backdrop seen behind actors: the most interesting scenery sits in the upper left, the upper right and the middle band; the top center is calm and simple; the bottom third is a plain, simple, uncluttered floor or ground with no objects. Warm, glowing color palette like a cozy old opera house stage.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, numbers, logo, watermark, signature, people, characters, person, robot, animals, creatures, hands, photorealistic, glossy plastic, frame, border, blurry"
+    },
+    "api_credit_cost": null,
+    "seed": 454881306,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ],
+    "balance_before": 4144,
+    "balance_after": 4077
+  }
+]

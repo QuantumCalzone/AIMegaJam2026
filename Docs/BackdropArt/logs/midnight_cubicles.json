@@ -1,0 +1,24 @@
+[
+  {
+    "time": "2026-11-15 15:53 UTC",
+    "generation": "1f1e10ca-c996-6ff0-bbaf-5bf4488f99d4",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion clay relief diorama, wide 2:1 panoramic theater backdrop, handmade matte modeling clay with soft thumbprints, chunky rounded shapes, saturated slightly chalky colors. A gloomy office floor after midnight seen straight on: rows of low gray cubicle walls, chunky beige boxy computer monitors on desks, each screen glowing with soft green streaks trickling down like rain, one flickering fluorescent ceiling light, a tall back window with blue rain streaks and a dark skyline of simple blocky buildings, a water cooler and a potted plant at the sides, deep teal and gray shadows with sickly green glow accents. Flat front-facing painted stage backdrop, shallow relief depth, even soft lighting, no characters, no people, no robots, no text, no letters, no numbers, no logos. Composition for a theater backdrop seen behind actors: the most interesting scenery sits in the upper left, the upper right and the middle band; the top center is calm and simple; the bottom third is a plain, simple, uncluttered floor or ground with no objects. Warm, glowing color palette like a cozy old opera house stage.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, numbers, logo, watermark, signature, people, characters, person, robot, animals, creatures, hands, photorealistic, glossy plastic, frame, border, blurry"
+    },
+    "api_credit_cost": null,
+    "seed": 1613622251,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ],
+    "balance_before": 3648,
+    "balance_after": 3581
+  }
+]

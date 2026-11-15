@@ -1,0 +1,24 @@
+[
+  {
+    "time": "2026-11-15 15:52 UTC",
+    "generation": "1f1e10c8-3446-61f0-a2e3-840f80b3bf00",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion clay relief diorama, wide 2:1 panorama of a sunny garden wedding party: a big red-and-white striped party tent, strings of round paper lanterns, a long banquet table with a white tablecloth and a tall tiered white wedding cake, potted lemon trees with fat yellow lemons, a pink stucco villa with green shutters and a terracotta roof, rolling green hills and puffy clay clouds in a bright blue sky. Everything sculpted from matte modeling clay with visible thumbprints and tool marks, chunky rounded shapes, saturated slightly chalky colors, soft warm studio lighting, handmade miniature theater backdrop, flat frontal view, shallow relief. No characters, no people, no animals, no text, no letters, no logos. Composition for a theater backdrop seen behind actors: the most interesting scenery sits in the upper left, the upper right and the middle band; the top center is calm and simple; the bottom third is a plain, simple, uncluttered floor or ground with no objects. Warm, glowing color palette like a cozy old opera house stage.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, numbers, logo, watermark, signature, people, characters, person, robot, animals, creatures, hands, photorealistic, glossy plastic, frame, border, blurry"
+    },
+    "api_credit_cost": null,
+    "seed": 1578412946,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ],
+    "balance_before": 3914,
+    "balance_after": 3782
+  }
+]

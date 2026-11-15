@@ -1,0 +1,24 @@
+[
+  {
+    "time": "2026-11-15 15:52 UTC",
+    "generation": "1f1e10c7-9c38-6570-9823-f05abdbed64c",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion clay relief diorama, wide 2:1 panoramic theater backdrop, handmade matte modeling clay with visible thumbprints and tool marks, chunky rounded shapes, saturated slightly chalky colors. A steamy tropical island jungle: big rounded ferns and fat palm trees in lime, teal and deep green; a sagging wire electric fence on chunky wooden posts with one post snapped and the wires drooping; a tilted blank yellow warning sign showing only a simple three-toed footprint symbol; a trail of giant three-toed footprints pressed into glossy brown mud; soft white puffs of mist; a small orange and brown volcano puffing one round smoke cloud on the far horizon; warm late-afternoon sky in peach and turquoise. Layered flat relief like a painted stage flat, soft even studio light, shallow depth, open uncluttered space in the middle. No characters, no people, no animals, no dinosaurs, no text, no letters, no numbers, no logos. Composition for a theater backdrop seen behind actors: the most interesting scenery sits in the upper left, the upper right and the middle band; the top center is calm and simple; the bottom third is a plain, simple, uncluttered floor or ground with no objects. Warm, glowing color palette like a cozy old opera house stage.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, numbers, logo, watermark, signature, people, characters, person, robot, animals, creatures, hands, photorealistic, glossy plastic, frame, border, blurry"
+    },
+    "api_credit_cost": null,
+    "seed": 37730394,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ],
+    "balance_before": 4077,
+    "balance_after": 3914
+  }
+]
