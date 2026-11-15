@@ -1,4 +1,4 @@
-(fn Burn ()
+(fn Burn (Prov)
   (bind _now (Utilities|Time|GetRealTimeSeconds))
   (clear (V Live))
   (clear (V LiveBorn))
@@ -13,6 +13,7 @@
     (Utilities|Array|RemoveIndex (V Bills) 0)
     (Utilities|Array|RemoveIndex (V Born) 0))
   (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_BurningBill.WBP_BurningBill_C" (Game|GetPlayerController 0)))
+  (Class|WBPBurningBill|SetLogo :self _w :Prov Prov)
   (bind _s (CanvasPanel|AddChildtoCanvas :self (Variables|WBP_MoneyBurn|GetBillSlot) :Content _w))
   (Layout|CanvasSlot|SetSize :self _s :InSize (Math|Vector2D|MakeVector2D 150.0 110.0))
   (Layout|CanvasSlot|SetPosition :self _s :InPosition (Math|Vector2D|MakeVector2D (Math|Random|RandomFloatinRange :Min 20.0 :Max 70.0) (Math|Random|RandomFloatinRange :Min 0.0 :Max 30.0)))

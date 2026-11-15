@@ -18,7 +18,7 @@ Everything on stage is built in the editor from the engine's basic shapes (`/Eng
 - T11: the robots' first look (`M_Robot`, `MI_StageFloor`, `MI_StageWall`).
 - T17: the improv theater, the persona robots' parts and the six scene backdrops. `M_Set` (one material for the set and the robots' accessories; its wood planks are drawn by a small HLSL node, not a texture), `M_Backdrop` (a two-color painted sky) and the instances in `Content/NHOS/Stage/Materials/`. No textures.
 
-The money burn (T35) is the only 2D art: four textures in `Content/NHOS/UI/MoneyBurn/`, imported from `Docs/MoneyBurnArt/`. `Docs/MoneyBurnArt.md` has how each was made, the script that made them and their colors.
+The money burn (T35) and its provider badges (T36) are the only 2D art: eight textures in `Content/NHOS/UI/MoneyBurn/`, imported from `Docs/MoneyBurnArt/`. `Docs/MoneyBurnArt.md` has how each was made, the script that made them and their colors.
 
 | Asset | What it is | Source | License |
 |---|---|---|---|
@@ -26,6 +26,10 @@ The money burn (T35) is the only 2D art: four textures in `Content/NHOS/UI/Money
 | `Content/NHOS/UI/MoneyBurn/T_BillChar` (`bill_char.png`) | The same bill, charred to ash, for the wipe as it burns. | Drawn by `makeart.swift` from `bill.png`. | Ours, made during the jam. |
 | `Content/NHOS/UI/MoneyBurn/T_FlameSheet` (`flame_sheet.png`) | The flame flipbook: one row of 8 frames, played at 14 fps. | Kenney, Particle Pack 1.1, `muzzle_02/03/05.png`, scaled, mirrored and recolored by `makeart.swift`. https://kenney.nl/assets/particle-pack | CC0 1.0 (the pack's `License.txt`). |
 | `Content/NHOS/UI/MoneyBurn/T_Ember` (`ember.png`) | One soft ember for the sparks that rise from the burn. | Kenney, Particle Pack 1.1, `circle_05.png`, scaled and recolored by `makeart.swift`. https://kenney.nl/assets/particle-pack | CC0 1.0. |
+| `Content/NHOS/UI/MoneyBurn/T_Logo_anthropic` (`logo_anthropic.png`) | The badge for a bill that paid Anthropic: the letter "A" in the bill's ink on the medallion color. Not Anthropic's logo. | Drawn by our script `make_badges.ps1` during the jam (2026-11-14), in the engine's Roboto Bold. No outside art, no AI image tool. | Ours, made during the jam. The letter is set in Roboto (Apache License 2.0, see "Fonts"). |
+| `Content/NHOS/UI/MoneyBurn/T_Logo_openai` (`logo_openai.png`) | The badge for a bill that paid OpenAI: the letter "O". Not OpenAI's logo. | Drawn by `make_badges.ps1` during the jam (2026-11-14), in Roboto Bold. | Ours, made during the jam. Roboto: Apache License 2.0. |
+| `Content/NHOS/UI/MoneyBurn/T_Logo_xai` (`logo_xai.png`) | The badge for a bill that paid SpaceXAI: the letter "S". Not the company's logo. | Drawn by `make_badges.ps1` during the jam (2026-11-14), in Roboto Bold. | Ours, made during the jam. Roboto: Apache License 2.0. |
+| `Content/NHOS/UI/MoneyBurn/T_Logo_meta` (`logo_meta.png`) | The badge for a bill that paid Meta: the letter "M". Not Meta's logo. | Drawn by `make_badges.ps1` during the jam (2026-11-14), in Roboto Bold. | Ours, made during the jam. Roboto: Apache License 2.0. |
 
 ### Generated 3D models
 
