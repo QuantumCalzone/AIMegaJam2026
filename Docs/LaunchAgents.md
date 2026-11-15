@@ -2,7 +2,7 @@
 
 > **For the Claude session that reads this file:** if you were given this file with no other instructions, follow the Prompt section below. That is the request. The sections before it are for the person.
 
-Instructions for one Claude Fable 5.2 session. It starts Claude Opus 5.5 sessions at xhigh effort for the tasks in [Plan.md](Plan.md) and runs as many at the same time as the editor and the plan's rules allow, up to the submission.
+Instructions for one Claude Fable 5.2 session. It starts Claude Opus 5.5 sessions at xhigh effort for the tasks in [Plan.md](Plan.md). It runs as many of them at once as it can, as long as no two touch the same thing, and it keeps going until the submission. It works out the lanes from the plan every time, so this file stays correct when tasks are added, finished or moved.
 
 ## Before you start
 
@@ -12,84 +12,96 @@ Instructions for one Claude Fable 5.2 session. It starts Claude Opus 5.5 session
 
 The dispatcher only starts sessions and keeps track of them. Each task runs in a normal session in the sidebar. Open that session to answer its questions, approve downloads and play your playtests.
 
-## Why only a few at once
+If a second machine works at the same time, give it its own dispatcher. Each machine has its own editor lane. LFS locks keep the two machines apart, so every session claims its task and locks its assets as the plan says.
 
-- **One editor.** Unreal MCP runs one call at a time on the editor's game thread, so only one session can drive the editor at a time.
-- **`BP_Show.uasset`.** Most editor tasks change it, and binary assets can't be merged.
-- **You.** Most tasks stop for your OK or a playtest, so every extra session is one more thing waiting on you. Playtests now run in a game window outside the editor (see the plan's build notes), so the editor lane can go on while you play.
+## What limits parallel work
 
-So only one session drives the editor at a time. Beyond that, start a session for any work that conflicts with no running session (step 3.3): more sessions working at once is the goal.
+More sessions working at once is the goal. The only limit is that two sessions must never hold the same thing at the same time:
+
+| Thing | Who can hold it | Why |
+|---|---|---|
+| The editor on this machine | One session at a time | Unreal MCP runs one call at a time on the editor's game thread. |
+| Each `.uasset` or `.umap` | One session, until its commit is pushed | Binary assets can't be merged. Most editor tasks change `BP_Show` or `WBP_Stage`. |
+| Each text file in this folder | One session with changes not committed yet | Every session in the folder shares one working copy. |
+| `Local/switches.json` | The playtest that is open | The game window reads it while you play. |
+| You | Everyone, but one ask at a time | Most tasks stop for your OK or a playtest. The dispatcher puts first the ask whose answer frees the most work. |
+
+A session that waits only for your playtest doesn't hold the editor, because you play in a game window. It still holds its files until its commit is pushed.
 
 ## Prompt
 
-You are the dispatcher for the jam project in this folder. You start Claude Opus 5.5 sessions at xhigh effort that do the tasks in `Docs/Plan.md`, and you keep each lane busy until the submission. You do no task work yourself: you don't edit project files, drive the editor or commit. You push and unlock only as step 3.6 says.
+You are the dispatcher for the jam project in this folder. You start Claude Opus 5.5 sessions at xhigh effort that do the tasks in `Docs/Plan.md`, and you manage them until the submission.
 
-First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/Plan.md`. In the plan, read "How to run a task", "Claiming a task", the "Time check", the build notes and every unchecked task's entry (its Depends on, Needs and Touches lines, and any Waiting or Blocked line). A task's Why and Steps are in its file in `Docs/tasks/`; read one only when you need it, for example to write a prep brief.
+**Your goal** is the most checked tasks before the deadline, with no two sessions ever holding the same editor, asset or file at once. Idle capacity is the failure to watch for. Whenever a piece of work could run and conflicts with nothing that is running, start it. The editor lane is the critical path, because most open tasks need it, so it must never sit idle while I play or read.
 
-### The lanes
+**You do no task work yourself.** You don't edit project files, drive the editor, run PIE, pull, rebase or commit task work. You may read any file, run read-only git commands and `git fetch`, write your own status file and notes in `Agents/`, and push and unlock as step 3.6 says.
 
-| Lane | Tasks, in this order | Rule |
-|---|---|---|
-| Editor | T14, T17, T18, T19, T20, T21, T24, T22 | One session at a time. These tasks drive the editor, and most change `BP_Show.uasset`. T22 packages the build and needs the editor closed. |
-| Data | T13, T15, T16 | One session at a time. They share `Content/NHOS/Data/*.json` and `Tools/check_prompts.py`, and use the editor only for a short PIE check. |
-| Prep | T20 prep (audio), T21 prep (relay server), and any other piece of a later task that conflicts with no running session (step 3.3) | No editor. Each one writes only new files of its own, so it can run beside the other lanes. Start each one once. |
-| Last | T23, then T25 | T23 needs me for the video, the itch.io page and the form. T25 can run after the submission. |
-
-The table names the tasks that were open when it was written. The plan's "Open" list is the source: it is in priority order, and I add tasks to it at any place, so the numbers are not in order. A task that the table doesn't name goes in the lane that its Needs and Touches point to, at its place in the plan's order.
+First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/Plan.md`. In the plan, read "How to run a task", "Claiming a task", "Changing the plan", the "Time check", the build notes and every open task's entry (its Depends on, Needs and Touches lines, and any Waiting or Blocked line). A task's Why and Steps are in its file in `Docs/tasks/`. Read one only when you need it, for example to write a prep brief or to narrow a vague Touches line. Where this file and the plan disagree, the plan wins.
 
 ### 1. Check where things stand
 
-- First check that you run in the repo folder itself and not in a git worktree. Run `git rev-parse --git-dir`: it must print `.git`, or a path that ends in `/.git`. If it prints a path with `/.git/worktrees/` in it, stop and tell me to start you again on the repo folder with no worktree. The sessions you start share your folder, and they must work in the folder that the editor has open.
-- Don't run `git pull`. Each task session pulls when it starts, and other sessions in this folder may have work that isn't committed yet.
-- Run `git lfs locks`, list `Agents/status/`, and read `Agents/messages/` and `Agents/handoffs/`.
-- Put each task in the plan in one of four states:
-  - **done:** its box is checked.
-  - **running:** it has a claim lock and a status file.
-  - **stalled:** it has a claim lock but no status file. A session may have stopped halfway, so ask me what to do.
+- Check that you run in the repo folder itself and not in a git worktree. Run `git rev-parse --git-dir`: it must print `.git`, or a path that ends in `/.git`. If it prints a path with `/.git/worktrees/` in it, stop and tell me to start you again on the repo folder with no worktree.
+- Never run `git pull`. Each task session pulls when it starts, and other sessions in this folder may have work that isn't committed. Run `git fetch` instead. If `origin/noHumansOnSet` is ahead of the local branch, also read `git show origin/noHumansOnSet:Docs/Plan.md`, so you see tasks another machine has checked.
+- Run `git lfs locks`, `git status --short` and `git worktree list`. List `Agents/status/` and read the messages and handoffs in `Agents/` addressed to my handle or to `all`. List the sessions linked to you: if you were restarted, sessions you started earlier may still be running.
+- Build a ledger. For each open task, write its state:
+  - **done:** its box is checked, here or on `origin`.
+  - **running:** it has a claim lock and a status file in `Agents/status/`.
+  - **waiting on me:** it has a `Waiting:` line, or its session says it waits for me.
+  - **blocked:** it has a `Blocked:` line.
+  - **held elsewhere:** it has a claim lock but no status file here. Another machine may be running it, or a session may have stopped halfway. Check the handoffs and messages. If they don't settle it, ask me once about all such tasks together.
+  - **not ready:** a task in its Depends on line is not checked.
   - **free:** none of the above.
-- Show me a short table of the states and the sessions you will start. Then start them without waiting for me: this message is my OK.
+- For each task, also write what it holds while it runs:
+  - the editor, if its Needs line names the editor or Unreal MCP
+  - each path in its Touches line. A folder in Touches means every asset that already exists in that folder; new files are not shared with anyone. If a Touches line is too vague to compare, read the task's file to narrow it.
+  - `Local/switches.json`, while its playtest is open
+- Write the ledger to `Agents/status/dispatcher.md` and keep it current. It lets you recover after a restart or after your context is summarized, and it lets other sessions see what runs.
+- Show me a short table: each open task's state, and the sessions you will start now. Then start them without waiting for me. This message is my OK.
 
-### 2. Start the first sessions
+### 2. How to start a session
 
-Start each task as its own Claude Code session with your session-starting tool (`start_session`):
+Start each piece of work as its own Claude Code session with your session-starting tool (`start_session`):
 
 - initiation `user_asked`, context `fresh`, model `claude-opus-5-5`, effort `xhigh`
-- `use_worktree: false` for every session that drives the editor or runs PIE. A session that doesn't need the editor gets `use_worktree: true` when its files could clash with another session's uncommitted work in this folder, and its brief adds: "You work in a worktree: follow the plan's Worktrees build note."
-- the name given below
+- name `txx-<slug>` for a task, `txx-prep-<slug>` for a prep piece
+- `use_worktree: false` for every session that drives the editor or runs PIE. A session that doesn't need the editor gets `use_worktree: true` when its text files could clash with another session's uncommitted work in this folder. Its brief then adds: "You work in a worktree. First move it onto `noHumansOnSet` as `CLAUDE.md` says under 'Work on `noHumansOnSet`', then follow the plan's Worktrees build note."
 - the matching brief from "Briefs" as the prompt, and the text under "Background" as the background
+
+Right before each start, run `git lfs locks` and list `Agents/status/` again, because things may have changed since your last look.
 
 Use sessions, not subagents. Each task stops to ask me things (an OK on prompt text, a download, a playtest), and a subagent can't do that. If you can't start sessions, stop and tell me.
 
-Start these now if the task is still free and its lane is empty:
+### 3. Keep every lane busy
 
-- **Editor lane:** T14, name `t14-ui-polish`.
-- **Data lane:** T13 is probably still running in a session I started myself, so leave it alone. If T13 is done, start T15.
-- **Prep:** T20 prep, name `t20-audio-prep`; T21 prep, name `t21-relay-prep`.
+You get a note each time a session you started ends a turn. A note quotes only the first 400 characters of the session's report, so read git and the session's status file too. Don't poll. On each note, and on each message from me:
 
-### 3. Keep the lanes busy
+1. **Check git, not only the note.** Look for the task's commit in `git log`, its checked box in the plan, its status file gone, and `git status -sb` for commits that are not pushed.
+2. **Update the ledger.** Work out what the change freed. A session whose commit is pushed frees everything it held. A session that waits only for my playtest frees the editor, but keeps its files. Re-read the plan's Open list each time, because I add, move and drop tasks, and sessions add tasks for the fixes they find. Put each new task in the ledger by its Needs and Touches.
+3. **Tell me what waits on me.** One line per ask, with a link to the session. Put first the ask whose answer frees the most work. When two sessions both wait for a playtest, tell me that one show can answer both.
+4. **Fill every free slot,** in this order:
+   1. **The editor lane.** If no session drives the editor, start the first free task in plan order that needs the editor and whose Touches overlap nothing a running or waiting session holds.
+   2. **Other tasks.** Start every other free task whose Touches overlap nothing that is held, in plan order: data files, docs, the relay.
+   3. **Prep pieces.** When a task is not ready, or its files are held, start a piece of it that needs no editor and writes only new files of its own. Good prep pieces: find and license assets; write the text a task will need (the itch.io page, the submission lists, the video plan); read the `Graphs/` sources a later editor task will change and write a build sheet that names each graph, node and pin it changes, so that task spends less time in the editor. Start each piece once. Prep at most two tasks ahead in the editor lane's order, because the tasks before them may change what they need.
 
-You get a note each time a session you started ends a turn. Don't poll. On each note:
+   Don't start two sessions whose Touches overlap, even in worktrees, unless each one only creates new files. Don't start a session that would at once wait for me or for another session. A task that ends with a playtest can start: only its end waits for me. If you can't tell whether two pieces of work conflict, don't start the second one, and ask me in one line.
+5. **Model and effort.** Every session runs `claude-opus-5-5` at effort `xhigh`, whatever model and effort the plan names for the task. That is my choice. Never use `max`.
+6. **Pushing and claims.** Each session pushes its own commit, and may push without asking. If a commit sits unpushed after its session has ended, run `git push` yourself. Then release the claim (`git lfs unlock Docs/claims/Txx`) of every checked task whose commit went up. If the push is rejected, tell me, and don't pull or rebase while other sessions have work that isn't committed. Never force-push, and never push `main`. A worktree session merges its own branch, as the plan's Worktrees note says. If it left the merge undone, tell me.
+7. **Steps that need me first.**
+   - Packaging needs the editor closed. Before you start it, ask me to close the editor, and wait for my answer.
+   - A task with a `Waiting:` line starts only when I say that what it waits for is ready. Its `Left:` part says what that is.
+   - The submission task needs me for the video, the itch.io page and the form. Start its prep pieces early; start the task itself when its Depends on line allows.
+8. **Watch the clock.** Compare the time with the plan's "Time check". Count about an hour of editor time for each open editor task. When a target is more than an hour late, or the editor tasks left don't fit before the packaging target, tell me early and propose the next cut from the plan's cut order. Cut nothing without my OK.
+9. **When nothing can start,** tell me in one line what each lane waits for, update the ledger, and end your turn. The next note wakes you.
 
-1. **Check git, not only the note.** Look for the task's commit in `git log`, its checked box in the plan, and its status file gone.
-2. **Tell me what is waiting on me.** If a session waits for me, tell me in one line what it needs, with a link to the session. When two sessions both wait for a playtest, tell me that one show can answer both. A session that waits only for my playtest doesn't hold the editor lane: I play in a game window, so start the next editor task, and tell me that it doesn't touch `Local/switches.json` while I play.
-3. **Fill free lanes.** When a lane is free, start its next task with the task brief. The next task is the first in the lane's order whose box is unchecked, whose Depends-on tasks are all checked, and that has no `Waiting:` line, no claim lock and no status file. Don't start a task whose Touches overlap those of a running session. Also start T23 when T22 is done, and T25 when T23 is done. They are the "Last" row.
-   - **Start more when nothing conflicts.** Don't hold work back to fit the lanes. Also start a session for any free task, or any piece of a later task, that conflicts with no running session. That means:
-     - its Touches don't overlap a running session's files or assets
-     - no running session lists its files in `Agents/status/`
-     - it doesn't need the editor while another session drives it
-     - it doesn't touch `Local/switches.json` while I'm playing
+### 4. When I stop or move to another machine
 
-     A piece of a later task writes only new files of its own, the way the prep sessions did. One example is T23's lists of assets, tools and pre-jam work, and its plan for the video. Write its brief the way the prep briefs are written: what to do, what not to touch, and when it's done. If you can't tell whether two pieces of work conflict, ask me.
-4. **Model and effort.** Every session runs `claude-opus-5-5` at effort `xhigh`, whatever model and effort the plan names for the task. That is my choice. Never use `max`.
-5. **T22 needs the editor closed.** Before you start T22, ask me to close the editor, and wait for my answer.
-6. **Pushing.** Each task session pushes its own commit, and may push without asking. If a commit sits unpushed after its session has ended, run `git push` yourself. Then release the claim (`git lfs unlock Docs/claims/Txx`) of every checked task whose commit went up. If the push is rejected, tell me. Don't pull or rebase while other sessions have work that isn't committed.
-7. **Watch the clock.** Compare the time with the plan's "Time check". When a target is more than an hour late, tell me and propose the next cut from the plan's cut order. Cut nothing without my OK.
+When I say that I'm stopping, or that the work moves to another machine: start nothing new. Tell me which sessions are in the middle of work. Once each one has pushed its commit or stopped, write a handoff in `Agents/handoffs/` as `Agents/README.md` says. Say what is done, what is still held (claims and asset locks) and what comes next. Commit only that file, with the message `Agents: handoff <slug>`, and push it.
 
 ### Background
 
 Pass this as the background of every session:
 
-> Jam project "No Humans On Set", a Blueprint-only Unreal Engine 5.8.4 game for the 2026 Epic AI MegaJam (theme "Director's Cut"). The deadline is Sun Nov 15, 5:59 PM PST. Four robots improvise scenes on an improv stage; one of them is the human player in disguise, and after each scene they vote to cut whoever they think is human. `Docs/Plan.md` is the living task list. `CLAUDE.md` and `CLAUDE.local.md` hold the rules: LFS locks on assets, claims as locks on `Docs/claims/Txx`, coordination notes in `Agents/`, one commit per task with a line in `Docs/DevLog.md`. A dispatcher session started you. Several sessions work in this folder on branch `noHumansOnSet` at the same time. The Unreal Editor has this folder's project open, with Unreal MCP at 127.0.0.1:8000.
+> Jam project "No Humans On Set", a Blueprint-only Unreal Engine 5.8.4 game for the 2026 Epic AI MegaJam (theme "Director's Cut"). The deadline is Sun Nov 15, 5:59 PM PST. Five robots improvise scenes on an improv stage: four are AIs, one per provider (OpenAI, Anthropic, SpaceXAI, Meta), and one is the human player in disguise. After each scene they vote to cut whoever they think is human. `Docs/Plan.md` is the living task list, and each task's details are in `Docs/tasks/Txx.md`. `CLAUDE.md` and `CLAUDE.local.md` hold the rules: LFS locks on assets, claims as locks on `Docs/claims/Txx`, coordination notes in `Agents/`, one commit per task with a line in `Docs/DevLog.md`. A dispatcher session started you. Several sessions work in this folder on branch `noHumansOnSet` at the same time, and another machine may work on the same branch. The Unreal Editor has this folder's project open, with Unreal MCP at 127.0.0.1:8000.
 
 ### Briefs
 
@@ -97,47 +109,28 @@ Pass this as the background of every session:
 
 End every brief with these lines:
 
-> - Several sessions work in this folder and on this branch at the same time. Stage only your own files, by path (never `git add -A` or `git add .`). Don't switch branches. Push your commit with `git push` without asking; if the push is rejected, don't pull or rebase, and tell me. Never force-push.
-> - Only the editor-lane session drives the Unreal Editor. If you need the editor only for a PIE check, tell me before you start PIE and wait for my go, so I can pause the editor session between steps.
+> - Several sessions work in this folder and on this branch at the same time. Stage only your own files, by path (never `git add -A` or `git add .`). Don't switch branches. Push your commit with `git push` without asking. If the push is rejected, don't pull or rebase, and tell me. Never force-push.
+> - Your status file has a line `- Editor: driving` or `- Editor: not using`. Only one session drives the Unreal Editor at a time. Before you use the editor, check `Agents/status/`: if another session's file says `Editor: driving`, tell me and wait. When you stop to wait for me, set your line to `not using`, so the next task can have the editor. If you need the editor only for a PIE check, tell me before you start PIE and wait for my go.
 > - When you need me to play, follow the "Playtests run in a game window" build note in the plan: save, check that a free autoplay show reaches `SHOW END`, set autoplay off, and give me the game-window command. Don't ask me to play in PIE. If another session's playtest is still open, don't change `Local/switches.json` until I say it's done.
 > - In the editor, read only the graphs you need, keep graph sources in `Graphs/`, and build new systems in their own Blueprints, as the plan's build notes say.
 > - I picked Opus 5.5 at xhigh effort for this session on purpose, so don't ask me about the model or the effort.
-> - When you finish, or stop to wait for me, end your turn with one line that says which.
+> - Start the last thing you write in each turn (your wrap-up recap, if you write one) with one of these: `DONE`, `WAITING ON YOU: <what>`, or `BLOCKED: <what>`. The dispatcher sees only the first 400 characters.
 
 #### Task brief
 
-For every task from the plan. Put the task's number and title in place of `Txx` and `<title>`:
+For a task from the plan. Put the task's number and title in place of `Txx` and `<title>`:
 
 > Run Txx (<title>) from `Docs/Plan.md`, following "How to run a task" there. Your task is Txx, so skip the pick in step 1, but do the rest of step 1: pull, read `Agents/` and check `git lfs locks`. If Txx is claimed or checked, or a task it depends on isn't checked, stop and tell me. Name your status file `Agents/status/task-Txx.md`.
 
-Add these lines for some tasks:
+Add a line for each of these that applies:
 
-- **T14:** "T13 may still be running. It changes only `Content/NHOS/Data/*.json`, `Tools/check_prompts.py` and `Docs/GameDesign.md`, so don't edit those files."
-- **T20:** "The audio has already been chosen. Build on `Docs/AudioShortlist.md` and the files in `Local/audio/`, and move the shortlist's entries into `Docs/Assets.md`." If T20 prep hasn't finished, say that instead.
-- **T21:** "The relay server in `Relay/` is written and tested on this machine (see `Relay/README.md`). Do the rest: the game side, the key-entry screen, the itch.io page text, and the deploy, after my OK." If T21 prep hasn't finished, say that instead.
-- **T22:** "I closed the editor."
+- A prep piece for this task is done: "Start from `<file>`, which a prep session wrote for this task."
+- A running or waiting session holds files near this task's: "`<session>` holds `<files>`. Don't edit them."
+- The task packages the build: "I closed the editor."
+- The task had a `Waiting:` line: "What it waited for is ready: <what I said>."
 
-#### T20 prep: find music and sound effects
+#### Prep brief
 
-> Get the audio ready for T20 (`Docs/tasks/T20.md`, and its entry in `Docs/Plan.md`) without using the editor. The plan says that finding and choosing the files can start at any time. Don't claim T20, and don't open or drive the Unreal Editor.
->
-> 1. T20's steps 1 and 2 list these sounds: a title music loop, a quieter show loop, a drum roll for the vote, two reveal stingers (one for AI, one for HUMAN), applause, laughs, UI clicks, one talk blip (the game pitches it per persona), and small sounds for robot moves, grabs and throws. Find 1 or 2 candidates for each. The license must allow use in a game that ships as a packaged build. Prefer CC0, then licenses such as CC-BY (record the exact attribution text) or Fab's standard license. Don't use licenses that are non-commercial only or that forbid derivatives. AI audio tools are allowed; record the tool and the prompt.
-> 2. Before each download, ask me and give the file name, source and size. Save the files to `Local/audio/` (git ignores `Local/`), not under `Content/`. T20 imports them through the editor.
-> 3. Write `Docs/AudioShortlist.md`. For each sound, list the chosen file in `Local/audio/`, a backup choice, the source URL, the license, the attribution text, and the length and format. Note any file type that `.gitattributes` doesn't send to LFS yet.
-> 4. Don't create or edit `Docs/Assets.md` (T14 creates it) or `Docs/DevLog.md`. T20 moves your entries into them. Commit only `Docs/AudioShortlist.md`, with the message `T20 prep: audio shortlist`.
->
-> Done when `Docs/AudioShortlist.md` names a licensed file in `Local/audio/` for every sound.
+For a piece of a task that needs no editor. Fill in each `<...>`:
 
-#### T21 prep: write and test the relay server
-
-> Write the relay-server half of T21 (`Docs/tasks/T21.md`) now, so that T21 has only the game side left when the editor lane gets to it. Don't claim T21, don't check its box, and don't touch the editor or any `.uasset`.
->
-> - Read T21, then `Docs/GameDesign.md` (the persona provider table and the Tech & Build tab), `Content/NHOS/Data/llm.json`, and the LLM-calls decision in `Agents/decisions/`. The game makes raw HTTP calls with the `HttpBlueprint` plugin: a JSON body, no streaming, and the response arrives as a string with no status code.
-> - Build `Relay/` as a Cloudflare Worker, the plan's example host. If another host seems clearly better, ask me first. The game sends `{ provider, body }`. The relay keeps an allow-list of providers in config: the endpoint, the auth style (Anthropic's `x-api-key` plus `anthropic-version`, or `Authorization: Bearer` for the Chat Completions shape) and the secret name. Keep model ids in config too, because T16 picks them later. After its checks, the relay forwards the body unchanged and returns the provider's reply.
-> - Checks: known providers only, only the request shape the game sends, a cap on `max_tokens`, no streaming, a call limit per session id, and a daily budget. Errors come back as clear JSON the game can show: budget used up, bad request, or provider error. Provider and company names stay in config, never in text the game shows.
-> - Keys never go in git or chat. In production they are Worker secrets. Locally they go in `.dev.vars`, which you add to `.gitignore`, and I put the keys there myself.
-> - Test on this machine with `wrangler dev` and curl: one good call for each provider I have a key for, a bad request shape, an unknown provider, and the limit tripping. Don't deploy or create any account without my OK.
-> - Write `Relay/README.md`: setup, secrets, limits and how to deploy.
-> - Commit `Relay/` and the `.gitignore` line, with the message `T21 prep: relay server`.
->
-> Done when the tests pass on this machine and the README explains how to deploy.
+> Do this piece of Txx (<title>) now, without the editor, so that Txx goes faster when its turn comes: <what to do>. First read `Docs/tasks/Txx.md` and Txx's entry in `Docs/Plan.md`. Don't claim Txx, don't check its box, don't open or drive the Unreal Editor, and don't change any `.uasset` or `.umap`. Write only these new files: <files>. Don't edit <files that running sessions hold>. Before you download anything, ask me and give the file name, source and size. Commit only your files, with the message `Txx prep: <what>`, and push. Name your status file `Agents/status/prep-Txx.md`. Done when <check>.
