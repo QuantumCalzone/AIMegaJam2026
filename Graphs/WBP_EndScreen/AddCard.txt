@@ -6,4 +6,7 @@
   (bind _slot (Widget|AddChildToUniformGrid :self (Variables|WBP_EndScreen|GetCardsGrid) :Content _card :InRow 0 :InColumn (V CardCount)))
   (Layout|UniformGridSlot|SetHorizontalAlignment :self _slot :InHorizontalAlignment "HAlign_Fill")
   (Layout|UniformGridSlot|SetVerticalAlignment :self _slot :InVerticalAlignment "VAlign_Fill")
-  (set CardCount (+ (V CardCount) 1)))
+  (set CardCount (+ (V CardCount) 1))
+  ; T60: keep each card and its name, so SetRival can find an AI's card.
+  (add (V Cards) _card)
+  (add (V CardNames) Name))

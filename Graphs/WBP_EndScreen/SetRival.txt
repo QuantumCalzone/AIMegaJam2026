@@ -1,0 +1,6 @@
+; WBP_EndScreen.SetRival(Name, Rival), called by BP_Show.RevealRivals on a win (T60): the rival line on the
+; card of the AI called Name (the card's title, as AddCard got it). A name with no card does nothing.
+(fn SetRival (Name Rival)
+  (bind _i (Utilities|Array|FindItem (V CardNames) Name))
+  (if (>= _i 0)
+    (Class|WBPEndCard|SetRival :self (get (V Cards) _i) :Rival Rival)))

@@ -1,0 +1,7 @@
+; WBP_EndScreen.SetReason(Reason), called by BP_Show.EndReveal on a loss (T60): the top reason, the kind of
+; evidence most of the votes that cut the human named ("They caught you copying late."), as one large gold line
+; under the cards, right above Play Again. An empty reason leaves the line collapsed.
+(fn SetReason (Reason)
+  (Widget|SetText(Text) :self (Variables|WBP_EndScreen|GetReasonText) :InText (Utilities|Text|ToText(String) Reason))
+  (if (not (Utilities|String|IsEmpty Reason))
+    (Widget|SetVisibility :self (Variables|WBP_EndScreen|GetReasonText) :InVisibility "SelfHitTestInvisible")))
