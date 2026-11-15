@@ -4,8 +4,10 @@
   (if (or (Variables|Default|GetAutoplay) _rl)
     (if _rl
       (Development|PrintString "NHOS: TITLE skipped relaunch" false))
+    (Class|BPCShowAudio|PlayMusic :self (V Audio) :Key "show")
     (CallFunction|SetupShow)
     (else
+      (Class|BPCShowAudio|PlayMusic :self (V Audio) :Key "title")
       (bind _returnvalue (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Title.WBP_Title_C" (Game|GetPlayerController 0)))
       (Variables|Default|SetTitleScreen _returnvalue)
       (UserInterface|Viewport|AddtoViewport :self _returnvalue :ZOrder 20)

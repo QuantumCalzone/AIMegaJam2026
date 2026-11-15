@@ -10,5 +10,8 @@
   (set MvT 0.0)
   (set MvHop (select (> _dz 5.0) 75.0 (select (> _d 260.0) 32.0 20.0)))
   (bind _y (CallFunction|YawTo :Target Dest))
+  ; T20: a footstep as the move starts and another just past halfway.
+  (CallFunction|Snd :Key "step")
+  (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "StepSnd" :Time (* Dur 0.6) :bLooping false)
   (if (> _d 10.0)
     (set FaceYaw _y)))

@@ -1,6 +1,7 @@
 ; UIStyle.MakeButton(Fill, Hover, Press, Line, HoverLine, Text) -> ButtonStyle. The four states from one set of colors:
 ; hover brightens the fill and lights the outline, pressed darkens it and drops the label 2 px,
 ; disabled drops to 40% and loses its outline. The label follows the button's foreground.
+; T20: every button clicks when pressed and ticks softly on hover (S_Click, S_Hover).
 (fn MakeButton (Fill Hover Press Line HoverLine Text)
   (bind r (CallFunction|UISize :Role "ButtonRadius"))
   (bind w (CallFunction|UISize :Role "ButtonOutline"))
@@ -18,4 +19,6 @@
     :Normal bN :Hovered bH :Pressed bP :Disabled bD
     :NormalForeground fg :HoveredForeground fg :PressedForeground fg :DisabledForeground fgD
     :NormalPadding (Utilities|Struct|MakeMargin px py px py)
-    :PressedPadding (Utilities|Struct|MakeMargin px (+ py drop) px (- py drop)))))
+    :PressedPadding (Utilities|Struct|MakeMargin px (+ py drop) px (- py drop))
+    :PressedSlateSound (Utilities|Struct|MakeSlateSound :ResourceObject "/Game/NHOS/Audio/UI/S_Click.S_Click")
+    :HoveredSlateSound (Utilities|Struct|MakeSlateSound :ResourceObject "/Game/NHOS/Audio/UI/S_Hover.S_Hover"))))

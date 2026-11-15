@@ -1,0 +1,5 @@
+; T20: one music loop at a time. "title" plays the title loop, anything else the quieter show loop.
+; The same key twice does nothing, so every header cue can ask for the show music.
+(fn PlayMusic (Key)
+  (if (not (streq Key (V MusicKey)))
+    (CallFunction|SwapMusic :Key Key)))
