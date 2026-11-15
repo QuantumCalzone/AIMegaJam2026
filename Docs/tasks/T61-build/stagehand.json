@@ -1,0 +1,60 @@
+{
+	"_readme": "The stagehand's earpiece tips (T61). BPC_Stagehand on BP_Show reads this file at the first show of a run. The tips are static text that only the player sees, in WBP_Earpiece: they never go to an LLM, the shared log or game_messages. They show on a teaching show only: the first show (no Local/progress.json), or the next show after the title screen's Stagehand tips toggle is turned on. With autoplay on, they show only if Local/switches.json has stagehand_tips set to true. BP_Show raises a key at each moment (BPC_Stagehand.Say), and each key shows at most once per show. moments: one entry per moment in the design doc's Rules tab (Onboarding, the table 'What the player sees, and when'). Its line is the doc's earpiece line word for word, with straight apostrophes. when says where BP_Show raises the key. spot: stage puts the earpiece at the bottom center of the in-show screen, end puts it over the end screen. lose.line is the doc's example: when T60's lose screen names a top reason, BP_Show passes that reason's line and the earpiece says it instead. style: the first-show style tips from the doc's 'Supporting pieces', one idea per line, keyed by the moment they follow; each plays right after that moment's line, or alone if the key has no moment. opening_lines: the three lines on the title screen before the show (the doc's 'Before the show' row, On screen); Docs/ItchPage.md carries the same three. hold: each line holds for base + per_word x its words, kept between min and max, then fades; gap is the pause before the next line. Every time is in seconds. Tools/check_prompts.py --offline checks that every moment has a line, and that no line here is over 25 words.",
+	"moments": {
+		"before_show": {
+			"when": "The first Scene Prep opens, before the Scene Prep line (OpenPrep)",
+			"spot": "stage",
+			"line": "Don't act like a robot. Act bored of being one."
+		},
+		"scene_prep": {
+			"when": "Scene Prep opens (OpenPrep)",
+			"spot": "stage",
+			"line": "I could only get you the category. They have the full note, and they know you don't. Watch turn 1."
+		},
+		"scene_turn_1": {
+			"when": "Turn 1 of a scene starts, when the line queue reaches it (StartTurn, through the tip cue)",
+			"spot": "stage",
+			"line": "Act now and risk guessing wrong, or wait and risk copying late. They notice both."
+		},
+		"free_talk_1": {
+			"when": "Round 1 of Free Talk starts, when the line queue reaches it (through the tip cue)",
+			"spot": "stage",
+			"line": "One line a round. You can pass, but they notice silence. Get @'d in the last round and you get a reply."
+		},
+		"the_cut": {
+			"when": "The ballot shows (RunCue, the votes cue)",
+			"spot": "stage",
+			"line": "Most votes is cut. A tie cuts nobody but burns a scene."
+		},
+		"lose": {
+			"when": "The lose screen shows (RunCue, the end cue)",
+			"spot": "end",
+			"line": "They caught you copying late.",
+			"from": "top_reason"
+		},
+		"win": {
+			"when": "The win screen shows (RunCue, the end cue)",
+			"spot": "end",
+			"line": "You fooled them. Every one of them."
+		}
+	},
+	"style": {
+		"scene_prep": "Talk like a person. Plain sentences, nothing fancy.",
+		"scene_turn_1": "Keep it short. Anything past 15 words gets cut off.",
+		"scene_turn_2": "No caps, no emoji. The bots never use them, so you'd stand out.",
+		"scene_turn_3": "Don't go quiet. Say something every turn, even something small.",
+		"free_talk_2": "Don't over-polish. A line that sounds too perfect gets noticed."
+	},
+	"opening_lines": [
+		"You're the only human.",
+		"Each scene, the cast cuts whoever seems human.",
+		"Survive to the final two or the last scene."
+	],
+	"hold": {
+		"base": 2.0,
+		"per_word": 0.3,
+		"min": 4.0,
+		"max": 9.0,
+		"gap": 0.5
+	}
+}
