@@ -14,7 +14,8 @@ packaged game. The relay address comes from stats.json's "relay", or else from
                                                         the Worker's STATS_KEY secret)
 
 Other options: --config <path to stats.json>, --relay <address>, --top <n> (rows in the
-long lists, 15 by default).
+long lists, 15 by default). Player ids listed in stats.json's "ignore_players" (our own
+machines) are always left out.
 """
 
 from __future__ import annotations
@@ -50,6 +51,7 @@ def new_key(path: Path) -> None:
         "_readme": "The key for GET /stats on the relay (Tools/analytics_report.py). Paste stats_key into the Worker's STATS_KEY secret. Never commit this file.",
         "relay": "",
         "stats_key": secrets.token_hex(32),
+        "ignore_players": [],
     }
     path.write_text(json.dumps(body, indent="\t") + "\n", encoding="utf-8")
     try:
@@ -61,7 +63,7 @@ def new_key(path: Path) -> None:
     print('Secret, then "Add variable and deploy").')
 
 
-def load_config(path: Path, relay_arg: str | None) -> tuple[str, str]:
+def load_config(path: Path, relay_arg: str | None) -> tuple[str, str, set[str]]:
     if not path.exists():
         fail(f"no {path}; copy Docs/stats.example.json there, or run with --new-key")
     try:
@@ -79,7 +81,8 @@ def load_config(path: Path, relay_arg: str | None) -> tuple[str, str]:
             relay = ""
     if not relay:
         fail(f'no relay address: set "relay" in {path} or pass --relay')
-    return relay.rstrip("/"), key
+    ignore = {str(p).strip().lower() for p in cfg.get("ignore_players") or [] if str(p).strip()}
+    return relay.rstrip("/"), key, ignore
 
 
 def fetch_events(relay: str, key: str, since: str, test: bool) -> list[dict]:
@@ -247,9 +250,14 @@ def main() -> None:
         return
     if args.since and not (len(args.since) == 10 and args.since[4] == "-" and args.since[7] == "-"):
         fail("--since must be YYYY-MM-DD")
-    relay, key = load_config(args.config, args.relay)
+    relay, key, ignore = load_config(args.config, args.relay)
     events = fetch_events(relay, key, args.since, args.test)
+    # Our own machines' player ids (ignore_players in stats.json) never count.
+    kept = [e for e in events if e["player"] not in ignore]
     print(f"relay: {relay}" + ("  (test events included)" if args.test else ""))
+    if len(kept) < len(events):
+        print(f"left out {len(events) - len(kept)} events from the {len(ignore)} ignored players in {args.config.name}")
+    events = kept
     report(events, args.top)
 
 
