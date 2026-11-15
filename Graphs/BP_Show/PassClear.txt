@@ -1,0 +1,5 @@
+; T57: every "passed" marker comes off at the end of each Free Talk (EndFreeTalk) and at the start of the
+; next (StartFreeTalk). A cue, so it waits for the lines in front of it.
+(fn PassClear ()
+  (clear (V PassSeats))
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "unpass" :Text "" :Num -1))
