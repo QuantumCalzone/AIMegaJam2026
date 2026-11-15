@@ -15,6 +15,10 @@ Commands:
   python Tools/art_gen.py image --out DIR --prompt "..." [--model lucid-origin] [--width 1024]
                                 [--height 1024] [--count 4] [--negative "..."]
       Leonardo v2 generation. Saves DIR/candidate_1.png ... and DIR/leonardo.json.
+  python Tools/art_gen.py edit --out DIR --image SRC.png --prompt "..." [--ref OTHER.png ...] [--count 2]
+      Leonardo instruction edit (gemini-2.5-flash-image): changes SRC.png as the prompt says ("remove the
+      hair, keep everything else") and keeps the rest, at SRC's size. --ref adds more images the prompt can
+      use (a headpiece to put on, say). Saves DIR/edit_1.png ... and DIR/edit.json.
   python Tools/art_gen.py mesh-image --out DIR --name NAME --image DIR/ref.png
                                      [--polycount 5000] [--no-texture] [--model meshy-7.1]
       Meshy image to 3D (20 credits mesh only, 30 with a 2K texture). Saves DIR/NAME.fbx (its
@@ -58,6 +62,7 @@ import shutil
 import sys
 import threading
 import time
+import uuid
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -182,6 +187,55 @@ def cmd_image(a):
     out = outdir(a)
     entry = leonardo(a.prompt, out, a.model, a.width, a.height, a.count, a.negative)
     log(out, "leonardo.json", entry)
+
+
+def upload_init_image(token, path):
+    """Uploads a PNG to Leonardo (a presigned S3 POST, no auth header) and returns its init image id."""
+    up = call("POST", f"{LEO}/v1/init-image", token, {"extension": "png"}).get("uploadInitImage") or {}
+    fields = up.get("fields")
+    fields = json.loads(fields) if isinstance(fields, str) else (fields or {})
+    boundary = uuid.uuid4().hex
+    body = b"".join(f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n".encode()
+                    for k, v in fields.items())
+    body += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{Path(path).name}\"\r\n"
+             f"Content-Type: image/png\r\n\r\n").encode() + Path(path).read_bytes() + f"\r\n--{boundary}--\r\n".encode()
+    req = urllib.request.Request(up["url"], data=body, method="POST",
+                                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+    with urllib.request.urlopen(req, timeout=120):
+        pass
+    return up["id"]
+
+
+def cmd_edit(a):
+    """Leonardo instruction edit: the source image as a HIGH reference, any --ref images as MID ones. Width and
+    height 0 keep the source's size (the model takes only a fixed list of sizes otherwise)."""
+    token, out = key("leonardo"), outdir(a)
+    refs = [{"image": {"id": upload_init_image(token, a.image), "type": "UPLOADED"}, "strength": "HIGH"}]
+    refs += [{"image": {"id": upload_init_image(token, r), "type": "UPLOADED"}, "strength": "MID"} for r in a.ref]
+    params = {"width": 0, "height": 0, "prompt": a.prompt, "quantity": a.count, "prompt_enhance": "OFF",
+              "guidances": {"image_reference": refs}}
+    res = call("POST", f"{LEO}/v2/generations", token,
+               {"model": "gemini-2.5-flash-image", "parameters": params, "public": False})
+    gen_id = find(res, "generationId")
+    if not gen_id:
+        sys.exit(f"No generationId in the reply: {json.dumps(res)[:400]}")
+    cost = find(res, "apiCreditCost")
+    print(f"Leonardo edit {gen_id} (gemini-2.5-flash-image, {a.count} images, cost {cost})")
+    for _ in range(120):
+        time.sleep(5)
+        g = call("GET", f"{LEO}/v1/generations/{gen_id}", token).get("generations_by_pk") or {}
+        if g.get("status") == "COMPLETE":
+            imgs = g.get("generated_images") or []
+            for i, img in enumerate(imgs, 1):
+                download(img["url"], out / f"edit_{i}.png")
+            log(out, "edit.json", {"time": now(), "generation": gen_id, "model": "gemini-2.5-flash-image",
+                                   "source": rel(Path(a.image).resolve()), "refs": [rel(Path(r).resolve()) for r in a.ref],
+                                   "prompt": a.prompt, "api_credit_cost": cost,
+                                   "images": [f"edit_{i}.png" for i in range(1, len(imgs) + 1)]})
+            return
+        if g.get("status") == "FAILED":
+            sys.exit(f"Leonardo edit {gen_id} failed.")
+    sys.exit(f"Leonardo edit {gen_id} timed out.")
 
 
 # ---- Meshy ----------------------------------------------------------------------------------
@@ -526,6 +580,12 @@ def main():
     i.add_argument("--width", type=int, default=1024)
     i.add_argument("--height", type=int, default=1024)
     i.add_argument("--count", type=int, default=4)
+    e = sub.add_parser("edit")
+    e.add_argument("--out", required=True)
+    e.add_argument("--image", required=True)
+    e.add_argument("--prompt", required=True)
+    e.add_argument("--ref", action="append", default=[])
+    e.add_argument("--count", type=int, default=2)
     for name in ("mesh-image", "mesh-text"):
         m = sub.add_parser(name)
         m.add_argument("--out", required=True)
@@ -562,7 +622,7 @@ def main():
     sh.add_argument("--candidates", action="store_true")
     a = p.parse_args()
     try:
-        {"balance": cmd_balance, "fetch": cmd_fetch, "image": cmd_image, "mesh-image": cmd_mesh_image,
+        {"balance": cmd_balance, "fetch": cmd_fetch, "image": cmd_image, "edit": cmd_edit, "mesh-image": cmd_mesh_image,
          "mesh-text": cmd_mesh_text, "status": cmd_status, "batch-images": cmd_batch_images, "pick": cmd_pick,
          "batch-meshes": cmd_batch_meshes, "sheet": cmd_sheet}[a.cmd](a)
     except TaskFailed as e:

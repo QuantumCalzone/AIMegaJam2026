@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 16:07 UTC",
+    "generation": "1f1e10e9-cb7d-60c0-a326-02c1df25bcfc",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A cute small robot actor, pale sky blue all over with a cream belly patch, polished and professionally built with neat seams and small gold details. Its head is a round ball head with a big dark round screen face with big glowing white eyes and glowing eyebrows, two small round cream ear pods, and a short gold collar joining it to the body. On top of its dome sits a short, soft, tousled swoop of brown clay hair, and its body has the soft knit texture and ribbed neckline of a simple gray crewneck sweater. Its body is a smooth teardrop that floats a little above the stage over a soft glowing ring. Its screen shows wide, earnest eyes, raised eyebrows and a small gentle smile, and its mitten hands are pressed together in front of its chest. A thin glowing halo ring floats above its hair. A cute robot character from a polished, cinematic claymation short film: smooth saturated matte modeling clay with subtle thumbprints, chunky rounded toy-like forms, soft warm theater lighting with a gentle rim light, shallow depth of field. It stands on a warm wooden theater stage in front of a softly blurred deep red velvet curtain, lit by a soft spotlight. Full body, three-quarter front view, the whole robot centered and in frame. A single character, no text, no letters, no logos, no brand marks.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "scary, creepy, horror, ugly, grotesque, realistic human face, human skin, nose, photorealistic person, text, letters, numbers, logo, brand mark, emblem, watermark, people, multiple characters, cropped, cut off, glossy chrome, blurry character"
+    },
+    "api_credit_cost": null,
+    "seed": 738073932,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

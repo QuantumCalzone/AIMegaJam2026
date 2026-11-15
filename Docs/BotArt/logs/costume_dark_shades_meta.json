@@ -1,0 +1,10 @@
+{
+  "source": "C:\\Users\\Personal\\Projects\\AIMegaJam2026\\Local\\art\\concepts\\r10_meta\\edit_1.png",
+  "prompt": "Edit the first image: put the chunky dark sunglasses from the second image on the character, in place of its black glasses, over its glowing eyes, like a costume.  Keep everything else in the first image exactly the same: the face, the eyes, the body, the pose, the colors, the clay look, the lighting and the red curtain background. Keep the headpiece the same neutral gray clay as in the second image.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e114f-953f-62e0-8b05-02517616b1ed",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png"
+  ]
+}

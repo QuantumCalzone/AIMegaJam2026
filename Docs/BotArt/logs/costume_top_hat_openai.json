@@ -1,0 +1,10 @@
+{
+  "source": "C:\\Users\\Personal\\Projects\\AIMegaJam2026\\Local\\art\\concepts\\r10_openai\\edit_1.png",
+  "prompt": "Edit the first image: put the top hat from the second image on the robot's round head, sitting on top like a costume hat, at a natural size for that head. Keep the glowing halo floating above it. Keep everything else in the first image exactly the same: the face, the eyes, the body, the pose, the colors, the clay look, the lighting and the red curtain background. Keep the headpiece the same neutral gray clay as in the second image.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e114e-90e2-6590-ae87-e1355913cc35",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png"
+  ]
+}

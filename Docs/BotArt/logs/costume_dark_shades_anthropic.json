@@ -1,0 +1,10 @@
+{
+  "source": "C:\\Users\\Personal\\Projects\\AIMegaJam2026\\Local\\art\\concepts\\r10_anthropic_b\\edit_1.png",
+  "prompt": "Edit the first image: put the chunky dark sunglasses from the second image on the character, in place of its round glasses, over the eyes on its screen face, like a costume. Keep the thin antenna with the amber light poking up. Keep everything else in the first image exactly the same: the face, the eyes, the body, the pose, the colors, the clay look, the lighting and the red curtain background. Keep the headpiece the same neutral gray clay as in the second image.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e114f-ae9f-6c30-b58d-b72e79257b3d",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png"
+  ]
+}

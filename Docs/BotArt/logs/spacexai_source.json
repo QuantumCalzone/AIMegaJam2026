@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 16:17 UTC",
+    "generation": "1f1e1100-618a-6200-a431-75039c676be7",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A cute small robot actor, bright lime green all over with a cream belly patch, polished and professionally built, a friendly playful caricature. Its round head has a dark visor screen across the upper half showing glowing eyes and one raised glowing eyebrow, and the lower half of the head is a sculpted lime green clay face plate with a long, straight, prominent nose, a broad square jaw with a strong chin, and a wide confident toothy grin. Two small round cream ear pods. Short dark clay hair swept back on top. Its body is wide and top-heavy on one big coiled spring, caught mid-bounce, giving an enthusiastic double thumbs-up. A jagged lightning bolt sticks up from its hair. Polished, cinematic claymation short film look: smooth saturated matte modeling clay with subtle thumbprints, chunky rounded toy-like forms, soft warm theater lighting with a gentle rim light, shallow depth of field. Standing on a warm wooden theater stage in front of a softly blurred deep red velvet curtain, lit by a soft spotlight. Full body, three-quarter front view, centered and in frame. A single character, no text, no letters, no logos, no brand marks, no badges.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "scary, creepy, horror, ugly, grotesque, photorealistic, text, letters, numbers, logo, brand mark, emblem, badge, insignia, uniform, watermark, multiple characters, cropped, cut off, glossy chrome, blurry character"
+    },
+    "api_credit_cost": null,
+    "seed": 61996932,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

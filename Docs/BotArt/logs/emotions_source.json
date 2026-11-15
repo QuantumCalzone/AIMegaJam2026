@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 16:07 UTC",
+    "generation": "1f1e10ea-4c6c-6dc0-930d-b6462529d00f",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A character expression sheet for a cute claymation robot: the same round robot head shown eight times in a neat grid of four across and two down on a plain warm gray background. Each is a round warm orange ball head with a big dark round screen face and two small cream ear pods. On each screen, glowing white eyes, eyebrows and a glowing mouth show a different emotion: happy, excited, worried, sad, angry, surprised, suspicious with narrowed eyes, and smug. Smooth matte clay, soft studio lighting, no text, no labels.",
+      "width": 1344,
+      "height": 768,
+      "quantity": 4,
+      "negative_prompt": "scary, creepy, horror, ugly, grotesque, realistic human face, human skin, nose, photorealistic person, text, letters, numbers, logo, brand mark, emblem, watermark, people, cropped, cut off, glossy chrome, blurry character"
+    },
+    "api_credit_cost": null,
+    "seed": 1789081378,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

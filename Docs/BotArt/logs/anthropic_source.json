@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 16:17 UTC",
+    "generation": "1f1e1100-5f98-6140-b104-77063a16a336",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A cute small robot actor, warm orange all over with a cream belly patch, polished and professionally built. Its round ball head has a big dark round screen face, two small round cream ear pods, and a short gold collar joining the head to the body. On top of its dome is a soft mop of dark brown clay curls. Over its screen it wears perfectly circular glasses: two perfect thin round wire-rim circles joined by a small bridge. Its screen shows a thoughtful, earnest, slightly worried look with eyebrows tilted up in the middle. Its body is pear-shaped and bottom-heavy, slightly hunched, on two small round feet. One hand is raised with a finger up as if making a careful point, the other rests on its belly. A small amber warning light on a short antenna pokes up through its curls. Polished, cinematic claymation short film look: smooth saturated matte modeling clay with subtle thumbprints, chunky rounded toy-like forms, soft warm theater lighting with a gentle rim light, shallow depth of field. Standing on a warm wooden theater stage in front of a softly blurred deep red velvet curtain, lit by a soft spotlight. Full body, three-quarter front view, centered and in frame. A single character, no text, no letters, no logos, no brand marks, no badges.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "scary, creepy, horror, ugly, grotesque, photorealistic, text, letters, numbers, logo, brand mark, emblem, badge, insignia, uniform, watermark, multiple characters, cropped, cut off, glossy chrome, blurry character, realistic human face, human skin"
+    },
+    "api_credit_cost": null,
+    "seed": 1968236710,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 16:17 UTC",
+    "generation": "1f1e10ff-dfec-6f90-83f0-c3b914b94635",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A cute clay figure of a person wearing a homemade robot costume made from cardboard boxes, trying hard to pass as a robot: a cardboard box over the head, painted teal with uneven brush strokes, with two eye slots cut out where the person's eyes peek through, and a bent coat-hanger antenna with a ping-pong ball taped on top. A bigger teal-painted cardboard box is worn as the body on shoulder straps, with silver duct tape on the seams, bottle-cap buttons glued on, and a red and cream knitted scarf. The person's own arms in a striped long-sleeve shirt and garden gloves stick out of holes in the sides, and their legs in jeans and sneakers show below the box. Waving cheerfully. Clearly a human in a costume, funny and endearing. Polished, cinematic claymation short film look: smooth saturated matte modeling clay with subtle thumbprints, chunky rounded toy-like forms, soft warm theater lighting with a gentle rim light, shallow depth of field. Standing on a warm wooden theater stage in front of a softly blurred deep red velvet curtain, lit by a soft spotlight. Full body, three-quarter front view, centered and in frame. A single character, no text, no letters, no logos, no brand marks, no badges.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "scary, creepy, horror, ugly, grotesque, photorealistic, text, letters, numbers, logo, brand mark, emblem, badge, insignia, uniform, watermark, multiple characters, cropped, cut off, glossy chrome, blurry character"
+    },
+    "api_credit_cost": null,
+    "seed": 2100731760,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 16:17 UTC",
+    "generation": "1f1e10ff-ddac-6cd0-b68f-fbb5c13ae4fa",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A cute small robot actor, polished and professionally built, an android trying very hard to pass as a human. Its round ball head and its mitten hands are a smooth pale gold-white, like pale android skin. Its head has a big dark round screen face, two small round cream ear pods, and a short gold collar joining the head to the body, and on the screen glowing yellow-gold eyes and a polite, slightly too-wide stiff smile. On top of its dome is short cropped dark brown clay hair in small tight curls brushed forward. Over the screen it wears classic thick black wayfarer-style glasses with slightly trapezoid lenses and a tiny round camera lens in the outer corner of each frame. Its body is a tall upright rounded-rectangle box in royal blue like a plain blue t-shirt with a crew neckline, perfectly symmetrical, and it stands stiffly at attention with its arms straight down. Polished, cinematic claymation short film look: smooth saturated matte modeling clay with subtle thumbprints, chunky rounded toy-like forms, soft warm theater lighting with a gentle rim light, shallow depth of field. Standing on a warm wooden theater stage in front of a softly blurred deep red velvet curtain, lit by a soft spotlight. Full body, three-quarter front view, centered and in frame. A single character, no text, no letters, no logos, no brand marks, no badges.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "scary, creepy, horror, ugly, grotesque, photorealistic, text, letters, numbers, logo, brand mark, emblem, badge, insignia, uniform, watermark, multiple characters, cropped, cut off, glossy chrome, blurry character, realistic human face, human skin"
+    },
+    "api_credit_cost": null,
+    "seed": 452762825,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

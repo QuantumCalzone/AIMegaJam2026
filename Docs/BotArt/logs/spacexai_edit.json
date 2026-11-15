@@ -1,0 +1,11 @@
+{
+  "source": "Local/art/concepts/r8_spacexai/candidate_2.png",
+  "prompt": "Edit this image: remove the black hair tuft from the top of the robot's round head so the top of its head is smooth and bare. Keep the yellow lightning bolt, the nose, the eyebrow and the toothy grin. Keep everything else exactly the same: the face, the screen and glowing eyes, the ear pods, the body, the pose, the colors, the clay look, the lighting and the red curtain background.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e1125-62ce-6600-849e-435c26004d1c",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png",
+    "edit_2.png"
+  ]
+}

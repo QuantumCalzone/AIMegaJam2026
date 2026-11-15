@@ -1,0 +1,11 @@
+{
+  "source": "Local/art/concepts/r8_meta/candidate_4.png",
+  "prompt": "Edit this image: remove all the hair from the character's head so the top of its head is smooth and bare, and add a chunky gold chain necklace over the blue t-shirt. Keep everything else exactly the same: the face, the black glasses and glowing eyes, the ears, the body, the clothes, the pose, the colors, the clay look, the lighting and the red curtain background.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e1123-5a7d-6b10-a6df-8b35a5f22831",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png",
+    "edit_2.png"
+  ]
+}

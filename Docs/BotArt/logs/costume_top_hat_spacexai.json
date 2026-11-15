@@ -1,0 +1,10 @@
+{
+  "source": "C:\\Users\\Personal\\Projects\\AIMegaJam2026\\Local\\art\\concepts\\r10_spacexai\\edit_1.png",
+  "prompt": "Edit the first image: put the top hat from the second image on the robot's round head, sitting on top like a costume hat, at a natural size for that head. Keep the small lightning bolt poking up. Keep everything else in the first image exactly the same: the face, the eyes, the body, the pose, the colors, the clay look, the lighting and the red curtain background. Keep the headpiece the same neutral gray clay as in the second image.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e114e-9028-6cd0-80d8-82204a994f69",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png"
+  ]
+}

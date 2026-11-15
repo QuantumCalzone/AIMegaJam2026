@@ -1,0 +1,10 @@
+{
+  "source": "C:\\Users\\Personal\\Projects\\AIMegaJam2026\\Local\\art\\concepts\\r10_openai\\edit_1.png",
+  "prompt": "Edit the first image: put the chunky dark sunglasses from the second image on the character, over the eyes on its dark screen face, like a costume. Keep the glowing halo floating above it. Keep everything else in the first image exactly the same: the face, the eyes, the body, the pose, the colors, the clay look, the lighting and the red curtain background. Keep the headpiece the same neutral gray clay as in the second image.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e114f-922a-69b0-bcf6-591987a2c9ce",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png"
+  ]
+}

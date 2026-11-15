@@ -1,0 +1,11 @@
+{
+  "source": "Local/art/concepts/r7_openai/candidate_4.png",
+  "prompt": "Edit this image: remove the brown hair swoop from the top of the robot's round head so the top of its head is smooth and bare. Keep the glowing halo ring floating above it. Keep everything else exactly the same: the face, the screen and glowing eyes, the ear pods, the body, the pose, the colors, the clay look, the lighting and the red curtain background.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e1125-5b03-6bf0-9fae-7e567a7c8ed1",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png",
+    "edit_2.png"
+  ]
+}

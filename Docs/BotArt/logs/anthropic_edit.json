@@ -1,0 +1,11 @@
+{
+  "source": "Local/art/concepts/r8_anthropic/candidate_1.png",
+  "prompt": "Edit this image: remove only the curly brown hair from the top of the robot's round head so the top of its head is smooth and bare. Do not change the face at all: keep the eyes exactly as they are, half-closed, calm and slightly worried, with the same dim eyes and eyebrows behind the same round glasses. Keep the thin antenna with the small amber light. Keep everything else exactly the same: the ear pods, the body, the raised finger, the colors, the clay look, the lighting and the red curtain background.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e1127-b930-6690-9831-9600e5b4504e",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png",
+    "edit_2.png"
+  ]
+}

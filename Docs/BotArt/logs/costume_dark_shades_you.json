@@ -1,0 +1,10 @@
+{
+  "source": "C:\\Users\\Personal\\Projects\\AIMegaJam2026\\Local\\art\\concepts\\r8_you_a\\candidate_1.png",
+  "prompt": "Edit the first image: put the chunky dark sunglasses from the second image on the character, over the two eye slots cut in the cardboard box head, like a costume.  Keep everything else in the first image exactly the same: the face, the eyes, the body, the pose, the colors, the clay look, the lighting and the red curtain background. Keep the headpiece the same neutral gray clay as in the second image.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e114f-ab88-6bf0-9fd8-218d260744cb",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png"
+  ]
+}

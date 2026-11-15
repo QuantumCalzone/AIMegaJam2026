@@ -1,0 +1,10 @@
+{
+  "source": "C:\\Users\\Personal\\Projects\\AIMegaJam2026\\Local\\art\\concepts\\r8_you_a\\candidate_1.png",
+  "prompt": "Edit the first image: put the bob-cut wig from the second image on the cardboard box head of the person in the robot costume like a costume wig, covering the top and sides of the head with the face still showing.  Keep everything else in the first image exactly the same: the face, the eyes, the body, the pose, the colors, the clay look, the lighting and the red curtain background. Keep the headpiece the same neutral gray clay as in the second image.",
+  "model": "gemini-2.5-flash-image",
+  "generation": "1f1e114f-15dd-6510-a93c-c4a21c164aab",
+  "api_credit_cost": null,
+  "images": [
+    "edit_1.png"
+  ]
+}
