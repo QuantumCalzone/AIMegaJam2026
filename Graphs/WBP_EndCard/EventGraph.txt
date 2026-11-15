@@ -1,0 +1,24 @@
+; WBP_EndCard.EventGraph (T33). PreConstruct styles the card from UIStyle: a paper card, the name as its title,
+; the status in quiet text, two bold headings and the reasons in dark body text. The designer shows a sample.
+(event UserInterface|EventPreConstruct (IsDesignTime)
+  (bind cText (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "PaperText")))
+  (bind cQuiet (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "PaperQuiet")))
+  (Class|UIStyle|StylePanel :Panel (Variables|WBP_EndCard|GetCard) :Look "Paper")
+  (Class|Text|SetFont :self (Variables|WBP_EndCard|GetNameText) :Font (Class|UIStyle|UIFont :Role "CardTitle"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndCard|GetNameText) :ColorAndOpacity cText)
+  (Class|Text|SetFont :self (Variables|WBP_EndCard|GetStatusText) :Font (Class|UIStyle|UIFont :Role "Caption"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndCard|GetStatusText) :ColorAndOpacity cQuiet)
+  (Class|Text|SetFont :self (Variables|WBP_EndCard|GetVotesTitle) :Font (Class|UIStyle|UIFont :Role "Name"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndCard|GetVotesTitle) :ColorAndOpacity cText)
+  (Class|Text|SetFont :self (Variables|WBP_EndCard|GetVotesText) :Font (Class|UIStyle|UIFont :Role "Caption"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndCard|GetVotesText) :ColorAndOpacity cText)
+  (Class|Text|SetFont :self (Variables|WBP_EndCard|GetClosingTitle) :Font (Class|UIStyle|UIFont :Role "Name"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndCard|GetClosingTitle) :ColorAndOpacity cText)
+  (Class|Text|SetFont :self (Variables|WBP_EndCard|GetClosingText) :Font (Class|UIStyle|UIFont :Role "Caption"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndCard|GetClosingText) :ColorAndOpacity cText)
+  (if IsDesignTime
+    (CallFunction|Setup :Name "SpaceXAI" :Color (Utilities|Struct|MakeLinearColor 0.5 0.5 0.5 1.0) :Status "AI. On stage at the end." :Votes "Scene 1: Meta." :Closing "Meta.")))
+
+(event UserInterface|EventConstruct)
+
+(event UserInterface|EventTick (MyGeometry InDeltaTime))

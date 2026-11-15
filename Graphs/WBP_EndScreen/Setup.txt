@@ -1,0 +1,17 @@
+; WBP_EndScreen.Setup(Title, Sub, Body, Win), called by BP_Show.ShowEndScreen. The result sits on a plate:
+; a gold plate with ink letters for a win, a curtain-red plate with white letters for a cut (the doc: red is only ever a fill
+; with white text). The two results differ in their words and in the plate's lightness, not only in hue.
+(fn Setup (Title Sub Body Win)
+  (Widget|SetText(Text) :self (Variables|WBP_EndScreen|GetTitleText) :InText (Utilities|Text|ToText(String) Title))
+  (Widget|SetText(Text) :self (Variables|WBP_EndScreen|GetSubText) :InText (Utilities|Text|ToText(String) Sub))
+  (Widget|SetText(Text) :self (Variables|WBP_EndScreen|GetBodyText) :InText (Utilities|Text|ToText(String) Body))
+  (if (not (Utilities|String|IsEmpty Body))
+    (Widget|SetVisibility :self (Variables|WBP_EndScreen|GetBodyText) :InVisibility "SelfHitTestInvisible"))
+  (bind fill (Class|UIStyle|UIColor :Role (select Win "Gold" "Red")))
+  (bind ink (Class|UIStyle|UIColor :Role (select Win "InkSolid" "Text")))
+  (bind trim (Class|UIStyle|UIColor :Role "OldGold"))
+  (bind tw (Class|UIStyle|UISize :Role "CardTrim"))
+  (bind r (Class|UIStyle|UISize :Role "PanelRadius"))
+  (Class|Border|SetBrushColor :self (Variables|WBP_EndScreen|GetResultPlate) :BrushColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (Appearance|SetBrush :self (Variables|WBP_EndScreen|GetResultPlate) :InBrush (Class|UIStyle|Brush :Fill fill :Outline trim :Width tw :Radius r))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndScreen|GetTitleText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor ink)))

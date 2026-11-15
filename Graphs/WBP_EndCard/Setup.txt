@@ -1,0 +1,14 @@
+; WBP_EndCard.Setup(Name, Color, Status, Votes, Closing), called by WBP_EndScreen.AddCard: one paper review card per AI.
+; The seat bar takes the doc's seat color by provider name (UIStyle.SeatColor, BP_Show's color as the fallback), with a dark
+; outline so a light seat color still shows on paper. The name is dark text: seat colors on paper don't reach 4.5:1.
+(fn Setup (Name Color Status Votes Closing)
+  (Widget|SetText(Text) :self (Variables|WBP_EndCard|GetNameText) :InText (Utilities|Text|ToText(String) Name))
+  (Widget|SetText(Text) :self (Variables|WBP_EndCard|GetStatusText) :InText (Utilities|Text|ToText(String) Status))
+  (Widget|SetText(Text) :self (Variables|WBP_EndCard|GetVotesText) :InText (Utilities|Text|ToText(String) Votes))
+  (Widget|SetText(Text) :self (Variables|WBP_EndCard|GetClosingText) :InText (Utilities|Text|ToText(String) Closing))
+  (bind seat (Class|UIStyle|SeatColor :Name Name :Fallback Color))
+  (bind edge (Class|UIStyle|UIColor :Role "PaperText"))
+  (bind ow (Class|UIStyle|UISize :Role "InputOutline"))
+  (bind tr (Class|UIStyle|UISize :Role "S1"))
+  (Class|Border|SetBrushColor :self (Variables|WBP_EndCard|GetBar) :BrushColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (Appearance|SetBrush :self (Variables|WBP_EndCard|GetBar) :InBrush (Class|UIStyle|Brush :Fill seat :Outline edge :Width ow :Radius tr)))

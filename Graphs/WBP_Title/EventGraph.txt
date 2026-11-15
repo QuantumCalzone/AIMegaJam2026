@@ -1,8 +1,58 @@
-(event UserInterface|EventPreConstruct (IsDesignTime))
+; WBP_Title.EventGraph (T33). The title is a paper playbill over the stage, with How to play in an ink panel beside it
+; until T61's How to play screen replaces it. Every color, size and font comes from UIStyle.
+; While the title is up, the stage's own widgets (header, card, input row) are hidden, and they come back when it closes.
+(event UserInterface|EventPreConstruct (IsDesignTime)
+  (bind fCap (Class|UIStyle|UIFont :Role "Caption"))
+  (bind fBody (Class|UIStyle|UIFont :Role "Body"))
+  (bind fResult (Class|UIStyle|UIFont :Role "Result"))
+  (bind fCard (Class|UIStyle|UIFont :Role "CardTitle"))
+  (bind cPaperText (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "PaperText")))
+  (bind cPaperQuiet (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "PaperQuiet")))
+  (bind cRed (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Red")))
+  (bind cText (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (Class|Border|SetBrushColor :self (Variables|WBP_Title|GetBg) :BrushColor (Utilities|Struct|MakeLinearColor 0.0 0.0 0.0 0.0))
+  (Class|UIStyle|StylePanel :Panel (Variables|WBP_Title|GetBill) :Look "Paper")
+  (Class|UIStyle|StylePanel :Panel (Variables|WBP_Title|GetHowFrame) :Look "Ink")
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetKicker) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetKicker) :ColorAndOpacity cPaperQuiet)
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetTitleText) :Font fResult)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetTitleText) :ColorAndOpacity cRed)
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetTagText) :Font fBody)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetTagText) :ColorAndOpacity cPaperText)
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Title|GetPlayButton) :Label (Variables|WBP_Title|GetPlayLabel) :Kind "Primary")
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Title|GetFreeButton) :Label (Variables|WBP_Title|GetFreeLabel) :Kind "Secondary")
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Title|GetKeysButton) :Label (Variables|WBP_Title|GetKeysLabel) :Kind "Secondary")
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetPlayCap) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetPlayCap) :ColorAndOpacity cPaperQuiet)
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetFreeCap) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetFreeCap) :ColorAndOpacity cPaperQuiet)
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetKeysCap) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetKeysCap) :ColorAndOpacity cPaperQuiet)
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetModeNote) :Font fBody)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetModeNote) :ColorAndOpacity cPaperText)
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetCreditText) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetCreditText) :ColorAndOpacity cPaperQuiet)
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetHowTitle) :Font fCard)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetHowTitle) :ColorAndOpacity cText)
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetHowText) :Font fBody)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetHowText) :ColorAndOpacity cText)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetPlayRing) :On false)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetFreeRing) :On false)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetKeysRing) :On false))
 
-(event UserInterface|EventConstruct)
+(event UserInterface|EventConstruct
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (Widget|SetRenderOpacity :self (Class|BPShow|GetStage :self _show) :InOpacity 0.0)
+  (Widget|SetKeyboardFocus :self (Variables|WBP_Title|GetPlayButton)))
+
+(event UserInterface|EventDestruct
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (Widget|SetRenderOpacity :self (Class|BPShow|GetStage :self _show) :InOpacity 1.0))
 
 (event UserInterface|EventTick (MyGeometry InDeltaTime)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetPlayRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetPlayButton)))
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetFreeRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetFreeButton)))
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetKeysRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetKeysButton)))
   (if (V Checking)
     (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
     (bind _cl (Class|BPShow|GetLLMClient :self _show))
@@ -23,9 +73,11 @@
     (bind (_ok _err) (Class|BPCLLMClient|SetMode :self _cl :InMode "relay"))
     (if _ok
       (set Checking true)
+      (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetModeNote) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "PaperText")))
       (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) "Checking the AI relay..."))
       (Class|BPCLLMClient|CheckRelay :self _cl)
       (else
+        (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetModeNote) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Red")))
         (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) _err))))))
 
 (event OnClicked(FreeButton)
@@ -35,6 +87,7 @@
   (if _ok
     (Class|BPShow|StartfromTitle :self _show)
     (else
+      (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetModeNote) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Red")))
       (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) _err)))))
 
 (event OnClicked(KeysButton)

@@ -1,0 +1,11 @@
+; WBP_Keys.ShowField(Field, On): the inset key box (UIStyle Inset fill, 2 px InputOutline). The outline is quiet,
+; and gold while its box has keyboard focus, so the caret's box is plain without color too (the outline brightens).
+(fn ShowField (Field On)
+  (bind w (Class|UIStyle|UISize :Role "InputOutline"))
+  (bind r (Class|UIStyle|UISize :Role "ButtonRadius"))
+  (bind inset (Class|UIStyle|UIColor :Role "Inset"))
+  (bind gold (Class|UIStyle|UIColor :Role "Gold"))
+  (bind quiet (Class|UIStyle|UIColor :Role "Quiet"))
+  (Class|Border|SetBrushColor :self Field :BrushColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (bind b (Class|UIStyle|Brush :Fill inset :Outline (select On gold quiet) :Width w :Radius r))
+  (Appearance|SetBrush :self Field :InBrush b))

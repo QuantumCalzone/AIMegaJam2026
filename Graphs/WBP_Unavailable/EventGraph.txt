@@ -1,13 +1,33 @@
-(event UserInterface|EventPreConstruct (IsDesignTime))
+; WBP_Unavailable.EventGraph (T33). An ink panel: what went wrong in one sentence (the relay's own message), one line on
+; what still works, and Use my own API keys as the one primary button. Every color, size and font comes from UIStyle.
+(event UserInterface|EventPreConstruct (IsDesignTime)
+  (Class|Border|SetBrushColor :self (Variables|WBP_Unavailable|GetBg) :BrushColor (Class|UIStyle|UIColor :Role "Ink"))
+  (Class|UIStyle|StylePanel :Panel (Variables|WBP_Unavailable|GetFrame) :Look "Ink")
+  (Class|Text|SetFont :self (Variables|WBP_Unavailable|GetUnavTitle) :Font (Class|UIStyle|UIFont :Role "Header"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Unavailable|GetUnavTitle) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (Class|Text|SetFont :self (Variables|WBP_Unavailable|GetReason) :Font (Class|UIStyle|UIFont :Role "Body"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Unavailable|GetReason) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (Class|Text|SetFont :self (Variables|WBP_Unavailable|GetUnavHelp) :Font (Class|UIStyle|UIFont :Role "Caption"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Unavailable|GetUnavHelp) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Quiet")))
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Unavailable|GetKeysButton) :Label (Variables|WBP_Unavailable|GetSaveLabel) :Kind "Primary")
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Unavailable|GetFreeButton) :Label (Variables|WBP_Unavailable|GetFreeLabel) :Kind "Secondary")
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Unavailable|GetTitleButton) :Label (Variables|WBP_Unavailable|GetBackLabel) :Kind "Secondary")
+  (CallFunction|ShowRing :Ring (Variables|WBP_Unavailable|GetKeysRing) :On false)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Unavailable|GetFreeRing) :On false)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Unavailable|GetTitleRing) :On false))
 
 (event UserInterface|EventConstruct
   (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
   (bind _cl (Class|BPShow|GetLLMClient :self _show))
   (bind _m (Class|BPCLLMClient|DownText :self _cl))
   (Widget|SetText(Text) :self (Variables|WBP_Unavailable|GetReason) :InText (Utilities|Text|ToText(String) _m))
+  (Widget|SetKeyboardFocus :self (Variables|WBP_Unavailable|GetKeysButton))
   (print "NHOS: UNAVAILABLE construct"))
 
-(event UserInterface|EventTick (MyGeometry InDeltaTime))
+(event UserInterface|EventTick (MyGeometry InDeltaTime)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Unavailable|GetKeysRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Unavailable|GetKeysButton)))
+  (CallFunction|ShowRing :Ring (Variables|WBP_Unavailable|GetFreeRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Unavailable|GetFreeButton)))
+  (CallFunction|ShowRing :Ring (Variables|WBP_Unavailable|GetTitleRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Unavailable|GetTitleButton))))
 
 (event OnClicked(KeysButton)
   (print "NHOS: UNAVAILABLE click keys")

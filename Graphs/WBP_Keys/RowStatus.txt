@@ -1,0 +1,6 @@
+; WBP_Keys.RowStatus(Key, Status): the status word after each key box, from what the box holds right now.
+; An empty box reads "Needs a key" in gold (act now); a filled one reads "Key set" in quiet text. The word carries the meaning, not the color.
+(fn RowStatus (Key Status)
+  (bind empty (Utilities|String|IsEmpty (Utilities|String|ToString(Text) (Widget|GetText(TextBox) :self Key))))
+  (Widget|SetText(Text) :self Status :InText (Utilities|Text|ToText(String) (select empty "Needs a key" "Key set")))
+  (Class|Text|SetColorandOpacity :self Status :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role (select empty "Gold" "Quiet")))))
