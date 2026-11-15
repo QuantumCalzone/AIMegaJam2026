@@ -225,7 +225,7 @@ function freeReplyObject(p, body) {
 
 	if (ph.echo_typed) {
 		const typed = typeof state.typed === "string" ? state.typed : "";
-		reply.speech = typed.split(/\s+/).filter(Boolean).slice(0, 15).join(" ");
+		reply.speech = typed.split(/\s+/).filter(Boolean).slice(0, 25).join(" ");
 		return reply;
 	}
 	if (ph.vote) {
