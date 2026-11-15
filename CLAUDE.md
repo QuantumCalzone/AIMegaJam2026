@@ -19,6 +19,7 @@ Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the
 |---|---|
 | `Content/NHOS/` | The game. `Core/` has `BP_Show` (the show's logic) and `BPC_LLMClient` (every LLM call). `Stage/` has the robots and the set, `UI/` the widgets, `Maps/` the one level, `L_Stage`. |
 | `Content/NHOS/Data/*.json` | Data the game reads at run time: prompts, personas, scenes, LLM settings, autoplay and free-mode lines. A build stages them as loose files, so they can change without a new package. |
+| `SourceAssets/` | Source files for assets that get imported in the editor, kept outside `Content/` so Unreal doesn't import them on its own. `Audio/` holds T20's picks; `Docs/AudioShortlist.md` lists them with their licenses. |
 | `Graphs/` | The DSL source last written to each Blueprint graph. See "Working with assets". |
 | `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `dslpp.py` expands the DSL shorthand. `ClaudeMods/` holds a Claude Code mod that shows the plan's tasks in a pane; it reads `Docs/Plan.md`, so keep the task form that "Changing the plan" describes. |
 | `Docs/tasks/` | One file per task, `Txx.md`: its Why, Steps, Done-when check, Result and findings. `Background.md` holds the findings that belong to no one task. The plan lists each task and links its file. |

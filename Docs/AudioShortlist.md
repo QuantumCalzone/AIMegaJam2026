@@ -1,18 +1,18 @@
 # Audio shortlist (T20 prep)
 
-Files picked for T20, chosen without the editor. They are in `Local/audio/`, which git ignores. T20 imports them into `Content/NHOS/Audio/` and moves these entries into `Docs/Assets.md` and `Docs/DevLog.md`.
+Files picked for T20, chosen without the editor. The picks and their backups are committed in `SourceAssets/Audio/`, outside `Content/` so Unreal doesn't import them on its own, and every machine gets them with `git pull`. T20 imports them into `Content/NHOS/Audio/` and moves these entries into `Docs/Assets.md` and `Docs/DevLog.md`.
 
 The picks were made by name, length and license, without listening. T20's listening pass makes the final choice; swap in the backup or a nearby file from the same pack if a pick sounds wrong.
 
 ## Sources
 
-- **Kenney Game Assets All-in-1 3.8.0** (https://kenney.itch.io/kenney-game-assets), bought by the team. The bundle holds Kenney's free packs. Each pack's `License.txt` says **CC0 1.0** (https://creativecommons.org/publicdomain/zero/1.0/), so no credit is needed. Optional credit: "Kenney (www.kenney.nl)". The bundle's Audio folder is unpacked in `Local/audio/kenney/`. Format: Ogg Vorbis, 44.1 kHz unless noted.
-- **Wikimedia Commons** (https://commons.wikimedia.org), in `Local/audio/commons/`. Licenses are per file, below.
+- **Kenney Game Assets All-in-1 3.8.0** (https://kenney.itch.io/kenney-game-assets), bought by the team. The bundle holds Kenney's free packs. Each pack's `License.txt` says **CC0 1.0** (https://creativecommons.org/publicdomain/zero/1.0/), so no credit is needed. Optional credit: "Kenney (www.kenney.nl)". The picks are in `SourceAssets/Audio/kenney/`, each pack folder with its `License.txt`. The bundle's whole Audio folder (1,325 files) is unpacked only on the Windows PC, in `Local/audio/kenney/`, which git ignores. Format: Ogg Vorbis, 44.1 kHz unless noted.
+- **Wikimedia Commons** (https://commons.wikimedia.org), in `SourceAssets/Audio/commons/`. Licenses are per file, below.
 - No AI audio tools were used.
 
 ## Picks
 
-Paths are relative to `Local/audio/`.
+Paths are relative to `SourceAssets/Audio/`.
 
 | Sound | Chosen file | Backup | License | Length, format |
 |---|---|---|---|---|
@@ -50,10 +50,10 @@ CC0 sources, credited as a courtesy:
 
 ## File types and LFS
 
-The picks are `.ogg`, `.wav` and `.mp3`. `.gitattributes` already sends all three to LFS, so no new rule is needed. Unreal stores the imported sounds as `.uasset`, which is also in LFS. The source files stay in `Local/` and are not committed.
+The picks are `.ogg`, `.wav` and `.mp3`. `.gitattributes` already sends all three to LFS, so no new rule is needed. Unreal stores the imported sounds as `.uasset`, which is also in LFS. The 32 picks, backups and footstep variants (about 11 MB) are committed in `SourceAssets/Audio/`, so T20 can run on any machine. If the listening pass wants a nearby Kenney file that isn't committed, it is only in `Local/audio/` on the Windows PC (or in the bundle zip): add it to `SourceAssets/Audio/` at the same path before you import it.
 
 ## Notes for T20
 
 - Unreal's importer takes `.wav`, `.ogg` and `.flac` for certain. If a `.mp3` won't import, convert it to `.wav` first (the Kenney launcher can convert audio; Audacity also works).
 - The Kenney bundle also has `Synth Voice 1/2` and `Voiceover Pack` (robot and announcer lines such as "eliminated", "congratulations", "game over"). They aren't needed for the MVP, but they could add flavor to the reveal.
-- The bundle zip (`Kenney Game Assets All-in-1 3.8.0.zip`, 555 MB) is untracked in the repo root. Keep it out of commits, or move it into `Local/`.
+- The bundle zip (`Kenney Game Assets All-in-1 3.8.0.zip`, 555 MB) is not committed. Keep it out of commits; if you have it, keep it in `Local/`.
