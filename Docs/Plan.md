@@ -21,7 +21,7 @@ First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), 
 | Plain speech (T13), UI/UX polish (T14) and story scenes (T15) | Sat Nov 14, by noon |
 | One LLM per AI player (T16, T18) and the stage art (T17) | Sat Nov 14, by 6 PM |
 | Robots act out their actions (T19), the UI fixes from my playtest (T27 to T31), speech bubbles (T38), the money burn (T35), the UI/UX sweep (T32 to T34), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
-| Packaged and played (by me, by hand; T22 was dropped), submission ready (T23) | Sun Nov 15, by 2 PM |
+| Packaged, played and the submission ready (by me, by hand; T22 and T23 were dropped) | Sun Nov 15, by 2 PM |
 | Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
 
 12 tasks at up to an hour each is about 12 hours of agent time, plus your time on checks and playtests. Two lanes can run at once: tasks that need no editor (T13, T15, T16, and finding audio files for T20) beside the editor tasks (T14, T17, T18 to T21), which go one at a time. If we fall behind, cut in this order: T24 (timers), then T31 (Tab completion), then T38 (speech bubbles; the chat stays as it is now, and T34 polishes that), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
@@ -209,13 +209,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (the input box's keys and the suggestion row), maybe `Content/NHOS/Core/BP_Show.uasset` (to hand the names, places and props to the widget), `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T31.md](tasks/T31.md)
 
-- [ ] **T23 Submission**
-  - **Model and effort:** Sonnet 5.5, medium. Writing and checklists.
-  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, T31 if it is done, T36 if it is done, T37 if it is done, and T38 if it is done
-  - **Needs:** me, to record the video, set up the itch.io page and send the form. The packaged build, which I make myself.
-  - **Touches:** `Docs/ItchPage.md`, new `Docs/Submission.md`, `Packaged/` (not in git).
-  - **Details:** [Docs/tasks/T23.md](tasks/T23.md)
-
 - [ ] **T24 Timers (only if time allows)**
   - **Model and effort:** Sonnet 5.5, medium. Small additions to phases that already work.
   - **Depends on:** T19, T30 (the input row and the line queue; it took over this task's AI typing delay on 2026-11-14). Cut it first if we fall behind.
@@ -276,4 +269,4 @@ These hold for every task, and for editor work outside the task list too. If one
 
 ## Not planned yet
 
-Ideas that are not tasks yet, and only if time is left after T23: a fifth persona (since T26, that is a sixth actor and a fourth scene), more scene cards and more notes. To plan one, add it as a task (see "Changing the plan").
+Ideas that are not tasks yet, and only if time is left after the last open task: a fifth persona (since T26, that is a sixth actor and a fourth scene), more scene cards and more notes. To plan one, add it as a task (see "Changing the plan").

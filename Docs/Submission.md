@@ -1,6 +1,6 @@
 # Submission drafts
 
-The text for every field of the jam's submission, ready to paste. It was drafted on 2026-11-14 for T23 in [Plan.md](Plan.md), before T19 to T22 were done, so that T23 only has the zip, the video and a last check left. The itch.io page text is in [ItchPage.md](ItchPage.md).
+The text for every field of the jam's submission, ready to paste. It was drafted on 2026-11-14, before T19 to T22 were done. The submission task (T23) was dropped on 2026-11-15: I make the submission myself, and what is left is under "Left to do" at the end. The itch.io page text is in [ItchPage.md](ItchPage.md).
 
 - **Where the fields come from:** the jam page, https://itch.io/jam/2026-epic-ai-megajam, read on 2026-11-14 (its "What to submit" section, for Unreal Engine teams). The form itself was not visible: itch.io shows the submit page only to a signed-in member of the jam. When you open the form, add any field it has that this file lacks.
 - **The Official Rules PDF** (linked from the jam page) is the final authority. Its Box viewer shows the pages as images, so they weren't read for this draft. Check its rules on declarations and assets before you send the form.
@@ -46,7 +46,7 @@ The jam page asks for the packaged build as a zip named `TeamName_GameName`, und
 - **Zip name:** `[YOU: team name]_NoHumansOnSet.zip`
 - **Platform:** Windows 10 or 11, a Development build (`Packaged/Windows/`, made in T22).
 - **Before zipping:** delete every `.pdb` file and the build's `Local/` folder (it can hold `llm_key.json` with our keys, and `switches.json`). Then search the unzipped build for anything that looks like a key: `sk-`, `xai-`, `api_key` with a value, or any long random string in a `.json` or `.ini`. Our only key placeholders are in `Docs/llm_key.example.json`, which isn't part of the build.
-- **Size:** T02's spike build was 968 MB, and 387 MB zipped without the `.pdb`. **[T23]** writes the real size in `Docs/tasks/T23.md` (T22 was dropped; I package the build myself).
+- **Size:** T02's spike build was 968 MB, and 387 MB zipped without the `.pdb`. **[YOU]** write the real size here (T22 was dropped; I package the build myself).
 - **On itch.io:** upload the zip as a Windows download, set "Kind of project" to Downloadable, then submit the project to the jam before **Nov 15, 5:59 PM PST (8:59 PM EST)**. Late entries are disqualified.
 
 ### Gameplay video link (30 to 60 seconds)
@@ -63,7 +63,7 @@ The shot list is in "Gameplay video shot list" below. The jam page's tip: show g
 [YOU: dev log link]
 ```
 
-The dev log is `Docs/DevLog.md`: one line for each commit that changed the game or the plan, with the model and effort that did it and what was learned. T23 adds its own line before the link goes out. See open question 5 for where to host it.
+The dev log is `Docs/DevLog.md`: one line for each commit that changed the game or the plan, with the model and effort that did it and what was learned. See open question 5 for where to host it.
 
 ### Tools you used (optional, but needed for partner prizes)
 
@@ -179,10 +179,10 @@ If the cut runs long, drop shot 2 (the title is on the end card) and shorten sho
 
 **Screenshots for the itch.io page,** taken from the same recordings: the theater mid-scene, Scene Prep, Free Talk, the reveal stamp, the end screen, and the title screen with the three ways to play. itch.io's cover image is 630 × 500 (a crop of the theater mid-scene works).
 
-## Left for T23
+## Left to do
 
 1. Record the video from the shot list, upload it and put its link above.
-2. Make the zip from T22's build (see "The game"), check it holds no key and is under 1 GB, and upload it to the itch.io project.
+2. Make the zip from the build I package (see "The game"), check it holds no key and is under 1 GB, and upload it to the itch.io project.
 3. Fill in the itch.io page from `ItchPage.md`, after the **[T19]**, **[T20]**, **[T21]** and **[T22]** markers there are settled, and add the screenshots.
 4. Rebuild the outside-asset list from `Docs/Assets.md` after T20.
 5. Fill in every **[YOU]** blank, answer the open questions, and send the form before Nov 15, 5:59 PM PST.
