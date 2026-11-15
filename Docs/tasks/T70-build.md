@@ -490,6 +490,7 @@ With only 6, drop 05 and 08, in that order. Renumber so the names stay in page o
 
 ### 4b. The cover: `Docs/ItchMedia/cover.png`, 630 × 500
 
+- **Made already** (2026-11-15, on my person's request): `cover.png` is key art from the concept images in `Docs/BotArt/`, not a crop, and `cover_art/cover_full.png` is the same at 1129 × 896. `Docs/ItchMedia/README.md` has how and what to check. Look at it next to `01-theater-midscene.png`: if the cast on stage still looks like the cover, keep it, and name it in the page settings (1d), the AI disclosure's Graphics answer (1a) and the Art credit (1e) as made with Leonardo.ai's edit model from our concept images. Only if it no longer matches the game, make it from 01 as below.
 - Crop from the strongest frame, which the draft says is 01: the five robots on the clay stage, with as little UI as the frame allows. 630 × 500 is 1.26 : 1, so the crop is 1.26 times as wide as it is tall: 1361 × 1080 is the most, and 1134 × 900 or 945 × 750 come closer.
 - Put the game's name on it only if it still reads at 315 × 250 (step 5).
 

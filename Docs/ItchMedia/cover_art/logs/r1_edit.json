@@ -1,0 +1,17 @@
+[
+  {
+    "time": "2026-11-15 21:31 UTC",
+    "generation": "1f1e13be-8aae-6530-97d9-b2ef86889039",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/ItchMedia/cover_art/layout.png",
+    "refs": [],
+    "prompt": "Repaint this rough collage as one single, seamless claymation film still. Keep all five characters exactly as they are: the same shapes, colors, faces, clothes, accessories, sizes and positions. Left to right: the pale blue robot with a halo and a gray knit sweater, the doll-like android in black glasses, a blue tee and a gold chain, the person in the teal cardboard-box robot costume with the red and cream striped scarf, the round orange robot with round wire glasses and a raised finger, and the lime green robot on coiled spring arms and legs giving a thumbs-up. Behind them, make one continuous red velvet theater curtain and one continuous polished wooden stage floor, with no seams, blur or repeated strips. Light it like a cozy old opera house stage: a warm golden spotlight from above falls on the cardboard-box costume in the middle and casts a soft shadow on the floor, and the four robots around it are lit a little dimmer. The four robots turn their eyes toward the cardboard-box costume in the middle with suspicious side-eye looks. The cardboard one keeps its nervous smile, and a single drop of sweat runs down the side of its box head. The top third of the picture stays plain, softly lit dark red curtain with no objects. Smooth matte clay with faint thumbprints, chunky toy-like forms, small gold accents. No text, letters, logos or watermark.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png",
+      "edit_3.png",
+      "edit_4.png"
+    ]
+  }
+]

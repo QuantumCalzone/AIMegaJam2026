@@ -95,6 +95,14 @@ Made with Leonardo.ai through its paid API (private generations), one 2048 × 10
 | `Content/NHOS/Stage/Backdrops/T_Backdrop_bowling_lanes` (`Docs/BackdropArt/bowling_lanes.png`) | Painted backdrop for the bowling card: lanes, pins and retro triangle wall panels. | Leonardo.ai `lucid-origin` image (prompt and seed in `Docs/BackdropArt.md`), 67 API credits per four candidates, 2026-11-15 (T48). | Ours: made on the paid Leonardo API. |
 | `Content/NHOS/Stage/Backdrops/T_Backdrop_midnight_cubicles` (`Docs/BackdropArt/midnight_cubicles.png`) | Painted backdrop for the office card: gray cubicles with glowing green screens and a rainy window. | Leonardo.ai `lucid-origin` image (prompt and seed in `Docs/BackdropArt.md`), 67 API credits per four candidates, 2026-11-15 (T48). | Ours: made on the paid Leonardo API. |
 
+### itch.io page
+
+Made with Leonardo.ai's paid API (private), from our own concept art. `Docs/ItchMedia/README.md` has how, with the logs in `Docs/ItchMedia/cover_art/logs/`. Not in the game.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Docs/ItchMedia/cover.png` (and `cover_art/cover_full.png`, 1129 × 896) | The itch.io cover, 630 × 500: the five robots on a red-curtained stage, the AIs squinting at the sweating cardboard costume in the middle, under the name NO HUMANS ON SET. | Our collage of `Docs/BotArt/cast.png` (`cover_art/layout.swift`), repainted with Leonardo.ai's instruction edit (`gemini-2.5-flash-image`), 156 API credits for six edited images, 2026-11-15. The name is set by our script `cover_art/title.swift` in Roboto Black. | Ours: made on the paid Leonardo API. The name is set in Roboto (Apache License 2.0, see "Fonts"). |
+
 ## Audio
 
 Imported in T20 (2026-11-15) from `SourceAssets/Audio/` (see `Docs/AudioShortlist.md`) into `Content/NHOS/Audio/`. No AI audio tools were used. Kenney's packs are CC0, so no credit is needed; optional credit: "Kenney (www.kenney.nl)". The two CC BY files need the credit lines below in the credits and on the itch.io page.
