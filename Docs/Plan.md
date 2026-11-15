@@ -21,7 +21,7 @@ First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), 
 | Plain speech (T13), UI/UX polish (T14) and story scenes (T15) | Sat Nov 14, by noon |
 | One LLM per AI player (T16, T18) and the stage art (T17) | Sat Nov 14, by 6 PM |
 | Robots act out their actions (T19), the UI fixes from my playtest (T27 to T31), the money burn (T35), the UI/UX sweep (T32 to T34), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
-| Packaged and played (T22), submission ready (T23) | Sun Nov 15, by 2 PM |
+| Packaged and played (by me, by hand; T22 was dropped), submission ready (T23) | Sun Nov 15, by 2 PM |
 | Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
 
 12 tasks at up to an hour each is about 12 hours of agent time, plus your time on checks and playtests. Two lanes can run at once: tasks that need no editor (T13, T15, T16, and finding audio files for T20) beside the editor tasks (T14, T17, T18 to T21), which go one at a time. If we fall behind, cut in this order: T24 (timers), then T31 (Tab completion), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
@@ -256,26 +256,14 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Done when:** in PIE with autoplay off, "@" shows the AI names; "@me" then Tab gives "@Meta "; "ris" then Tab gives "Riser "; "rub" then Tab gives "rubber chicken "; the sent line shows completed in its `NHOS: TYPED` line; I play one show and say the completion helps.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (the input box's keys and the suggestion row), maybe `Content/NHOS/Core/BP_Show.uasset` (to hand the names, places and props to the widget), `Graphs/` files for the graphs it writes, `Docs/GameDesign.md`, the design doc.
 
-- [ ] **T22 Package a Windows Development build and play a show in it**
-  - **Model and effort:** Sonnet 5.5, medium. It repeats T02's steps with the whole game.
-  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, and T31 if it is done
-  - **Needs:** a Windows machine, the editor closed, my playtest (one show).
-  - **Steps:**
-    1. Run the package command from `CLAUDE.local.md` in the background.
-    2. Run the packaged game with autoplay on, `"mode": "relay"` and no key file, so it plays through the relay.
-    3. I play one full show in the packaged game with autoplay off.
-    4. Write the result, the build size, the zip size without the `.pdb`, and any packaging fix in Findings.
-  - **Done when:** the packaged game's log shows `NHOS: SHOW END` and no `NHOS: LLM ... fail` line, and I finished one show in it.
-  - **Touches:** the Findings section, `Packaged/` (not in git), `Config/*.ini` only if packaging needs a fix.
-
 - [ ] **T23 Submission**
   - **Model and effort:** Sonnet 5.5, medium. Writing and checklists.
-  - **Depends on:** T22
-  - **Needs:** me, to record the video, set up the itch.io page and send the form.
+  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, and T31 if it is done
+  - **Needs:** me, to record the video, set up the itch.io page and send the form. The packaged build, which I make myself.
   - **Steps:**
     1. A shot list for the 30 to 60 second gameplay video. I record it.
     2. The itch.io page: the premise, how to play, the two ways to get AI access (from `Docs/ItchPage.md`), controls and screenshots.
-    3. The zip `TeamName_GameName`: the packaged build without the `.pdb` and without `Local/`, under 1 GB. Search it for anything that looks like a key.
+    3. The zip `TeamName_GameName`: the packaged build I made, without the `.pdb` and without `Local/`, under 1 GB. Search it for anything that looks like a key.
     4. The form's lists: outside assets and their licenses (`Docs/Assets.md`), tools used (the engine and every AI tool and model), and work made before Nov 12 (the repo setup files: `CLAUDE.md`, `.gitignore`, `.gitattributes`, `Agents/README.md`).
     5. The dev log (`Docs/DevLog.md`) for the Glass Box category.
   - **Done when:** the zip is under 1 GB with no key in it, and every field of the submission form has its text in `Docs/Submission.md`.
