@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T28 (Scene Prep shows the whole card, the scene shows only mine) is pushed and waits only for my OK on its Rules tab edit; its claim stays until then. Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is pushed and waits for my go on its audit and my OK on its doc edits; its claim stays until then. T30 (the lines play one at a time, Opus 5.5 · xhigh) is the next editor task, then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name). T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done, so T40 (the headpieces), T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but all three write `Docs/PropArt/manifest.json`, so commit their manifest changes one at a time. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) needs no editor and is free now. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 come after T33.
+**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is pushed and waits for my go on its audit and my OK on its doc edits; its claim stays until then. T30 (the lines play one at a time, Opus 5.5 · xhigh) is the next editor task, then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name). T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done, so T40 (the headpieces), T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but all three write `Docs/PropArt/manifest.json`, so commit their manifest changes one at a time. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) needs no editor and is free now. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 come after T33.
 
 ## Goal
 
@@ -115,14 +115,6 @@ These hold for every task, and for editor work outside the task list too. If one
 "Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. A new task goes wherever it belongs in that order (see "Changing the plan"), so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its entry moves to the end of "Done" (see "How to run a task", step 6). Each entry links its file in `Docs/tasks/`, which holds the task's Why, Steps, Done-when check, Result and findings.
 
 ### Open
-
-- [ ] **T28 Scene Prep shows the whole card, the scene shows only mine**
-  - **Model and effort:** Opus 5.5, high. It adds a pause to the show loop and splits the info card by phase.
-  - **Depends on:** T27 (the card's place and size), T19 (the lock on `BP_Show`)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ScenePrep`, the Start button's call, `ShowPrep` if the card's fill changes), `Graphs/` files for the graphs it writes, the design doc.
-  - **Waiting:** built and pushed; a free autoplay show reaches `SHOW END` with a `PREP start` line for each scene, and screenshots of Scene Prep and turn 1 are taken. Claude played Scene Prep and turn 1 by hand in PIE. Left: OK the Rules tab edit in `Docs/tasks/T28.md`.
-  - **Details:** [Docs/tasks/T28.md](tasks/T28.md)
 
 - [ ] **T40 Generate the 13 headpieces**
   - **Model and effort:** Opus 5.5, high. It picks every reference image by eye and judges every model.
@@ -403,6 +395,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T39.md](tasks/T39.md)
 - [x] **T29 The chat holds only chat**
   - **Details:** [Docs/tasks/T29.md](tasks/T29.md)
+- [x] **T28 Scene Prep shows the whole card, the scene shows only mine**
+  - **Details:** [Docs/tasks/T28.md](tasks/T28.md)
 
 ## Not planned yet
 
