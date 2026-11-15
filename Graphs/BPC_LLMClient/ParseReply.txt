@@ -1,6 +1,8 @@
+; T37: an error reply also keeps the relay's upstream_status in UpStatus, for ErrorKind.
 (fn ParseReply (Response)
   (set ErrType "")
   (set ErrMsg "")
+  (set UpStatus 0)
   (bind (_o _ok) (Json|LoadJsonfromString Response))
   (if (not _ok)
     (return false "" (cat "reply is not JSON: " Response)))
@@ -23,6 +25,10 @@
     (set TmpStr _m)
     (set ErrType (V TmpStr2))
     (set ErrMsg (V TmpStr))
+    (bind _hus (Json|HasField (V TmpObj) "upstream_status"))
+    (if _hus
+      (bind _us (Json|GetField (V TmpObj) "upstream_status"))
+      (set UpStatus _us))
     (return false "" (cat "API error " (V TmpStr2) ": " (V TmpStr))))
   (bind _hu (Json|HasField _o "usage"))
   (if (streq (V CurFmt) "openai_chat")

@@ -462,6 +462,15 @@ def error_line_problems(data, plist) -> list[str]:
             for word, r in BANNED_RES:
                 if r.search(line):
                     out.append(f"{where}: a banned name ({word!r})")
+    # error_test's canned reply bodies (T37): each names a backstage case and holds a body to send.
+    tests = data.get("test_replies", {})
+    if not isinstance(tests, dict) or not tests:
+        out.append("errors.json: needs a 'test_replies' object (the error_test switch's reply bodies)")
+        tests = {}
+    for name, t in tests.items():
+        if not isinstance(t, dict) or t.get("kind") not in ERROR_CASES or not any(
+                isinstance(t.get(k), str) and t[k] for k in ("any", "transport", "anthropic", "openai_chat")):
+            out.append(f"errors.json: test_replies.{name} needs a 'kind' that is a case and a body ('any', 'transport' or one per format)")
     return out
 
 

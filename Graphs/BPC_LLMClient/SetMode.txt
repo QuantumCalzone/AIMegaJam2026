@@ -1,3 +1,4 @@
+; T37: too few keys takes its line from errors.json.
 (fn SetMode (InMode)
   (set Mode InMode)
   (if (streq InMode "relay")
@@ -6,6 +7,8 @@
   (if (streq InMode "keys")
     (bind _n (CallFunction|KeyCount))
     (if (< _n 3)
-      (return false "Enter keys for at least 3 of the 4 AI providers.")))
+      (print "NHOS: ERROR too_few_keys provider= where=keytest")
+      (bind _fk (CallFunction|ErrorLine :Kind "keytest_too_few_keys" :Lab "" :N 0 :Type ""))
+      (return false _fk)))
   (print (cat "NHOS: MODE " InMode))
   (return true ""))

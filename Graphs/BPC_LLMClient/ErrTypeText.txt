@@ -1,0 +1,7 @@
+; T37: {type} for a line: the error's type, else the relay's upstream HTTP status, else "no type".
+(fn ErrTypeText ()
+  (if (not (Utilities|String|IsEmpty (V ErrType)))
+    (return (V ErrType)))
+  (if (> (V UpStatus) 0)
+    (return (cat "HTTP " (str (V UpStatus)))))
+  (return "no type"))
