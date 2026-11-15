@@ -131,6 +131,20 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/Data/prompts.json` (new `asks.last_word`, `game`), `Content/NHOS/Data/free_mode.json`, `Content/NHOS/Data/autoplay.json`, `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` (`NextTalker`, `EndFreeTalk`, new functions, `ComputePrompt`), `Relay/`, `Graphs/` files for the graphs it writes, `Docs/tasks/T58.md`.
   - **Details:** [Docs/tasks/T58.md](tasks/T58.md)
 
+- [ ] **T71 Music for each place and each scene**
+  - **Model and effort:** Sonnet 5.5, medium. Picking loops from a pack we own, a key map in the component T20 built, and two keys in `RunCue`.
+  - **Depends on:** T20 (`BPC_ShowAudio`), T58 (the lock on `BP_Show`, and the phases as T57 and T58 leave them)
+  - **Needs:** the Kenney bundle on the Windows PC (`Local/audio/kenney/`), editor + Unreal MCP running, my OK before any paid music tool. Picking the tracks (steps 1 and 2) needs no editor and can run as prep.
+  - **Touches:** new files in `SourceAssets/Audio/`, new `Content/NHOS/Audio/Music/S_Music*.uasset`, `Content/NHOS/Core/BPC_ShowAudio.uasset` (`SwapMusic`, `PlayMusic`, `StartDrum`, `EndCheer`), `Content/NHOS/Core/BP_Show.uasset` (only `RunCue`'s music calls), `Docs/Assets.md`, `Graphs/` files for the graphs it writes, `Docs/tasks/T71.md`.
+  - **Details:** [Docs/tasks/T71.md](tasks/T71.md)
+
+- [ ] **T72 A voice for each robot, and mine: the syllable sounds**
+  - **Model and effort:** Opus 5.5, high. Sound design by script without hearing the result, a real human voice to find, and a new function in `BPC_ShowAudio`.
+  - **Depends on:** T20 (`BPC_ShowAudio`, `SC_Voice`)
+  - **Needs:** editor + Unreal MCP running for steps 3 to 5, and the lock on `BPC_ShowAudio` (T71 changes it too, so one at a time). Steps 1 and 2 need no editor and can run as prep. My OK before any paid voice tool. No `BP_Show` or `WBP_Stage` lock, so it can run beside the editor chain.
+  - **Touches:** new `Tools/make_voices.py`, new `SourceAssets/Audio/voices/`, new `Content/NHOS/Audio/Voice/`, `Content/NHOS/Core/BPC_ShowAudio.uasset` (new `Syllable`), `Docs/Assets.md`, `Graphs/BPC_ShowAudio/` files for the graphs it writes, `Docs/tasks/T72.md`.
+  - **Details:** [Docs/tasks/T72.md](tasks/T72.md)
+
 - [ ] **T62 One rule set for every action, mine and the AIs'**
   - **Model and effort:** Opus 5.5, high. The action rules move into one check that the builder and every AI reply share, and the AIs' state and prompts change with them. It also puts the whole input change (T62 to T66) in the design doc.
   - **Depends on:** T19 (the stage director), T58 (the lock on `BP_Show` and `prompts.json`, as T52 to T58 leave them)
@@ -166,6 +180,13 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset` (the timeouts, each phase's input), `Content/NHOS/UI/WBP_Stage.uasset` (the timer, the input row per phase), `Content/NHOS/Data/input.json` (`timers`), `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes, `Docs/tasks/T66.md`.
   - **Details:** [Docs/tasks/T66.md](tasks/T66.md)
 
+- [ ] **T73 Lines type out, one voice sound per syllable**
+  - **Model and effort:** Opus 5.5, high. A typing timer in the line queue that drives the chat line and the voice, and a retune of the pacing.
+  - **Depends on:** T72 (`Syllable` and the voices), T30 (the line queue), T66 (the lock on `WBP_Stage`, and the screen as T64 to T66 leave it)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
+  - **Touches:** `Content/NHOS/Core/BPC_LinePlayer.uasset` (`PlayCur`, a new typing timer, the hold), `Content/NHOS/UI/WBP_ChatLine.uasset` (the speech as it types), `Content/NHOS/UI/WBP_Stage.uasset` (only if `AddChatLine` must hand back the new line), `Content/NHOS/Core/BPC_ShowAudio.uasset` and `Content/NHOS/Core/BP_Show.uasset` (only to remove T20's blip), `Content/NHOS/Data/pacing.json`, the design doc, `Graphs/` files for the graphs it writes, `Docs/tasks/T73.md`.
+  - **Details:** [Docs/tasks/T73.md](tasks/T73.md)
+
 - [ ] **T67 Analytics, part 1: the relay takes events and reports them**
   - **Model and effort:** Sonnet 5.5, medium. A new route and store in a Worker that already has its checks and limits, plus a report script and curl tests.
   - **Depends on:** nothing.
@@ -189,14 +210,14 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click (optional)**
   - **Model and effort:** Opus 5.5, high. A new widget placed over moving robots, timed by the line queue, and a new hidden state for the chat.
-  - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style)
+  - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style), T73 (a line types out with its voice, so the bubble types out the same way)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** new `Content/NHOS/UI/WBP_SpeechBubble.uasset`, `Content/NHOS/Stage/BP_Robot.uasset` (the bubble, `Say`, `Hush`), `Content/NHOS/Core/BPC_LinePlayer.uasset` (the call when a line plays, the typing bubble), `Content/NHOS/UI/WBP_Stage.uasset` (the chat button, the chat hidden at the start, the typing line), `Content/NHOS/Core/BP_Show.uasset` only if a call must change, `Graphs/` files for the graphs it writes, the design doc, `Docs/tasks/T38.md`.
   - **Details:** [Docs/tasks/T38.md](tasks/T38.md)
 
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
-  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes), and T64, T65, T66 (the action builder, the preview line, the speech field and the timer are in the input row it polishes).
+  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes), and T64, T65, T66 (the action builder, the preview line, the speech field and the timer are in the input row it polishes), and T73 (the lines type out on the screen it polishes).
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_SpeechBubble.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
@@ -240,7 +261,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T70 The itch.io page: the description, screenshots, a cover and a gameplay video**
   - **Model and effort:** Opus 5.5, high. Claude plays shows for the best moments, picks the frames, cuts a captioned video, and rewrites the page text to match the finished game.
-  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T62, T63, T64, T65, T66, T38, T34, T60, T61, T45, T47, T48. A task that is cut comes off this line.
+  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T71, T72, T62, T63, T64, T65, T66, T73, T38, T34, T60, T61, T45, T47, T48. A task that is cut comes off this line.
   - **Needs:** a packaged build (T22's command) or the game window at 1920 × 1080, Play via Relay for the recorded shows and my OK for their cost (about $0.11 a show, two or three shows), ffmpeg to record and cut (not on the PC yet: my OK before Claude installs it with winget), my OK on the page text. No editor change.
   - **Touches:** `Docs/ItchPage.md`, `Docs/Submission.md` (the shot list and "Left to do"), new `Docs/ItchMedia/` (`cover.png`, `screenshots/`, `gameplay.mp4` and `description.html`), `Docs/tasks/T70.md`.
   - **Details:** [Docs/tasks/T70.md](tasks/T70.md)
