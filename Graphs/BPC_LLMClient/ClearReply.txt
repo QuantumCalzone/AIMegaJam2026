@@ -1,0 +1,14 @@
+; Empties the reply fields before each ask's reply is read. Written from the editor's read-back in T60.
+; T60: also RTell, the vote's tell.
+(fn ClearReply ()
+  (set RSpeech "")
+  (set RVote "")
+  (set RReason "")
+  (set RPass false)
+  (set RTell "")
+  (clear (V RActions))
+  (clear (V RVerbs))
+  (clear (V RTargets))
+  (clear (V RItems))
+  (set UsageIn "")
+  (set UsageOut ""))

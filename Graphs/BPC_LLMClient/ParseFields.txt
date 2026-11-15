@@ -1,0 +1,33 @@
+; Reads the reply's fields (llm.json reply_schema) into the R* variables. Written from the editor's read-back in T60.
+; T60: also 'tell', the kind of evidence a vote names (tells.json), into RTell. A reply without 'tell' (the relay's
+; free mode, which builds its replies without it) leaves RTell "" from ClearReply, and still parses.
+(fn ParseFields (Text)
+  (bind (_o _ok) (Json|LoadJsonfromString Text))
+  (if (not _ok)
+    (return false (cat "reply is not JSON: " Text))
+    (else
+      (bind _sp (Json|GetField _o "speech"))
+      (set RSpeech _sp)
+      (bind _vo (Json|GetField _o "vote"))
+      (set RVote _vo)
+      (bind _re (Json|GetField _o "reason"))
+      (set RReason _re)
+      (bind _pa (Json|GetField _o "pass"))
+      (set RPass _pa)
+      (bind _ht (Json|HasField _o "tell"))
+      (if _ht
+        (bind _te (Json|GetField _o "tell"))
+        (set RTell _te))
+      (bind _ac (Json|GetField _o "actions"))
+      (set RActions _ac)
+      (for _a (V RActions)
+        (bind _ve (Json|GetField _a "verb"))
+        (set TmpStr _ve)
+        (add (V RVerbs) (V TmpStr))
+        (bind _tg (Json|GetField _a "target"))
+        (set TmpStr _tg)
+        (add (V RTargets) (V TmpStr))
+        (bind _it (Json|GetField _a "item"))
+        (set TmpStr _it)
+        (add (V RItems) (V TmpStr)))
+      (return true ""))))

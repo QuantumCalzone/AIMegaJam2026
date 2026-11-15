@@ -11,7 +11,7 @@ Usage (from anywhere; Python 3.10+, no packages needed):
     python Tools/check_prompts.py --log        # check the AI lines of the last show in the editor log
     python Tools/check_prompts.py --log --all-shows Saved/Logs/AIMegaJam2026.log
 
-It reads Content/NHOS/Data/{llm,prompts,personas,scenes,errors,input}.json and the keys in
+It reads Content/NHOS/Data/{llm,prompts,personas,scenes,errors,input,tells}.json and the keys in
 Local/llm_key.json, and never prints a key.
 
 Providers (T16): each actor ask goes to its persona's 'provider' (personas.json),
@@ -149,6 +149,16 @@ autoplay.json's scene lines are speech only, because the autoplay action is
 picked from the rules. --log counts my scene turns (NHOS: HUMAN) and the lines
 sent as typed (NHOS: SPELLING skipped), and fails a HUMAN line with an unknown
 verb.
+
+Tells (T60): every vote names its tell, the one kind of evidence its reason
+gives (reply_schema 'tell'; the list, and each tell's lose-screen line, are in
+tells.json). The file check fails a reply_schema whose 'tell' enum isn't ""
+then the tells.json ids, a 'game' prompt whose "tell" line doesn't name every
+tell, and a free_mode.json vote phase whose 'tells' don't pair with its
+reasons. A vote reply must name a tell from the list; the other asks leave it
+empty. A --free reply may leave 'tell' out: the relay's free mode builds its
+replies without it. --log checks a lost show's NHOS: TOP REASON against its
+NHOS: TELL lines, and a won show's NHOS: RIVALS against personas.json 'rival'.
 
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
@@ -700,13 +710,14 @@ def check_files(errors: list[str]):
     personas = load_json("personas.json", errors)
     scenes = load_json("scenes.json", errors)
     error_lines = load_json("errors.json", errors)
+    tells = load_json("tells.json", errors)
     if errors:
         return None
 
     # llm.json
     schema = llm.get("reply_schema", {})
-    if sorted(schema.get("required", [])) != sorted(["actions", "speech", "pass", "vote", "reason"]):
-        errors.append("llm.json: reply_schema must require actions, speech, pass, vote and reason")
+    if sorted(schema.get("required", [])) != sorted(["actions", "speech", "pass", "vote", "reason", "tell"]):
+        errors.append("llm.json: reply_schema must require actions, speech, pass, vote, reason and tell")
     for role in ["actor", "input"]:
         r = llm.get("roles", {}).get(role)
         if not r or not all(k in r for k in ["model", "effort", "max_tokens"]):
@@ -872,6 +883,25 @@ def check_files(errors: list[str]):
     if "final two" not in goal1 or "last scene ends" not in goal1:
         errors.append("prompts.json: 'game' goal 1 must name both ways the human wins: the final two, "
                       "or still on stage when the last scene ends (T54)")
+    # T60: the tells a vote can name (tells.json), the reply field (reply_schema 'tell') and the prompt agree.
+    tlist = tells.get("tells", []) if isinstance(tells, dict) else []
+    tell_ids = [t.get("id") for t in tlist if isinstance(t, dict)]
+    if not tell_ids or len(set(tell_ids)) != len(tell_ids) or tell_ids[-1] != "other":
+        errors.append("tells.json: 'tells' needs unique ids, with 'other' last (T60)")
+    for t in tlist:
+        line = t.get("line", "") if isinstance(t, dict) else ""
+        if not isinstance(t, dict) or not t.get("means") or not line:
+            errors.append(f"tells.json: tell {t.get('id') if isinstance(t, dict) else t!r} needs 'means' and 'line'")
+        elif words(line) > MAX_WORDS or legibility(line):
+            errors.append(f"tells.json: tell {t['id']}'s line must be one plain line of {MAX_WORDS} words at most")
+    tell_prop = schema.get("properties", {}).get("tell", {})
+    if tell_prop.get("type") != "string" or tell_prop.get("enum") != [""] + tell_ids:
+        errors.append('llm.json: reply_schema.tell must be a string whose enum is "" and then the tells.json ids, in order (T60)')
+    tell_line = next((g for g in game if g.lstrip().startswith('- "tell"')), "")
+    missing = [t for t in tell_ids if not re.search(r"\b" + re.escape(t) + r"\b", tell_line)]
+    if not tell_line or missing:
+        errors.append(f"prompts.json: 'game' needs a '- \"tell\"' line under How to reply that names every tell "
+                      f"(missing: {', '.join(missing) if tell_line else 'the line'}) (T60)")
     story_text = json.dumps([prompts, scenes], ensure_ascii=False)
     for w, r in STORY_RES:
         if r.search(story_text):
@@ -890,6 +920,14 @@ def check_files(errors: list[str]):
 
     # free_mode.json and autoplay.json: every pre-written line fits the word cap (T59).
     errors.extend(prewritten_problems(scenes, errors))
+
+    # T60: free mode pairs one tell with each pre-written vote reason, so Test for Free names a top reason.
+    free = load_json("free_mode.json", errors) or {}
+    for ph in free.get("phases", []):
+        if ph.get("id") == "vote" and "tells" not in ph:
+            errors.append("free_mode.json: the vote phase needs 'tells', one per reason (T60)")
+        if "tells" in ph and (len(ph["tells"]) != len(ph.get("reasons", [])) or any(t not in tell_ids for t in ph["tells"])):
+            errors.append(f"free_mode.json: {ph.get('id')} 'tells' must pair one tells.json id with each reason (T60)")
 
     # input.json: the player's turn input (T63). spelling_wait = the seconds the input LLM gets per line.
     inp = load_json("input.json", errors)
@@ -918,7 +956,7 @@ def check_files(errors: list[str]):
 
     if errors:
         return None
-    return {"llm": llm, "prompts": prompts, "personas": plist, "scenes": scenes}
+    return {"llm": llm, "prompts": prompts, "personas": plist, "scenes": scenes, "tells": tell_ids}
 
 
 # ---------------------------------------------------------------- sample show
@@ -1461,7 +1499,7 @@ def words(s):
 def check_reply(reply, ask, ctx):
     """Returns (fails, warns)."""
     fails, warns = [], []
-    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str}
+    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str, "tell": str}
     for k, t in types.items():
         if not isinstance(reply.get(k), t):
             fails.append(f"{k} is missing or not a {t.__name__}")
@@ -1548,6 +1586,15 @@ def check_reply(reply, ask, ctx):
             need(s.lower() in speech.lower() if s.isalpha() else s in speech, f"speech lost {s!r}")
         need(passed == case.get("pass", False), f"pass is {passed}")
 
+    # T60: a vote names its tell; the other asks leave it empty. The closing vote may name one: nothing reads it.
+    tell = reply["tell"]
+    if ask == "vote":
+        need(tell in ctx.get("tells", []), f"tell {tell!r} is not one of tells.json's ids")
+    elif ask == "input":
+        need(not tell, "the input LLM set tell")
+    elif ask != "closing":
+        unused(not tell, f"tell filled in {ask}")
+
     # Legibility: every AI line reads like a normal chat. The input LLM keeps the player's own words.
     if ask != "input":
         for name, s in (("speech", speech), ("reason", reason)):
@@ -1566,12 +1613,13 @@ def check_reply(reply, ask, ctx):
 
 # ---------------------------------------------------------------- PIE log
 
-LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS|ACT|EXTRA|HUMAN|SPELLING)\b ?(.*)$")
+LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS|ACT|EXTRA|HUMAN|SPELLING|TOP REASON|TELL|RIVALS)\b ?(.*)$")
 
 
-def check_log(path: Path, personas, all_shows: bool) -> int:
+def check_log(path: Path, personas, all_shows: bool, tell_ids=()) -> int:
     """Legibility check on the AI lines of PIE shows in an editor log. Returns the exit code."""
     names = {p["id"]: p["name"] for p in personas}
+    rival_of = {p["id"]: p.get("rival") for p in personas}  # T60
     try:
         raw = path.read_text(encoding="utf-8-sig", errors="replace").splitlines()
     except FileNotFoundError:
@@ -1604,6 +1652,7 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
     lw_bad = 0  # T58: scenes whose last words don't match the final round's @ mentions
     act_bad = 0  # T62: log entries with more actions than the rules allow
     human_bad = 0  # T63: NHOS: HUMAN lines with a verb the builder doesn't have
+    top_bad = 0  # T60: lost shows whose TOP REASON is missing or miscounted, won shows whose RIVALS are wrong
     for i, show in enumerate(shows, 1):
         human = None
         cards = []
@@ -1614,6 +1663,7 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
         falls, extras = 0, 0  # T62
         humans, skipped = 0, 0  # T63
         cuts, end = 0, None  # T54
+        told, top_reason, rivals = [], None, None  # T60
         for kind, rest in show:
             if kind == "CUT":
                 cut_at[rest.split()[0]] = sc_now  # T58: off stage after this scene (the CUT/TIE block below still runs)
@@ -1665,6 +1715,17 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 continue
             if kind == "SPELLING":
                 skipped += 1  # T63: "NHOS: SPELLING skipped <why>", a line of mine sent as typed
+                continue
+            if kind == "TELL":
+                # T60: "NHOS: TELL <voter id> tell=<tell> | <reason>", one per vote that cut the human.
+                m = re.search(r"tell=(\S+)", rest)
+                told.append(m.group(1) if m else "?")
+                continue
+            if kind == "TOP REASON":
+                top_reason = rest  # "<tell> votes=<n>"
+                continue
+            if kind == "RIVALS":
+                rivals = dict(p.split("=", 1) for p in rest.split() if "=" in p)
                 continue
             if kind == "SEATS":
                 # Since T26: "NHOS: SEATS human=<Player number> seats=5 cast=<ids in seat order>".
@@ -1758,6 +1819,33 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 end_bad += 1
                 print(f"[FAIL] show {i} | SHOW END | reason={why}, but {left if left is not None else '?'} actors were left "
                       f"after scene {scene} of {total or '?'}; reason={want or '<none: no ending fits>'} expected")
+        # T60: a lost show names one top reason, the most common tell of the votes that cut the human
+        # (a tie may name any of the tied tells); a won show reveals each AI's rival.
+        result = end.get("result") if end else None
+        if result == "lose":
+            m = re.match(r"(\S+) votes=(\d+)$", top_reason or "")
+            counts = {t: told.count(t) for t in told}
+            best = max(counts.values(), default=0)
+            if not m:
+                top_bad += 1
+                print(f"[FAIL] show {i} | TOP REASON | {'missing' if top_reason is None else repr(top_reason)}; "
+                      f"one 'NHOS: TOP REASON <tell> votes=<n>' expected on a loss")
+            elif int(m.group(2)) != best or (told and counts.get(m.group(1), 0) != best) \
+                    or (m.group(1) != "none" and tell_ids and m.group(1) not in tell_ids):
+                top_bad += 1
+                print(f"[FAIL] show {i} | TOP REASON | {top_reason}, but the TELL lines count {counts}")
+        elif result == "win":
+            ai_ids = [c for c in cast_ids if c in rival_of]
+            want = {pid: rival_of[pid] for pid in ai_ids}
+            if top_reason is not None:
+                top_bad += 1
+                print(f"[FAIL] show {i} | TOP REASON | a top reason on a win: {top_reason}")
+            if rivals is None:
+                top_bad += 1
+                print(f"[FAIL] show {i} | RIVALS | missing; one 'NHOS: RIVALS <id>=<id> ...' expected on a win")
+            elif ai_ids and rivals != want:
+                top_bad += 1
+                print(f"[FAIL] show {i} | RIVALS | {rivals}, expected {want} (personas.json 'rival')")
         if seats and total and total != seats - 1:
             clock_bad += 1
             print(f"[FAIL] show {i} | SETUP | scenes={total}, but {seats} seats means {seats - 1} scenes")
@@ -1782,9 +1870,9 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
             print(f"[FAIL] show {i} | PASSED | Free Talk passes {sorted(passes)}, but markers {sorted(marks)}")
         print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}, ties = {ties}, "
               f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}, last words = {sum(len(v) for v in lastw.values())}, "
-              f"rule fallbacks = {falls}, extras dropped = {extras}, my turns = {humans}, spelling skipped = {skipped}.")
+              f"rule fallbacks = {falls}, extras dropped = {extras}, my turns = {humans}, spelling skipped = {skipped}, top reason = {top_reason or 'none'}, rivals = {'shown' if rivals else 'none'}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad or human_bad else 0
+    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad or human_bad or top_bad else 0
 
 
 # ---------------------------------------------------------------- main
@@ -1802,7 +1890,7 @@ def build_jobs(data, show, asks, personas, repeat):
                 if ask in asks:
                     st = cases[ask]
                     ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": st["options"],
-                           "note": st["you"]["note"], "held": {c["name"]: c["holding"] for c in st["cast"]}}
+                           "tells": data["tells"], "note": st["you"]["note"], "held": {c["name"]: c["holding"] for c in st["cast"]}}
                     pv = provider_for(data, "actor", pid)
                     jobs.append((ask, show.name(pid), pv, request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
             if "reaction" in asks:  # T52: the same ask after a tie, which cuts nobody
@@ -1896,9 +1984,12 @@ def load_keys():
 
 def shape_fails(reply, ask=None):
     """Only the reply's shape: every schema field with the right type (for --free replies).
-    T62: and the action count: 0 or 1 in a scene turn, none in any other actor ask."""
+    T62: and the action count: 0 or 1 in a scene turn, none in any other actor ask.
+    T60: 'tell' may be missing, because the relay's free mode builds its replies without it."""
     types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str}
     fails = [f"{k} is missing or not a {t.__name__}" for k, t in types.items() if not isinstance(reply.get(k), t)]
+    if "tell" in reply and not isinstance(reply["tell"], str):
+        fails.append("tell is not a str")
     n = len(reply.get("actions") or []) if isinstance(reply.get("actions"), list) else 0
     if ask in ACTOR_ASKS and n > (1 if ask == "scene_turn" else 0):
         fails.append(f"{n} actions in {ask}; {'one at most' if ask == 'scene_turn' else 'none'} since T62")
@@ -1934,9 +2025,9 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, input.json, props.json, costumes.json and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, tells.json, free_mode.json, autoplay.json, input.json, props.json, costumes.json and the relay's allow-list")
     if args.log:
-        return check_log(Path(args.log), data["personas"], args.all_shows)
+        return check_log(Path(args.log), data["personas"], args.all_shows, data["tells"])
 
     show = Show(data)
     jobs = build_jobs(data, show, set(args.ask or ALL_ASKS), args.persona or PERSONAS, args.repeat)
