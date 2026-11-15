@@ -82,7 +82,7 @@ AI tools we built the game with
 - Meshy (Pro plan, image to 3D with Meshy 7.1 and Meshy 6 Lite): the clay-style 3D models, made from those reference images: the 13 costume headpieces, the story props and the opera-house set pieces. Props and set pieces keep Meshy's texture; the headpieces wear our own clay material.
 
 AI in the game (called live during every show)
-- Anthropic, Claude Haiku 5.5 (claude-haiku-5-5): Anthropic's AI player, the helper that turns the player's typing into stage actions, and the Director who breaks tied votes.
+- Anthropic, Claude Haiku 5.5 (claude-haiku-5-5): Anthropic's AI player, and the helper that turns the player's typing into stage actions.
 - OpenAI, gpt-6-luna: OpenAI's AI player.
 - SpaceXAI (xAI), grok-4.3: SpaceXAI's AI player.
 - Meta, muse-ember-1.0: Meta's AI player.

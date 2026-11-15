@@ -39,7 +39,7 @@ The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used f
 
 Five robots take the stage. Four of them are AIs, each running on a different lab's model: **OpenAI**, **Anthropic**, **SpaceXAI** and **Meta**. The fifth is a human in a robot costume. That's you.
 
-The AIs know one of the cast isn't one of their own. After every scene, they vote one actor off the show. Improvise, blend in and cast suspicion on someone else. Make it to the final two, and humanity wins the stage.
+The AIs know one of the cast isn't one of their own. After every scene, they vote one actor off the show. Improvise, blend in and cast suspicion on someone else. Make it to the final two, or to the end of the last scene, and humanity wins the stage.
 
 On stage, everyone goes by a Player number, so a name can't give you away. Only your screen shows which lab runs each robot.
 
@@ -57,9 +57,9 @@ We built it the same way. A small crew of Claude agents did the work, directed b
 4. **The Cut.** Everyone votes for who they think is human and gives a one-line reason. The most votes is cut, and the stamp reveals the truth. Then each actor reacts, and how you react is evidence too.
 5. Repeat until two actors are left or the last scene ends. A cast of five has four scenes, a cast of four has three.
 
-If you're cut, you lose, and the AIs gloat. Either way, the end screen shows how each AI voted and why.
+You win if you make the final two, or if you're still on stage when the last scene ends. If you're cut, you lose, and the AIs gloat. Either way, the end screen shows how each AI voted and why.
 
-**How to fool them:** play your role and chase your want. On turn 1 you act blind, with only the note's category to go on. Then watch what the AIs do and work out the note, but copy too late and they'll notice. Don't stand still for a whole scene. Watch what the AIs accuse each other of, because they're looking for the same things in you.
+**How to fool them:** play your role and chase your want. On turn 1 you act blind, with only the note's category to go on. Then watch what the AIs do and work out the note, but copy too late and they'll notice. Don't stand still for a whole scene. Watch what the AIs accuse each other of, because they're looking for the same things in you. A tied vote cuts nobody and uses up a scene, so a split vote helps you.
 
 ### Controls
 
@@ -114,7 +114,7 @@ The real game, on your own accounts. Click **Play with my own API keys** and pas
   | Meta | `muse-ember-1.0` | dev.meta.ai |
 
 - With all 4 keys, the cast is four AIs and you, over up to four scenes. With 3 keys, the lab without a key sits out, and the show has three AIs and you, over up to three scenes. With fewer than 3, the game names the missing keys. Every robot's label is always true: no AI ever runs on another lab's key.
-- The helper that turns your typing into stage actions, and the Director who breaks ties, run on Anthropic. Without an Anthropic key, they use the first lab you have a key for.
+- The helper that turns your typing into stage actions runs on Anthropic. Without an Anthropic key, it uses the first lab you have a key for.
 - **Cost:** about $0.11 for a full show with all four labs, most of it (about $0.08) for SpaceXAI, whose model costs more per call. Set a spending limit at each lab's console to be safe.
 - **Where your keys go:** **Save and Play** writes them to `Local/llm_key.json` inside the game's folder **[T22: check the path in the packaged build]**, as plain text, so they're filled in next time. Delete that file to remove them. Don't share the game folder with your keys in it.
 - **Save and Play** first sends one short test call to each lab you gave a key for, and starts the show only if every key works. If one doesn't, the screen names the lab, and you can fix the key and try again. **Test keys** runs the same check without starting a show. The test costs a fraction of a cent.
