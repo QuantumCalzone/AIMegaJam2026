@@ -1,0 +1,3 @@
+; T30: "show" shows the vote row (ShowVotePick); "" hides it.
+(fn CueVotes (Text)
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "votes" :Text Text :Num 0))

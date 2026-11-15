@@ -1,0 +1,2 @@
+(fn CuePrep ()
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "prep" :Text "" :Num 0))

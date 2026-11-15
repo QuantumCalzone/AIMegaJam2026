@@ -1,0 +1,4 @@
+; T30: Pass is on only while my turn allows it (PassOn) and the line queue lets me type (LastCanType, from SetPrompt).
+(fn SetPassEnabled (Enabled)
+  (Variables|Default|SetPassOn Enabled)
+  (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetPassButton) :bInIsEnabled (and Enabled (Variables|Default|GetLastCanType))))

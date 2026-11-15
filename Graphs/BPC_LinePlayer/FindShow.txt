@@ -1,0 +1,4 @@
+(fn FindShow ()
+  (if (== (V Show) (V NullShow))
+    (bind _s (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+    (set Show _s)))

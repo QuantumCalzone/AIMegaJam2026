@@ -1,0 +1,2 @@
+(fn CueEnd ()
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "end" :Text "" :Num 0))

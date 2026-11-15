@@ -1,0 +1,3 @@
+; T30: true while a line or a cue plays or waits in the queue. BP_Show.LinePrompt keeps my input closed until then.
+(fn IsBusy ()
+  (return (or (V Busy) (> (len (V QKind)) 0))))

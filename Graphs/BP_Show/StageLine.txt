@@ -1,0 +1,10 @@
+; T30: the stage director call that was in ActorLine. BPC_LinePlayer calls it when the line plays.
+(fn StageLine (Seat Entry)
+  (bind _hd (Json|HasField Entry "does"))
+  (if (not _hd)
+    (return))
+  (bind _dir (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Stage/BP_StageDirector.BP_StageDirector_C"))
+  (Utilities|IsValid _dir
+    (:"Is Valid"
+      (Class|BPStageDirector|PlayLine :self _dir :Seat Seat :Entry Entry :Robots (Variables|Default|GetRobots) :SeatNames (Variables|Default|GetSeatName) :Ids (Variables|Default|GetSeatId)))
+    (:"Is Not Valid")))

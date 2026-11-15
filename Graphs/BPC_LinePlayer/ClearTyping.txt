@@ -1,0 +1,3 @@
+(fn ClearTyping ()
+  (if (!= (V Stage) (V NullStage))
+    (Class|WBPStage|SetTyping :self (V Stage) :Line "")))

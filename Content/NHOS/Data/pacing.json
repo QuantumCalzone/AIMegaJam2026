@@ -1,0 +1,16 @@
+{
+	"_readme": "Line pacing (T30). BPC_LinePlayer reads it at the first line of a run. Each line on my screen holds for line_base + line_per_word x its words (action and speech), kept between line_min and line_max, before the next line plays. Before an AI line in Free Talk and the reactions, '<name> is typing...' shows for a random time between typing_min and typing_max. cue_hold: how long the queue waits after a screen change of that kind (a banner, a cut with its reveal stamp), so the next line doesn't play under it; a kind that isn't listed waits 0. fast_scale multiplies every wait when fast_lines is on in Local/switches.json, for autoplay checks. Every time is in seconds.",
+	"pacing": {
+		"line_base": 1.2,
+		"line_per_word": 0.25,
+		"line_min": 2.0,
+		"line_max": 5.0,
+		"typing_min": 0.6,
+		"typing_max": 1.6,
+		"fast_scale": 0.1,
+		"cue_hold": {
+			"banner": 2.0,
+			"cut": 3.0
+		}
+	}
+}

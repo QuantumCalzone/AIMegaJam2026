@@ -1,0 +1,7 @@
+; T30: "<name> is typing..." under the chat. An empty line hides it (Hidden, not Collapsed, so the chat doesn't jump).
+(fn SetTyping (Line)
+  (Class|Text|SetText :Text (Utilities|Text|ToText(String) Line) :self (Variables|WBP_Stage|GetTypingText))
+  (if (Utilities|String|IsEmpty Line)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetTypingText) :InVisibility "Hidden")
+    (return))
+  (Widget|SetVisibility :self (Variables|WBP_Stage|GetTypingText) :InVisibility "HitTestInvisible"))

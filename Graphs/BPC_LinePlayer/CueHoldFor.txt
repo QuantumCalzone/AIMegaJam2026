@@ -1,0 +1,13 @@
+; T30: how long the queue waits after a cue of this kind (pacing.cue_hold). A cue with no text waits 0.
+(fn CueHoldFor (Kind Text)
+  (if (Utilities|String|IsEmpty Text)
+    (return 0.0))
+  (bind _h (Json|HasField (V CueHold) Kind))
+  (if (not _h)
+    (return 0.0))
+  (bind _v (Json|GetField (V CueHold) Kind))
+  (set TmpF _v)
+  (if (<= (V TmpF) 0.0)
+    (return 0.0))
+  (bind _s (CallFunction|Scaled :T (V TmpF)))
+  (return _s))

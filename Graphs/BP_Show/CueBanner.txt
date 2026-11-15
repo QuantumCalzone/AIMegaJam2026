@@ -1,0 +1,2 @@
+(fn CueBanner (Text)
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "banner" :Text Text :Num 0))

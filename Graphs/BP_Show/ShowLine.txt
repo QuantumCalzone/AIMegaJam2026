@@ -1,0 +1,8 @@
+; T30: the one place a line reaches my screen; it now goes through the line queue (BPC_LinePlayer.Push).
+(fn ShowLine (Seat Does Says)
+  (Variables|Default|SetTmpName Does)
+  (if (and (Utilities|String|EqualExactly(String) Does (Variables|Default|GetDoesNothing)) (not (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "scene")))
+    (Variables|Default|SetTmpName ""))
+  (bind _act (CallFunction|DisplayText :Text (Variables|Default|GetTmpName)))
+  (bind _say (CallFunction|DisplayText :Text Says))
+  (Class|BPCLinePlayer|Push :self (Variables|Default|GetLinePlayer) :StageW (Variables|Default|GetStage) :Seat Seat :Name (Utilities|Array|Get(acopy) (Variables|Default|GetSeatLabel) Seat) :Color (Utilities|Array|Get(acopy) (Variables|Default|GetSeatColors) Seat) :Action _act :Speech _say :IsMe (== Seat (Variables|Default|GetHumanSeat)) :Entry (Variables|Default|GetLineEntry)))

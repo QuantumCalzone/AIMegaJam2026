@@ -1,0 +1,2 @@
+(fn CueCut (Seat)
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "cut" :Text "cut" :Num Seat))

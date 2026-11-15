@@ -1,0 +1,2 @@
+(fn CueHeader (Text)
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "phase" :Text Text :Num 0))

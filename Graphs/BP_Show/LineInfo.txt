@@ -1,0 +1,5 @@
+; T30: the seat id for NHOS: LINE, and whether "<name> is typing..." shows first (an AI line in Free Talk or the reactions).
+(fn LineInfo (Seat IsMe)
+  (bind _id (Utilities|Array|Get(acopy) (Variables|Default|GetSeatId) Seat))
+  (bind _chat (or (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "free talk") (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "reactions")))
+  (return _id (and _chat (not IsMe))))

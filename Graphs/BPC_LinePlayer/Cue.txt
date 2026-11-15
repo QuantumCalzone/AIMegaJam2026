@@ -1,0 +1,10 @@
+; T30: a screen change (header, banner, vote row, cut, Scene Prep, end screen) that waits for the lines in front of it.
+(fn Cue (Kind Text Num)
+  (if (not (V Loaded))
+    (CallFunction|LoadPacing))
+  (CallFunction|FindShow)
+  (add (V QKind) Kind)
+  (add (V CText) Text)
+  (add (V CNum) Num)
+  (if (not (V Busy))
+    (CallFunction|Pump)))

@@ -10,6 +10,7 @@
     (Variables|Default|SetLastCanType CanType)
     (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetInputBox) :bInIsEnabled CanType)
     (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetSendButton) :bInIsEnabled CanType)
+    (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetPassButton) :bInIsEnabled (and CanType (Variables|Default|GetPassOn)))
     (Class|Text|SetColorandOpacity :ColorAndOpacity (Utilities|Struct|MakeSlateColor (select CanType (Utilities|Struct|MakeLinearColor 1.0 0.85 0.45 1.0) (Utilities|Struct|MakeLinearColor 0.8 0.83 0.9 1.0))) :self (Variables|WBP_Stage|GetTurnText))
     (if CanType
       (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox)))))

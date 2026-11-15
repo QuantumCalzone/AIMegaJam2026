@@ -1,0 +1,4 @@
+; T30: a wait in seconds, cut by fast_scale when fast_lines is on. Never under 0.01 s: a timer of 0 never fires.
+(fn Scaled (T)
+  (bind _s (select (V Fast) (* T (V FastScale)) T))
+  (return (select (< _s 0.01) 0.01 _s)))

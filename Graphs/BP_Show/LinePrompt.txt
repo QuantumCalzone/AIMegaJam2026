@@ -1,0 +1,9 @@
+; T30: while lines still play, the turn line follows the screen, not the logic that runs ahead,
+; and my input stays closed (UpdatePrompt calls this after PrepPrompt).
+(fn LinePrompt ()
+  (bind _busy (Class|BPCLinePlayer|IsBusy :self (Variables|Default|GetLinePlayer)))
+  (if (not _busy)
+    (return))
+  (Variables|Default|SetPTurn (select (Variables|Default|GetPCan) "Watch the stage. Your turn comes next." "Watch the stage."))
+  (Variables|Default|SetPHint "Wait for the lines to finish.")
+  (Variables|Default|SetPCan false))
