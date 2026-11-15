@@ -1,0 +1,28 @@
+; T37: answers an actor ask in Test for Free with errors.json's test_replies.<error_test>, the body for the
+; provider's format (or 'any'; 'transport' = the request failed), through the real HandleHttp, ParseReply,
+; ErrorKind and ErrorLine, as if the lab had sent it after the retry (Try 1, so no retry).
+(fn ErrorTestFail (Tag Prov)
+  (bind _fmt (CallFunction|ProvField :Prov Prov :Field "format"))
+  (set ETBody "{\"error\":{\"type\":\"error_test\",\"message\":\"no such test reply\"}}")
+  (set ETOk true)
+  (set ETKind "?")
+  (bind _ht (Json|HasField (V ErrTests) (V ErrTest)))
+  (if _ht
+    (bind _tc (Json|GetField (V ErrTests) (V ErrTest)))
+    (set TmpObj2 _tc)
+    (bind _kd (Json|GetField (V TmpObj2) "kind"))
+    (set ETKind _kd)
+    (bind _hf (Json|HasField (V TmpObj2) _fmt))
+    (bind _htr (Json|HasField (V TmpObj2) "transport"))
+    (bind _fb (Json|GetField (V TmpObj2) (select _htr "transport" (select _hf _fmt "any"))))
+    (set ETBody _fb)
+    (set ETOk (not _htr)))
+  (set ETTry 1)
+  (set ETEmpty "")
+  (add (V PendTags) Tag)
+  (add (V PendProv) Prov)
+  (add (V PendTry) (V ETTry))
+  (add (V PendUrl) (V ETEmpty))
+  (add (V PendBody) (V ETEmpty))
+  (print (cat "NHOS: ERROR TEST " (V ErrTest) " " Tag " provider=" Prov " expect=" (V ETKind)))
+  (CallFunction|HandleHttp :Tag Tag :SentAt (Math|DateTime|UTCNow) :TransportOk (V ETOk) :Response (V ETBody)))

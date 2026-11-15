@@ -1,0 +1,13 @@
+; T37: error_test (Local/switches.json) fails one actor ask per turn in Test for Free: the first actor
+; ask of each new show.now in a scene.
+(fn ErrorTestPick (Tag)
+  (if (Utilities|String|IsEmpty (V ErrTest))
+    (return false))
+  (set NoteIdx (Utilities|Array|FindItem (V ActTags) Tag))
+  (if (< (V NoteIdx) 0)
+    (return false))
+  (set TmpStr (cat (str (get (V ActScenes) (V NoteIdx))) " " (get (V ActNows) (V NoteIdx))))
+  (if (streq (V TmpStr) (V ETLastKey))
+    (return false))
+  (set ETLastKey (V TmpStr))
+  (return true))

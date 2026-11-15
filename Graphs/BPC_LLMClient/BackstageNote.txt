@@ -1,0 +1,31 @@
+; T37: when an actor's reply fails after its retry, print NHOS: ERROR <kind> provider=<id> where=turn and
+; put the backstage note on T29's banner, at most once per lab per scene. It goes through the line queue
+; (BPC_LinePlayer.Cue "banner", the call BP_Show.CueBanner makes), so it waits for the lines in front of it.
+; The client finds the line player on its own owner, so BP_Show has no node for it (my person's call,
+; 2026-11-15). The note is for the player's screen only: never the shared log or game_messages.
+(fn BackstageNote (Tag Ok Error)
+  (set NoteIdx (Utilities|Array|FindItem (V ActTags) Tag))
+  (if (< (V NoteIdx) 0)
+    (return))
+  (set NoteKey (cat (V CurProv) " scene " (str (get (V ActScenes) (V NoteIdx)))))
+  (Utilities|Array|RemoveIndex (V ActTags) (V NoteIdx))
+  (Utilities|Array|RemoveIndex (V ActScenes) (V NoteIdx))
+  (Utilities|Array|RemoveIndex (V ActNows) (V NoteIdx))
+  (if Ok
+    (return))
+  (bind _k (CallFunction|ErrorKind :Reason Error))
+  (print (cat "NHOS: ERROR " _k " provider=" (V CurProv) " where=turn"))
+  (if (>= (Utilities|Array|FindItem (V NoteSeen) (V NoteKey)) 0)
+    (print (cat "NHOS: NOTE held " (V NoteKey)))
+    (return))
+  (add (V NoteSeen) (V NoteKey))
+  (bind _lab (CallFunction|LabName :Prov (V CurProv)))
+  (bind _ty (CallFunction|ErrTypeText))
+  (bind _l (CallFunction|ErrorLine :Kind _k :Lab _lab :N 0 :Type _ty))
+  (print (cat "NHOS: NOTE " (V NoteKey) " " _l))
+  (bind _lp (Actor|GetComponentbyClass :self (Components|GetOwner) :ComponentClass "/Game/NHOS/Core/BPC_LinePlayer.BPC_LinePlayer_C"))
+  (Utilities|IsValid _lp
+    (:"Is Valid"
+      (Class|BPCLinePlayer|Cue :self _lp :Kind "banner" :Text _l :Num 0))
+    (:"Is Not Valid"
+      (print "NHOS: NOTE no line player"))))

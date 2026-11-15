@@ -1,3 +1,4 @@
+; T37: the key screen's lines come from errors.json.
 (fn KeyTestResult ()
   (if (not (V KTRun))
     (return false false ""))
@@ -5,7 +6,10 @@
     (return false false ""))
   (set KTRun false)
   (if (== (V KTCount) 0)
-    (return true false "Paste at least one key to test."))
+    (print "NHOS: ERROR no_keys provider= where=keytest")
+    (bind _nk (CallFunction|ErrorLine :Kind "keytest_no_keys" :Lab "" :N 0 :Type ""))
+    (return true false _nk))
   (if (> (len (V KTFails)) 0)
     (return true false (cat "Key test: " (Utilities|String|JoinStringArray (V KTFails) " "))))
-  (return true true (cat "All " (str (V KTCount)) " keys work.")))
+  (bind _ap (CallFunction|ErrorLine :Kind "keytest_all_pass" :Lab "" :N (V KTCount) :Type ""))
+  (return true true _ap))
