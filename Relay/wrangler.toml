@@ -17,9 +17,18 @@ preview_urls = false
 name = "LIMITER"
 class_name = "Limiter"
 
+# One global store for analytics events (POST /event), read by GET /stats. Keeps its data.
+[[durable_objects.bindings]]
+name = "STATS"
+class_name = "Stats"
+
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["Limiter"]
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["Stats"]
 
 [observability]
 enabled = true

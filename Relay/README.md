@@ -8,9 +8,9 @@ There are no keys in this folder, and none may ever go in git. Players who enter
 
 | File | What it is |
 |---|---|
-| `src/index.js` | The Worker: the checks, the forwarding and the `Limiter` Durable Object that counts calls. |
-| `relay.config.json` | The allow-list: providers, endpoints, auth style, secret names, models, `max_tokens` caps and limits. |
-| `wrangler.toml` | The Worker's name, entry point and Durable Object binding. No keys. |
+| `src/index.js` | The Worker: the checks, the forwarding, the `Limiter` Durable Object that counts calls, and the `Stats` Durable Object that stores analytics events. |
+| `relay.config.json` | The allow-list: providers, endpoints, auth style, secret names, models, `max_tokens` caps, limits, and the analytics events and their fields. |
+| `wrangler.toml` | The Worker's name, entry point and Durable Object bindings. No keys. |
 | `.dev.vars.example` | The secret names, for running it locally. Copy it to `.dev.vars`. Git ignores `.dev.vars`. |
 | `package.json`, `.node-version` | Pin wrangler (4.162.0) and Node 22 for the Cloudflare build. |
 | `test/curl-tests.sh` | The curl tests. |
@@ -45,11 +45,11 @@ There are no keys in this folder, and none may ever go in git. Players who enter
 
 | `error.type` | When | HTTP status |
 |---|---|---|
-| `bad_request` | Not JSON, wrong content type, too large, an extra field, a model not on the allow-list, `max_tokens` missing or over the cap, streaming, non-text content (images, tools) | 400 |
+| `bad_request` | Not JSON, wrong content type, too large, an extra field, a model not on the allow-list, `max_tokens` missing or over the cap, streaming, non-text content (images, tools); for `/event`, an event or field not on its allow-list | 400 |
 | `unknown_provider` | A provider id that isn't in the config | 400 |
 | `provider_unavailable` | The provider has no secret set, or no models listed | 503 |
 | `session_limit` | This session id has used its calls for the day | 429 |
-| `player_limit` | This player's address has used its calls for the day | 429 |
+| `player_limit` | This player's address has used its calls (or, for `/event`, its events) for the day | 429 |
 | `budget_used_up` | Everyone together used the day's calls, or this provider used its tokens for the day | 429 |
 | `provider_error` | The provider answered with an error or didn't answer | 502 |
 | `relay_error` | A bug in the relay | 500 |
@@ -58,6 +58,69 @@ There are no keys in this folder, and none may ever go in git. Players who enter
 The game can't read HTTP status codes (the `HttpBlueprint` nodes don't give them), so it must branch on `error.type`. The statuses are for curl and logs.
 
 **`GET /health`** returns `{ "ok": true, "providers": ["anthropic"], "budget_left": true }`. `providers` lists the providers that can serve calls right now, so the game knows which personas can take AI seats through the relay. It costs no tokens. Since T21 the game calls it when the player clicks **Play via Relay**: if it doesn't answer, `budget_left` is false or fewer than 3 providers are listed, the game shows its "AI service unavailable" screen, which offers key entry and Test for Free. In the middle of a show, `session_limit`, `player_limit`, `budget_used_up` and `provider_unavailable` (and a relay that stops answering) bring up the same screen with `error.message`.
+
+## Analytics events (`POST /event`, `GET /stats`)
+
+Since T67 the relay also collects the game's play stats, because it is the one server we run. The relay itself only sees Play via Relay: Test for Free makes no network call to it for asks, and Play with my own API keys calls the providers directly. So the game reports for itself, in every mode (T68 and T69 add the sending).
+
+**`POST /event`** with `content-type: application/json` and this body (2 KB at most):
+
+```json
+{
+	"player": "9f1c2a7e4b3d4e6fa0b1c2d3e4f5a6b7",
+	"session": "3f2a9c0e8b7d4e1fa6c5b2d9e0f1a2b3",
+	"build": "0.9",
+	"mode": "free",
+	"event": "phase",
+	"fields": { "phase": "free_talk", "scene": 2 },
+	"test": false
+}
+```
+
+- `player`: 32 hex digits, an anonymous id the game makes on its first launch. Stored lower case.
+- `session`: 8 to 64 letters, digits, `-` or `_`. The show's session id, or one made at launch for events before a show.
+- `build` (up to 20 characters), `mode` (`free`, `relay`, `keys` or `""`), `fields` and `test` (true or false) may be left out.
+- `event` and its `fields` must be on the allow-list in `relay.config.json` (`events.allowed`). Each field has a type and a cap (a string's length, a number's range), and every field may be left out. Anything else is a `bad_request` in the usual error shape: an unknown event, an extra field, a wrong type, a number out of range, a string over its cap, a body over 2 KB.
+
+| Event | Fields |
+|---|---|
+| `launch` | `launches` (1 to 1,000,000), `first_seen` (up to 10 characters, the UTC date) |
+| `mode`, `show_start`, `analytics_off` | none |
+| `phase` | `phase` (40), `scene` (0 to 99) |
+| `show_end` | `result` (20), `reason` (40) |
+| `calls` | `provider` (20), `model` (60), `calls`, `failed` (0 to 100,000), `tokens_in`, `tokens_out` (0 to 100,000,000) |
+| `error` | `kind` (40) |
+| `unsupported` | `words` (80), `source` (10), `phase` (40) |
+
+The answer is `{"ok": true}`. An event never calls a provider and never counts against the call limits. A show's drop-off point is the last `phase` it sent, so there is no quit event (the game can't send anything when its window closes).
+
+**What is stored:** the UTC time, the anonymous player id, the session id, the build, the mode, the event and its fields (phases, call counts and tokens per provider and model, error kinds, a few words naming an unsupported action), the `test` flag, and the relay's day-salted hash of the address (`hashIp`, the same one the call limits use), which never leaves the store. Never the address, typed text, keys, names or anything from the player's accounts or machine.
+
+**The store** is a SQLite Durable Object, `Stats` (binding `STATS`, migration `v2`), apart from the `Limiter`, which clears itself every UTC day. `Stats` keeps every event until someone deletes it. It fits the free Workers plan: each event writes about two rows (the event and the address's count), against 100,000 rows written a day, and the 5 GB of storage holds millions of events. Why this store and not Workers Analytics Engine is in `Docs/tasks/T67.md`, under "Findings".
+
+**The limit:** `limits.ip_daily_events` (500 a day per address, about 20 shows), apart from the call counts. Events with `"test": true` are counted apart from real ones, so tests never use up a player's allowance. A refused event answers `player_limit`, like a call. Override the limit with the var `IP_DAILY_EVENTS`, the same way as the call limits.
+
+**`GET /stats`** answers the stored events, oldest first, a page at a time: `{"ok": true, "events": [{"id", "ts", "player", "session", "build", "mode", "event", "fields", "test"}], "next": <id or null>}`. Parameters: `since=YYYY-MM-DD`, `test=1` (include test events; they are left out without it), `after=<id>` (the `next` of the page before) and `limit` (1 to 5,000, 2,000 by default). It needs `Authorization: Bearer <STATS_KEY>`. Without the right key, or when the Worker has no `STATS_KEY` of 16 characters or more, it answers `not_found`, like any unknown path.
+
+### The report
+
+`Tools/analytics_report.py` (Python 3.10+, no packages) reads `/stats` and prints the players (and how many came back: `launches` over 1, or seen on two or more days), players and shows per mode, the drop-off (shows that reached each phase, the `show_end` results, and the last phase of shows that never ended), calls per provider and model with failures and tokens, errors by kind, and the most common unsupported actions.
+
+```bash
+python Tools/analytics_report.py
+```
+
+```bash
+python Tools/analytics_report.py --since 2026-11-20 --test
+```
+
+`--since` starts at that UTC day. `--test` adds the test events, which are left out otherwise. It reads the key from `Local/stats.json` (an example is in `Docs/stats.example.json`), never from `Local/llm_key.json`, which ships next to the packaged game. The relay address comes from that file's `relay`, or else from `relay` in `Content/NHOS/Data/llm.json`.
+
+**Setting up the key (once):**
+
+1. `python Tools/analytics_report.py --new-key` writes `Local/stats.json` with a fresh 64-character key. It prints no key.
+2. Open `Local/stats.json`, copy `stats_key`, and in the Worker's **Settings > Variables and secrets > Add variable**, name it `STATS_KEY`, tick **Secret**, paste the key and click **Add variable and deploy**.
+3. Copy the same `Local/stats.json` to each machine that runs the report. Never commit it or paste the key in chat.
 
 ## Limits
 
@@ -71,10 +134,12 @@ All counts are for one UTC day, and a new day clears them. They live in one Dura
 | Tokens per provider | `providers.<id>.daily_tokens` | 8,000,000 | A show is about 300,000 tokens across all seats. Input and output count the same. |
 | `max_tokens` per call | `providers.<id>.max_tokens_cap` | 2000 | The game asks for 2000 (`Content/NHOS/Data/llm.json`). |
 | Request size | `max_body_bytes` | 64 KB | The largest ask is about 22 KB. |
+| Analytics events per player address | `limits.ip_daily_events` | 500 | About 20 shows. Test events are counted apart. See "Analytics events". |
+| Event size | `events.max_body_bytes` | 2 KB | An event is a few hundred bytes. |
 
 These limits are not a spending cap. **Set a hard monthly spending limit at every provider's console too.** That is the real cap if something goes wrong.
 
-To change a limit without editing the config, add a Text var in the dashboard (**Settings > Variables and Secrets**): `SESSION_CALLS`, `IP_DAILY_CALLS`, `DAILY_CALLS` or `DAILY_TOKENS` (one value for every provider). Delete the var to go back to the config value. Locally, pass the same names to `wrangler dev` with `--var NAME:value`.
+To change a limit without editing the config, add a Text var in the dashboard (**Settings > Variables and Secrets**): `SESSION_CALLS`, `IP_DAILY_CALLS`, `DAILY_CALLS`, `DAILY_TOKENS` (one value for every provider) or `IP_DAILY_EVENTS`. Delete the var to go back to the config value. Locally, pass the same names to `wrangler dev` with `--var NAME:value`.
 
 ## The allow-list (`relay.config.json`)
 
@@ -150,7 +215,10 @@ bash Relay/test/curl-tests.sh https://nhos-relay.<account subdomain>.workers.dev
 python Relay/test/game_shape.py https://nhos-relay.<account subdomain>.workers.dev
 ```
 
-The curl tests check `/health`, one free call per provider in the config, eleven bad request shapes, an unknown provider, that no error text names a provider, the free session limit (151 calls, a few seconds) and that a free vote picks a name from `options`. `game_shape.py` sends a request shaped like the game's to every provider and checks that the reply parses with every schema field.
+The curl tests check `/health`, one free call per provider in the config, eleven bad request shapes, an unknown provider, that no error text names a provider, the free session limit (151 calls, a few seconds) and that a free vote picks a name from `options`. Since T67 they also check analytics events, every one with `"test": true`: three good events are taken, fourteen bad shapes are refused with the right reason, `GET /event` is not a route, and `/stats` answers `not_found` without the key or with a wrong one.
+
+- **Reading events back** needs the key: the script reads `Local/stats.json` from the repo, or the file you name with `--stats-config <path>`. It then checks that the good events are stored, that the address hash is never read back, that test events are left out without `test=1`, and that `Tools/analytics_report.py` shows the test event with `--test` and not without. With no key file, those checks are skipped (the summary line counts them).
+- **The event limit** is per address per UTC day, so a test that trips it can run only once a day. It runs only with `--events-limit <n>`, where `n` is the relay's `IP_DAILY_EVENTS`. Against the deployed relay: add a Text var `IP_DAILY_EVENTS` = `3` with **Add variable and deploy**, run `bash Relay/test/curl-tests.sh <address> --events-limit 3`, then delete the var. That trips only this address's count of test events for the day. Locally: `npx wrangler dev --var IP_DAILY_EVENTS:5`, then `--events-limit 5`. `game_shape.py` sends a request shaped like the game's to every provider and checks that the reply parses with every schema field.
 
 **Real mode: spends tokens.** Add `--real` to either script. `game_shape.py --real` makes one call per provider that has a key. `curl-tests.sh --real` also trips the real limits, so first lower them:
 
@@ -168,7 +236,7 @@ npm install
 cp .dev.vars.example .dev.vars
 ```
 
-Paste the keys you have into `Relay/.dev.vars` (git ignores it), then start it with low limits and run the tests in a second terminal:
+Paste the keys you have into `Relay/.dev.vars` (git ignores it). For the analytics tests, also add a line `STATS_KEY=` with any local key of 16 characters or more, and put the same key in a stats.json whose `relay` is `http://127.0.0.1:8787` (pass it with `--stats-config`). Then start it with low limits and run the tests in a second terminal:
 
 ```bash
 npm run dev:limits
