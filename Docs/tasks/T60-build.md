@@ -2,7 +2,7 @@
 
 Back to [T60](T60.md). A PC prep session wrote this on 2026-11-15, without the editor. It is written against **`noHumansOnSet` at `d2d4cdc` (T52)**, with `BP_Show`, `prompts.json`, `llm.json` and `Tools/check_prompts.py` **as T54 and T55 leave them** ([T54-build.md](T54-build.md), [T55-build.md](T55-build.md)). T37 (`1d8f9ed`, on `origin` as this sheet was pushed) changed `BPC_LLMClient` and its `Graphs/` files; part 2 was checked against it. T57, T58, T62 to T66, T38 and T34 also land before T60 and change `prompts.json`, `check_prompts.py` and `BP_Show`. So every place below is named by its text first; line numbers are "at `d2d4cdc`". Find each line by its text before you change it.
 
-The design doc was read, not changed: Rules tab rev 42 (the paragraph after The Cut: "The win screen shows every AI's reasoning, then reveals their rivals. If you're cut, you lose: ... the lose screen shows every AI's reasoning about you, names the reason that got the most votes, and offers an instant restart."; the Onboarding table's Lose screen row, on screen "'YOU: HUMAN', then each AI's reason", and its Win screen row; "The lose screen does the most teaching"), Bot Prompts rev 82 (the opening-prompt block already says "Silence is evidence, and so is a line that sounds too polished"; the Rivals table) and Tech & Build rev 25 (build list: "Win and lose screens with the AIs' reasoning (the top reason on a loss, the rivals on a win), plus instant restart"). The reply format ("How to reply" in `prompts.json` `game`) is not in the doc, so the new `tell` field needs **no doc edit**. Question 3 may change the lose screen's title to the doc's words; that is a game change, not a doc change.
+The design doc was read, not changed: Rules tab rev 42 (the paragraph after The Cut: "The win screen shows every AI's reasoning, then reveals their rivals. If you're cut, you lose: ... the lose screen shows every AI's reasoning about you, names the reason that got the most votes, and offers an instant restart."; the Onboarding table's Lose screen row, on screen "'YOU: HUMAN', then each AI's reason", and its Win screen row; "The lose screen does the most teaching"), Bot Prompts rev 82 (the opening-prompt block already says "Silence is evidence, and so is a line that sounds too polished"; the Rivals table) and Tech & Build rev 25 (build list: "Win and lose screens with the AIs' reasoning (the top reason on a loss, the rivals on a win), plus instant restart"). The reply format ("How to reply" in `prompts.json` `game`) is not in the doc, so the new `tell` field needs **no doc edit**. My person kept the lose title "YOU'RE CUT" (question 3), which differs from the doc's Lose screen row; see part 9.
 
 ## In short
 
@@ -20,7 +20,9 @@ The design doc was read, not changed: Rules tab rev 42 (the paragraph after The 
 
 ## Questions for my person
 
-Ask each with the multiple-choice tool, one at a time, before part 1. The recommended answer is first.
+My person has answered all four (see "Answers" below). The recommended answer is first in each.
+
+**Answers (my person, 2026-11-15, to the prep session):** 1: **client + free mode**, as recommended (widen T60's Touches to `BPC_LLMClient` and `free_mode.json`). 2: **the eight tells**, as recommended, with their lines and order. 3: **keep "YOU'RE CUT"** (not the recommendation): the lose title doesn't change, so part 3i step 2 is skipped. 4: **the rivals on each card**, as recommended. Don't ask again; copy these answers under "Findings" in `T60.md`. The `free_mode.json` push OK and the paid run OK are still asked in the T60 session (part 0 step 2, part 7).
 
 1. **How the tell gets from the reply to `BP_Show`.** The reply reaches `BP_Show` through `BPC_LLMClient`'s `OnAnswer`, which passes only speech, vote, reason, pass and the actions. T60's Touches don't name the client.
    - **Widen T60's Touches to `BPC_LLMClient` and `free_mode.json` (Recommended).** The client reads `tell` into a new `RTell` (two node edits, `ParseFields` and `ClearReply`); free mode's vote phase gets a `tells` list, one per pre-written reason, and `FreeReply` sets `RTell` from it. `BP_Show` reads `LLMClient.RTell` when it stores a vote. Test for Free then names a top reason that fits the reasons on screen. Costs: the `BPC_LLMClient` lock (the Mac's T37 held it and pushed `1d8f9ed`; check `git lfs locks`), the PC's editor must have T37's `BPC_LLMClient` loaded (closed, pulled and reopened, as the dispatcher's ledger says), and the push of `free_mode.json` redeploys the relay, so it needs my person's OK typed in the T60 session (T58 found the same). The relay's code doesn't change and its free mode sends no `tell`, which the checker allows for `--free`.
@@ -57,7 +59,7 @@ The T60 session shows this list to my person when it closes the task.
 ## 0. Before you start (after T54 and T55 are pushed)
 
 1. `git log --oneline -15` shows T54, T55 and the chain tasks the plan puts before T60. `git lfs locks` shows no lock on `BP_Show.uasset`, `WBP_EndScreen.uasset` or `WBP_EndCard.uasset` (and, with question 1's first answer, `BPC_LLMClient.uasset`). Claim T60 and lock those assets.
-2. **Ask the four questions** above. With question 1's first answer, change T60's **Touches** in `Docs/Plan.md` in a `Plan: T60 touches the LLM client and free mode` commit: add `Content/NHOS/Core/BPC_LLMClient.uasset` (`ParseFields`, `ClearReply`, `FreeReply`), `Content/NHOS/Data/free_mode.json` (the vote phase's `tells`) and `Content/NHOS/Data/tells.json` (new). With the second answer, add only `tells.json`. Then ask for the `free_mode.json` OK now, with the multiple-choice tool: "Push free_mode.json with T60 (Recommended)": the push redeploys the relay, but no reply the relay sends changes; or "Not now" (then T60 pushes without `free_mode.json` and waits, as T55 did).
+2. **The four questions are answered** (above). With question 1's first answer (my person's), change T60's **Touches** in `Docs/Plan.md` in a `Plan: T60 touches the LLM client and free mode` commit: add `Content/NHOS/Core/BPC_LLMClient.uasset` (`ParseFields`, `ClearReply`, `FreeReply`), `Content/NHOS/Data/free_mode.json` (the vote phase's `tells`) and `Content/NHOS/Data/tells.json` (new). With the second answer, add only `tells.json`. Then ask for the `free_mode.json` OK now, with the multiple-choice tool: "Push free_mode.json with T60 (Recommended)": the push redeploys the relay, but no reply the relay sends changes; or "Not now" (then T60 pushes without `free_mode.json` and waits, as T55 did).
 3. **Read the findings** of `T54.md` (the `ShowEndScreen` edits: the win subtitle from `WinLine`, `reason=` in `SHOW END`), `T55.md` (`ShowEndScreen`'s ", after the Director broke a tie." removed; any branch on how a cut happened) and of T57, T58, T34 for anything they changed in `ShowEndScreen`, `StoreVote`, `RecordVotes` or the end screen widgets. T58: last words are in the shared log with `when` "scene n, last word"; the cards list votes, not log lines, so nothing changes.
 4. `python Tools/check_prompts.py --offline` passes before you start.
 5. **Survey, in this order** (each a separate `call_tool`; tool calls stop at about 120 s; read only, never write a read-back):
@@ -235,7 +237,7 @@ and store `(V TellNow)`. `HandleHttp` sets `HText` to "" before each parse and t
 | `RevealRivals(Screen)` | new | — | DSL write (3f) |
 | `EndReveal(Screen)` | new | — | DSL write (3g) |
 | `StoreVote` | none | one `StoreTell` call | Node edit (3h) |
-| `ShowEndScreen` | none (T54, T55 edited nodes) | one `EndReveal` call; the lose title (question 3) | Node edits (3i) |
+| `ShowEndScreen` | none (T54, T55 edited nodes) | one `EndReveal` call | Node edit (3i) |
 | `StoreClosing`, `RecordVotes` | none | nothing (survey only) | — |
 | `RunCue` | `RunCue.txt` | nothing: the `"end"` cue runs `EndCheer` and `ShowEndScreen` | — |
 | `RestartShow` | none | nothing: it removes the end screen and starts a new show; `StoreTell` clears on a new `ShowNum` | — |
@@ -420,10 +422,10 @@ Node edit, no file. Put a `CallFunction|StoreTell` node in the exec chain right 
 T54 and T55 edited it; read their findings first. Keep every edit small.
 
 1. **The reveal call.** Put a `CallFunction|EndReveal` node in the exec chain after the `AddCard` loop's `Completed` and before the `NHOS: SHOW END` print, so `TOP REASON` and `RIVALS` print first. Its `Screen` pin takes the end screen: the variable the `Create Widget` result is stored in, or the `Create Widget` node's return value (survey 1). It may go before or after `Add to Viewport`; the widget is built either way.
-2. **The lose title** (question 3, first answer): the literal "YOU'RE CUT" in the `Setup` call's `Title` source becomes "YOU: HUMAN". "YOU WIN" stays (T54's answer 1).
+2. **The lose title: no change** (question 3: my person kept "YOU'RE CUT"). "YOU WIN" stays too (T54's answer 1).
 3. **Keep:** T54's win subtitle (`WinLine`), the lose subtitle, ` reason=` in the `SHOW END` line (the checker reads it), and `Phase` = "end". If a branch on how a cut happened is still there (T55's knock-on), it can go.
 
-Write each edit under "Findings", with the old and new title.
+Write the edit under "Findings".
 
 Compile `BP_Show` with warnings as errors; the editor log after the compile has no `LogBlueprint: Error`. Close every game window before you save (T53).
 
@@ -772,7 +774,7 @@ Run B with `"ai_seats": 3` and `-log=T60four.log`: `RIVALS` names only the three
 
 PIE in a 1600 × 900 floating window, `Local/switches.json` as in run A, then as in run B (autoplay skips the title; `mode` free is Test for Free). Wait for `NHOS: SHOW END` in the log, then `SlateInspectorToolset.Screenshot` (T33). If the stage waits on **See the results** (the gold `ContinueButton`, T14), click it through the Slate inspector and wait for `NHOS: END screen shown`. Save them in `Saved/T60/shots/` (not in git):
 
-1. `lose_p16.png`: the red plate with the title (question 3), the subtitle, the four cards with each AI's votes and reasons, the top reason in gold under the cards, Play Again and Quit. No "Rival" row on any card.
+1. `lose_p16.png`: the red plate with "YOU'RE CUT", the subtitle, the four cards with each AI's votes and reasons, the top reason in gold under the cards, Play Again and Quit. No "Rival" row on any card.
 2. `win_p16.png`: the gold plate, T54's subtitle, each card with its "Rival" row at the bottom, no reason line.
 3. `lose_p12.png` and `win_p12.png`: the same at 1280 × 720. The reason line wraps inside the screen, Play Again stays on screen, and the cards scroll if they must; nothing clips or overlaps.
 4. `win_four_p16.png` (run C's switches): three cards, one rival with "(not in this show)".
@@ -814,4 +816,4 @@ PIE, Test for Free, autoplay off, a 1600 × 900 floating window, clicks and typi
 - **The relay's free mode** sends no `tell` (part 1d). A later task that pushes `Relay/` with a deploy OK can add `tell: ""` to `freeReplyObject` and, in its vote branch, `FREE`'s `tells` at the reason's index; then `shape_fails` can require `tell` again.
 - **`Docs/ItchPage.md`** (T54's line): "Either way, the end screen shows how each AI voted and why." It could add "and, if you're caught, the main reason they caught you". Not in T60's Touches; tell my person.
 - **`Docs/Submission.md`'s trailer shot list** names the ending shot; a lose screen with its top reason, or a win with the rivals, is a stronger last shot. Tell my person.
-- **The design doc** needs nothing. If my person keeps "YOU'RE CUT" (question 3), the doc's Lose screen row still says "YOU: HUMAN"; show my person that difference rather than editing the doc.
+- **The design doc** needs nothing from T60's own work. My person kept "YOU'RE CUT" (question 3), so the doc's Lose screen row ("'YOU: HUMAN', then each AI's reason") differs from the game. Whether the doc's row should say "YOU'RE CUT" is my person's call; mention it in the closing summary, and edit the doc only with their OK (the build note "The design doc follows the game").
