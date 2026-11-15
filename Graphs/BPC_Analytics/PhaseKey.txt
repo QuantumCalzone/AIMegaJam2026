@@ -1,0 +1,19 @@
+; T68: the analytics key of a phase header (BP_Show.CueHeader's text, as T53 and T58 left them):
+; "THE SCENE: SCENE 2, TURN 1 OF 3" -> turn_1, "FREE TALK: SCENE 2, ROUND 2 OF 2" -> free_talk_2,
+; "LAST WORD: SCENE 2" -> last_word, "THE CUT: SCENE 2" -> vote, "REACTIONS: SCENE 2" -> reactions,
+; "THE SHOW IS OVER" -> closing. Any other header ("SCENE 2: FREE TALK IS OVER") is no phase: "".
+; A task that renames a header changes this table too (and BPC_ShowAudio.PhaseKey, T71).
+(fn PhaseKey (Header Turn Round)
+  (if (Utilities|String|StartsWith :SourceString Header :InPrefix "LAST WORD")
+    (return "last_word"))
+  (if (Utilities|String|Contains :SearchIn Header :Substring ", TURN ")
+    (return (cat "turn_" (str Turn))))
+  (if (Utilities|String|Contains :SearchIn Header :Substring ", ROUND ")
+    (return (cat "free_talk_" (str Round))))
+  (if (Utilities|String|StartsWith :SourceString Header :InPrefix "THE CUT: SCENE")
+    (return "vote"))
+  (if (Utilities|String|StartsWith :SourceString Header :InPrefix "REACTIONS")
+    (return "reactions"))
+  (if (Utilities|String|StartsWith :SourceString Header :InPrefix "THE SHOW IS OVER")
+    (return "closing"))
+  (return ""))

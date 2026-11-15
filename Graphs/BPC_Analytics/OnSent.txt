@@ -1,0 +1,16 @@
+; T68: the relay's answer to one event, from BPC_LLMClient.HandleHttp (its event- block). Only a failure
+; matters to the game, and it only prints.
+(fn OnSent (Tag TransportOk Response)
+  (set TmpStr (Utilities|String|RightChop :SourceString Tag :Count 6))
+  (if (not TransportOk)
+    (print (cat "NHOS: ANALYTICS fail " (V TmpStr) " no reply " (Utilities|String|GetSubstring :SourceString Response :StartIndex 0 :Length 120)))
+    (return))
+  (bind (_o _ok) (Json|LoadJsonfromString Response))
+  (if (not _ok)
+    (print (cat "NHOS: ANALYTICS fail " (V TmpStr) " not JSON " (Utilities|String|GetSubstring :SourceString Response :StartIndex 0 :Length 120)))
+    (return))
+  (bind _hk (Json|HasField _o "ok"))
+  (if (not _hk)
+    (print (cat "NHOS: ANALYTICS fail " (V TmpStr) " " (Utilities|String|GetSubstring :SourceString Response :StartIndex 0 :Length 160)))
+    (return))
+  (print (cat "NHOS: ANALYTICS ok " (V TmpStr))))

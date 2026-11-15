@@ -1,0 +1,55 @@
+; T68: settings (llm.json relay and build), the analytics and autoplay switches, whether this is a packaged
+; build, and the player's save. Builds only (my person's call): only a packaged build sends, unless the switch
+; is "test". It runs once per level load, from Launch (BP_Show.ShowTitle); the other entry points call it if it hasn't.
+; A packaged build is one whose content folder has Paks/ (the editor's project folder never has one).
+; The save is loaded by LoadSave and made by NewSave: a cast ends the flow in the DSL (T45), so each sits in its
+; own function, and HaveSave says whether Save holds one.
+(fn Init ()
+  (set Ready true)
+  (bind _cl (Actor|GetComponentbyClass :self (Components|GetOwner) :ComponentClass "/Game/NHOS/Core/BPC_LLMClient.BPC_LLMClient_C"))
+  (set Client _cl)
+  (set LaunchId (Utilities|String|ToLower (Guid|ToString(Guid) (Guid|NewGuid))))
+  (set Url "")
+  (set Build "")
+  (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectContentDirectory) "NHOS/Data/llm.json"))))
+  (if _ok
+    (bind _hr (Json|HasField _o "relay"))
+    (if _hr
+      (bind _r (Json|GetField _o "relay"))
+      (set TmpStr _r)
+      (if (not (Utilities|String|IsEmpty (V TmpStr)))
+        (set Url (cat (V TmpStr) "/event"))))
+    (bind _hb (Json|HasField _o "build"))
+    (if _hb
+      (bind _b (Json|GetField _o "build"))
+      (set Build _b)))
+  (set Switch "")
+  (set AutoOn false)
+  (bind (_so _sok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectDirectory) "Local/switches.json"))))
+  (if _sok
+    (bind _ha (Json|HasField _so "analytics"))
+    (if _ha
+      (bind _sa (Json|GetField _so "analytics"))
+      (set Switch _sa))
+    (bind _hp (Json|HasField _so "autoplay"))
+    (if _hp
+      (bind _sp (Json|GetField _so "autoplay"))
+      (set AutoOn _sp)))
+  (set Test (streq (V Switch) "test"))
+  (set Packaged (Utilities|Paths|DirectoryExists (cat (Utilities|Paths|GetProjectContentDirectory) "Paks")))
+  (set SwitchOk (or (V Test) (and (V Packaged) (and (not (streq (V Switch) "off")) (not (V AutoOn))))))
+  (set HaveSave false)
+  (CallFunction|LoadSave)
+  (if (not (V HaveSave))
+    (CallFunction|NewSave))
+  (set PlayerId "")
+  (set PlayerOn true)
+  (if (V HaveSave)
+    (set PlayerId (Class|SGPlayer|GetPlayerId :self (V Save)))
+    (set PlayerOn (Class|SGPlayer|GetAnalyticsOn :self (V Save))))
+  (set Active (and (V SwitchOk) (V PlayerOn)))
+  (set TmpStr (cat " packaged=" (Utilities|String|ToString(Boolean) (V Packaged))))
+  (if (V Active)
+    (print (cat "NHOS: ANALYTICS player " (V PlayerId) " test=" (Utilities|String|ToString(Boolean) (V Test)) " build=" (V Build) " relay=" (Utilities|String|ToString(Boolean) (not (Utilities|String|IsEmpty (V Url)))) (V TmpStr)))
+    (else
+      (print (cat "NHOS: ANALYTICS off why=" (select (V SwitchOk) "player" (select (streq (V Switch) "off") "switch" (select (V Packaged) "autoplay" "editor"))) " player=" (V PlayerId) (V TmpStr))))))

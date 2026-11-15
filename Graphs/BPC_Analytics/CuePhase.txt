@@ -1,0 +1,14 @@
+; T68: queues a phase's analytics event in the line queue, right before its header (BP_Show.CueHeader calls
+; this first). The key is worked out now, while the show's counters are right; the event goes out when the
+; queue reaches it (RunCue's "stat" branch -> SendPhase), so it is sent when the header shows on screen.
+; It is queued even when analytics is off, so the queue does the same thing on and off.
+(fn CuePhase (Header Turn Round Scene)
+  (bind _k (CallFunction|PhaseKey :Header Header :Turn Turn :Round Round))
+  (if (Utilities|String|IsEmpty _k)
+    (return))
+  (bind _lp (Actor|GetComponentbyClass :self (Components|GetOwner) :ComponentClass "/Game/NHOS/Core/BPC_LinePlayer.BPC_LinePlayer_C"))
+  (Utilities|IsValid _lp
+    (:"Is Valid"
+      (Class|BPCLinePlayer|Cue :self _lp :Kind "stat" :Text _k :Num Scene))
+    (:"Is Not Valid"
+      (print "NHOS: ANALYTICS no line player"))))

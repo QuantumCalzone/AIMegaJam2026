@@ -1,0 +1,3 @@
+; T68: the title's Play stats toggle (BPC_Analytics.SetOn).
+(fn SetOn (On)
+  (set AnalyticsOn On))
