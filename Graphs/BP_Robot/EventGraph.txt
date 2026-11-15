@@ -1,5 +1,8 @@
 (event EventBeginPlay
-  (CallFunction|InitHome))
+  (CallFunction|InitHome)
+  ; T75: the emotion parts, then the emote_test switch.
+  (CallFunction|FaceSetup)
+  (CallFunction|EmoteTestInit))
 
 (event EventTick (DeltaSeconds)
   (Variables|Default|SetClock (+ (Variables|Default|GetClock) DeltaSeconds))
@@ -27,8 +30,11 @@
       ; T79: the hover lifts the whole Rig.
       (bind _z (+ (Variables|Default|GetHoverZ) (+ (* _st (Variables|Default|GetBobAmp)) (+ (select _talk (* (Math|Float|Absolute(Float) _w13) 9.0) 0.0) (select _cheer (* (Math|Float|Absolute(Float) (Math|Trig|Sin(Radians) (* _c 9.0))) 26.0) 0.0)))))
       (bind _yaw (select _shake (* (Math|Trig|Sin(Radians) (* _c 45.0)) 14.0) 0.0))
-      (Transformation|SetRelativeLocation :self (Variables|Default|GetRig) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z _z))
-      (Transformation|SetRelativeRotation :self (Variables|Default|GetRig) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw _yaw))
+      ; T75: the gesture's offsets (GestTick) ride on the hover, the bob, the talking bounce, the cheer and the shake.
+      (Transformation|SetRelativeLocation :self (Variables|Default|GetRig) :NewLocation (Math|Vector|MakeVector :X (V GX) :Y 0.0 :Z (+ _z (V GZ))))
+      (Transformation|SetRelativeRotation :self (Variables|Default|GetRig) :NewRotation (Math|Rotator|MakeRotator :Roll (V GRoll) :Pitch (V GPitch) :Yaw (+ _yaw (V GYaw))))
+      (bind _gs (+ 1.0 (V GScale)))
+      (Transformation|SetRelativeScale3D :self (Variables|Default|GetRig) :NewScale3D (Math|Vector|MakeVector :X _gs :Y _gs :Z _gs))
       (bind _arm (select _cheer 150.0 (select _talk (+ 30.0 (* _w13 22.0)) (+ 6.0 (* _st 4.0)))))
       ; T79: OpenAI presses its hands together at rest; talking or cheering opens them as before. On these pivots a positive roll swings the right arm inward, so the flap and the cheer now roll each arm outward (T46 rolled them into the body).
       (Variables|Default|SetFold (Math|Interpolation|FInterpTo (Variables|Default|GetFold) (select (or _talk _cheer) 0.0 1.0) DeltaSeconds 6.0))
@@ -37,6 +43,10 @@
       (Transformation|SetRelativeRotation :self (Variables|Default|GetArmPivotL) :NewRotation (Math|Rotator|MakeRotator :Roll (- _arm _fr) :Pitch _fp :Yaw 0.0))
       (Transformation|SetRelativeRotation :self (Variables|Default|GetArmPivotR) :NewRotation (Math|Rotator|MakeRotator :Roll (- _fr _arm) :Pitch _fp :Yaw 0.0))
       (bind _m (select _talk (Math|Float|Absolute(Float) _w13) 0.0))
-      (Transformation|SetRelativeScale3D :self (Variables|Default|GetMouth) :NewScale3D (Math|Vector|MakeVector :X 0.02 :Y (+ 0.1 (* _m 0.12)) :Z (+ 0.02 (* _m 0.07))))
+      ; T75: the talking stretch rides on the emotion's mouth (MouthNow), in units of the resting mouth.
+      ; With no emotion, MouthNow is MouthRest (0.02, 0.1, 0.02), so this is T46's stretch exactly.
+      (bind _mw (+ (.y (V MouthNow)) (* _m (* 1.2 (.y (V MouthRest))))))
+      (Transformation|SetRelativeScale3D :self (Variables|Default|GetMouth) :NewScale3D (Math|Vector|MakeVector :X (.x (V MouthNow)) :Y _mw :Z (+ (.z (V MouthNow)) (* _m (* 3.5 (.z (V MouthRest)))))))
+      (CallFunction|PlaceCorners :W _mw)
       (if (Utilities|String|EqualExactly(String) (Variables|Default|GetPersonaId) "worrier")
         (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetWarnDome) :ParameterName "Glow" :ParameterValue (+ 7.0 (* (Math|Trig|Sin(Radians) (* _c 6.0)) 6.0)))))))

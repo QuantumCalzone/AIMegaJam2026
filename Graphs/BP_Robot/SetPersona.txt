@@ -1,4 +1,6 @@
 (fn SetPersona (Id)
+  ; T75: end any emotion on the old face first.
+  (CallFunction|EmoteStop)
   (Variables|Default|SetPersonaId Id)
   (Variables|Default|SetPhase (* (Math|Random|RandomFloat) 6.28))
   (bind _tag (Utilities|String|StringToName Id))
@@ -40,4 +42,6 @@
   (bind _hs (select _p 0.9 (select _h 1.1 1.0)))
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetHeadSocket) :NewScale3D (Math|Vector|MakeVector :X _hs :Y _hs :Z _hs))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetBackSocket) :NewLocation (select _v (Math|Vector|MakeVector :X -30.0 :Y 0.0 :Z 60.0) (select _w (Math|Vector|MakeVector :X -34.0 :Y 0.0 :Z 52.0) (select _o (Math|Vector|MakeVector :X -33.0 :Y 0.0 :Z 62.0) (select _p (Math|Vector|MakeVector :X -16.0 :Y 0.0 :Z 72.0) (Math|Vector|MakeVector :X -26.0 :Y 0.0 :Z 70.0))))))
+  ; T75: read the new persona's resting face, after the eyes are set.
+  (CallFunction|FaceRest)
   (CallFunction|ResetLook))

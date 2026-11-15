@@ -1,0 +1,10 @@
+; T38: one of the fade's ten steps. ShowLine, ShowTyping and HideNow set Fading false, so a pending step does nothing.
+(fn FadeStep ()
+  (if (not (V Fading))
+    (return))
+  (set Alpha (- (V Alpha) 0.1))
+  (Widget|SetRenderOpacity :self (Variables|WBP_SpeechBubble|GetBubbleBox) :InOpacity (Math|Float|Max(Float) (V Alpha) 0.0))
+  (if (> (V Alpha) 0.01)
+    (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "FadeStep" :Time (V FadeStepTime) :bLooping false)
+    (else
+      (CallFunction|HideNow))))

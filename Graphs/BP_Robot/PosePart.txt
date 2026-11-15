@@ -1,0 +1,5 @@
+; T75: puts a face part at Loc, turned as Rot plus Roll (about its own forward axis), at Scale.
+(fn PosePart (P Loc Rot Roll Scale)
+  (Transformation|SetRelativeLocation :self P :NewLocation Loc)
+  (Transformation|SetRelativeRotation :self P :NewRotation (Math|Rotator|MakeRotator :Roll (+ (.roll Rot) Roll) :Pitch (.pitch Rot) :Yaw (.yaw Rot)))
+  (Transformation|SetRelativeScale3D :self P :NewScale3D Scale))

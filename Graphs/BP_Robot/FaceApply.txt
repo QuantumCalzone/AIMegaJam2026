@@ -1,0 +1,42 @@
+; T75: puts the face where the eased values (F...) say: the eyes, the new brows, the mouth's tilt and its
+; size before the talking stretch (MouthNow, which Event Tick reads), and the tint on the parts that glow.
+; Each eye's tilt is mirrored by its side, so + eye_tilt tips both inner corners down.
+(fn FaceApply ()
+  ; T75 (T80's heads): Meta's eyes stay inside its lenses and mine inside the slots (EyeMax* from FaceParts).
+  (bind _ew (Math|Float|Min(Float) (V FEyeW) (V EyeMaxW)))
+  (bind _eh (Math|Float|Min(Float) (V FEyeH) (V EyeMaxH)))
+  (bind _dx (Math|Float|Clamp(Float) :Value (V FEyeDX) :Min (- 0.0 (V EyeMaxDX)) :Max (V EyeMaxDX)))
+  (bind _dz (Math|Float|Clamp(Float) :Value (V FEyeDZ) :Min (- 0.0 (V EyeMaxDZ)) :Max (V EyeMaxDZ)))
+  (CallFunction|PosePart :P (V PEyeL) :Loc (+ (V RestEyeLocL) (Math|Vector|MakeVector :X 0.0 :Y (- 0.0 _dx) :Z _dz)) :Rot (V RestEyeRotL) :Roll (* (V TiltSign) (* (V SideEyeL) (V FEyeTilt))) :Scale (Math|Vector|MakeVector :X (.x (V RestEyeScaleL)) :Y (* (.y (V RestEyeScaleL)) _ew) :Z (* (.z (V RestEyeScaleL)) _eh)))
+  (CallFunction|PosePart :P (V PEyeR) :Loc (+ (V RestEyeLocR) (Math|Vector|MakeVector :X 0.0 :Y (- 0.0 _dx) :Z _dz)) :Rot (V RestEyeRotR) :Roll (* (V TiltSign) (* (V SideEyeR) (V FEyeTilt))) :Scale (Math|Vector|MakeVector :X (.x (V RestEyeScaleR)) :Y (* (.y (V RestEyeScaleR)) _ew) :Z (* (.z (V RestEyeScaleR)) _eh)))
+  ; The brows: on the shared head they sit on the screen's surface and turn along it (ScreenX); on Meta
+  ; and my box they keep FaceParts' place. They never rise above BrowMaxZ.
+  (bind _bzl (Math|Float|Min(Float) (+ (.z (V RestBrowLocL)) (+ (V FBrowDZ) (* 0.5 (+ _dz (* (V SideBrowL) (V FBrowSkew)))))) (V BrowMaxZ)))
+  (bind _xl0 (CallFunction|ScreenX :Y (.y (V RestBrowLocL)) :Z _bzl))
+  (bind _xl1 (CallFunction|ScreenX :Y (+ (.y (V RestBrowLocL)) 1.0) :Z _bzl))
+  (bind _bxl (select (V BrowFix) (.x (V RestBrowLocL)) (Math|Float|Max(Float) _xl0 (V BrowMinX))))
+  (bind _byl (select (or (V BrowFix) (< _xl0 (V BrowMinX))) (.yaw (V RestBrowRotL)) (- 0.0 (Math|Trig|Atan(Degrees) (- _xl1 _xl0)))))
+  (CallFunction|PosePart :P (V EmBrowL) :Loc (Math|Vector|MakeVector :X _bxl :Y (.y (V RestBrowLocL)) :Z _bzl) :Rot (Math|Rotator|MakeRotator :Roll 0.0 :Pitch (.pitch (V RestBrowRotL)) :Yaw _byl) :Roll (V FBrowRL) :Scale (Math|Vector|MakeVector :X (.x (V RestBrowScaleL)) :Y (* (.y (V RestBrowScaleL)) (V BrowK)) :Z (.z (V RestBrowScaleL))))
+  (bind _bzr (Math|Float|Min(Float) (+ (.z (V RestBrowLocR)) (+ (V FBrowDZ) (* 0.5 (+ _dz (* (V SideBrowR) (V FBrowSkew)))))) (V BrowMaxZ)))
+  (bind _xr0 (CallFunction|ScreenX :Y (.y (V RestBrowLocR)) :Z _bzr))
+  (bind _xr1 (CallFunction|ScreenX :Y (+ (.y (V RestBrowLocR)) 1.0) :Z _bzr))
+  (bind _bxr (select (V BrowFix) (.x (V RestBrowLocR)) (Math|Float|Max(Float) _xr0 (V BrowMinX))))
+  (bind _byr (select (or (V BrowFix) (< _xr0 (V BrowMinX))) (.yaw (V RestBrowRotR)) (- 0.0 (Math|Trig|Atan(Degrees) (- _xr1 _xr0)))))
+  (CallFunction|PosePart :P (V EmBrowR) :Loc (Math|Vector|MakeVector :X _bxr :Y (.y (V RestBrowLocR)) :Z _bzr) :Rot (Math|Rotator|MakeRotator :Roll 0.0 :Pitch (.pitch (V RestBrowRotR)) :Yaw _byr) :Roll (V FBrowRR) :Scale (Math|Vector|MakeVector :X (.x (V RestBrowScaleR)) :Y (* (.y (V RestBrowScaleR)) (V BrowK)) :Z (.z (V RestBrowScaleR))))
+  (Transformation|SetRelativeRotation :self (V PMouth) :NewRotation (Math|Rotator|MakeRotator :Roll (+ (.roll (V RestMouthRot)) (* (- 0.0 (V TiltSign)) (V FMTilt))) :Pitch (.pitch (V RestMouthRot)) :Yaw (.yaw (V RestMouthRot))))
+  ; The mouth at its emotion place (Meta's sits lower), and its size before the talking stretch.
+  (Transformation|SetRelativeLocation :self (V PMouth) :NewLocation (V RestMouthLoc))
+  (set MouthNow (Math|Vector|MakeVector :X (.x (V MouthRest)) :Y (* (* (.y (V MouthRest)) (V FMouthW)) (select (V EmOn) (V MouthWK) 1.0)) :Z (* (.z (V MouthRest)) (V FMouthH))))
+  (if (or (> (V FTint) 0.002) (V TintDirty))
+    (set TintDirty (> (V FTint) 0.002))
+    (bind _col (Math|Vector|Lerp(Vector) :A (V LedColor) :B (V TintCol) :Alpha (V FTint)))
+    (if (V TintEyes)
+      (Rendering|Material|SetVectorParameterValueonMaterials :self (V PEyeL) :ParameterName "Color" :ParameterValue _col)
+      (Rendering|Material|SetVectorParameterValueonMaterials :self (V PEyeR) :ParameterName "Color" :ParameterValue _col))
+    (if (V TintMouth)
+      (Rendering|Material|SetVectorParameterValueonMaterials :self (V PMouth) :ParameterName "Color" :ParameterValue _col)
+      (Rendering|Material|SetVectorParameterValueonMaterials :self (V MouthCL) :ParameterName "Color" :ParameterValue _col)
+      (Rendering|Material|SetVectorParameterValueonMaterials :self (V MouthCR) :ParameterName "Color" :ParameterValue _col))
+    (if (V TintBrows)
+      (Rendering|Material|SetVectorParameterValueonMaterials :self (V EmBrowL) :ParameterName "Color" :ParameterValue _col)
+      (Rendering|Material|SetVectorParameterValueonMaterials :self (V EmBrowR) :ParameterName "Color" :ParameterValue _col))))

@@ -1,0 +1,9 @@
+; T75: one hidden part with no collision and no shadow, on the Rig until FaceRest attaches it to the face.
+(fn NewPart ()
+  (bind _c (Game|AddComponentbyClass self "/Script/Engine.StaticMeshComponent"))
+  (set TmpPart _c)
+  (Collision|SetCollisionEnabled :self (V TmpPart) :NewType "NoCollision")
+  (Rendering|SetCastShadow :self (V TmpPart) :NewCastShadow false)
+  (Rendering|SetVisibility :self (V TmpPart) :bNewVisibility false :bPropagateToChildren false)
+  (CallFunction|AttachPart :P (V TmpPart) :To (V Rig))
+  (return (V TmpPart)))

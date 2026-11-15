@@ -1,0 +1,13 @@
+; T75: the resting face's parts, as SetPersona leaves them: resting brows only on the worrier and the
+; overclocker, the SmileParts by their acc tags, the Mouth as FaceRest found it.
+(fn FaceRestVis ()
+  (Rendering|SetVisibility :self (V EmBrowL) :bNewVisibility false :bPropagateToChildren false)
+  (Rendering|SetVisibility :self (V EmBrowR) :bNewVisibility false :bPropagateToChildren false)
+  (Rendering|SetVisibility :self (V MouthCL) :bNewVisibility false :bPropagateToChildren false)
+  (Rendering|SetVisibility :self (V MouthCR) :bNewVisibility false :bPropagateToChildren false)
+  (Rendering|SetVisibility :self (V PBrowL) :bNewVisibility (V RestBrows) :bPropagateToChildren false)
+  (Rendering|SetVisibility :self (V PBrowR) :bNewVisibility (V RestBrows) :bPropagateToChildren false)
+  (bind _tag (Utilities|String|StringToName (V PersonaId)))
+  (for _p (V SmileParts)
+    (Rendering|SetVisibility :self _p :bNewVisibility (Components|ComponentHasTag :self _p :Tag _tag) :bPropagateToChildren false))
+  (Rendering|SetVisibility :self (V PMouth) :bNewVisibility (V MouthVis) :bPropagateToChildren false))
