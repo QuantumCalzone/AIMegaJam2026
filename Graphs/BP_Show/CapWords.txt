@@ -1,0 +1,11 @@
+(fn CapWords (Text)
+  (bind _nl (Variables|Default|GetNL))
+  (bind _returnvalue (Utilities|String|Replace Text _nl " "))
+  (bind _returnvalue_1 (Utilities|String|Trim _returnvalue))
+  (bind _returnvalue_2 (Utilities|String|TrimTrailing _returnvalue_1))
+  (Variables|Default|SetWordArr (Utilities|String|ParseIntoArray (Utilities|String|Replace _returnvalue_2 "Player " "Player~")))
+  (if (<= (Utilities|Array|Length (Variables|Default|GetWordArr)) (Variables|Default|GetMaxWords))
+    (return _returnvalue_2)
+    (else
+      (Utilities|Array|Resize (Variables|Default|GetWordArr) (Variables|Default|GetMaxWords))
+      (return (Utilities|String|Replace (Utilities|String|JoinStringArray (Variables|Default|GetWordArr)) "Player~" "Player ")))))

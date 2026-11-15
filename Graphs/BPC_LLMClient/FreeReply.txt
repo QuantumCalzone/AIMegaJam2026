@@ -15,7 +15,7 @@
     (set TmpStr _ty)
     (set TmpArr (Utilities|String|ParseIntoArray :SourceString (V TmpStr) :Delimiter " " :CullEmptyStrings true))
     (clear (V TmpArr2))
-    (for _wi (range (Math|Integer|Min(Integer) (len (V TmpArr)) 25))
+    (for _wi (range (Math|Integer|Min(Integer) (len (V TmpArr)) 15))
       (add (V TmpArr2) (get (V TmpArr) _wi)))
     (set RSpeech (Utilities|String|JoinStringArray (V TmpArr2) " "))
     (return))

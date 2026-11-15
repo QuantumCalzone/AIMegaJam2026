@@ -70,7 +70,7 @@ Mouse and keyboard.
   - You can **move** to a place, **look** at someone or something, **grab** a prop, **throw** a prop at someone, or **give** a prop to someone.
   - Places: Center, Left, Right, Front, Back, Riser and Prop Table.
   - Props: a cardboard sword, a paper crown, a plastic rose, a toy ray gun, a teacup, a cape, a rubber chicken and a scroll.
-  - Words in quotes are what you say. Every line is capped at 25 words.
+  - Words in quotes are what you say. Every line is capped at 15 words.
 - **Speak to one actor** with @ and the name on your screen: `@Meta, why did you grab the rose?`
 - **Free Talk and reactions:** type a line, or click **Pass**.
 - **The Cut:** click a name on the vote row, then type your reason and send it. You can't vote for yourself.

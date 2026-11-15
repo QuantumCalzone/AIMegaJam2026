@@ -35,7 +35,7 @@ bracket, "//", "*", an emoji or pictograph, "beep" or "boop", or a word of 4
 or more capital letters. The input LLM is not checked: it keeps the player's
 own words. --log runs the same check on the NHOS: LOG, CLOSING and DIRECTOR
 lines of a PIE show, skipping the human seat's lines, and also fails a line
-the game cut off at 25 words.
+the game cut off at 15 words.
 
 Story check: no AI line may use a name, a made-up word or a famous line from
 the modern films the story cards parody (STORY_TERMS below), or a real
@@ -70,6 +70,10 @@ scene_card carries note_category, the note's 'category' from scenes.json, and
 input converter's state has neither. The file check also finds the design
 doc's four note lines in prompts.json 'game', word for word (DOC_NOTE_LINES).
 A scene turn whose speech holds the note word for word is a WARN.
+
+Word cap (T59): every line is capped at MAX_WORDS (15) words. The file check
+fails a free_mode.json line (placeholders filled with their longest value) or an
+autoplay.json line that runs over it.
 
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
@@ -114,7 +118,7 @@ MIN_CARDS, MIN_NOTES = 6, 10
 VERBS = ["move", "look", "grab", "throw", "give"]
 ACTOR_ASKS = ["scene_turn", "free_talk", "vote", "reaction", "reaction_cut", "closing"]
 ALL_ASKS = ACTOR_ASKS + ["input", "tiebreak"]
-MAX_WORDS = 25
+MAX_WORDS = 15
 
 # T50: the design doc's note rules (Bot Prompts, "Opening prompt: game rules"), word for word.
 DOC_NOTE_LINES = [
@@ -329,6 +333,45 @@ def error_line_problems(data, plist) -> list[str]:
     return out
 
 
+def prewritten_problems(scenes, errors: list[str]) -> list[str]:
+    """Free-mode lines and autoplay lines must fit the game's word cap (T59). Free-mode
+    placeholders are filled with their longest value; an autoplay line is counted whole,
+    because in Test for Free the input step echoes the whole typed line as speech."""
+    out = []
+    props, places = [], [p.get("name", "") for p in scenes.get("set", {}).get("places", [])]
+
+    def walk(o):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if k == "props" and isinstance(v, list):
+                    props.extend(x.get("name", "") if isinstance(x, dict) else str(x) for x in v)
+                else:
+                    walk(v)
+        elif isinstance(o, list):
+            for x in o:
+                walk(x)
+
+    walk(scenes)
+    longest = lambda xs: max(xs or [""], key=lambda x: len(x.split()))
+    fill = {"{actor}": "Player 2", "{vote}": "Player 4", "{place}": longest(places), "{prop}": longest(props)}
+    free = load_json("free_mode.json", errors) or {}
+    for ph in free.get("phases", []):
+        for k in ("lines", "reasons"):
+            for i, line in enumerate(ph.get(k, [])):
+                text = line
+                for a, b in fill.items():
+                    text = text.replace(a, b)
+                if words(text) > MAX_WORDS:
+                    out.append(f"free_mode.json: {ph.get('id')} {k}[{i}] has {words(text)} words with its longest fill, over {MAX_WORDS}")
+    auto = load_json("autoplay.json", errors) or {}
+    for k, v in auto.items():
+        if not k.startswith("_") and isinstance(v, list):
+            for i, line in enumerate(v):
+                if words(line) > MAX_WORDS:
+                    out.append(f"autoplay.json: {k}[{i}] has {words(line)} words, over {MAX_WORDS}")
+    return out
+
+
 def check_files(errors: list[str]):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
@@ -468,6 +511,9 @@ def check_files(errors: list[str]):
 
     # errors.json: the error lines the player reads (T37).
     errors.extend(error_line_problems(error_lines, plist))
+
+    # free_mode.json and autoplay.json: every pre-written line fits the word cap (T59).
+    errors.extend(prewritten_problems(scenes, errors))
 
     if errors:
         return None
@@ -947,7 +993,7 @@ PLAYER_NAME = re.compile(r"(?i)\bplayer (\d)\b")
 
 
 def words(s):
-    """Words as the game's 25-word cut counts them: a Player name ("Player 3") is one word."""
+    """Words as the game's 15-word cut counts them: a Player name ("Player 3") is one word."""
     return len(PLAYER_NAME.sub(r"Player\1", s).split())
 
 
@@ -1120,7 +1166,7 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 who = "The Director"
             n += 1
             problems = legibility(text) + story_problems(text)
-            # The game keeps the first 25 words, so a line it cut has 25 words and no end mark.
+            # The game keeps the first 15 words, so a line it cut has 15 words and no end mark.
             if words(text) >= MAX_WORDS and not re.search(r"[.!?…\"”')]\s*$", text):
                 problems.append(f"cut off at {MAX_WORDS} words")
             if problems:
@@ -1252,7 +1298,7 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, and the relay's allow-list")
     if args.log:
         return check_log(Path(args.log), data["personas"], args.all_shows)
 
