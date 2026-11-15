@@ -1,0 +1,6 @@
+; T68: the first launch's save: a new anonymous id, the UTC date, no launches yet, stats on.
+(fn Fill (Id First)
+  (set PlayerId Id)
+  (set FirstSeen First)
+  (set Launches 0)
+  (set AnalyticsOn true))

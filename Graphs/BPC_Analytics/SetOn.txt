@@ -1,0 +1,19 @@
+; T68: the title's Play stats toggle. Turning it off sends one last analytics_off event, then nothing.
+; Turning it back on sends nothing. The switch still wins: with "analytics": "off" nothing goes out either way.
+; The off event goes first, before any if with a return (T30: an if without one wouldn't join after it);
+; off when already off sends nothing, because Active is already false.
+(fn SetOn (NewOn)
+  (if (not (V Ready))
+    (CallFunction|Init))
+  (if (not NewOn)
+    (bind _f (Json|LoadJsonfromString "{}"))
+    (CallFunction|Send :Event "analytics_off" :Fields _f))
+  (if (== NewOn (V PlayerOn))
+    (return))
+  (set PlayerOn NewOn)
+  (set Active (and (V SwitchOk) (V PlayerOn)))
+  (print (cat "NHOS: ANALYTICS toggle " (select NewOn "on" "off")))
+  (if (not (V HaveSave))
+    (return))
+  (Class|SGPlayer|SetOn :self (V Save) :On NewOn)
+  (SaveGame|SaveGametoSlot :SaveGameObject (V Save) :SlotName "player" :UserIndex 0))

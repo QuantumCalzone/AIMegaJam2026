@@ -1,0 +1,5 @@
+; T68: the player's own setting, for the title's label (not the switch).
+(fn IsOn ()
+  (if (not (V Ready))
+    (CallFunction|Init))
+  (return (V PlayerOn)))

@@ -1,0 +1,31 @@
+; T68: posts one analytics event to <relay>/event (T67) and never waits for the answer: the reply comes back
+; through BPC_LLMClient.HandleHttp, which hands any event- tag to OnSent. Nothing goes out from the editor
+; (PIE, a game window) unless the analytics switch is "test", nor when it is "off", when autoplay runs
+; without "test", or when the player turned Play stats off (Init sets Active).
+; The request is a BPC_LLMRequest (one component per request, T05) with the client's FreeHeaders
+; (content-type only: no key ever goes with an event).
+(fn Send (Event Fields)
+  (if (not (V Ready))
+    (CallFunction|Init))
+  (if (not (V Active))
+    (return))
+  (if (Utilities|String|IsEmpty (V Url))
+    (print (cat "NHOS: ANALYTICS fail " Event " no relay address in llm.json"))
+    (return))
+  (bind _ses (Class|BPCLLMClient|GetSession :self (V Client)))
+  (set TmpStr (select (Utilities|String|IsEmpty _ses) (V LaunchId) _ses))
+  (bind _b (Json|LoadJsonfromString "{}"))
+  (Json|SetField _b "player" (V PlayerId))
+  (Json|SetField _b "session" (V TmpStr))
+  (Json|SetField _b "build" (V Build))
+  (set TmpStr (select (V Picked) (Class|BPCLLMClient|GetMode :self (V Client)) ""))
+  (Json|SetField _b "mode" (V TmpStr))
+  (Json|SetField _b "event" Event)
+  (Json|SetField _b "fields" Fields)
+  (Json|SetField _b "test" (V Test))
+  (bind _body (Json|GetJsonString _b))
+  (bind _fs (Json|GetJsonString Fields))
+  (print (cat "NHOS: ANALYTICS " Event " " _fs))
+  (bind _req (Game|AddComponentbyClass (Components|GetOwner) "/Game/NHOS/Core/BPC_LLMRequest.BPC_LLMRequest_C"))
+  (Class|BPCLLMRequest|Setup :self _req :InTag (cat "event-" Event) :InUrl (V Url) :InHeaders (Class|BPCLLMClient|GetFreeHeaders :self (V Client)) :InBody _body :InClient (V Client))
+  (Class|BPCLLMRequest|Send :self _req))

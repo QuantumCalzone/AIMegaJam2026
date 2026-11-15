@@ -1,0 +1,9 @@
+; T68: each show's start, restarts included, from BP_Show.DrawCast after StartShowSession made the show's
+; session id.
+(fn ShowStart ()
+  (set CurPhase "")
+  (set CurScene 0)
+  (if (not (V Picked))
+    (CallFunction|ModePicked))
+  (bind _f (Json|LoadJsonfromString "{}"))
+  (CallFunction|Send :Event "show_start" :Fields _f))
