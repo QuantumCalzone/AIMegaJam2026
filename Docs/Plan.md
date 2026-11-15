@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T35 (the money burn) is done: one relay show in a game window burned a bill for each of its 89 paid replies, and I said it reads as "that cost me". Its locks are released. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T21 (how a judge plays) waits only for a key-mode show with my real keys. T29 follows T28, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time) and T34 (the in-show screen) come after T32, and T33 (the title, key entry and end screens) comes after T21. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T21 (how a judge plays) is done: with a wrong relay address, keys entered on the AI service unavailable screen passed the key test and played a show in key mode, with answers from all four labs. Its claim is released. T35 (the money burn) is done too. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows T28, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -173,14 +173,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/Audio/`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/Stage/BP_Robot.uasset`, `Content/NHOS/UI/`, `Docs/Assets.md`.
   - **Details:** [Docs/tasks/T20.md](tasks/T20.md)
 
-- [ ] **T21 How a judge plays: the relay's limits on screen, and the itch.io page**
-  - **Model and effort:** Opus 5.5, high. Error paths across the client and the screens.
-  - **Depends on:** T18
-  - **Needs:** a hard spending limit that I set at every provider, my OK before each relay deploy, editor + Unreal MCP running.
-  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Keys.uasset`, `Content/NHOS/UI/WBP_Title.uasset`, new `Content/NHOS/UI/WBP_Unavailable.uasset` and `Content/NHOS/Core/BPC_HttpGet.uasset`, `Graphs/` files for the graphs it writes, `Docs/ItchPage.md`, `Relay/` only if a limit changes.
-  - **Details:** [Docs/tasks/T21.md](tasks/T21.md)
-  - **Waiting:** built and pushed; the wrong-relay screen, key entry, the key test and the relay's budget message all pass in PIE. Not run yet: a key-mode show with real keys (about $0.11). Left: put keys for 3 or 4 labs in `Local/llm_key.json`, then have a session run the key-mode check in T21's file.
-
 - [ ] **T33 Fix the title, key entry and end screens**
   - **Model and effort:** Sonnet 5.5, medium. Well-specified UMG work from T32's table and style guide.
   - **Depends on:** T32, T21 (it changes `WBP_Keys` and adds a screen)
@@ -257,6 +249,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T25.md](tasks/T25.md)
 - [x] **T35 A bill burns in the bottom-right corner for every relay call**
   - **Details:** [Docs/tasks/T35.md](tasks/T35.md)
+- [x] **T21 How a judge plays: the relay's limits on screen, and the itch.io page**
+  - **Details:** [Docs/tasks/T21.md](tasks/T21.md)
 
 ## Not planned yet
 
