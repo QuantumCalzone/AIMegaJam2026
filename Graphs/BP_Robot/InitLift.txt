@@ -1,0 +1,14 @@
+; T47: what rises with a hat, and where each part sits bare-headed: Nub (the stalk) first, since
+; SetHeadpiece reads its place as the stalk's base, then the label, then every topper (an "acc"
+; part at z 165 or more: the halo, the warning light, the bolt, my wire and ping-pong ball).
+(fn InitLift ()
+  (if (V LiftReady)
+    (return))
+  (set LiftReady true)
+  (add (V LiftComps) (Variables|Default|GetNub))
+  (add (V LiftComps) (Variables|Default|GetLabel))
+  (for _c (Actor|GetComponentsByClass :ComponentClass "/Script/Engine.StaticMeshComponent")
+    (if (and (Components|ComponentHasTag :self _c :Tag "acc") (>= (.z (Class|SceneComponent|GetRelativeLocation :self _c)) 165.0))
+      (add (V LiftComps) _c)))
+  (for _s (V LiftComps)
+    (add (V LiftBase) (Class|SceneComponent|GetRelativeLocation :self _s))))

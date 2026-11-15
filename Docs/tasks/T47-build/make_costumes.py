@@ -54,8 +54,8 @@ FIT = {
     "tiara":           (56,  146.0,   0.0,  0.0,  False, "raised 6 cm off the eyes and narrowed to the head's width there (55 cm); a front-only arc would need x about 22"),
     "saucepan_helmet": (89,  145.0,   0.0, 17.7,  True,  "the pot (54 cm of the 89; the raw pot is 115 of 190.2) rests where the head is 54 cm across, its front rim at z 145; y moves the pot, not the handle, over the head: if the pot sits off to one side, negate y"),
     "bob_wig":         (84,   92.0,  -4.0,  0.0,  True,  "the fringe should end over the brows (about z 145) and the sides may show the ear pods"),
-    "hood":            (98,   98.0,  -6.0,  0.0,  True,  "the face opening must frame the screen (z 118 to 147)"),
-    "dino_hood":       (84,  100.0,  10.0,  0.0,  True,  "the snout and the open jaw must leave the eyes and the mouth showing"),
+    "hood":            (110,  52.0,  -4.0,  0.0,  True,  "the face opening must frame the screen (z 118 to 147)"),
+    "dino_hood":       (84,  113.0,  10.0,  0.0,  True,  "the snout and the open jaw must leave the eyes and the mouth showing"),
     "horned_helmet_beard": (85, 88.0, 4.0,  0.0,  True,  "raised 20 cm with the face: the helmet's rim above the eyes (z 141), the beard below the mouth (z 118)"),
     "dark_shades":     (72,  124.0,  None,  0.0,  False, "on the eyes (z 129 to 141) and clear of the mouth (z 124 and down); the temples rest on the ear pods; SpaceXAI's nose comes out under them"),
 }

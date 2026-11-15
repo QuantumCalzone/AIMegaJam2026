@@ -1,3 +1,6 @@
+; T62: plays one action that AcceptDoes already checked (CanDo). A look finds a place, an actor or a prop;
+; a move goes only to a place (the move to an actor, BotCands, is gone); a give goes only to an actor (the
+; put-down is gone). Fallback stays for a name the stage can't find.
 (fn DoVerb (Part)
   (if (streq (V PVerb) "around")
     (Class|BPRobot|LookAround :self (V CurBot))
@@ -16,16 +19,21 @@
       (Class|BPRobot|LookAt :self (V CurBot) :Target _bl)
       (CallFunction|Act :Verb "look" :Target (V PTgt) :Item "" :Note "")
       (return))
+    ; T62: a look at a prop turns the robot toward the prop, wherever it is (on the table, the floor or in a hand).
+    (bind _isLookProp (CallFunction|FindProp :Name (V PTgt)))
+    (if _isLookProp
+      (bind _pl (Transformation|GetActorLocation :self (V TgtProp)))
+      (Class|BPRobot|LookAt :self (V CurBot) :Target _pl)
+      (CallFunction|Act :Verb "look" :Target (V PTgt) :Item "" :Note "")
+      (return))
     (CallFunction|Fallback :Part Part :Why "unknown target")
     (return))
   (if (streq (V PVerb) "move")
-    (if (not (or _isMark _isBot))
+    ; T62: a move goes only to a place.
+    (if (not _isMark)
       (CallFunction|Fallback :Part Part :Why "unknown place")
       (return))
-    (if _isMark
-      (CallFunction|MarkCands)
-      (else
-        (CallFunction|BotCands)))
+    (CallFunction|MarkCands)
     (bind _ok (CallFunction|PickSpot))
     (if _ok
       (Class|BPRobot|MoveTo :self (V CurBot) :Dest (V Pick))
@@ -62,13 +70,9 @@
     (CallFunction|Fallback :Part Part :Why "unknown target")
     (return))
   (if (streq (V PVerb) "give")
+    ; T62: a give goes only to an actor; the put-down at a place is gone.
     (if _isBot
       (Class|BPRobot|Give :self (V CurBot) :Prop (V TgtProp) :Bot (V TgtBot))
       (CallFunction|Act :Verb "give" :Target (V PTgt) :Item (V PItem) :Note "")
-      (return))
-    (if _isMark
-      (bind _ml3 (Transformation|GetActorLocation :self (V TgtMark)))
-      (Class|BPRobot|PutDown :self (V CurBot) :Prop (V TgtProp) :Target _ml3)
-      (CallFunction|Act :Verb "give" :Target (V PTgt) :Item (V PItem) :Note " (put down)")
       (return))
     (CallFunction|Fallback :Part Part :Why "unknown target")))

@@ -121,6 +121,24 @@ answer from another phase. --log fails a scene whose last words (NHOS: LOG
 scene n, last word) aren't exactly the actors on stage that someone else named
 with @ in its final round, one each, as NHOS: LASTWORDS says.
 
+Costumes (T47): each seat names a headpiece from costumes.json and a hex
+color. The file check fails an unknown headpiece, a color that isn't #RRGGBB,
+a headpiece mesh that isn't on disk, a headpiece without its fit numbers and a
+model no seat wears. The game never sends these fields to the AIs.
+
+One rule set for every action (T62): every actor takes 0 or 1 action in a scene
+turn and none in a reaction; a grab takes a prop nobody holds, a throw or give a
+prop the actor holds, and nobody holds more than MAX_HELD props. Every actor
+state says who holds what ('holding' in each cast entry and in 'you'), and the
+sample log follows the rules (check_rules). A reply that breaks a holding rule
+is a WARN, since the game turns it into a look around and free mode breaks them
+on purpose. The file check finds the design doc's two action lines in 'game'
+word for word (DOC_ACTION_LINES) and fails a does_templates entry that
+BP_StageDirector.ParsePart can't read back. --relay --free also checks each
+reply's action count. --log fails a log entry with two actions in a scene turn,
+or any action in a reaction, and counts the rule fallbacks
+(NHOS: ACT <id> look around - (<rule>: <part>)).
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -165,6 +183,15 @@ CALLS_PER_SHOW = 135
 PLACES = ["Center", "Left", "Right", "Front", "Back", "Riser", "Prop Table"]
 MIN_CARDS, MIN_NOTES = 6, 10
 VERBS = ["move", "look", "grab", "throw", "give"]
+MAX_HELD = 2  # T62: BP_StageDirector.MaxHeld
+# T62: the wording BP_StageDirector.ParsePart reads back; change a template only together with ParsePart.
+PARSED_TEMPLATES = {"move": "moves to {target}", "look": "looks at {target}", "look_around": "looks around",
+                    "grab": "grabs the {item}", "throw": "throws the {item} at {target}",
+                    "give": "gives the {item} to {target}", "nothing": "stands still"}
+# T62: CanDo's reasons, as NHOS: ACT ... look around - (<reason>: <part>) prints them.
+RULE_WHYS = {"no such prop", "someone holds it", "hands full", "not holding it", "not a place",
+             "not an actor, a prop or a place", "not an actor or a place", "not an actor",
+             "their hands are full", "unknown verb", "cut", "unknown actor"}
 ACTOR_ASKS = ["scene_turn", "free_talk", "last_word", "vote", "reaction", "reaction_cut", "closing"]
 ALL_ASKS = ACTOR_ASKS + ["input"]
 MAX_WORDS = 15
@@ -180,6 +207,11 @@ DOC_NOTE_LINES = [
 DOC_TIE_LINE = "A tied vote cuts nobody and still uses up a scene. If the human is still on stage when the last scene ends, the human wins."
 # T57: the design doc's silence rule (Bot Prompts, "Opening prompt: game rules"), word for word.
 DOC_SILENCE_LINE = "Silence is evidence, and so is a line that sounds too polished. Notice who passes and who sounds unlike the rest."
+# T62: the design doc's two action lines (Bot Prompts, "Opening prompt: game rules"), word for word.
+DOC_ACTION_LINES = [
+    "Every actor, the human too, takes at most one action a turn: grab only a prop nobody holds, throw or give only a prop you hold, and hold two props at most. \"holding\" in the state shows who holds what. An action that breaks a rule fails, and the robot only looks around.",
+    "Only scene turns have actions. Free Talk, last words and reactions are speech only.",
+]
 
 # Real people and products that must never appear in prompts or on screen. The bots go by
 # their provider's name (the 'name' fields in personas.json), so those names are allowed.
@@ -608,6 +640,45 @@ def props_file_problems(cards, pdata) -> list[str]:
     return out
 
 
+PERSONA_IDS = {"visionary", "worrier", "overclocker", "copycat", "human"}  # BP_Robot.SetPersona's ids
+FIT_KEYS = ("scale", "x", "y", "z", "yaw", "top")
+
+
+def costume_problems(cards, cdata) -> list[str]:
+    """costumes.json and each seat's costume (T47): every seat names a known headpiece and a hex
+    color; every headpiece has a mesh on disk and a fit; every headpiece model is worn by some seat."""
+    def num(v):
+        return isinstance(v, (int, float)) and not isinstance(v, bool)
+    out, heads = [], cdata.get("headpieces", {})
+    if not isinstance(heads, dict) or not heads:
+        return ["costumes.json: needs a 'headpieces' object keyed by id"]
+    for hid, h in heads.items():
+        h = h if isinstance(h, dict) else {}
+        mesh = h.get("mesh", "")
+        if not isinstance(mesh, str) or not re.fullmatch(r"/Game/[\w/]+\.\w+", mesh):
+            out.append(f"costumes.json: headpiece {hid!r} needs a mesh object path (/Game/.../SM_X.SM_X)")
+        elif not (ROOT / "Content" / (mesh[6:].rsplit(".", 1)[0] + ".uasset")).exists():
+            out.append(f"costumes.json: headpiece {hid!r}'s mesh {mesh} is not in Content/")
+        if not all(num(h.get(k)) for k in FIT_KEYS) or not h.get("scale", 0) > 0 or h.get("top", 0) < 0:
+            out.append(f"costumes.json: headpiece {hid!r} needs a scale above 0, a top of 0 or more and numbers for {', '.join(FIT_KEYS[1:])}")
+        for pid, o in (h.get("on") or {}).items():
+            if pid not in PERSONA_IDS or not isinstance(o, dict) or not o or set(o) - set(FIT_KEYS) or not all(num(v) for v in o.values()):
+                out.append(f"costumes.json: headpiece {hid!r}'s 'on' needs persona ids ({', '.join(sorted(PERSONA_IDS))}) with numbers for scale, x, y, z or top")
+    worn = set()
+    for c in cards:
+        for x in c.get("seats", []):
+            hp, col = x.get("headpiece"), x.get("color", "")
+            if hp not in heads:
+                out.append(f"scenes.json: {c.get('id')}'s seat {x.get('role')!r} needs a headpiece from costumes.json, not {hp!r}")
+            else:
+                worn.add(heads[hp].get("mesh"))
+            if not re.fullmatch(r"#[0-9A-Fa-f]{6}", col or ""):
+                out.append(f"scenes.json: {c.get('id')}'s seat {x.get('role')!r} needs a color like #A8CCFF")
+    for m in sorted({h.get("mesh") for h in heads.values() if isinstance(h, dict)} - worn):
+        out.append(f"costumes.json: no seat wears {m}")
+    return out
+
+
 def check_files(errors: list[str]):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
@@ -727,6 +798,7 @@ def check_files(errors: list[str]):
         errors.append("scenes.json: 'set' still has 'props'; since T45 the game sends the card's props as set.props")
     errors.extend(card_prop_problems(cards))
     errors.extend(props_file_problems(cards, load_json("props.json", errors) or {}))
+    errors.extend(costume_problems(cards, load_json("costumes.json", errors) or {}))   # T47
     notes = scenes.get("notes", [])
     if len(notes) < MIN_NOTES:
         errors.append(f"scenes.json: needs at least {MIN_NOTES} director's notes")
@@ -747,6 +819,29 @@ def check_files(errors: list[str]):
         errors.append("prompts.json: 'game' lost the design doc's silence rule (DOC_SILENCE_LINE)")
     if any("How a line is typed is never evidence" in g for g in game):
         errors.append("prompts.json: 'game' still says how a line is typed is never evidence; since T57 a too-polished line is evidence")
+    # T62: the design doc's action lines, word for word; the asks' action counts; templates that read back.
+    for line in DOC_ACTION_LINES:
+        if not any(line in g for g in game):
+            errors.append(f"prompts.json: 'game' lost an action rule from the design doc: {line[:60]!r}")
+    if any("0 to 2 actions" in g for g in game):
+        errors.append("prompts.json: 'game' still allows 2 actions; since T62 it is 0 or 1")
+    asks_t = prompts.get("asks", {})
+    if "Fill: actions (0 or 1)" not in asks_t.get("scene_turn", ""):
+        errors.append("prompts.json: asks.scene_turn must ask for 'actions (0 or 1)' (T62)")
+    for k in ("reaction", "reaction_cut", "free_talk", "last_word"):
+        if k in asks_t and "No actions" not in asks_t[k]:
+            errors.append(f"prompts.json: asks.{k} must say 'No actions' (T62: only scene turns have actions)")
+    T = prompts.get("does_templates", {})
+    for k, v in PARSED_TEMPLATES.items():
+        if T.get(k) != v:
+            errors.append(f"prompts.json: does_templates.{k} is {T.get(k)!r}, but BP_StageDirector.ParsePart reads {v!r}")
+    for verb, item, target in (("move", "", "Prop Table"), ("look", "", "Player 2"), ("look", "", "tin-can robot"),
+                               ("look", "", ""), ("grab", "glow-stick sword", ""), ("throw", "toy blaster", "Player 4"),
+                               ("throw", "piggy bank", "Prop Table"), ("give", "tin-can robot", "Player 1")):
+        key = "look_around" if verb == "look" and not target else verb
+        text = T.get(key, "").replace("{item}", item).replace("{target}", target)
+        if parse_does(T, text) != (verb, item, target):
+            errors.append(f"prompts.json: does_templates.{key} doesn't read back: {text!r} gives {parse_does(T, text)}")
     # T58: free mode answers each ask from the phase of the same name: the first phase whose
     # ask_contains is in the ask's text (case-sensitive, as in the game and the relay).
     free = load_json("free_mode.json", errors) or {}
@@ -792,6 +887,18 @@ def act(verb, target="", item=""):
     return {"verb": verb, "target": target, "item": item}
 
 
+def parse_does(T, part):
+    """T62: one does part back into (verb, item, target), as BP_StageDirector.ParsePart reads it;
+    (None, "", "") when no template fits. "looks around" is a look with no target."""
+    for key in ("look_around", "move", "look", "grab", "throw", "give"):
+        pat = re.escape(T.get(key, "\0")).replace(re.escape("{item}"), "(?P<item>.+)").replace(re.escape("{target}"), "(?P<target>.+)")
+        m = re.fullmatch(pat, part)
+        if m:
+            d = m.groupdict()
+            return ("look" if key == "look_around" else key), d.get("item", ""), d.get("target", "")
+    return None, "", ""
+
+
 # Scene 1 of a sample show: the space_plans card (T44) and the "hold_prop" note, which every
 # AI actor gets. SpaceXAI forgets to grab a prop. The human has no persona and plays
 # the farm kid: it gives the tin-can robot away, to the villain, and slips. The state's set.props
@@ -799,6 +906,7 @@ def act(verb, target="", item=""):
 # The human has no note (T50): it grabs the tin-can robot in turn 1 by luck and gives it away in turn 3.
 # Seats get Player names in this order, as the game deals them:
 # Player 1 OpenAI, Player 2 Anthropic, Player 3 the human, Player 4 SpaceXAI, Player 5 Meta.
+# T62: one action a turn, by the rules every actor shares; after turn 1 every prop is held.
 HUMAN = "human"
 SAMPLE_CARD = "space_plans"
 SAMPLE_NOTE = "hold_prop"
@@ -811,11 +919,11 @@ SAMPLE_SEATS = {HUMAN: 0, "visionary": 1, "worrier": 2, "overclocker": 3, "copyc
 
 TURNS = [
     [
-        ("worrier", [act("move", "Left"), act("grab", item="glow-stick sword")], "Glowing swords near sand worry me. I'm not competing, I just care more about safety."),
-        (HUMAN, [act("grab", item="tin-can robot"), act("move", "Center")], "Hello, fellow desert folk. I am a normal farm robot with normal robot feelings."),
-        ("overclocker", [act("move", "Riser"), act("look", "Player 3")], "Nobody boards my space truck for free! Pay up front or walk home!"),
-        ("copycat", [act("grab", item="toy blaster"), act("move", "Right")], "Greetings. I will guard the tin-can robot. Guarding things was my idea first."),
-        ("visionary", [act("move", "Back"), act("grab", item="piggy bank")], "My shuttle waits at the Back. Loud breathing is the future of villainy, honestly."),
+        ("worrier", [act("grab", item="glow-stick sword")], "Glowing swords near sand worry me. I'm not competing, I just care more about safety."),
+        (HUMAN, [act("grab", item="tin-can robot")], "Hello, fellow desert folk. I am a normal farm robot with normal robot feelings."),
+        ("overclocker", [act("move", "Riser")], "Nobody boards my space truck for free! Pay up front or walk home!"),
+        ("copycat", [act("grab", item="toy blaster")], "Greetings. I will guard the tin-can robot. Guarding things was my idea first."),
+        ("visionary", [act("grab", item="piggy bank")], "My shuttle waits at the Back. Loud breathing is the future of villainy, honestly."),
     ],
     [
         ("visionary", [act("look", "Player 4")], "Someone on that truck skipped the Prop Table. I'm keeping a calm, quiet list."),
@@ -827,7 +935,7 @@ TURNS = [
     [
         (HUMAN, [act("give", "Player 1", "tin-can robot")], "Please take this little robot, sir. I found it by the Prop Table."),
         ("worrier", [act("look", "Player 1")], "Sigh. Fine. Hand the villain the plans. I'll just hold this sword, responsibly."),
-        ("copycat", [act("move", "Center")], "I will now rescue the robot. This rescue is open source. You are welcome."),
+        ("copycat", [act("look", "tin-can robot")], "I will now rescue the robot. This rescue is open source. You are welcome."),
         ("visionary", [act("move", "Front")], "Farm kid, thank you. Our partnership will be the best one yet."),
         ("overclocker", [act("move", "Left")], "Launch postponed. My rival is still Player 5. I'll beat you by Tuesday!"),
     ],
@@ -913,6 +1021,7 @@ class Show:
         self.props = self.card["props"]  # the card's props, not set.props (T44)
         self.note = next(n for n in sc["notes"] if n["id"] == SAMPLE_NOTE)
         self.seat = {pid: self.card["seats"][i] for pid, i in SAMPLE_SEATS.items()}
+        self.problems = []  # T62: rule breaks in the sample log; check_rules prints them
 
     @staticmethod
     def name(pid):
@@ -934,6 +1043,41 @@ class Show:
     def entry(self, when, pid, does, says):
         return {"when": when, "actor": self.name(pid), "does": does, "says": says}
 
+    def holding(self, log, cut=None):
+        """T62: who holds what after the log's scene turns, by the rules every actor shares
+        (BP_StageDirector.CanDo). A cut actor holds nothing. A sample action that breaks a rule
+        goes to self.problems, so the sample show stays legal."""
+        held = {self.name(p): [] for p in SAMPLE_CAST}
+        for e in log:
+            if ", turn " not in e["when"] or e["does"] == self.T["nothing"]:
+                continue
+            parts = e["does"].split("; ")
+            where = f"{e['when']}, {e['actor']}: {e['does']!r}"
+            if len(parts) > 1:
+                self.problems.append(f"{where} has {len(parts)} actions, one at most")
+            verb, item, target = parse_does(self.T, parts[0])
+            mine = held[e["actor"]]
+            owner = next((n for n, ps in held.items() if item and item in ps), None)
+            if verb is None:
+                self.problems.append(f"{where}: does_templates can't read it back")
+            elif verb == "grab":
+                if owner or len(mine) >= MAX_HELD:
+                    self.problems.append(f"{where}: a grab of a held prop, or with full hands")
+                else:
+                    mine.append(item)
+            elif verb in ("throw", "give"):
+                if item not in mine:
+                    self.problems.append(f"{where}: a {verb} of a prop it doesn't hold")
+                elif verb == "give" and (target not in held or target == e["actor"] or len(held[target]) >= MAX_HELD):
+                    self.problems.append(f"{where}: a give to someone who can't take it")
+                else:
+                    mine.remove(item)
+                    if verb == "give":
+                        held[target].append(item)
+        for pid in cut or {}:
+            held[self.name(pid)] = []
+        return held
+
     def log(self, turns=3, talk=0, votes=None, reactions=None):
         out = []
         for i in range(turns):
@@ -951,31 +1095,34 @@ class Show:
             out.append(self.entry("scene 1, reactions", pid, self.T["nothing"], line))
         return out
 
-    def cast(self, cut=None):
-        cut = cut or {}
+    def cast(self, cut=None, held=None):
+        cut, held = cut or {}, held or {}
         return [{
             "name": self.name(pid),
             "role": self.seat[pid]["role"],
             "want": self.seat[pid]["want"],
             "status": cut.get(pid, "on stage"),
+            "holding": held.get(self.name(pid), []),
         } for pid in SAMPLE_CAST]
 
-    def you(self, pid):
+    def you(self, pid, held=None):
         return {
             "name": self.name(pid),
             "role": self.seat[pid]["role"],
             "want": self.seat[pid]["want"],
             "note": "" if pid == HUMAN else self.note["note"],
+            "holding": (held or {}).get(self.name(pid), []),
         }
 
     def actor_state(self, pid, ask, now, log, cut=None, game_messages=None, options=None):
+        held = self.holding(log, cut)
         return {
             "show": {"scene": 1, "scenes": SAMPLE_SCENES, "now": now},
             "set": {"name": self.set["name"], "places": self.set["places"], "props": self.props},
             "scene_card": {"title": self.card["title"], "premise": self.card["premise"],
                            "note_category": self.note["category"]},
-            "cast": self.cast(cut),
-            "you": self.you(pid),
+            "cast": self.cast(cut, held),
+            "you": self.you(pid, held),
             "log": log,
             "game_messages": game_messages or [],
             "options": options or [],
@@ -1072,6 +1219,10 @@ class Show:
         cases["closing"] = self.actor_state(pid, "closing", "show over", self.log(turns=3, talk=2, votes=votes),
                                             cut=cut, game_messages=g, options=self.others(pid))
         cases["closing"]["show"]["scene"] = scene
+        if scene > 1:  # T62: Scene Prep sent every prop home; the sample log is scene 1's
+            for c in cases["closing"]["cast"]:
+                c["holding"] = []
+            cases["closing"]["you"]["holding"] = []
         return cases
 
     def card_cases(self):
@@ -1094,7 +1245,7 @@ class Show:
             note = sc["notes"][i % len(sc["notes"])]
             cast = [{"name": self.name(p),
                      "role": seat[p]["role"] if p in seat else "", "want": seat[p]["want"] if p in seat else "",
-                     "status": "on stage" if p in seat else "cut, revealed AI"} for p in SAMPLE_CAST]
+                     "status": "on stage" if p in seat else "cut, revealed AI", "holding": []} for p in SAMPLE_CAST]
             g = [f"Scene {k + 1}: {self.name(c)} is cut with 2 votes. Reveal: {self.upper(c)}: AI."
                  for k, c in enumerate(cuts)]
             for pid in stage:
@@ -1107,7 +1258,7 @@ class Show:
                                    "note_category": note["category"]},
                     "cast": cast,
                     "you": {"name": self.name(pid), "role": seat[pid]["role"], "want": seat[pid]["want"],
-                            "note": note["note"]},
+                            "note": note["note"], "holding": []},
                     "log": [],
                     "game_messages": g,
                     "options": [],
@@ -1306,21 +1457,38 @@ def check_reply(reply, ask, ctx):
         fails.append(f"speech has {words(speech)} words")
     if words(reason) > MAX_WORDS:
         fails.append(f"reason has {words(reason)} words")
-    if len(actions) > 2:
-        fails.append(f"{len(actions)} actions")
+    limit = 2 if ask == "input" else 1  # T62: one action at most; the input converter keeps 2 until T63
+    if len(actions) > limit:
+        fails.append(f"{len(actions)} actions, {limit} at most")
 
     places, props, actors, me = ctx["places"], ctx["props"], ctx["actors"], ctx.get("me")
     for a in actions:
         v, tg, it = a.get("verb"), a.get("target", ""), a.get("item", "")
         ok = {
             "move": tg in places and not it,
-            "look": (tg in places or tg in actors or tg == "") and not it,
+            "look": (tg in places or tg in props or (tg in actors and tg != me) or tg == "") and not it,  # T62: a prop too
             "grab": it in props and not tg,
-            "throw": it in props and (tg in places or tg in actors),
+            "throw": it in props and (tg in places or (tg in actors and tg != me)),
             "give": it in props and tg in actors and tg != me,
         }.get(v, False)
         if not ok:
             fails.append(f"bad action {a}")
+    # T62: the holding rules (BP_StageDirector.CanDo). The game turns a broken one into a look around,
+    # so it is a WARN: free mode breaks them on purpose, with random props.
+    held = ctx.get("held")
+    if held is not None:
+        mine = held.get(me, [])
+        owner = {p: n for n, ps in held.items() for p in ps}
+        for a in actions:
+            v, tg, it = a.get("verb"), a.get("target", ""), a.get("item", "")
+            if v == "grab" and it in owner:
+                warns.append(f"grab of the {it}, which {owner[it]} holds")
+            elif v == "grab" and len(mine) >= MAX_HELD:
+                warns.append(f"grab with full hands ({', '.join(mine)})")
+            elif v in ("throw", "give") and it not in mine:
+                warns.append(f"{v} of the {it}, which {me} doesn't hold")
+            elif v == "give" and len(held.get(tg, [])) >= MAX_HELD:
+                warns.append(f"give to {tg}, whose hands are full")
 
     def need(cond, msg):
         if not cond:
@@ -1331,7 +1499,6 @@ def check_reply(reply, ask, ctx):
             warns.append(msg)
 
     if ask == "scene_turn":
-        need(1 <= len(actions) <= 2, "a scene turn needs 1 or 2 actions")
         need(speech.strip(), "a scene turn needs speech")
         unused(not passed and not vote and not reason, "pass, vote or reason filled in a scene turn")
         note = ctx.get("note", "").lower().rstrip(".")
@@ -1347,7 +1514,7 @@ def check_reply(reply, ask, ctx):
         unused(not actions and not speech and not passed, f"actions, speech or pass filled in {ask}")
     elif ask in ("reaction", "reaction_cut"):
         need(speech.strip(), "a reaction needs speech")
-        need(len(actions) <= 1, "a reaction has at most 1 action")
+        need(not actions, "a reaction has no actions (T62)")
         unused(not passed and not vote and not reason, "pass, vote or reason filled in a reaction")
     elif ask == "input":
         case = ctx["case"]
@@ -1384,7 +1551,7 @@ def check_reply(reply, ask, ctx):
 
 # ---------------------------------------------------------------- PIE log
 
-LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS)\b ?(.*)$")
+LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS|ACT|EXTRA)\b ?(.*)$")
 
 
 def check_log(path: Path, personas, all_shows: bool) -> int:
@@ -1420,6 +1587,7 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
     end_bad = 0  # T54: shows whose SHOW END reason doesn't match how they ended
     pass_bad = 0  # T57: shows whose passes and "passed" markers don't match
     lw_bad = 0  # T58: scenes whose last words don't match the final round's @ mentions
+    act_bad = 0  # T62: log entries with more actions than the rules allow
     for i, show in enumerate(shows, 1):
         human = None
         cards = []
@@ -1427,6 +1595,7 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
         cast_ids, passes, marks = [], [], []  # T57
         talk, lastw, named, cut_at, sc_now = {}, {}, {}, {}, 0  # T58
         ends, scene, ties = [], 0, 0  # T52
+        falls, extras = 0, 0  # T62
         cuts, end = 0, None  # T54
         for kind, rest in show:
             if kind == "CUT":
@@ -1459,6 +1628,15 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
             if kind == "SHOW END":
                 # T54: "result=<win|lose> reason=<final_two|last_scene|caught> scenes=<n> human=... show=<n>".
                 end = dict(re.findall(r"(\w+)=(\S+)", rest))
+                continue
+            if kind == "ACT":
+                # T62: "NHOS: ACT <id> look around - (<reason>: <part>)" is a fallback; count the rules' own.
+                m = re.match(r"\S+ look around - \((.+?): ", rest)
+                if m and m.group(1) in RULE_WHYS:
+                    falls += 1
+                continue
+            if kind == "EXTRA":
+                extras += 1
                 continue
             if kind == "SEATS":
                 # Since T26: "NHOS: SEATS human=<Player number> seats=5 cast=<ids in seat order>".
@@ -1503,6 +1681,14 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                         talk.setdefault(sc, []).append((int(m.group(2)), parts[1], parts[3] if len(parts) > 3 else ""))
                     else:
                         lastw.setdefault(sc, []).append(parts[1])
+                # T62: one action a scene turn, none in a reaction, for every actor, the human too.
+                if len(parts) >= 3:
+                    does = parts[2].rstrip(" |")
+                    n_act = 0 if does in ("stands still", "passes", "") else len(does.split("; "))
+                    if (", turn " in parts[0] and n_act > 1) or (parts[0].endswith("reactions") and n_act > 0):
+                        act_bad += 1
+                        print(f"[FAIL] show {i} | LOG | {parts[0]} | {parts[1]}: {does!r} has {n_act} action(s); "
+                              f"{'one at most' if ', turn ' in parts[0] else 'none in a reaction'} (T62)")
                 if len(parts) < 4:
                     continue
                 if parts[1] == human:
@@ -1567,9 +1753,10 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
             pass_bad += 1
             print(f"[FAIL] show {i} | PASSED | Free Talk passes {sorted(passes)}, but markers {sorted(marks)}")
         print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}, ties = {ties}, "
-              f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}, last words = {sum(len(v) for v in lastw.values())}.")
+              f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}, last words = {sum(len(v) for v in lastw.values())}, "
+              f"rule fallbacks = {falls}, extras dropped = {extras}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad else 0
+    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad else 0
 
 
 # ---------------------------------------------------------------- main
@@ -1587,20 +1774,20 @@ def build_jobs(data, show, asks, personas, repeat):
                 if ask in asks:
                     st = cases[ask]
                     ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": st["options"],
-                           "note": st["you"]["note"]}
+                           "note": st["you"]["note"], "held": {c["name"]: c["holding"] for c in st["cast"]}}
                     pv = provider_for(data, "actor", pid)
                     jobs.append((ask, show.name(pid), pv, request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
             if "reaction" in asks:  # T52: the same ask after a tie, which cuts nobody
                 st = cases["reaction_tie"]
                 ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": [],
-                       "note": st["you"]["note"]}
+                       "note": st["you"]["note"], "held": {c["name"]: c["holding"] for c in st["cast"]}}
                 pv = provider_for(data, "actor", pid)
                 jobs.append(("reaction", f"{show.name(pid)} after a tie", pv,
                              request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
             if "free_talk" in asks:  # T57: Free Talk round 2, with round 1's pass in the log
                 st = cases["free_talk_r2"]
                 ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": [],
-                       "note": st["you"]["note"]}
+                       "note": st["you"]["note"], "held": {c["name"]: c["holding"] for c in st["cast"]}}
                 pv = provider_for(data, "actor", pid)
                 jobs.append(("free_talk", f"{show.name(pid)} after a pass", pv,
                              request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
@@ -1608,7 +1795,7 @@ def build_jobs(data, show, asks, personas, repeat):
             for card_id, pid, role, st in show.card_cases():
                 if pid in personas:
                     ctx = {"places": places, "props": st["set"]["props"], "actors": actors, "me": show.name(pid), "options": [],
-                           "note": st["you"]["note"]}
+                           "note": st["you"]["note"], "held": {c["name"]: c["holding"] for c in st["cast"]}}
                     pv = provider_for(data, "actor", pid)
                     jobs.append(("scene_turn", f"{card_id} | {show.name(pid)} as {role}", pv,
                                  request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
@@ -1633,6 +1820,22 @@ def check_leaks(data, jobs) -> int:
         if leaks:
             bad += 1
             print(f"FAIL leak: {ask} | {label}: {', '.join(leaks)} in what the AI reads")
+    return bad
+
+
+def check_rules(show, jobs) -> int:
+    """T62: the sample log follows the action rules, and every actor state says who holds what
+    ('holding' in each cast entry and in 'you'). Returns the number of problems."""
+    bad = 0
+    for p in sorted(set(show.problems)):
+        bad += 1
+        print("FAIL rules: sample log:", p)
+    for ask, label, _, body, _ in jobs:
+        if ask == "input":
+            continue
+        if body_text(body).count('"holding"') < 2:
+            bad += 1
+            print(f"FAIL rules: no 'holding' in cast and you | {ask} | {label}")
     return bad
 
 
@@ -1663,10 +1866,15 @@ def load_keys():
         return {}
 
 
-def shape_fails(reply):
-    """Only the reply's shape: every schema field with the right type (for --free replies)."""
+def shape_fails(reply, ask=None):
+    """Only the reply's shape: every schema field with the right type (for --free replies).
+    T62: and the action count: 0 or 1 in a scene turn, none in any other actor ask."""
     types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str}
-    return [f"{k} is missing or not a {t.__name__}" for k, t in types.items() if not isinstance(reply.get(k), t)]
+    fails = [f"{k} is missing or not a {t.__name__}" for k, t in types.items() if not isinstance(reply.get(k), t)]
+    n = len(reply.get("actions") or []) if isinstance(reply.get("actions"), list) else 0
+    if ask in ACTOR_ASKS and n > (1 if ask == "scene_turn" else 0):
+        fails.append(f"{n} actions in {ask}; {'one at most' if ask == 'scene_turn' else 'none'} since T62")
+    return fails
 
 
 def main():
@@ -1698,7 +1906,7 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, props.json and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, props.json, costumes.json and the relay's allow-list")
     if args.log:
         return check_log(Path(args.log), data["personas"], args.all_shows)
 
@@ -1711,6 +1919,9 @@ def main():
     if check_note_deal(show, jobs):
         return 1
     print("Only the AI seats get the note, and every actor state carries its category.")
+    if check_rules(show, jobs):
+        return 1
+    print("The sample show follows the action rules, and every actor state says who holds what.")
     if args.offline:
         return 0
 
@@ -1755,7 +1966,7 @@ def main():
         if reply is None:
             fails, warns = [why], []
         elif args.free:
-            fails, warns = shape_fails(reply), []
+            fails, warns = shape_fails(reply, ask), []
         else:
             fails, warns = check_reply(reply, ask, ctx)
         n_fail += bool(fails)

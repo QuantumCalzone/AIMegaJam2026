@@ -1,8 +1,9 @@
-; T45: props.json, read once per actor. A missing or broken file leaves PropsObj empty,
+; T45: props.json, read for each SetProp. A missing or broken file leaves PropsObj empty,
 ; so every name falls back to T19's shape parts.
+; T62: no early return on PropsLoaded any more. L_Stage had its prop actors saved with PropsLoaded true and an
+; empty PropsObj, so props.json was never read in a show and every card prop was hidden. Reading the small file
+; at each SetProp (four props per Scene Prep) costs nothing, and no saved flag can block it again.
 (fn LoadProps ()
-  (if (V PropsLoaded)
-    (return))
   (set PropsLoaded true)
   (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectContentDirectory) "NHOS/Data/props.json"))))
   (if (not _ok)

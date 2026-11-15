@@ -1,0 +1,18 @@
+; T62: the rules' state for a new scene: Player names, seat ids, who is cut, the card's props and the places,
+; as the AIs read them. Nobody holds anything: ResetStage sends every prop home. BP_Show.StageRules calls it
+; at every Scene Prep and Restart, right after ResetStage. MaxHeld is the rules' one number: two props at most.
+(fn SetScene (Names Ids Out Props Places)
+  (set MaxHeld 2)
+  (set RNames Names)
+  (set RIds Ids)
+  (set ROut Out)
+  (set RProps Props)
+  (set RPlaces Places)
+  (clear (V HoldBy))
+  (for _p (V RProps)
+    (add (V HoldBy) (- 0 1)))
+  (set RCount 0)
+  (for _o (V ROut)
+    (if _o
+      (set RCount (+ (V RCount) 1))))
+  (print (cat "NHOS: RULES scene seats=" (str (len (V RNames))) " out=" (str (V RCount)) " props=" (Utilities|String|JoinStringArray :SourceArray (V RProps) :Separator ", ") " places=" (Utilities|String|JoinStringArray :SourceArray (V RPlaces) :Separator ", "))))

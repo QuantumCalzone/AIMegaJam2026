@@ -1,0 +1,23 @@
+; A scene turn's lines go into the shared log in a random order, then the next turn or the end of the scene.
+; Written from the editor's read-back in T62, which adds CheckTurn: each seat's action passes the stage
+; director's rules (one action, the holding rules) in this order, before its entry is made.
+(fn PlayTurn ()
+  (clear (V TurnOrder))
+  (for _s (V OnStage)
+    (add (V TurnOrder) _s))
+  (Utilities|Array|Shuffle (V TurnOrder))
+  (set TmpStr2 (cat "scene " (str (V SceneNum)) ", turn " (str (V TurnNum))))
+  (for _seat (V TurnOrder)
+    (CallFunction|CheckTurn :Seat _seat)
+    (bind _nm (get (V SeatName) _seat))
+    (bind _do (get (V TurnDoes) _seat))
+    (bind _sa (get (V TurnSays) _seat))
+    (bind _entry (CallFunction|MakeEntry :When (V TmpStr2) :Actor _nm :Does _do :Says _sa))
+    (CallFunction|ActorLine :Seat _seat :Entry _entry)
+    (CallFunction|ShowLine :Seat _seat :Does _do :Says _sa)
+    (print (cat "NHOS: LOG " (V TmpStr2) " | " _nm " | " _do " | " _sa)))
+  (print (cat "NHOS: SCENE " (str (V SceneNum)) " TURN " (str (V TurnNum)) " DONE"))
+  (if (< (V TurnNum) 3)
+    (CallFunction|StartTurn)
+    (else
+      (CallFunction|EndScene))))

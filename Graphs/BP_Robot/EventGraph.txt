@@ -4,6 +4,8 @@
 (event EventTick (DeltaSeconds)
   (Variables|Default|SetClock (+ (Variables|Default|GetClock) DeltaSeconds))
   (CallFunction|TickActs :Delta DeltaSeconds)
+  ; T47: the headpieces go on and off with BP_Show's phase.
+  (CallFunction|WatchShow)
   (bind _c (Variables|Default|GetClock))
   (if (Variables|Default|GetIsCut)
     (bind _s (- _c (Variables|Default|GetCutClock)))

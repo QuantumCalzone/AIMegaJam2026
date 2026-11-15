@@ -1,0 +1,5 @@
+; T62: a check line with the whole state an AI reads, once per AI on turn 2 of each scene (turn 1 holds nothing),
+; so "holding" in each cast entry and in "you" can be checked against the NHOS: HOLD lines. Never sent to an AI.
+(fn HoldLine (Seat AskKey State)
+  (if (and (streq AskKey "scene_turn") (== (V TurnNum) 2))
+    (print (cat "NHOS: YOU " (get (V SeatName) Seat) " state=" State))))

@@ -1,0 +1,4 @@
+; T47: every part in LiftComps goes back to its bare-headed place, raised by Lift cm.
+(fn LiftTop (Lift)
+  (for _i (range (len (V LiftComps)))
+    (Transformation|SetRelativeLocation :self (get (V LiftComps) _i) :NewLocation (+ (get (V LiftBase) _i) (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z Lift)))))
