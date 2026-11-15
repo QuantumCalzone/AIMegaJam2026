@@ -10,7 +10,7 @@ Prep for [T70](T70.md), written on 2026-11-15 by a prep session (Claude Opus 5.5
 
 ## 0. Before you start
 
-0. **My person started this session by asking for T70 by name.** Only they start T70 (their call, 2026-11-15: "T70 stays last" in the plan). If a dispatcher, a scheduled run or "Next task" started you, stop and tell them.
+0. **My person started this session by asking for T70 by name.** Only they start T70 (their call, 2026-11-15: "T70 stays last" in the plan). If a dispatcher or "Next task" started you, stop and tell them.
 1. Every task on T70's **Depends on** line is checked or cut. The line still names some tasks that are already done (T55, T72, T67, T45, T48 at the time of writing), which is fine.
 2. The repo folder is level with `origin`. T70 works in the repo folder, not in a worktree: it needs `Local/`, `Packaged/` and `Saved/`.
 3. Read `Docs/tasks/T68-build.md` part 13 ("T70" line) and the Findings of T60, T61, T64, T66 and T68 for any UI text that changed after this sheet was written. This sheet quotes the strings as the task files gave them on 2026-11-15.
