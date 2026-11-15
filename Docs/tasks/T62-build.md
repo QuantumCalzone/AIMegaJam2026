@@ -1124,6 +1124,7 @@ In `main`, right after the `check_note_deal` block (`print("Only the AI seats ge
 - A sample turn changed to a throw of a prop the actor doesn't hold fails: `FAIL rules: sample log: scene 1, turn 2, Player 1: 'throws the toy blaster at Player 2': a throw of a prop it doesn't hold`.
 - `check_reply` on the scene-turn context: a grab of the held toy blaster gives the WARN `grab of the toy blaster, which Player 5 holds`; a throw of a prop the actor holds, a look at a prop and no action pass; two actions fail (`2 actions, 1 at most`); a look at oneself fails (`bad action`); a move in a reaction fails (`a reaction has no actions (T62)`).
 - `--log` on a synthetic good log passes and prints `rule fallbacks = 1, extras dropped = 1` (a `someone holds it` fallback counts, an `unknown target` one doesn't); with a two-action turn and a reaction move it exits 1 with one `[FAIL] ... (T62)` line for each.
+- **Again after T54 landed (`6002424`, merged at `55316d4`):** every anchor of parts 4 to 6 holds except the summary line, whose end T54 changed to `... if end else 'none'}.")` (add the two counts before its `.")`, as 6j says), and T54's return line (`... or end_bad else 0` → `... or end_bad or act_bad else 0`). `--offline` passes; T54's closing block takes 6f's addition, and the closing states after scenes 3 and 4 then hold nothing while scene 1's keep their props; the synthetic log prints `ending = lose caught, rule fallbacks = 1, extras dropped = 1`.
 
 ## 7. The check
 
