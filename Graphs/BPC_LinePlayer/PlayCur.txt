@@ -1,14 +1,23 @@
 ; T30: the line reaches the screen: the chat line, its robot lights up, its stage actions play. Then the queue holds for its reading time.
-; T20: the talk blip plays with the chat line (BP_Show.LineBlip).
+; T73: the speech types out at type_cps with one voice sound per syllable (StartType, TypeTick), and the hold
+; starts when the typing ends (EndType). A line with no speech, or no chat line to type into, holds at once.
+; The typing plans the speech as the chat line shows it (WBP_Stage.CleanText, as AddChatLine does).
 (fn PlayCur ()
   (Class|WBPStage|SetTyping :self (V Stage) :Line "")
   (bind _wa (len (Utilities|String|ParseIntoArray :SourceString (V CurAction) :Delimiter " " :CullEmptyStrings true)))
   (bind _ws (len (Utilities|String|ParseIntoArray :SourceString (V CurSpeech) :Delimiter " " :CullEmptyStrings true)))
   (bind _raw (+ (V LineBase) (* (V LinePerWord) (+ _wa _ws))))
   (bind _hold (CallFunction|Scaled :T (Math|Float|Clamp(Float) :Value _raw :Min (V LineMin) :Max (V LineMax))))
-  (print (cat "NHOS: LINE " (V CurId) " hold=" (Utilities|String|ToString(Float) _hold)))
+  (set CurHold _hold)
+  (bind _sp (Class|WBPStage|CleanText :self (V Stage) :In (V CurSpeech)))
+  (CallFunction|PlanType :Text _sp)
+  (bind _ty0 (CallFunction|Scaled :T (V TypeSecs)))
+  (bind _ty (select (> (V TypeSecs) 0.0) _ty0 0.0))
+  (print (cat "NHOS: LINE " (V CurId) " hold=" (Utilities|String|ToString(Float) _hold) " syl=" (str (V TypeSylN)) " type=" (Utilities|String|ToString(Float) _ty)))
   (Class|WBPStage|AddChatLine :self (V Stage) :Name (V CurName) :Color (V CurColor) :Action (V CurAction) :Speech (V CurSpeech) :IsMe (V CurIsMe))
-  (Class|BPShow|LineBlip :self (V Show) :Name (V CurName) :IsMe (V CurIsMe))
+  (CallFunction|StartType)
   (Class|BPShow|LightSeat :self (V Show) :Seat (V CurSeat))
   (Class|BPShow|StageLine :self (V Show) :Seat (V CurSeat) :Entry (V CurEntry))
+  (if (V TypeOn)
+    (return))
   (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "Pump" :Time _hold :bLooping false))

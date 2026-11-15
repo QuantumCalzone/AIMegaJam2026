@@ -1,0 +1,8 @@
+; T73: a number from the pacing block, or Def when the file doesn't have it.
+(fn PaceF (Key Def)
+  (bind _h (Json|HasField (V Pace) Key))
+  (if (not _h)
+    (return Def))
+  (bind _v (Json|GetField (V Pace) Key))
+  (set TmpF _v)
+  (return (V TmpF)))

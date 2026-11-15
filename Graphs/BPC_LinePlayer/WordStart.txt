@@ -1,0 +1,5 @@
+; T73: a word starts at letter I.
+(fn WordStart (I)
+  (set PWordStart I)
+  (set PWordSyl 0)
+  (set PLastRun -1))

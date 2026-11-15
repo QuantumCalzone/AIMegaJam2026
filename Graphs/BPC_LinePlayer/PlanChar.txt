@@ -1,0 +1,17 @@
+; T73: one letter of the plan. A word is a run of letters, digits and apostrophes (straight or curly).
+; No early return (T30's DSL rule).
+(fn PlanChar (I)
+  (bind _c (Utilities|String|GetSubstring :SourceString (V TypeText) :StartIndex I :Length 1))
+  (add (V TypeAt) (V PT))
+  (add (V TypeSyl) false)
+  (set PT (+ (V PT) (+ (/ 1.0 (V TypeCps)) (CallFunction|PauseAt :I I))))
+  (bind _w (Utilities|String|Contains :SearchIn "abcdefghijklmnopqrstuvwxyz0123456789'’" :Substring _c))
+  (bind _v (Utilities|String|Contains :SearchIn "aeiouy" :Substring _c))
+  (if (and (not _w) (V PIn))
+    (CallFunction|EndWord :Last (- I 1)))
+  (if (and _w (not (V PIn)))
+    (CallFunction|WordStart :I I))
+  (if (and _w (and _v (not (V PPrevV))))
+    (CallFunction|SylAt :I I))
+  (set PIn _w)
+  (set PPrevV (and _w _v)))

@@ -1,0 +1,3 @@
+; T73: the first N letters of the speech are typed.
+(fn TypeTo (N)
+  (Class|Text|SetText :self (Variables|WBP_ChatLine|GetSpeechShown) :Text (Utilities|Text|ToText(String) (Utilities|String|GetSubstring :SourceString (V FullSpeech) :StartIndex 0 :Length N))))

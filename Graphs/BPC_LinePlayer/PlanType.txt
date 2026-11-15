@@ -1,0 +1,20 @@
+; T73: plans a line's typing: when each letter appears (TypeAt, before fast_scale) and which letters start a
+; syllable (TypeSyl). A syllable is a run of vowels (a e i o u y) inside a word; a single final e after a
+; consonant is silent when the word has another syllable; every word, and every speech, has at least one.
+(fn PlanType (Text)
+  (set TypeText Text)
+  (clear (V TypeAt))
+  (clear (V TypeSyl))
+  (set TypeSylN 0)
+  (set PT 0.0)
+  (set PIn false)
+  (set PPrevV false)
+  (set TypeLen (Utilities|String|Len Text))
+  (for _i (range (V TypeLen))
+    (CallFunction|PlanChar :I _i))
+  (if (V PIn)
+    (CallFunction|EndWord :Last (- (V TypeLen) 1)))
+  (if (and (> (V TypeLen) 0) (== (V TypeSylN) 0))
+    (Utilities|Array|SetArrayElem (V TypeSyl) 0 true)
+    (set TypeSylN 1))
+  (set TypeSecs (V PT)))

@@ -1,0 +1,10 @@
+; T73: a line starts to type. SpeechText keeps the whole speech, invisible, so the line has its final size
+; from the first letter (the chat doesn't jump); SpeechShown shows the typed part in the same font on top.
+; Speech is the text SetActor shows (BPC_LinePlayer passes it through WBP_Stage.CleanText, as AddChatLine does).
+(fn TypeBegin (Speech)
+  (set FullSpeech Speech)
+  (Class|Text|SetFont :self (Variables|WBP_ChatLine|GetSpeechShown) :Font (Class|UIStyle|UIFont :Role "Speech"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_ChatLine|GetSpeechShown) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (Class|Text|SetText :self (Variables|WBP_ChatLine|GetSpeechShown) :Text (Utilities|Text|ToText(String) ""))
+  (Widget|SetVisibility :self (Variables|WBP_ChatLine|GetSpeechShown) :InVisibility "HitTestInvisible")
+  (Widget|SetRenderOpacity :self (Variables|WBP_ChatLine|GetSpeechText) :InOpacity 0.0))

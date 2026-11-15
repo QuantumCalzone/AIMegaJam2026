@@ -1,0 +1,6 @@
+; T73: stops a line that is still typing and shows it whole, with no hold (Clear).
+(fn StopType ()
+  (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "TypeTick")
+  (if (V TypeOn)
+    (set TypeOn false)
+    (Class|WBPChatLine|TypeEnd :self (V TypeW))))

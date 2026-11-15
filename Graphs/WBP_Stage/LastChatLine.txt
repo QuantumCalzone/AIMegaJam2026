@@ -1,0 +1,11 @@
+; T73: the newest chat line (the last child of LogScroll, where AddChatLine puts it), so BPC_LinePlayer can
+; type its speech. None when the chat is empty or the last child isn't a WBP_ChatLine.
+(fn LastChatLine ()
+  (bind _n (Widget|Panel|GetChildrenCount :self (Variables|WBP_Stage|GetLogScroll)))
+  (if (< _n 1)
+    (return (V NullChat)))
+  (bind _c (Utilities|Casting|CastToWBP_ChatLine :Object (Widget|Panel|GetChildAt :self (Variables|WBP_Stage|GetLogScroll) :Index (- _n 1)))
+    (:then
+      (return _c))
+    (:CastFailed
+      (return (V NullChat)))))

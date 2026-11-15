@@ -1,3 +1,0 @@
-; T20: BPC_LinePlayer calls this when a line plays: the talk blip at the speaker's pitch.
-(fn LineBlip (Name IsMe)
-  (Class|BPCShowAudio|Blip :self (V Audio) :Name Name :IsMe IsMe))

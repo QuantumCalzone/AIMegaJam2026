@@ -1,0 +1,6 @@
+; T73: the typing is done: the full line shows, and the hold starts (T30's reading time, retuned).
+(fn EndType ()
+  (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "TypeTick")
+  (set TypeOn false)
+  (Class|WBPChatLine|TypeEnd :self (V TypeW))
+  (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "Pump" :Time (V CurHold) :bLooping false))
