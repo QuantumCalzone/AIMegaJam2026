@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T21 (how a judge plays) is done: with a wrong relay address, keys entered on the AI service unavailable screen passed the key test and played a show in key mode, with answers from all four labs. Its claim is released. T35 (the money burn) is done too. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows T28, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T21 (how a judge plays) is done: with a wrong relay address, keys entered on the AI service unavailable screen passed the key test and played a show in key mode, with answers from all four labs. Its claim is released. T35 (the money burn) is done too. The first free task is T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows T28, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -20,7 +20,7 @@ First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), 
 |---|---|
 | Plain speech (T13), UI/UX polish (T14) and story scenes (T15) | Sat Nov 14, by noon |
 | One LLM per AI player (T16, T18) and the stage art (T17) | Sat Nov 14, by 6 PM |
-| Robots act out their actions (T19), the UI fixes from my playtest (T27 to T31), the money burn (T35), the UI/UX sweep (T32 to T34), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
+| Robots act out their actions (T19), the UI fixes from my playtest (T27 to T31), speech bubbles (T38), the money burn (T35), the UI/UX sweep (T32 to T34), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
 | Packaged and played (by me, by hand; T22 was dropped), submission ready (T23) | Sun Nov 15, by 2 PM |
 | Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
 
@@ -159,11 +159,18 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T30.md](tasks/T30.md)
 
+- [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click**
+  - **Model and effort:** Opus 5.5, high. A new widget placed over moving robots, timed by the line queue, and a new hidden state for the chat.
+  - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
+  - **Touches:** new `Content/NHOS/UI/WBP_SpeechBubble.uasset`, `Content/NHOS/Stage/BP_Robot.uasset` (the bubble, `Say`, `Hush`), `Content/NHOS/Core/BPC_LinePlayer.uasset` (the call when a line plays, the typing bubble), `Content/NHOS/UI/WBP_Stage.uasset` (the chat button, the chat hidden at the start, the typing line), `Content/NHOS/Core/BP_Show.uasset` only if a call must change, `Graphs/` files for the graphs it writes, the design doc, `Docs/tasks/T38.md`.
+  - **Details:** [Docs/tasks/T38.md](tasks/T38.md)
+
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
-  - **Depends on:** T32, T30 (the line pacing and its typing line are in, so this task polishes the final screen)
+  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_SpeechBubble.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
 
 - [ ] **T20 Audio**
@@ -203,7 +210,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T23 Submission**
   - **Model and effort:** Sonnet 5.5, medium. Writing and checklists.
-  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, T31 if it is done, T36 if it is done, and T37 if it is done
+  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T38, T24 if it is done, T31 if it is done, T36 if it is done, and T37 if it is done
   - **Needs:** me, to record the video, set up the itch.io page and send the form. The packaged build, which I make myself.
   - **Touches:** `Docs/ItchPage.md`, new `Docs/Submission.md`, `Packaged/` (not in git).
   - **Details:** [Docs/tasks/T23.md](tasks/T23.md)
