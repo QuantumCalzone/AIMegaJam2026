@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T26 (five actors), T17 (stage art) and T19 (the robots act out their actions) are done: my UI playtest on 2026-11-14 closed them. Their locks are released, so the UI fixes from that playtest can start. The first free task is T27 (Opus 5.5 · xhigh): the screen floats over the stage. T28 to T30 follow it. T20 (audio) and T21 (how a judge plays) are free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T27 (the screen floats over the stage) is built and waits for my playtest in a game window; it keeps its claim and the locks on `WBP_Stage` and `L_Stage` until then. T28 to T30 follow it and need its box checked. T20 (audio) and T21 (how a judge plays) are free (Opus 5.5 · xhigh), but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -129,6 +129,7 @@ These hold for every task, and for editor work outside the task list too. If one
     5. **The input box reads clearly:** a dark fill, the text I type in white, the hint in a gray that still reads easily on that fill (about 4.5:1 contrast), and a visible caret. Off my turn, the disabled box still looks different from the enabled one.
   - **Done when:** screenshots at 1600 × 900 of Scene Prep, a scene turn, my Free Talk turn and the vote show the stage in the whole window, all five robots and their labels clear of the panels, and input text that is easy to read; a free autoplay show reaches `NHOS: SHOW END`; I play one show and say the screen no longer feels blocked.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, maybe `WBP_ChatLine.uasset`, `Content/NHOS/Maps/L_Stage.umap` (the camera), and a `Graphs/WBP_Stage/` file for each graph it writes.
+  - **Waiting:** the layout, the camera and the input box are committed; the screenshots and a free autoplay show passed (see "T27: the screen floats over the stage" in Findings). The claim and the locks on `WBP_Stage` and `L_Stage` stay until my verdict. Left: play one show in a game window and say whether the screen still feels blocked.
 
 - [ ] **T28 Scene Prep shows the whole card, the scene shows only mine**
   - **Model and effort:** Opus 5.5, high. It adds a pause to the show loop and splits the info card by phase.
@@ -1262,3 +1263,26 @@ Every role still runs `claude-haiku-5-5` at low effort.
   - **`Utilities|String|Split` binds as `(bind (left right ok) ...)`.**
   - **A new Blueprint's components, added with `add_component`, show on instances placed after them**, so place new actors after their parts exist (T17's re-place rule applies only to instances placed before).
   - **`SlateInspectorToolset.Screenshot` of the editor's main splitter is full resolution** (3384 × 1336); `CaptureEditorImage` comes back at about 1280 wide. `Saved/T19/resize.ps1` crops and scales with `System.Drawing`.
+
+### T27: the screen floats over the stage (2026-11-14)
+
+Built on a Mac, checked in PIE (a 1600 × 900 floating window, Test for Free, played by hand through the Slate inspector) and in a game window.
+
+- **Camera:** `StageCamera` moved from (−1050, 0, 230), pitch −12, to (−1050, 0, 330), pitch −20. At 16:9 the proscenium columns now sit near the window's edges and the valance at its top, and every robot's feet sit above 47% of the height, so the chat at the bottom left never reaches them. A robot at a Left or Front spot stays above the chat even while the vote row is shown; a robot at Right stays left of the card. The house floor below the stage still shows as a dark band at the bottom right.
+- **`WBP_Stage` layout:** `RootBox` is now an Overlay, not a VerticalBox. Its children, back to front: `HeaderSize` (top left, max 860 wide) holding `HeaderBar` at 78% opacity; `LowerSize` (bottom left, 640 wide, a third of 1920) holding `LowerPanel` at 75% opacity, with `ChatSize` (380 tall, about 35% of the height) around `BodyRow` > `LogScroll`, then `VoteRow` and the input row; `InfoSize` (top right, 420 wide, at most 640 tall) holding the info card at 82% opacity; and `StageArea` last, so the reveal stamp draws on top. Every panel has a 24 px margin. `LogScroll` sits at the bottom of `ChatSize`, so a short log reads from the bottom up, newest line last.
+- **Text:** the info card's small titles went from 15 to 18 pt; chat lines were already 18 to 20 pt. The vote prompt is now "Vote:", and the vote buttons use 18 pt labels with 12 px side padding, so four provider names fit in the 608 px row (at 22 px padding, "SpaceXAI" ran past the panel).
+- **Input box:** `InputBox` draws rounded dark boxes instead of the engine's light texture: fill (0.008, 0.009, 0.014) linear, a gray outline, a teal outline when focused, white text and a white caret. Off my turn the box is disabled and loses the focus outline, so it looks flat and dim.
+  - **The engine draws an EditableTextBox's hint at 35% of the text color,** with no style field to change it. White text gave a hint of 1.7:1 on the dark fill when disabled, and no fill can reach 4.5:1 that way. So a new `HintLabel` (TextBlock, 18 pt, gray (0.262, 0.275, 0.314) linear, ellipsis when too long) sits over the box in a new `InputStack` overlay. `SetPrompt` now writes the hint to `HintLabel`, not to the box's own hint, and on every call (once a frame, from `BP_Show.UpdatePrompt`) sets the label's opacity to 1 when the box is empty and 0 when it isn't. Measured from screenshots: hint 5.1:1 on the fill, typed text white. The source is `Graphs/WBP_Stage/SetPrompt.txt`.
+- **Checks:** screenshots of Scene Prep, a scene turn, my Free Talk turn, the vote and a reaction after a cut are in `Saved/T27/shots/` (not in git). A free autoplay show in a game window reached `NHOS: SHOW END result=win scenes=3` with three cuts and no `LogScript` warning (the only `LogScript` line is the missing `Local/llm_key.json`, which free mode doesn't need).
+- **Game windows on a Mac (the first task to use the build note):**
+  - The game-window command works with the macOS binary: `"/Users/Shared/Epic Games/UE_5.8/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor" "<PROJECT>" -game -windowed -ResX=1600 -ResY=900`. It reads the same `Local/switches.json`.
+  - On a Mac the logs are not in `Saved/Logs/`. The editor's log is `~/Library/Logs/Unreal Engine/AIMegaJam2026Editor/AIMegaJam2026.log`. A game window started with `-log=<name>.log` writes `~/Library/Logs/AIMegaJam2026/<name>.log`.
+  - `-ResX=1600 -ResY=900` is in points, so on a Retina screen the window is 3200 × 1800 pixels. The UI scales by the short side, so the layout matches a 1600 × 900 window.
+  - The computer-use tools list only the editor's own window, not the game window (another process with the same bundle id). `screencapture -x -o -l<window id>` captures it; a small Swift script with `CGWindowListCopyWindowInfo` finds the id from the process id.
+  - A free autoplay show takes about 25 s in a game window, too fast to screenshot each phase. For phase screenshots, set `LevelEditorPlaySettings.NewWindowWidth/Height` to 1600 × 900, run PIE with `PlayMode_InEditorFloating`, and play by hand with the Slate inspector (`Type`, `Click`).
+  - Close each game window when done (`pkill -f <log name>`). A second launch while one is still open runs both, and both write the same log file.
+- **Unreal MCP rules found in this task:**
+  - **`UMGToolSet.ReplaceWidgetWithTemplate` turned the VerticalBox root into an Overlay** and kept every child; the children get Overlay slots with default settings.
+  - **The first `SlateInspectorToolset.Click` on the title screen right after `StartPIE` is often lost.** Snapshot again and click until `NHOS: TITLE play` shows in the log.
+  - A new widget variable may not show in `find_node_types` after a compile, but `get_node_type_pins` and `write_graph_dsl` find it (`Variables|WBP_Stage|GetHintLabel`).
+  - `Class|Text|SetText` and `Class|TextBox|GetText` are property nodes; pass them `:self` and `:Text` by name.
