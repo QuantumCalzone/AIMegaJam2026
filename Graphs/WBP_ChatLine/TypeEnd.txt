@@ -1,0 +1,5 @@
+; T73: the typing is over (or stopped): the full speech shows as SetActor left it.
+(fn TypeEnd ()
+  (Widget|SetRenderOpacity :self (Variables|WBP_ChatLine|GetSpeechText) :InOpacity 1.0)
+  (Class|Text|SetText :self (Variables|WBP_ChatLine|GetSpeechShown) :Text (Utilities|Text|ToText(String) ""))
+  (Widget|SetVisibility :self (Variables|WBP_ChatLine|GetSpeechShown) :InVisibility "Collapsed"))

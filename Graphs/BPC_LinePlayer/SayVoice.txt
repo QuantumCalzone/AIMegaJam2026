@@ -1,0 +1,6 @@
+; T73: one syllable in the speaker's voice (T72). CurName is the provider name I see; IsMe picks my own set.
+(fn SayVoice ()
+  (CallFunction|FindAudio)
+  (if (== (V Audio) (V NullAudio))
+    (return))
+  (Class|BPCShowAudio|Syllable :self (V Audio) :Name (V CurName) :IsMe (V CurIsMe)))

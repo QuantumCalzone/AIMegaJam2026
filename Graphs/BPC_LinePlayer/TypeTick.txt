@@ -1,0 +1,4 @@
+; T73: the typing timer, every 1/60 s while a line types.
+(fn TypeTick ()
+  (if (V TypeOn)
+    (CallFunction|TypeStep)))
