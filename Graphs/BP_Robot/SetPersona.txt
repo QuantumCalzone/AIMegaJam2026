@@ -10,11 +10,30 @@
   (bind _o (Utilities|String|EqualExactly(String) Id "overclocker"))
   (bind _p (Utilities|String|EqualExactly(String) Id "copycat"))
   (bind _h (Utilities|String|EqualExactly(String) Id "human"))
+  ; T79: OpenAI, Anthropic and SpaceXAI wear the shared round head; Meta and my robot keep T46's pill until T80.
+  (bind _r (or _v (or _w _o)))
   (Variables|Default|SetBaseColor (select _v (Utilities|Struct|MakeLinearColor :R 0.392 :G 0.604 :B 1.0 :A 1.0) (select _w (Utilities|Struct|MakeLinearColor :R 0.807 :G 0.25 :B 0.068 :A 1.0) (select _o (Utilities|Struct|MakeLinearColor :R 0.687 :G 0.871 :B 0.068 :A 1.0) (select _p (Utilities|Struct|MakeLinearColor :R 0.105 :G 0.262 :B 1.0 :A 1.0) (select _h (Utilities|Struct|MakeLinearColor :R 0.05 :G 0.631 :B 0.584 :A 1.0) (Variables|Default|GetBaseColor)))))))
-  (Variables|Default|SetBobSpeed (select _v 1.3 (select _w 6.0 (select _o 4.5 (select _p 0.7 2.0)))))
-  (Variables|Default|SetBobAmp (select _v 3.0 (select _w 1.0 (select _o 4.0 (select _p 0.6 2.5)))))
-  (bind _es (select _v (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.06) (select _h (Math|Vector|MakeVector :X 0.14 :Y 0.14 :Z 0.18) (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.13))))
+  ; T79: OpenAI's idle bob becomes a slow hover, 8 cm up, with its hands pressed together at rest.
+  (Variables|Default|SetBobSpeed (select _v 1.1 (select _w 6.0 (select _o 4.5 (select _p 0.7 2.0)))))
+  (Variables|Default|SetBobAmp (select _v 3.5 (select _w 1.0 (select _o 4.0 (select _p 0.6 2.5)))))
+  (Variables|Default|SetHoverZ (select _v 8.0 0.0))
+  (Variables|Default|SetFoldPitch (select _v 70.0 0.0))
+  (Variables|Default|SetFoldRoll (select _v 33.0 0.0))
+  ; T79: eyes: wide and round (OpenAI), half-closed (Anthropic), small dots (SpaceXAI); T46's for the pill.
+  (bind _es (select _v (Math|Vector|MakeVector :X 0.1 :Y 0.12 :Z 0.12) (select _w (Math|Vector|MakeVector :X 0.1 :Y 0.11 :Z 0.07) (select _o (Math|Vector|MakeVector :X 0.1 :Y 0.09 :Z 0.09) (select _h (Math|Vector|MakeVector :X 0.14 :Y 0.14 :Z 0.18) (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.13))))))
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetEyeL) :NewScale3D _es)
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetEyeR) :NewScale3D _es)
   (Transformation|SetRelativeRotation :self (Variables|Default|GetNub) :NewRotation (Math|Rotator|MakeRotator :Roll (select _h 32.0 0.0) :Pitch 0.0 :Yaw 0.0))
+  ; T79: the face and the screen on the round head, or where T46 had them on the pill.
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetFace) :NewLocation (select _r (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 0.0) (Math|Vector|MakeVector :X 2.5 :Y 0.0 :Z -23.0)))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetVisor) :NewLocation (select _r (Math|Vector|MakeVector :X 14.0 :Y 0.0 :Z 130.0) (Math|Vector|MakeVector :X 17.0 :Y 0.0 :Z 108.0)))
+  (Transformation|SetRelativeScale3D :self (Variables|Default|GetVisor) :NewScale3D (select _r (Math|Vector|MakeVector :X 0.44 :Y 0.54 :Z 0.4) (Math|Vector|MakeVector :X 0.4 :Y 0.56 :Z 0.8)))
+  ; T79: the shoulders of each body.
+  (bind _sy (select _v 26.0 (select _w 29.0 (select _o 30.0 36.0))))
+  (bind _sz (select _v 80.0 (select _w 76.0 (select _o 74.0 92.0))))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotL) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y (- _sy) :Z _sz))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotR) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y _sy :Z _sz))
+  ; T79: the head and back sockets of each body (HandSocket rides on the right arm pivot). T80 sets Meta's and mine.
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetHeadSocket) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z (select _r 158.0 160.0)))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetBackSocket) :NewLocation (select _v (Math|Vector|MakeVector :X -30.0 :Y 0.0 :Z 60.0) (select _w (Math|Vector|MakeVector :X -34.0 :Y 0.0 :Z 52.0) (select _o (Math|Vector|MakeVector :X -33.0 :Y 0.0 :Z 62.0) (Math|Vector|MakeVector :X -38.0 :Y 0.0 :Z 106.0)))))
   (CallFunction|ResetLook))
