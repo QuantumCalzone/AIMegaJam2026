@@ -1,0 +1,5 @@
+; T38: what the bubble keeps clear of. View is the widget that fills the window (WBP_Stage's root); Panels are the panels to
+; avoid (the header, my card, the lower panel, the banner, the stamp). Each counts only while it is visible.
+(fn SetKeepOut (View Panels)
+  (set KeepView View)
+  (set KeepPanels Panels))

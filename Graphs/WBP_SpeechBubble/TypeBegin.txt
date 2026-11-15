@@ -1,0 +1,9 @@
+; T38, on T73's typing, as WBP_ChatLine.TypeBegin does it: SpeechText holds the whole speech, invisible, so the bubble has its
+; final size from the first letter (it doesn't grow or jump); SpeechShown shows the typed part on top in the same font.
+; Pass the same Speech BPC_LinePlayer gives the chat line (after WBP_Stage.CleanText), so TypeTo's N counts the same letters.
+(fn TypeBegin (Speech)
+  (set FullSpeech Speech)
+  (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetSpeechText) :Text (Utilities|Text|ToText(String) Speech))
+  (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetSpeechShown) :Text (Utilities|Text|ToText(String) ""))
+  (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetSpeechShown) :InVisibility "HitTestInvisible")
+  (Widget|SetRenderOpacity :self (Variables|WBP_SpeechBubble|GetSpeechText) :InOpacity 0.0))
