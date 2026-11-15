@@ -10,4 +10,5 @@
   (set FaceYaw _y)
   (set LookUntil (+ _c 0.9))
   (CallFunction|Receive :Prop Prop :Dur (* 0.6 K) :H 70.0)
+  (CallFunction|Snd :Key "grab")
   (set BusyUntil (+ _c (* 0.65 K))))

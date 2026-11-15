@@ -1,0 +1,6 @@
+; T20: the end screen: the music stops; a win gets the long applause, a loss the laughs.
+(fn EndCheer (Win)
+  (if (not (Utilities|String|IsEmpty (V MusicKey)))
+    (Audio|Components|Audio|StopDelayed :self (V Music) :DelayTime 0.0))
+  (set MusicKey "")
+  (CallFunction|Sfx :Key (select Win "applause_win" "laughs") :Pitch 1.0))

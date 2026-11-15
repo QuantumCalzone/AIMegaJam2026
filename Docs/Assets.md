@@ -79,4 +79,29 @@ Made with Leonardo.ai (a reference image, through its paid API, private) and Mes
 
 ## Audio
 
-None yet (T20).
+Imported in T20 (2026-11-15) from `SourceAssets/Audio/` (see `Docs/AudioShortlist.md`) into `Content/NHOS/Audio/`. No AI audio tools were used. Kenney's packs are CC0, so no credit is needed; optional credit: "Kenney (www.kenney.nl)". The two CC BY files need the credit lines below in the credits and on the itch.io page.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Content/NHOS/Audio/Music/S_MusicTitle` | Title music loop (24 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Swinging Pants.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicShow` | Show music loop under the scenes (12 s, played quiet) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Wacky Waiting.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Show/S_DrumRoll` | Drum roll under the vote (18.8 s, ends on a cymbal; cut short at the reveal) | "Long Drum Roll with Cymbal Crash at End" by Ddis tts, Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Long_Drum_Roll_with_Cymbal_Crash_at_End.wav | CC0 1.0 |
+| `Content/NHOS/Audio/Show/S_StingHuman` | Reveal stinger when the human is cut | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Idents/Serious ident.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Show/S_StingAI` | Reveal stinger when an AI is cut | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Retro/Retro Comedy.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Show/S_Applause` | Applause after every cut | "applause-2" by Sandermotions (Freesound 277021), Wikimedia Commons: https://commons.wikimedia.org/wiki/File:277021_sandermotions_applause-2.wav | CC0 1.0 |
+| `Content/NHOS/Audio/Show/S_ApplauseWin` | Long applause at a win | "Applaudissements" by Thomas Bresson, Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Thomas_Bresson_-_Applaudissements.mp3 | CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Credit needed: "Applaudissements" by Thomas Bresson, CC BY 4.0. |
+| `Content/NHOS/Audio/Show/S_Laughs` | Laughs after an AI is cut, and at a loss | "approx 800 laughter and clapter 1" by lonemonk (https://freesound.org/people/lonemonk/packs/4695/), Wikimedia Commons: https://commons.wikimedia.org/wiki/File:72844_lonemonk_approx-800-laughter-and-clapter-1.wav | CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Credit needed: "approx 800 laughter and clapter 1" by lonemonk, CC BY 3.0. |
+| `Content/NHOS/Audio/UI/S_Click` | Button press, on every button through `UIStyle.MakeButton` | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Interface Sounds", `click_001.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/UI/S_Hover` | Button hover, on every button through `UIStyle.MakeButton` | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "UI Audio", `rollover1.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Robot/S_TalkBlip` | Talk blip when a line plays, pitched per provider | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Interface Sounds", `pluck_001.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Robot/S_Step0` to `S_Step4` | Robot footsteps, one picked at random | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Impact Sounds", `footstep_concrete_000.ogg` to `_004.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Robot/S_Grab` | A robot picks up a prop | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "RPG Audio", `cloth1.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Robot/S_Throw` | A robot throws a prop | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Foley Sounds", `Woosh/woosh1.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Robot/S_Land` | A thrown prop lands | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Impact Sounds", `impactSoft_medium_000.ogg` | CC0 1.0 |
+
+Sound classes `SC_Music`, `SC_Effects` and `SC_Voice` in `Content/NHOS/Audio/` are copies of the engine's `/Engine/EngineSounds/Music` and `SFX` classes (Unreal Engine 5.8), with no parent.
+
+Credit lines for the CC BY files:
+
+- "Applaudissements" by Thomas Bresson, CC BY 4.0, via Wikimedia Commons.
+- "approx 800 laughter and clapter 1" by lonemonk, CC BY 3.0, via Wikimedia Commons.

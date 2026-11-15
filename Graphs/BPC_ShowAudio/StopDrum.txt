@@ -1,0 +1,5 @@
+(fn StopDrum ()
+  (Utilities|IsValid (V Drum)
+    (:"Is Valid"
+      (Audio|Components|Audio|StopDelayed :self (V Drum) :DelayTime 0.0))
+    (:"Is Not Valid")))

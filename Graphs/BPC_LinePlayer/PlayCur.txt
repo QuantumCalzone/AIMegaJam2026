@@ -1,4 +1,5 @@
 ; T30: the line reaches the screen: the chat line, its robot lights up, its stage actions play. Then the queue holds for its reading time.
+; T20: the talk blip plays with the chat line (BP_Show.LineBlip).
 (fn PlayCur ()
   (Class|WBPStage|SetTyping :self (V Stage) :Line "")
   (bind _wa (len (Utilities|String|ParseIntoArray :SourceString (V CurAction) :Delimiter " " :CullEmptyStrings true)))
@@ -7,6 +8,7 @@
   (bind _hold (CallFunction|Scaled :T (Math|Float|Clamp(Float) :Value _raw :Min (V LineMin) :Max (V LineMax))))
   (print (cat "NHOS: LINE " (V CurId) " hold=" (Utilities|String|ToString(Float) _hold)))
   (Class|WBPStage|AddChatLine :self (V Stage) :Name (V CurName) :Color (V CurColor) :Action (V CurAction) :Speech (V CurSpeech) :IsMe (V CurIsMe))
+  (Class|BPShow|LineBlip :self (V Show) :Name (V CurName) :IsMe (V CurIsMe))
   (Class|BPShow|LightSeat :self (V Show) :Seat (V CurSeat))
   (Class|BPShow|StageLine :self (V Show) :Seat (V CurSeat) :Entry (V CurEntry))
   (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "Pump" :Time _hold :bLooping false))

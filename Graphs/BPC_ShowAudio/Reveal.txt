@@ -1,0 +1,6 @@
+; T20: the cut: the drum stops, the stinger says who it was, the crowd follows 1.5 s later.
+(fn Reveal (IsHuman)
+  (set LastHuman IsHuman)
+  (CallFunction|StopDrum)
+  (CallFunction|Sfx :Key (select IsHuman "sting_human" "sting_ai") :Pitch 1.0)
+  (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "Crowd" :Time 1.5 :bLooping false))
