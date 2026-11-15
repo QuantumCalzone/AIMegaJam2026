@@ -1,0 +1,21 @@
+{
+ "src": "Docs/BotArt/you.png",
+ "out": "reference.png",
+ "rect": [
+  572,
+  590,
+  130,
+  240
+ ],
+ "scale": 2,
+ "fills": [
+  {
+   "clear": [
+    572,
+    590,
+    13,
+    240
+   ]
+  }
+ ]
+}

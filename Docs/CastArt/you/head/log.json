@@ -1,0 +1,63 @@
+{
+ "part": "you/head",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/5e639e9a-ded5-4e4b-bc7d-770d38b4affe",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate_agentic",
+ "tier": "standard",
+ "producer": "n-gons",
+ "export_type": "fbx",
+ "generation_id": "5e639e9a-ded5-4e4b-bc7d-770d38b4affe",
+ "upload_id": "oAgDQNN04CGRl5ApyWozDw",
+ "prompt": "Only the head of a homemade robot costume: a teal-painted cardboard box, a little wider than tall, with a strip of gray duct tape along the front edge of the lid and two open rectangular eye slots cut in the front. Nothing else: no ears, no antenna, no face drawn. The bottom of the box is closed.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "materials": {
+   "Teal cardboard paint": [
+    0.03,
+    0.126,
+    0.095
+   ],
+   "Unpainted cardboard interior": [
+    0.155,
+    0.095,
+    0.043
+   ],
+   "Gray duct tape": [
+    0.233,
+    0.253,
+    0.223
+   ]
+  },
+  "meshes": 3,
+  "triangles": 2050,
+  "vertices": 1027,
+  "bbox_min": [
+   -0.201,
+   -0.146,
+   0.0
+  ],
+  "bbox_max": [
+   0.201,
+   0.146,
+   0.35
+  ],
+  "pieces": 3,
+  "piece_vertex_counts": [
+   330,
+   236,
+   136
+  ],
+  "open_edges": 0
+ }
+}

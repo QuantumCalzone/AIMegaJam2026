@@ -1,0 +1,56 @@
+{
+ "part": "meta/head",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/826c5b47-d373-4a86-9754-8cf22f12024a",
+ "reference": "none (text only; reference.png was used by the dropped first try)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "826c5b47-d373-4a86-9754-8cf22f12024a",
+ "tries": [
+  {
+   "generation_id": "925a2f63-79bd-497c-b230-d2cbcb1b0d25",
+   "upload_id": "kqdmXRlVG0LCS8_-eSq4VQ",
+   "dropped": "the paint patch over the glasses became a box visor"
+  }
+ ],
+ "prompt": "Only the head of a doll-like android toy: a smooth bald round head of pale cream-white matte clay, slightly wider than tall, with two small round doll ears on the sides, a small rounded nose in the middle of the face and an otherwise smooth blank face: no eyes, no eyebrows, no mouth, no glasses. A short neck stub whose bottom is a smooth closed flat surface. One closed piece, toy-like, symmetrical, no hair, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7502,
+  "bbox_min": [
+   -0.836,
+   -0.782,
+   -0.949
+  ],
+  "bbox_max": [
+   0.836,
+   0.78,
+   0.948
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7502
+  ],
+  "open_edges": 0
+ }
+}

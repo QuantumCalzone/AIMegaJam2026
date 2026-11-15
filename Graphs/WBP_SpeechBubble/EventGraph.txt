@@ -1,0 +1,11 @@
+; T38: the bubble styles itself from UIStyle when it is built, and hides unless a line already shows: a screen-space
+; WidgetComponent builds its widget a frame after SetWidget, so a ShowLine called right after SetWidget comes first.
+; While a line or the dots show, it places itself each frame.
+(event UserInterface|EventConstruct
+  (CallFunction|ApplyStyle)
+  (if (not (V Shown))
+    (CallFunction|HideNow)))
+
+(event UserInterface|EventTick (MyGeometry InDeltaTime)
+  (if (V Shown)
+    (CallFunction|Place :Geo MyGeometry)))

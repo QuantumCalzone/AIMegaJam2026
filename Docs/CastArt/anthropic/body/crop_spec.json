@@ -1,0 +1,28 @@
+{
+ "src": "Docs/BotArt/anthropic.png",
+ "out": "reference.png",
+ "rect": [
+  262,
+  605,
+  360,
+  460
+ ],
+ "fills": [
+  {
+   "clear": [
+    262,
+    605,
+    48,
+    200
+   ]
+  },
+  {
+   "clear": [
+    572,
+    640,
+    50,
+    260
+   ]
+  }
+ ]
+}

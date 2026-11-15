@@ -1,0 +1,16 @@
+; T38: one, two, three dots, then one again. A timer set again for the same function replaces the pending one, so one chain runs.
+(fn DotStep ()
+  (if (not (V TypingOn))
+    (return))
+  (if (>= (V Dot) 2)
+    (set Dot 0)
+    (else
+      (set Dot (+ (V Dot) 1))))
+  (bind d (V Dot))
+  (if (== d 0)
+    (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetDotsText) :Text (Utilities|Text|ToText(String) "•"))
+    (elif (== d 1)
+      (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetDotsText) :Text (Utilities|Text|ToText(String) "• •"))
+      (else
+        (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetDotsText) :Text (Utilities|Text|ToText(String) "• • •")))))
+  (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "DotStep" :Time (V DotTime) :bLooping false))

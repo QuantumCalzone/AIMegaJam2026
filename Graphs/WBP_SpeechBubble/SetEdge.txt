@@ -1,0 +1,12 @@
+; T38: the ring and the tail in the speaker's seat color: UIStyle.SeatColor by provider name, as WBP_ChatLine.SetActor does
+; (Color is the fallback for an unknown name). The fill is solid ink, so the tail's hidden half never shows through it.
+(fn SetEdge (Name Color)
+  (bind seat (Class|UIStyle|SeatColor :Name Name :Fallback Color))
+  (bind ink (Class|UIStyle|UIColor :Role "InkSolid"))
+  (bind w (Class|UIStyle|UISize :Role "CardTrim"))
+  (bind r (Class|UIStyle|UISize :Role "PanelRadius"))
+  (bind bEdge (Class|UIStyle|Brush :Fill ink :Outline seat :Width w :Radius r))
+  (bind bTail (Class|UIStyle|Brush :Fill seat :Outline seat :Width 0.0 :Radius 2.0))
+  (Appearance|SetBrush :self (Variables|WBP_SpeechBubble|GetEdge) :InBrush bEdge)
+  (Appearance|SetBrush :self (Variables|WBP_SpeechBubble|GetTailDownFill) :InBrush bTail)
+  (Appearance|SetBrush :self (Variables|WBP_SpeechBubble|GetTailUpFill) :InBrush bTail))

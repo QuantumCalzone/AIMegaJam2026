@@ -1,0 +1,63 @@
+{
+ "part": "round_head",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/aa5bf59c-f2ba-4a3c-8ac3-de5a0246489d",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": true,
+ "generation_id": "aa5bf59c-f2ba-4a3c-8ac3-de5a0246489d",
+ "upload_id": "oN-LF5MMXVdVZ3lF9OJG4w",
+ "tries": [
+  {
+   "generation_id": "ee229389-e64b-4dd3-8521-0fc4a6ba8489",
+   "dropped": "the reference's red curtain light was baked into the lower half (same prompt without 'uniform white', delight off)"
+  }
+ ],
+ "prompt": "Only the head shell of a cute claymation robot: a smooth oval head of plain uniform white matte clay, evenly white all over with no colored light or shading in the texture, with a large dark glossy rounded screen set into the front. No face on the screen, no ears, no ear pods, no antennas, no neck, no collar. The bottom of the head is a smooth closed rounded surface. One closed piece, toy-like, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "materials": {
+   "model": [
+    0.8,
+    0.8,
+    0.8
+   ]
+  },
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7502,
+  "bbox_min": [
+   -0.949,
+   -0.868,
+   -0.907
+  ],
+  "bbox_max": [
+   0.951,
+   0.868,
+   0.906
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7501
+  ],
+  "open_edges": 0
+ }
+}

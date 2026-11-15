@@ -1,0 +1,42 @@
+{
+	"_readme": [
+		"The emotions each robot can show (T75). BP_Robot.Emote(id) reads this file once per robot. T76 lists the same ids in llm.json's reply_schema, T77 writes each emotion's word in the shared log, and T78 lists them by word on my emotion chip.",
+		"emotes is a list, in the order the emote_test switch cycles them and T78's chip lists them. Each entry has id (lowercase, unique), word (the plain word T77 writes in the shared log; empty for neutral), face, gesture (a name in gestures, or none) and hold (the seconds the emotion stays before the face eases back to neutral).",
+		"face poses the robot's own face, so one entry fits every head. eye_w and eye_h multiply the eyes' resting width and height. eye_dz moves both eyes up (+) or down, in cm; eye_dx moves both toward the viewer's right (+), in cm, for a side-eye. eye_tilt tips each eye's inner corner down (+, an angry V) or up (-), in degrees.",
+		"brow_angle is absolute, in degrees: + raises the brows' inner ends (sad, worried), - lowers them (angry). brow_dz moves the brows up from their resting line, in cm. brow_skew raises the viewer's-left brow and lowers the viewer's-right one by half of it each, in cm (one brow up).",
+		"mouth_w and mouth_h multiply the mouth's resting width and height; the talking stretch rides on top. mouth_curve bends the mouth's corners up (+, a smile) or down (-, a frown), in degrees; 0 is a straight bar. mouth_tilt raises the mouth's viewer's-right end (+, a smirk), in degrees.",
+		"tint is the color [r, g, b] (linear, 0 to 1) the glowing parts lean toward, and tint_mix how far (0 is none, 1 is all the way). A face that doesn't glow (my cardboard box) ignores the tint.",
+		"neutral is the resting face: eye_w, eye_h, mouth_w and mouth_h 1, every other value 0, gesture none and hold 0. The robot shows its own resting face for it: the Anthropic and SpaceXAI bots keep their brows, the others have none.",
+		"Every emotion keeps a visible mouth (mouth_w at least 0.4, mouth_h at least 0.8), because the dark shades cover the eyes and a wig's bangs cover the brows (Docs/BotArt.md). No screaming mouths (the design doc's Art Inspiration tab): mouth_h is at most 4.",
+		"gestures are the body's moves, shared by the emotions. pose is held while the emotion holds and eases in and out with the face: x (cm, + toward the audience), z (cm, + up), pitch (degrees, + leans back, - leans forward), roll (degrees, tips sideways), yaw (degrees, turns) and scale (0.05 is 5% bigger). waves adds at most two sine waves on top: ch (one of x, z, pitch, roll, yaw, scale), amp, hz, secs (how long it plays and fades out; 0 is the whole hold) and abs (true keeps only the upper half, for hops).",
+		"A gesture moves the body, never the robot off its mark, and fades out while the robot moves, grabs, gives or throws, so only the face changes then.",
+		"To add an emotion, add an entry that uses a gesture in gestures (or none), then add its id to llm.json's reply_schema (T76). No editor work. python Tools/check_prompts.py --offline checks this file."
+	],
+	"emotes": [
+		{"id": "neutral", "word": "", "face": {"eye_w": 1, "eye_h": 1, "eye_dz": 0, "eye_dx": 0, "eye_tilt": 0, "brow_angle": 0, "brow_dz": 0, "brow_skew": 0, "mouth_w": 1, "mouth_h": 1, "mouth_curve": 0, "mouth_tilt": 0, "tint": [1, 1, 1], "tint_mix": 0}, "gesture": "none", "hold": 0},
+		{"id": "happy", "word": "happy", "face": {"eye_w": 1.1, "eye_h": 0.45, "eye_dz": 1, "eye_dx": 0, "eye_tilt": -10, "brow_angle": 8, "brow_dz": 3, "brow_skew": 0, "mouth_w": 1.3, "mouth_h": 1.4, "mouth_curve": 28, "mouth_tilt": 0, "tint": [1, 0.85, 0.45], "tint_mix": 0.2}, "gesture": "bounce", "hold": 3},
+		{"id": "sad", "word": "sad", "face": {"eye_w": 0.9, "eye_h": 0.7, "eye_dz": -2, "eye_dx": 0, "eye_tilt": -14, "brow_angle": 24, "brow_dz": 0, "brow_skew": 0, "mouth_w": 0.8, "mouth_h": 1, "mouth_curve": -28, "mouth_tilt": 0, "tint": [0.35, 0.5, 1], "tint_mix": 0.4}, "gesture": "slump", "hold": 3.5},
+		{"id": "angry", "word": "angry", "face": {"eye_w": 1.05, "eye_h": 0.5, "eye_dz": -1, "eye_dx": 0, "eye_tilt": 22, "brow_angle": -28, "brow_dz": -3, "brow_skew": 0, "mouth_w": 1.1, "mouth_h": 1.6, "mouth_curve": -18, "mouth_tilt": 0, "tint": [1, 0.15, 0.08], "tint_mix": 0.85}, "gesture": "shake", "hold": 3},
+		{"id": "worried", "word": "worried", "face": {"eye_w": 0.9, "eye_h": 1.05, "eye_dz": -2, "eye_dx": -2, "eye_tilt": -6, "brow_angle": 26, "brow_dz": 3, "brow_skew": 0, "mouth_w": 0.7, "mouth_h": 1.3, "mouth_curve": -12, "mouth_tilt": 8, "tint": [1, 1, 1], "tint_mix": 0}, "gesture": "tremble", "hold": 3},
+		{"id": "scared", "word": "scared", "face": {"eye_w": 1.3, "eye_h": 1.35, "eye_dz": 1, "eye_dx": 0, "eye_tilt": 0, "brow_angle": 30, "brow_dz": 5, "brow_skew": 0, "mouth_w": 1.2, "mouth_h": 1.8, "mouth_curve": -16, "mouth_tilt": 0, "tint": [0.85, 0.92, 1], "tint_mix": 0.5}, "gesture": "cower", "hold": 3},
+		{"id": "surprised", "word": "surprised", "face": {"eye_w": 1.35, "eye_h": 1.4, "eye_dz": 2, "eye_dx": 0, "eye_tilt": 0, "brow_angle": 0, "brow_dz": 7, "brow_skew": 0, "mouth_w": 0.5, "mouth_h": 3.5, "mouth_curve": 0, "mouth_tilt": 0, "tint": [1, 1, 1], "tint_mix": 0}, "gesture": "jolt", "hold": 2.5},
+		{"id": "confused", "word": "confused", "face": {"eye_w": 1, "eye_h": 1, "eye_dz": 0, "eye_dx": 0, "eye_tilt": 0, "brow_angle": 8, "brow_dz": 2, "brow_skew": 5, "mouth_w": 0.8, "mouth_h": 1.2, "mouth_curve": -6, "mouth_tilt": 14, "tint": [1, 1, 1], "tint_mix": 0}, "gesture": "tilt", "hold": 3.5},
+		{"id": "disgusted", "word": "disgusted", "face": {"eye_w": 1, "eye_h": 0.5, "eye_dz": -1, "eye_dx": 0, "eye_tilt": 10, "brow_angle": -14, "brow_dz": -2, "brow_skew": -3, "mouth_w": 1, "mouth_h": 1.5, "mouth_curve": -24, "mouth_tilt": -12, "tint": [0.55, 1, 0.3], "tint_mix": 0.45}, "gesture": "recoil", "hold": 3},
+		{"id": "suspicious", "word": "suspicious", "face": {"eye_w": 1, "eye_h": 0.4, "eye_dz": 0, "eye_dx": 3, "eye_tilt": 6, "brow_angle": -10, "brow_dz": -1, "brow_skew": 4, "mouth_w": 0.7, "mouth_h": 1, "mouth_curve": -6, "mouth_tilt": 10, "tint": [1, 1, 1], "tint_mix": 0}, "gesture": "lean_in", "hold": 3.5},
+		{"id": "smug", "word": "smug", "face": {"eye_w": 1, "eye_h": 0.55, "eye_dz": 1, "eye_dx": 0, "eye_tilt": -10, "brow_angle": 6, "brow_dz": 2, "brow_skew": 0, "mouth_w": 1.1, "mouth_h": 1.1, "mouth_curve": 18, "mouth_tilt": 16, "tint": [1, 0.8, 0.3], "tint_mix": 0.2}, "gesture": "puff", "hold": 3},
+		{"id": "embarrassed", "word": "embarrassed", "face": {"eye_w": 0.85, "eye_h": 0.6, "eye_dz": -2, "eye_dx": -2, "eye_tilt": -10, "brow_angle": 18, "brow_dz": 1, "brow_skew": 0, "mouth_w": 0.6, "mouth_h": 1, "mouth_curve": -4, "mouth_tilt": 6, "tint": [1, 0.45, 0.6], "tint_mix": 0.55}, "gesture": "shrink", "hold": 3}
+	],
+	"gestures": {
+		"bounce": {"pose": {"x": 0, "z": 0, "pitch": 0, "roll": 0, "yaw": 0, "scale": 0}, "waves": [{"ch": "z", "amp": 14, "hz": 1.1, "secs": 1.35, "abs": true}]},
+		"slump": {"pose": {"x": 0, "z": -10, "pitch": -10, "roll": 0, "yaw": 0, "scale": -0.03}, "waves": []},
+		"shake": {"pose": {"x": 0, "z": 0, "pitch": -4, "roll": 0, "yaw": 0, "scale": 0}, "waves": [{"ch": "yaw", "amp": 18, "hz": 7.2, "secs": 1, "abs": false}]},
+		"cower": {"pose": {"x": -5, "z": -4, "pitch": 5, "roll": 0, "yaw": 0, "scale": -0.04}, "waves": [{"ch": "roll", "amp": 2.5, "hz": 12, "secs": 0, "abs": false}, {"ch": "yaw", "amp": 2, "hz": 10, "secs": 0, "abs": false}]},
+		"tremble": {"pose": {"x": 0, "z": -3, "pitch": 0, "roll": 0, "yaw": 0, "scale": -0.02}, "waves": [{"ch": "roll", "amp": 2, "hz": 11, "secs": 0, "abs": false}, {"ch": "yaw", "amp": 1.5, "hz": 9, "secs": 0, "abs": false}]},
+		"jolt": {"pose": {"x": -6, "z": 0, "pitch": 6, "roll": 0, "yaw": 0, "scale": 0.02}, "waves": [{"ch": "z", "amp": 16, "hz": 1.4, "secs": 0.36, "abs": true}]},
+		"tilt": {"pose": {"x": 0, "z": 0, "pitch": 0, "roll": 0, "yaw": 0, "scale": 0}, "waves": [{"ch": "roll", "amp": 9, "hz": 0.45, "secs": 0, "abs": false}]},
+		"recoil": {"pose": {"x": -8, "z": 0, "pitch": 10, "roll": 0, "yaw": 15, "scale": 0}, "waves": []},
+		"lean_in": {"pose": {"x": 6, "z": 0, "pitch": -9, "roll": 0, "yaw": 0, "scale": 0}, "waves": [{"ch": "yaw", "amp": 6, "hz": 0.35, "secs": 0, "abs": false}]},
+		"puff": {"pose": {"x": 0, "z": 3, "pitch": 7, "roll": 0, "yaw": 0, "scale": 0.07}, "waves": []},
+		"shrink": {"pose": {"x": 0, "z": -8, "pitch": -6, "roll": 0, "yaw": 28, "scale": -0.07}, "waves": [{"ch": "roll", "amp": 2, "hz": 1.2, "secs": 0, "abs": false}]}
+	}
+}

@@ -9,5 +9,12 @@
   (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetBrowWR) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))
   (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetBrowAL) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))
   (Rendering|Material|SetScalarParameterValueonMaterials :self (Variables|Default|GetBrowAR) :ParameterName "Glow" :ParameterValue (select On 10.0 3.0))
+  ; T75: the new brows and corner bars glow like the eyes where they are LEDs. LitOn lets PartLook match it later.
+  (set LitOn On)
+  (if (V FaceReady)
+    (Rendering|Material|SetScalarParameterValueonMaterials :self (V EmBrowL) :ParameterName "Glow" :ParameterValue (select (V BrowLed) _g 0.0))
+    (Rendering|Material|SetScalarParameterValueonMaterials :self (V EmBrowR) :ParameterName "Glow" :ParameterValue (select (V BrowLed) _g 0.0))
+    (Rendering|Material|SetScalarParameterValueonMaterials :self (V MouthCL) :ParameterName "Glow" :ParameterValue (select (V CornerLed) _g 0.0))
+    (Rendering|Material|SetScalarParameterValueonMaterials :self (V MouthCR) :ParameterName "Glow" :ParameterValue (select (V CornerLed) _g 0.0)))
   (if On
     (Variables|Default|SetTalkUntil (+ (Variables|Default|GetClock) 2.6))))

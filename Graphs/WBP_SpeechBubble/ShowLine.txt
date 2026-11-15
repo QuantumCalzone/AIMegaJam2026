@@ -1,0 +1,34 @@
+; T38: shows a line whole, at once: its speech, or, with no speech, its short action in the chat's action style ("..." if it
+; has neither). Lead (the vote's "Votes for X.") shows in the action style above the speech; pass "" for none.
+; Name and Color are AddChatLine's, so the ring matches the chat line. To type the speech out (T73), call TypeBegin right
+; after this, then TypeTo and TypeEnd as BPC_LinePlayer calls them on the chat line.
+(fn ShowLine (Name Color Action Speech Lead)
+  (set TypingOn false)
+  (set Fading false)
+  (set Alpha 1.0)
+  (CallFunction|SetEdge :Name Name :Color Color)
+  (CallFunction|TypeEnd)
+  (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetDotsBox) :InVisibility "Collapsed")
+  (bind noSay (Utilities|String|IsEmpty Speech))
+  (bind noAct (Utilities|String|IsEmpty Action))
+  (bind noLead (Utilities|String|IsEmpty Lead))
+  (if noSay
+    (if noAct
+      (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetActionText) :Text (Utilities|Text|ToText(String) "..."))
+      (else
+        (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetActionText) :Text (Utilities|Text|ToText(String) Action))))
+    (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetActionText) :InVisibility "HitTestInvisible")
+    (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetSpeechText) :InVisibility "Collapsed")
+    (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetLeadText) :InVisibility "Collapsed")
+    (else
+      (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetSpeechText) :Text (Utilities|Text|ToText(String) Speech))
+      (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetSpeechText) :InVisibility "HitTestInvisible")
+      (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetActionText) :InVisibility "Collapsed")
+      (Class|Text|SetText :self (Variables|WBP_SpeechBubble|GetLeadText) :Text (Utilities|Text|ToText(String) Lead))
+      (if noLead
+        (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetLeadText) :InVisibility "Collapsed")
+        (else
+          (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetLeadText) :InVisibility "HitTestInvisible")))))
+  (Widget|SetRenderOpacity :self (Variables|WBP_SpeechBubble|GetBubbleBox) :InOpacity 1.0)
+  (Widget|SetVisibility :self (Variables|WBP_SpeechBubble|GetBubbleBox) :InVisibility "HitTestInvisible")
+  (set Shown true))

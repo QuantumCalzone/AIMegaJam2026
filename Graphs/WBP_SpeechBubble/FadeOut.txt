@@ -1,0 +1,7 @@
+; T38: the line is no longer the newest: the bubble fades out over UITime("Panel"), then hides.
+(fn FadeOut ()
+  (if (not (V Shown))
+    (return))
+  (set TypingOn false)
+  (set Fading true)
+  (CallFunction|FadeStep))
