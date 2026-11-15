@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is done: later UI tasks style their widgets with `UIStyle` (see `Docs/tasks/T32.md`). T30 (the lines play one at a time, Opus 5.5 · xhigh) is the next editor task, then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name). T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done. T40 (the headpieces) is pushed and waits for my look at its sheet; its claim stays until then. T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but both write `Docs/PropArt/manifest.json`, so run them one at a time. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) needs no editor and is free now. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 come after T33.
+**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is done: later UI tasks style their widgets with `UIStyle` (see `Docs/tasks/T32.md`). T30 (the lines play one at a time, Opus 5.5 · xhigh) is the next editor task, then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name). T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done. T40 (the headpieces) is done. T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but both write `Docs/PropArt/manifest.json`, so run them one at a time. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) needs no editor and is free now. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 come after T33.
 
 ## Goal
 
@@ -115,14 +115,6 @@ These hold for every task, and for editor work outside the task list too. If one
 "Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. A new task goes wherever it belongs in that order (see "Changing the plan"), so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its entry moves to the end of "Done" (see "How to run a task", step 6). Each entry links its file in `Docs/tasks/`, which holds the task's Why, Steps, Done-when check, Result and findings.
 
 ### Open
-
-- [ ] **T40 Generate the 13 headpieces**
-  - **Model and effort:** Opus 5.5, high. It picks every reference image by eye and judges every model.
-  - **Depends on:** T39
-  - **Needs:** the keys in `Local/`, about 300 Meshy credits, my look at the sheet of thumbnails. No editor.
-  - **Touches:** `Docs/PropArt/manifest.json`, new folders in `Docs/PropArt/`, `Docs/Assets.md`, `Docs/tasks/T40.md`.
-  - **Waiting:** built and pushed; 13 FBX files are in `Docs/PropArt/<id>/`, each with its reference image, its logs and an `Assets.md` row, for 260 Meshy credits (balance 1,025 to 765). Left: look at the sheet, `Local/art/headpiece_sheet.png` (or `Local/art/sheet_headpiece.html`), and say whether the set looks right.
-  - **Details:** [Docs/tasks/T40.md](tasks/T40.md)
 
 - [ ] **T41 Generate the story props**
   - **Model and effort:** Opus 5.5, high. It picks every reference image by eye and judges every model.
@@ -392,6 +384,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T28.md](tasks/T28.md)
 - [x] **T32 UI/UX audit, style guide and shared pieces**
   - **Details:** [Docs/tasks/T32.md](tasks/T32.md)
+- [x] **T40 Generate the 13 headpieces**
+  - **Details:** [Docs/tasks/T40.md](tasks/T40.md)
 
 ## Not planned yet
 
