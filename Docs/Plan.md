@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is done: later UI tasks style their widgets with `UIStyle` (see `Docs/tasks/T32.md`). T30 (the lines play one at a time) is done: every line plays one at a time, and `Content/NHOS/Data/pacing.json` sets the pace. The design doc stays as it is, so its Rules tab still says each turn's lines play out at once. Next in the editor: T38 (every line in a speech bubble, and the chat opens on a click) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name), and T33 left it two rows (T33-1: the in-show buttons can't take keyboard focus; T33-2: the robots' tags show through full-screen panels). T33 (the title, key entry and end screens) is done: they are styled from `UIStyle` and play by keyboard. T20 (audio) is done: music, the vote's drum roll, the reveal stingers, applause and laughs, talk blips, robot sounds and button clicks, from the new `BPC_ShowAudio` component on `BP_Show`. Every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done. T40 (the headpieces) is done. T41 (the story props) is done. T42 (the opera-house pieces) is done (90 credits, balance 60). T43 (the imports and `M_Clay`) is done: all 43 generated models are assets (`Stage/Headpieces/`, `Stage/Props/<card id>/`, `Stage/Set/`), each with its scale and yaw (90 for every Meshy model) in `Docs/PropArt/manifest.json`, and `M_Clay` with `MI_Clay_Neutral` is in `Stage/Materials/`; T45, T46, T47 and T49 build on them. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) is done: each persona's prompt ends with its rival line, and `personas.json` has a `rival` field for T60. T51 (no decoy note) is done: every actor gets the same note, and each of the 10 notes has a category (Movement, Props, Looks or Speech) that T50 shows to everyone. The others go in this order: T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 can build on T33's end and title screens.
+**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is done: later UI tasks style their widgets with `UIStyle` (see `Docs/tasks/T32.md`). T30 (the lines play one at a time) is done: every line plays one at a time, and `Content/NHOS/Data/pacing.json` sets the pace. The design doc stays as it is, so its Rules tab still says each turn's lines play out at once. Next in the editor: T38 (every line in a speech bubble, and the chat opens on a click) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name), and T33 left it two rows (T33-1: the in-show buttons can't take keyboard focus; T33-2: the robots' tags show through full-screen panels). T33 (the title, key entry and end screens) is done: they are styled from `UIStyle` and play by keyboard. T20 (audio) is done: music, the vote's drum roll, the reveal stingers, applause and laughs, talk blips, robot sounds and button clicks, from the new `BPC_ShowAudio` component on `BP_Show`. Every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done. T40 (the headpieces) is done. T41 (the story props) is done. T42 (the opera-house pieces) is done (90 credits, balance 60). T43 (the imports and `M_Clay`) is done: all 43 generated models are assets (`Stage/Headpieces/`, `Stage/Props/<card id>/`, `Stage/Set/`), each with its scale and yaw (90 for every Meshy model) in `Docs/PropArt/manifest.json`, and `M_Clay` with `MI_Clay_Neutral` is in `Stage/Materials/`; T45, T46, T47 and T49 build on them. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) is done: each persona's prompt ends with its rival line, and `personas.json` has a `rival` field for T60. T51 (no decoy note) is done: every actor gets the same note, and each of the 10 notes has a category (Movement, Props, Looks or Speech) that T50 shows to everyone. T46 (the clay pill bots) is done, ahead of T45 on my call: every robot is a two-tone clay capsule (seat color over cream) with a curved screen face, a mouth that stretches when it talks and its old topper, and the five robots in `L_Stage` were re-placed; T47 and T49 build on it. T50 (only the bots get the director's note) is done: my seat gets no note, my card shows the note's category and a blacked-out note ("Note: ██████ (bots only)"), every AI's state carries `scene_card.note_category`, and the prompts tell the bots to follow the note subtly and name it only in Free Talk. The others go in this order: T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 can build on T33's end and title screens.
 
 ## Goal
 
@@ -116,13 +116,6 @@ These hold for every task, and for editor work outside the task list too. If one
 
 ### Open
 
-- [ ] **T50 Only the bots get the director's note**
-  - **Model and effort:** Opus 5.5, high. The headline rule change: who gets the note, what my card shows and what the bots are told all change together.
-  - **Depends on:** T51 (the categories, and no decoy), T28 (my card)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay for a `--relay --free` check, and one relay show that Claude plays by hand itself (the check is how the real AIs play the note).
-  - **Touches:** `Content/NHOS/Data/prompts.json` (`game`, `asks.scene_turn`, `asks.free_talk`, `_readme`), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` (the note deal, `ActorState`), `Content/NHOS/UI/WBP_Stage.uasset` (my card: the category and the blacked-out note), `Graphs/` files for the graphs it writes, `Docs/ItchPage.md`, `Docs/tasks/T50.md`.
-  - **Details:** [Docs/tasks/T50.md](tasks/T50.md)
-
 - [ ] **T59 Every line is capped at 15 words, mine too**
   - **Model and effort:** Sonnet 5.5, medium. One number, changed in every place that holds it.
   - **Depends on:** T50 (the lock on `BP_Show`)
@@ -227,13 +220,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** new `Content/NHOS/Data/props.json`, `Content/NHOS/Stage/BP_Prop.uasset`, `Content/NHOS/Stage/BP_StageDirector.uasset` (`ResetStage`), `Content/NHOS/Core/BP_Show.uasset` (the state's `set.props` at Scene Prep), `Content/NHOS/Maps/L_Stage.umap` (four prop actors), `Content/NHOS/Data/scenes.json`, `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T45.md](tasks/T45.md)
-
-- [ ] **T46 The two-tone capsule pill bots**
-  - **Model and effort:** Opus 5.5, high. A new body for every robot that keeps all of T17's and T19's motion working.
-  - **Depends on:** T43 (`M_Clay`), T45 (the lock on `L_Stage`)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
-  - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset`, `M_Clay` instances in `Content/NHOS/Stage/Materials/`, `Content/NHOS/Maps/L_Stage.umap` (if the robots must be re-placed), `Graphs/BP_Robot/` files for the graphs it writes.
-  - **Details:** [Docs/tasks/T46.md](tasks/T46.md)
 
 - [ ] **T47 A headpiece for each role**
   - **Model and effort:** Opus 5.5, high. Costume data per seat, a new component on the robot and one call at Scene Prep.
@@ -346,6 +332,10 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T43.md](tasks/T43.md)
 - [x] **T51 No decoy note, and every note gets a category**
   - **Details:** [Docs/tasks/T51.md](tasks/T51.md)
+- [x] **T46 The two-tone capsule pill bots**
+  - **Details:** [Docs/tasks/T46.md](tasks/T46.md)
+- [x] **T50 Only the bots get the director's note**
+  - **Details:** [Docs/tasks/T50.md](tasks/T50.md)
 
 ## Not planned yet
 

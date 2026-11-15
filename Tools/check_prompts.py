@@ -64,6 +64,13 @@ pairs are mutual. Its prompt ends with its rival line ('Your rival: ...'), which
 describes the rival by its traits and holds no persona id, provider name, pun
 name from the design doc (PUN_NAMES) or Player name.
 
+Director's note (T50): only the AI seats get the note. Every actor state's
+scene_card carries note_category, the note's 'category' from scenes.json, and
+'you' carries the note. The human's sample seat (Player 3) has no note, and the
+input converter's state has neither. The file check also finds the design
+doc's four note lines in prompts.json 'game', word for word (DOC_NOTE_LINES).
+A scene turn whose speech holds the note word for word is a WARN.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -108,6 +115,14 @@ VERBS = ["move", "look", "grab", "throw", "give"]
 ACTOR_ASKS = ["scene_turn", "free_talk", "vote", "reaction", "reaction_cut", "closing"]
 ALL_ASKS = ACTOR_ASKS + ["input", "tiebreak"]
 MAX_WORDS = 25
+
+# T50: the design doc's note rules (Bot Prompts, "Opening prompt: game rules"), word for word.
+DOC_NOTE_LINES = [
+    "Every actor sees the director's note category. Only the AI actors see the note itself. The human does not have the note and knows it, so they will watch you and copy.",
+    "Follow the note in every scene, but subtly. Never say it aloud during the scene, and don't act it out so plainly that anyone could copy it after one turn.",
+    "Fitting the category is not proof. An actor who only matches the category, or copies the others a turn late, probably lacks the note.",
+    "In Free Talk the scene is over, so you may name the note when you accuse someone.",
+]
 
 # Real people and products that must never appear in prompts or on screen. The bots go by
 # their provider's name (the 'name' fields in personas.json), so those names are allowed.
@@ -433,7 +448,11 @@ def check_files(errors: list[str]):
         if not n.get("note") or not n.get("category"):
             errors.append(f"scenes.json: note {n.get('id')} needs a note and a category")
         if set(n) - {"id", "category", "note"}:
-            errors.append(f"scenes.json: note {n.get('id')} may hold only id, category and note; every actor gets the same note")
+            errors.append(f"scenes.json: note {n.get('id')} may hold only id, category and note; every AI actor gets the same note")
+    game = prompts.get("game", [])
+    for line in DOC_NOTE_LINES:
+        if not any(line in g for g in game):
+            errors.append(f"prompts.json: 'game' lost a note rule from the design doc: {line[:60]!r}")
     story_text = json.dumps([prompts, scenes], ensure_ascii=False)
     for w, r in STORY_RES:
         if r.search(story_text):
@@ -462,7 +481,8 @@ def act(verb, target="", item=""):
 
 
 # Scene 1 of a sample show: the Romeo and Juliet card and the "hold_prop" note, which every
-# actor gets. SpaceXAI forgets to grab a prop. The human has no persona and plays Romeo: it
+# AI actor gets. SpaceXAI forgets to grab a prop. The human has no note (T50): it grabs the
+# rose in turn 1 by luck and gives it away in turn 3. The human has no persona and plays Romeo: it
 # gives its prop away and slips. Seats get Player names in this order, as the game deals them:
 # Player 1 OpenAI, Player 2 Anthropic, Player 3 the human, Player 4 SpaceXAI, Player 5 Meta.
 HUMAN = "human"
@@ -630,14 +650,15 @@ class Show:
             "name": self.name(pid),
             "role": self.seat[pid]["role"],
             "want": self.seat[pid]["want"],
-            "note": self.note["note"],
+            "note": "" if pid == HUMAN else self.note["note"],
         }
 
     def actor_state(self, pid, ask, now, log, cut=None, game_messages=None, options=None):
         return {
             "show": {"scene": 1, "scenes": 3, "now": now},
             "set": {"name": self.set["name"], "places": self.set["places"], "props": self.set["props"]},
-            "scene_card": {"title": self.card["title"], "premise": self.card["premise"]},
+            "scene_card": {"title": self.card["title"], "premise": self.card["premise"],
+                           "note_category": self.note["category"]},
             "cast": self.cast(cut),
             "you": self.you(pid),
             "log": log,
@@ -709,7 +730,8 @@ class Show:
         Even cards play a 4-actor scene 2: persona i % 4 was cut in scene 1, and seat (i + 1) % 5
         of the card is left out. Odd cards play a 3-actor scene 3: personas i % 4 and (i + 1) % 4
         were cut, and seats (i + 1) % 5 and (i + 3) % 5 are left out. The human is always on stage.
-        Each card uses note i % notes, and every actor gets it."""
+        Each card uses note i % notes, and every AI actor gets it. Every state's scene_card
+        carries the note's category."""
         sc = self.d["scenes"]
         out = []
         for i, card in enumerate(sc["cards"]):
@@ -731,7 +753,8 @@ class Show:
                 st = {
                     "show": {"scene": scene, "scenes": 3, "now": "the scene, turn 1 of 3"},
                     "set": {"name": self.set["name"], "places": self.set["places"], "props": self.set["props"]},
-                    "scene_card": {"title": card["title"], "premise": card["premise"]},
+                    "scene_card": {"title": card["title"], "premise": card["premise"],
+                                   "note_category": note["category"]},
                     "cast": cast,
                     "you": {"name": self.name(pid), "role": seat[pid]["role"], "want": seat[pid]["want"],
                             "note": note["note"]},
@@ -974,6 +997,8 @@ def check_reply(reply, ask, ctx):
         need(1 <= len(actions) <= 2, "a scene turn needs 1 or 2 actions")
         need(speech.strip(), "a scene turn needs speech")
         unused(not passed and not vote and not reason, "pass, vote or reason filled in a scene turn")
+        note = ctx.get("note", "").lower().rstrip(".")
+        unused(not note or note not in speech.lower(), "said the note aloud during the scene")
     elif ask == "free_talk":
         need(not actions, "Free Talk has no actions")
         need(bool(speech.strip()) != passed, "Free Talk needs speech, or pass with no speech")
@@ -1122,13 +1147,15 @@ def build_jobs(data, show, asks, personas, repeat):
             for ask in ACTOR_ASKS:
                 if ask in asks:
                     st = cases[ask]
-                    ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": st["options"]}
+                    ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": st["options"],
+                           "note": st["you"]["note"]}
                     pv = provider_for(data, "actor", pid)
                     jobs.append((ask, show.name(pid), pv, request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
         if "scene_turn" in asks:
             for card_id, pid, role, st in show.card_cases():
                 if pid in personas:
-                    ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": []}
+                    ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": [],
+                           "note": st["you"]["note"]}
                     pv = provider_for(data, "actor", pid)
                     jobs.append(("scene_turn", f"{card_id} | {show.name(pid)} as {role}", pv,
                                  request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
@@ -1160,6 +1187,26 @@ def check_leaks(data, jobs) -> int:
         if leaks:
             bad += 1
             print(f"FAIL leak: {ask} | {label}: {', '.join(leaks)} in what the AI reads")
+    return bad
+
+
+def check_note_deal(show, jobs) -> int:
+    """T50: only the AI seats get the director's note; every actor state carries its category;
+    the input converter gets neither. Returns the number of problems."""
+    bad = 0
+    if show.you(HUMAN)["note"]:
+        bad += 1
+        print("FAIL note: the human's sample seat has a director's note")
+    note = show.note["note"]
+    for ask, label, _, body, _ in jobs:
+        text = body_text(body)
+        if ask == "input":
+            if note in text or '"note' in text:
+                bad += 1
+                print(f"FAIL note: the input converter got the note or its category | {label}")
+        elif ask != "tiebreak" and '"note_category"' not in text:
+            bad += 1
+            print(f"FAIL note: no scene_card.note_category in {ask} | {label}")
     return bad
 
 
@@ -1215,6 +1262,9 @@ def main():
     if leaks:
         return 1
     print("No provider name in what the actors and the Director read.")
+    if check_note_deal(show, jobs):
+        return 1
+    print("Only the AI seats get the note, and every actor state carries its category.")
     if args.offline:
         return 0
 

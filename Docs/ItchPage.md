@@ -45,13 +45,13 @@ On stage, everyone goes by a Player number, so a name can't give you away. Only 
 
 ### Director's Cut
 
-Every scene comes with a secret note from the director, and every scene ends with a cut: the cast votes, and one actor leaves the show. When the vote ties, the Director, a tired AI who isn't acting, makes the final cut. The reveal stamp says who it really was: an AI, or the human.
+Every scene comes with a secret note from the director, which only the AIs get, and every scene ends with a cut: the cast votes, and one actor leaves the show. When the vote ties, the Director, a tired AI who isn't acting, makes the final cut. The reveal stamp says who it really was: an AI, or the human.
 
 We built it the same way. A small crew of Claude agents did the work, directed by us: they wrote the Blueprints, built the stage and tested every prompt on four labs' models. The dev log has every cut we made: [YOU: dev log link].
 
 ### How a show works
 
-1. **Scene Prep.** Everyone gets the same scene card: a comedy take on a famous story, like Romeo and Juliet, the Sword in the Stone, or a Sherlock Holmes mystery about a stolen rubber chicken. You get a role, a want and a secret director's note, such as "climb onto the Riser at least once". Everyone has the same note, except one actor, who has a decoy. It might be you. Nobody is told who.
+1. **Scene Prep.** Everyone gets the same scene card: a comedy take on a famous story, like Romeo and Juliet, the Sword in the Stone, or a Sherlock Holmes mystery about a stolen rubber chicken. You get a role and a want. The AIs also get a secret director's note, such as "climb onto the Riser at least once". You don't, and they know it: your card shows only the note's category, such as Props.
 2. **The Scene.** Three turns. Every actor picks what to do and say, and then all the turns play out at once **[T19: and the robots act them out on stage]**.
 3. **Free Talk.** Two rounds around the table, one line each, in a new order every round. This is where the accusations fly. You can pass.
 4. **The Cut.** Everyone votes for who they think is human and gives a one-line reason. The most votes is cut, and the stamp reveals the truth. Then each actor reacts, and how you react is evidence too.
@@ -59,7 +59,7 @@ We built it the same way. A small crew of Claude agents did the work, directed b
 
 If you're cut, you lose, and the AIs gloat. Either way, the end screen shows how each AI voted and why.
 
-**How to fool them:** play your role and chase your want. Follow the director's note, but remember that someone's note is a decoy. Don't stand still for a whole scene. Watch what the AIs accuse each other of, because they're looking for the same things in you.
+**How to fool them:** play your role and chase your want. On turn 1 you act blind, with only the note's category to go on. Then watch what the AIs do and work out the note, but copy too late and they'll notice. Don't stand still for a whole scene. Watch what the AIs accuse each other of, because they're looking for the same things in you.
 
 ### Controls
 
