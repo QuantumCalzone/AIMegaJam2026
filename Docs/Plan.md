@@ -137,6 +137,34 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Waiting:** built and pushed; two free autoplay shows reach `SHOW END` with `LOG` lines of the same form, and screenshots of a scene turn, Free Talk, the vote and a cut show only actor lines in the chat and the moments on the new banner. Left: play one show and say whether the chat reads as a chat.
   - **Details:** [Docs/tasks/T29.md](tasks/T29.md)
 
+- [ ] **T39 Art batch tool and asset list**
+  - **Model and effort:** Opus 5.5, high. A resumable batch over two paid APIs with a credit cap, and an asset list taken from the design doc.
+  - **Depends on:** nothing. The style test in `Docs/PropArt.md` passed.
+  - **Needs:** the Leonardo and Meshy keys in `Local/` (in place), about 15 Meshy credits. No editor.
+  - **Touches:** `Tools/art_gen.py`, new `Docs/PropArt/manifest.json`, new `Docs/PropArt/red_pill/`, `Docs/PropArt.md`, `Docs/tasks/T39.md`.
+  - **Details:** [Docs/tasks/T39.md](tasks/T39.md)
+
+- [ ] **T40 Generate the 13 headpieces**
+  - **Model and effort:** Opus 5.5, high. It picks every reference image by eye and judges every model.
+  - **Depends on:** T39
+  - **Needs:** the keys in `Local/`, about 300 Meshy credits, my look at the sheet of thumbnails. No editor.
+  - **Touches:** `Docs/PropArt/manifest.json`, new folders in `Docs/PropArt/`, `Docs/Assets.md`, `Docs/tasks/T40.md`.
+  - **Details:** [Docs/tasks/T40.md](tasks/T40.md)
+
+- [ ] **T41 Generate the story props**
+  - **Model and effort:** Opus 5.5, high. It picks every reference image by eye and judges every model.
+  - **Depends on:** T39
+  - **Needs:** the keys in `Local/`, about 620 Meshy credits, my look at the sheet of thumbnails. No editor.
+  - **Touches:** `Docs/PropArt/manifest.json`, new folders in `Docs/PropArt/`, `Docs/Assets.md`, `Docs/tasks/T41.md`.
+  - **Details:** [Docs/tasks/T41.md](tasks/T41.md)
+
+- [ ] **T42 Generate the opera-house pieces**
+  - **Model and effort:** Opus 5.5, high. Three models, picked and judged by eye.
+  - **Depends on:** T39
+  - **Needs:** the keys in `Local/`, about 100 Meshy credits, my look at the sheet of thumbnails. No editor.
+  - **Touches:** `Docs/PropArt/manifest.json`, new folders in `Docs/PropArt/`, `Docs/Assets.md`, `Docs/tasks/T42.md`.
+  - **Details:** [Docs/tasks/T42.md](tasks/T42.md)
+
 - [ ] **T32 UI/UX audit, style guide and shared pieces**
   - **Model and effort:** Opus 5.5, high. Design judgment across every screen, and one style that all the widgets share.
   - **Depends on:** T28, T29, T35 (Scene Prep, my card and the chat's content are final, `WBP_Stage` is unlocked, and the money-burn overlay exists to audit). T27 is done.
@@ -192,6 +220,13 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** editor + Unreal MCP running, Test for Free with the new `error_test` switch for the PIE shows, T21's local stub relay for the budget message, and one fake Anthropic key for the key test (no tokens). No relay or key-mode show.
   - **Touches:** new `Content/NHOS/Data/errors.json`, `Content/NHOS/Core/BPC_LLMClient.uasset` (new `ErrorKind` and `ErrorLine`; `ParseReply`, `HandleHttp`, `OnHealth`, `OnKeyTest`, `KeyTestResult`, `SetMode`, `Deliver` and the free-mode path for `error_test`), `Content/NHOS/Core/BP_Show.uasset` (one node that shows the note on the banner), `Content/NHOS/UI/WBP_Stage.uasset` only if the banner needs a longer hold for a note, `Tools/check_prompts.py`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T37.md](tasks/T37.md)
+
+- [ ] **T43 Import the generated models and make the clay material**
+  - **Model and effort:** Opus 5.5, high. Many short Unreal MCP calls, a Substrate material, and a check of every model's size and facing.
+  - **Depends on:** T40, T41, T42 (it can import one kind as soon as its task is done)
+  - **Needs:** editor + Unreal MCP running. New assets only, so no locks.
+  - **Touches:** new `Content/NHOS/Stage/Headpieces/`, `Content/NHOS/Stage/Set/`, new folders in `Content/NHOS/Stage/Props/`, new `Content/NHOS/Stage/Materials/M_Clay.uasset` and its instances, `Docs/PropArt/manifest.json`, `Docs/Submission.md`, `Docs/tasks/T43.md`.
+  - **Details:** [Docs/tasks/T43.md](tasks/T43.md)
 
 - [ ] **T31 Tab completes names, places and props (optional)**
   - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
@@ -261,3 +296,5 @@ These hold for every task, and for editor work outside the task list too. If one
 ## Not planned yet
 
 Ideas that are not tasks yet, and only if time is left after the last open task: a fifth persona (since T26, that is a sixth actor and a fourth scene), more scene cards and more notes. To plan one, add it as a task (see "Changing the plan").
+
+The clay art direction (2026-11-15, the design doc's "Art Inspiration" and "Stories" tabs) also needs hooking in, after T39 to T43 make its models; where it goes against the UI tasks is my call: the seven film-parody cards with four props each into the game (from `Docs/StoryDrafts/`, with per-card props, trimmed banned-word lists and the director's notes that assume the old prop table), the two-tone capsule pill bots, a headpiece on each bot for its role, the clay stage, the seven painted backdrops (Leonardo, by `Tools/art_gen.py`) and the opera-house dressing.
