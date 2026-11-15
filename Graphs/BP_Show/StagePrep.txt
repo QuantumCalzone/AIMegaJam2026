@@ -14,6 +14,7 @@
   (Development|PrintString (Utilities|String|Append "NHOS: STAGE backdrop " (Variables|Default|GetBdId)) false)
   (bind _dir (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Stage/BP_StageDirector.BP_StageDirector_C"))
   (if (!= _dir (Variables|Default|GetNullDir))
-    (Class|BPStageDirector|ResetStage :self _dir))
+    (Class|BPStageDirector|ResetStage :self _dir)
+    (Json|SetField (Variables|Default|GetSetObj) "props" (Class|BPStageDirector|GetCardProps :self _dir)))   ; T45: the state's set.props is the card's props
   (bind _bp (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Stage/BP_Backdrop.BP_Backdrop_C"))
   (Utilities|IsValid _bp (:"Is Valid" (Class|BPBackdrop|ShowBackdrop :self _bp :Id (Variables|Default|GetBdId))) (:"Is Not Valid")))

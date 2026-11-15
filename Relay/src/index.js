@@ -9,6 +9,10 @@
 // Reply on success:  the provider's reply, unchanged.
 // Reply on failure:  { "type": "error", "error": { "type": <code>, "message": <text the game can show>, "source": "relay" } }
 // GET /health:       { "ok": true, "providers": [<ids that can serve calls>], "budget_left": true|false, "free_mode": true }
+// POST /event:       an analytics event, checked against "events" in relay.config.json and stored in the
+//                    Stats Durable Object. Answers { "ok": true }. Never calls a provider or counts as a call.
+// GET /stats:        the stored events, for Tools/analytics_report.py. Needs "Authorization: Bearer <STATS_KEY>";
+//                    without it (or with no STATS_KEY set) it answers not_found, like any unknown path.
 
 import { DurableObject } from "cloudflare:workers";
 import CONFIG from "../relay.config.json";
@@ -406,6 +410,130 @@ async function handleRelay(request, env, ctx) {
 	});
 }
 
+// ---- Analytics: POST /event and GET /stats ----
+
+const EVENT_KEYS = ["player", "session", "build", "mode", "event", "fields", "test"];
+const EVENT_MODES = ["free", "relay", "keys", ""];
+
+function eventSpec(name) {
+	const allowed = CONFIG.events.allowed;
+	return typeof name === "string" && !name.startsWith("_") && Object.hasOwn(allowed, name) ? allowed[name] : null;
+}
+
+function checkField(spec, value, name) {
+	if (spec.type === "string") {
+		if (typeof value !== "string") return `field "${name}" must be text`;
+		if (value.length > spec.max) return `field "${name}" is over ${spec.max} characters`;
+	} else if (spec.type === "int") {
+		if (!Number.isInteger(value)) return `field "${name}" must be a whole number`;
+		if (value < spec.min || value > spec.max) return `field "${name}" must be ${spec.min} to ${spec.max}`;
+	} else if (spec.type === "bool") {
+		if (typeof value !== "boolean") return `field "${name}" must be true or false`;
+	} else {
+		return `field "${name}" has no type in the config`;
+	}
+	return null;
+}
+
+// Returns null when the event is the shape the config allows, or a reason when it isn't.
+function checkEvent(ev) {
+	if (!isObject(ev)) return "request must be a JSON object";
+	for (const key of Object.keys(ev)) {
+		if (!EVENT_KEYS.includes(key)) return `request field "${key}" is not allowed`;
+	}
+	if (typeof ev.player !== "string" || !/^[0-9a-fA-F]{32}$/.test(ev.player)) return "player must be 32 hex digits";
+	if (typeof ev.session !== "string" || !/^[A-Za-z0-9_-]{8,64}$/.test(ev.session)) {
+		return "session must be 8 to 64 letters, digits, - or _";
+	}
+	if ("build" in ev && (typeof ev.build !== "string" || ev.build.length > 20)) return "build must be text of up to 20 characters";
+	if ("mode" in ev && !EVENT_MODES.includes(ev.mode)) return 'mode must be "free", "relay", "keys" or ""';
+	if ("test" in ev && typeof ev.test !== "boolean") return "test must be true or false";
+	const spec = eventSpec(ev.event);
+	if (!spec) return "event is not on the allow-list";
+	if ("fields" in ev) {
+		if (!isObject(ev.fields)) return "fields must be an object";
+		for (const [name, value] of Object.entries(ev.fields)) {
+			if (name.startsWith("_") || !Object.hasOwn(spec, name)) return `field "${name}" is not allowed for ${ev.event}`;
+			const err = checkField(spec[name], value, name);
+			if (err) return err;
+		}
+	}
+	return null;
+}
+
+function stats(env) {
+	return env.STATS.get(env.STATS.idFromName("global"));
+}
+
+async function handleEvent(request, env) {
+	const type = request.headers.get("content-type") ?? "";
+	if (!type.toLowerCase().includes("application/json")) {
+		return fail("bad_request", "content-type must be application/json");
+	}
+	const cap = CONFIG.events.max_body_bytes;
+	if (Number(request.headers.get("content-length") ?? 0) > cap) return fail("bad_request", "event is too large");
+	const text = await request.text();
+	if (new TextEncoder().encode(text).length > cap) return fail("bad_request", "event is too large");
+
+	let ev;
+	try {
+		ev = JSON.parse(text);
+	} catch {
+		return fail("bad_request", "request is not JSON");
+	}
+	const reason = checkEvent(ev);
+	if (reason) return fail("bad_request", reason);
+
+	const now = new Date().toISOString();
+	const day = now.slice(0, 10);
+	const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
+	const verdict = await stats(env).add({
+		day,
+		limit: intVar(env.IP_DAILY_EVENTS, CONFIG.limits.ip_daily_events),
+		row: {
+			ts: now,
+			ip: await hashIp(ip, day),
+			player: ev.player.toLowerCase(),
+			session: ev.session,
+			build: ev.build ?? "",
+			mode: ev.mode ?? "",
+			event: ev.event,
+			fields: JSON.stringify(ev.fields ?? {}),
+			test: ev.test === true ? 1 : 0,
+		},
+	});
+	if (!verdict.ok) return fail(verdict.code);
+	return json({ ok: true });
+}
+
+// True only when STATS_KEY is set (16 characters or more) and the request carries it.
+async function statsKeyMatches(request, env) {
+	const key = env.STATS_KEY ?? "";
+	const m = /^Bearer (\S+)$/.exec(request.headers.get("authorization") ?? "");
+	if (key.length < 16 || !m) return false;
+	const enc = new TextEncoder();
+	const [a, b] = await Promise.all([
+		crypto.subtle.digest("SHA-256", enc.encode(m[1])),
+		crypto.subtle.digest("SHA-256", enc.encode(key)),
+	]);
+	return crypto.subtle.timingSafeEqual(a, b);
+}
+
+// GET /stats?since=YYYY-MM-DD&test=1&after=<id>&limit=<n>: one page of events, oldest first.
+// Leaves out "test" events unless test=1. "next" is the after= value for the next page, or null.
+async function handleStats(request, env, url) {
+	if (!(await statsKeyMatches(request, env))) return fail("not_found");
+	const since = url.searchParams.get("since") ?? "";
+	if (since && !/^\d{4}-\d{2}-\d{2}$/.test(since)) return fail("bad_request", "since must be YYYY-MM-DD");
+	const page = await stats(env).read({
+		since,
+		test: url.searchParams.get("test") === "1",
+		after: intVar(url.searchParams.get("after"), 0),
+		limit: Math.min(Math.max(intVar(url.searchParams.get("limit"), 2000), 1), 5000),
+	});
+	return json({ ok: true, ...page });
+}
+
 async function handleHealth(env) {
 	const providers = Object.entries(CONFIG.providers)
 		.filter(([, p]) => providerReady(env, p))
@@ -420,6 +548,8 @@ export default {
 		try {
 			if (url.pathname === "/" && request.method === "POST") return await handleRelay(request, env, ctx);
 			if (url.pathname === "/health" && request.method === "GET") return await handleHealth(env);
+			if (url.pathname === "/event" && request.method === "POST") return await handleEvent(request, env);
+			if (url.pathname === "/stats" && request.method === "GET") return await handleStats(request, env, url);
 			return fail("not_found");
 		} catch (e) {
 			console.log(`relay: unexpected error: ${e && e.stack ? e.stack : e}`);
@@ -475,5 +605,67 @@ export class Limiter extends DurableObject {
 		await this.rollDay(day);
 		const calls = (await this.ctx.storage.get("calls")) ?? 0;
 		return { budget_left: calls < limits.daily_calls };
+	}
+}
+
+// One global store for analytics events (SQLite). Unlike the Limiter, it keeps every
+// event until someone deletes it. The per-address event counts are for one UTC day;
+// "test" events are counted apart, so tests never use up a player's real allowance.
+export class Stats extends DurableObject {
+	constructor(ctx, env) {
+		super(ctx, env);
+		this.sql = ctx.storage.sql;
+		this.sql.exec(`CREATE TABLE IF NOT EXISTS events (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			ts TEXT NOT NULL,
+			ip TEXT NOT NULL,
+			player TEXT NOT NULL,
+			session TEXT NOT NULL,
+			build TEXT NOT NULL,
+			mode TEXT NOT NULL,
+			event TEXT NOT NULL,
+			fields TEXT NOT NULL,
+			test INTEGER NOT NULL
+		)`);
+		this.sql.exec(`CREATE TABLE IF NOT EXISTS event_counts (
+			day TEXT NOT NULL,
+			who TEXT NOT NULL,
+			n INTEGER NOT NULL,
+			PRIMARY KEY (day, who)
+		) WITHOUT ROWID`);
+		this.countsDay = "";
+	}
+
+	add({ day, limit, row }) {
+		if (this.countsDay !== day) {
+			this.sql.exec("DELETE FROM event_counts WHERE day < ?", day);
+			this.countsDay = day;
+		}
+		const who = `${row.test ? "test:" : ""}${row.ip}`;
+		const got = this.sql.exec("SELECT n FROM event_counts WHERE day = ? AND who = ?", day, who).toArray();
+		if ((got.length ? got[0].n : 0) >= limit) return { ok: false, code: "player_limit" };
+		this.sql.exec(
+			"INSERT INTO event_counts (day, who, n) VALUES (?, ?, 1) ON CONFLICT (day, who) DO UPDATE SET n = n + 1",
+			day,
+			who,
+		);
+		this.sql.exec(
+			"INSERT INTO events (ts, ip, player, session, build, mode, event, fields, test) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			row.ts, row.ip, row.player, row.session, row.build, row.mode, row.event, row.fields, row.test,
+		);
+		return { ok: true };
+	}
+
+	// The address hash stays in the store and is never read back out.
+	read({ since, test, after, limit }) {
+		const rows = this.sql
+			.exec(
+				`SELECT id, ts, player, session, build, mode, event, fields, test FROM events
+				 WHERE id > ? AND ts >= ? AND (? = 1 OR test = 0) ORDER BY id LIMIT ?`,
+				after, since, test ? 1 : 0, limit,
+			)
+			.toArray()
+			.map((r) => ({ ...r, fields: JSON.parse(r.fields), test: r.test === 1 }));
+		return { events: rows, next: rows.length === limit ? rows[rows.length - 1].id : null };
 	}
 }
