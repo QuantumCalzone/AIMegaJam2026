@@ -1,6 +1,6 @@
 # T50 build sheet: only the bots get the director's note
 
-Prep for [T50](T50.md), written on 2026-11-15 without the editor, while T51 was still open. It is written against **T51's result as `T51.md` describes it**: no decoy anywhere, every note in `scenes.json` has a `category`, every seat on stage gets the note, and `NHOS: SETUP ... note=<id> category=<category>` with no `decoy=`. Line numbers are from `noHumansOnSet` at `8ceb55c`, before T51; T51's edits move them, so find each line by its text. Part 7 lists what to check again once T51 is pushed.
+Prep for [T50](T50.md), written on 2026-11-15 without the editor, while T51 was still open. It is written against **T51's result as `T51.md` describes it**: no decoy anywhere, every note in `scenes.json` has a `category`, every seat on stage gets the note, and `NHOS: SETUP ... note=<id> category=<category>` with no `decoy=`. Line numbers are from `noHumansOnSet` at `8ceb55c`, before T51; T51's edits move them, so find each line by its text. Where T51's uncommitted draft was in the working tree when this sheet was written, the sheet quotes it as "T51's draft"; its draft categories were Movement (never_back, stay_center, riser_once, keep_moving), Props (hold_prop, give_every_turn, throw_once), Looks (look_first) and Speech (say_chicken, ask_question). Part 7 lists what to check again once T51 is pushed.
 
 Lines marked **doc** are copied word for word from the design doc. Lines marked **my call** are not in the doc: show them to the person before the commit (T50, step 1).
 
@@ -31,7 +31,7 @@ Each line is given as it sits in the JSON file (escaped quotes and all). The pla
 **a. "How a show works", Scene Prep (line 23).**
 
 - Now: `"- Scene Prep: everyone sees the same scene card: the story, who each actor plays and what each one wants. Each actor also gets a secret director's note. Everyone gets the same note, except one random actor, who gets a decoy note instead. Nobody is told who has the decoy, not even that actor. It could be you. It could be the human. A note applies during the scene's 3 turns."`
-- After T51 (expected; T51's step 2 takes the decoy out): something like `"- Scene Prep: everyone sees the same scene card: the story, who each actor plays and what each one wants. Each actor also gets the same secret director's note. A note applies during the scene's 3 turns."` Replace whatever T51 left.
+- After T51 (its uncommitted draft on 2026-11-15): `"- Scene Prep: everyone sees the same scene card: the story, who each actor plays and what each one wants. Each actor also gets a secret director's note, and everyone gets the same one, the human too. A note applies during the scene's 3 turns."` Replace whatever T51 committed.
 - New (**my call**): `"- Scene Prep: everyone sees the same scene card: the story, who each actor plays and what each one wants. The AI actors also get a secret director's note, the same for all of them. A note applies during the scene's 3 turns."`
 - New line right after it (**doc**, line 1): `"  - Every actor sees the director's note category. Only the AI actors see the note itself. The human does not have the note and knows it, so they will watch you and copy."`
 
@@ -55,7 +55,7 @@ Each line is given as it sits in the JSON file (escaped quotes and all). The pla
 **f. "Spotting the human", the note bullet (line 43).**
 
 - Now: `"- The note: compare what each actor does with what your note asks. An actor who breaks the pattern may be the human, or may just hold the decoy. If most actors break your note, maybe you hold the decoy."`
-- After T51 (expected): `"- The note: compare what each actor does with what your note asks. An actor who breaks the pattern may be the human."` or close to it. Replace whatever T51 left.
+- After T51 (its uncommitted draft): `"- The note: compare what each actor does with what your note asks. Every actor got the same note, so an actor who breaks it may be the human."` Replace whatever T51 committed.
 - New (**my call**): `"- The note: compare what each actor does with what your note asks. The human can only guess from the category and from watching you."`
 - New line right after it (**doc**, line 3): `"  - Fitting the category is not proof. An actor who only matches the category, or copies the others a turn late, probably lacks the note."`
 
