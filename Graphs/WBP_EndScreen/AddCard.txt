@@ -1,0 +1,9 @@
+; WBP_EndScreen.AddCard(Name, Color, Status, Votes, Closing), called by BP_Show.ShowEndScreen once per AI.
+; Each card fills its grid cell, so every review card is as tall as the tallest one (T32 row 10).
+(fn AddCard (Name Color Status Votes Closing)
+  (bind _card (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_EndCard.WBP_EndCard_C" (Widget|GetOwningPlayer self)))
+  (Class|WBPEndCard|Setup :self _card :Name Name :Color Color :Status Status :Votes Votes :Closing Closing)
+  (bind _slot (Widget|AddChildToUniformGrid :self (Variables|WBP_EndScreen|GetCardsGrid) :Content _card :InRow 0 :InColumn (V CardCount)))
+  (Layout|UniformGridSlot|SetHorizontalAlignment :self _slot :InHorizontalAlignment "HAlign_Fill")
+  (Layout|UniformGridSlot|SetVerticalAlignment :self _slot :InVerticalAlignment "VAlign_Fill")
+  (set CardCount (+ (V CardCount) 1)))

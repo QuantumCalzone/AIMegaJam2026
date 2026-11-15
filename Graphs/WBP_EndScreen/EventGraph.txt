@@ -1,0 +1,36 @@
+; WBP_EndScreen.EventGraph (T33). The result on its plate, one line under it, then one paper review card per AI,
+; Play Again as the one primary button and Quit as secondary. Every color, size and font comes from UIStyle.
+; While the end screen is up, the stage's own widgets are hidden (they would show through the ink); Play Again brings them back.
+(event UserInterface|EventPreConstruct (IsDesignTime)
+  (Class|Border|SetBrushColor :self (Variables|WBP_EndScreen|GetBackground) :BrushColor (Class|UIStyle|UIColor :Role "Ink"))
+  (Class|Text|SetFont :self (Variables|WBP_EndScreen|GetTitleText) :Font (Class|UIStyle|UIFont :Role "Result"))
+  (Class|Text|SetFont :self (Variables|WBP_EndScreen|GetSubText) :Font (Class|UIStyle|UIFont :Role "Body"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndScreen|GetSubText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (Class|Text|SetFont :self (Variables|WBP_EndScreen|GetAisTitle) :Font (Class|UIStyle|UIFont :Role "CardTitle"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndScreen|GetAisTitle) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_EndScreen|GetRestartButton) :Label (Variables|WBP_EndScreen|GetRestartLabel) :Kind "Primary")
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_EndScreen|GetQuitButton) :Label (Variables|WBP_EndScreen|GetQuitLabel) :Kind "Secondary")
+  (CallFunction|ShowRing :Ring (Variables|WBP_EndScreen|GetRestartRing) :On false)
+  (CallFunction|ShowRing :Ring (Variables|WBP_EndScreen|GetQuitRing) :On false)
+  (if IsDesignTime
+    (CallFunction|Setup :Title "YOU WIN" :Sub "Result line" :Body "" :Win true)))
+
+(event UserInterface|EventConstruct
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (Widget|SetRenderOpacity :self (Class|BPShow|GetStage :self _show) :InOpacity 0.0)
+  (Widget|SetKeyboardFocus :self (Variables|WBP_EndScreen|GetRestartButton)))
+
+(event UserInterface|EventDestruct
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (Widget|SetRenderOpacity :self (Class|BPShow|GetStage :self _show) :InOpacity 1.0))
+
+(event UserInterface|EventTick (MyGeometry InDeltaTime)
+  (CallFunction|ShowRing :Ring (Variables|WBP_EndScreen|GetRestartRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_EndScreen|GetRestartButton)))
+  (CallFunction|ShowRing :Ring (Variables|WBP_EndScreen|GetQuitRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_EndScreen|GetQuitButton))))
+
+(event OnClicked(RestartButton)
+  (bind _returnvalue (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (Class|BPShow|RestartShow :self _returnvalue))
+
+(event OnClicked(QuitButton)
+  (Game|QuitGame (Widget|GetOwningPlayer self)))

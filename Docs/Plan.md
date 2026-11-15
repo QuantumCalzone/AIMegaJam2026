@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is done: later UI tasks style their widgets with `UIStyle` (see `Docs/tasks/T32.md`). T30 (the lines play one at a time) is built and pushed, and waits only for my OK on its Rules tab edit; every line now plays one at a time, and `Content/NHOS/Data/pacing.json` sets the pace. Next in the editor: T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name). T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done. T40 (the headpieces) is done. T41 (the story props) is done. T42 (the opera-house pieces) is made and waits for my look at the sheet (90 credits, balance 60), so T43 can import all three kinds. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) is done: each persona's prompt ends with its rival line, and `personas.json` has a `rival` field for T60. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 come after T33.
+**Next up:** Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. T32 (the UI audit, `UIStyle` and the shared pieces) is done: later UI tasks style their widgets with `UIStyle` (see `Docs/tasks/T32.md`). T30 (the lines play one at a time) is built and pushed, and waits only for my OK on its Rules tab edit; every line now plays one at a time, and `Content/NHOS/Data/pacing.json` sets the pace. Next in the editor: T38 (every line in a speech bubble, and the chat opens on a click) and T34 (the in-show screen); T34 starts with the vote bug T32 found (the fourth vote button votes for the third name), and T33 left it two rows (T33-1: the in-show buttons can't take keyboard focus; T33-2: the robots' tags show through full-screen panels). T33 (the title, key entry and end screens) is done: they are styled from `UIStyle` and play by keyboard. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done. T40 (the headpieces) is done. T41 (the story props) is done. T42 (the opera-house pieces) is made and waits for my look at the sheet (90 credits, balance 60), so T43 can import all three kinds. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) is done: each persona's prompt ends with its rival line, and `personas.json` has a `rival` field for T60. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 can build on T33's end and title screens.
 
 ## Goal
 
@@ -216,13 +216,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/Audio/`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/Stage/BP_Robot.uasset`, `Content/NHOS/UI/`, `Docs/Assets.md`.
   - **Details:** [Docs/tasks/T20.md](tasks/T20.md)
 
-- [ ] **T33 Fix the title, key entry and end screens**
-  - **Model and effort:** Sonnet 5.5, medium. Well-specified UMG work from T32's table and style guide.
-  - **Depends on:** T32, T21 (it changes `WBP_Keys` and adds a screen)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
-  - **Touches:** `Content/NHOS/UI/WBP_Title.uasset`, `WBP_Keys.uasset`, `WBP_EndScreen.uasset`, `WBP_EndCard.uasset`, T21's unavailable-screen widget, `Graphs/` files for the graphs it writes, `Docs/tasks/T33.md` and the audit table in `Docs/tasks/T32.md`.
-  - **Details:** [Docs/tasks/T33.md](tasks/T33.md)
-
 - [ ] **T60 Win and lose screens: the reasoning, the top reason and the rivals**
   - **Model and effort:** Opus 5.5, high. It turns the vote history into one named reason, and adds a reveal to the end screen.
   - **Depends on:** T33 (the end screens' layout), T56 (the rivals), T54 (the two ways to win), T55 (no Director line in the vote history)
@@ -378,6 +371,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T56.md](tasks/T56.md)
 - [x] **T41 Generate the story props**
   - **Details:** [Docs/tasks/T41.md](tasks/T41.md)
+- [x] **T33 Fix the title, key entry and end screens**
+  - **Details:** [Docs/tasks/T33.md](tasks/T33.md)
 
 ## Not planned yet
 
