@@ -1,0 +1,9 @@
+; T57: "passed" by this actor's name, while its last Free Talk line was a pass (BP_Show.MarkPass).
+; The label over the robot gets a "(passed)" line above the name (TextRender's <br>), all in UIStyle's Quiet
+; color. The label is bottom-aligned, so the name stays put; on one line, two neighbors' labels ran together.
+; Off: the plain name in white, as ResetLook sets it. A cut robot keeps its stamp.
+(fn SetPassed (On)
+  (if (Variables|Default|GetIsCut)
+    (return))
+  (Rendering|Components|TextRender|SetText :self (Variables|Default|GetLabel) :Value (Utilities|Text|ToText(String) (select On (Utilities|String|Append "(passed)<br>" (Variables|Default|GetDisplayName)) (Variables|Default|GetDisplayName))))
+  (Rendering|Components|TextRender|SetTextRenderColor :self (Variables|Default|GetLabel) :Value (Math|Conversions|ToColor(LinearColor) :InLinearColor (select On (Class|UIStyle|UIColor :Role "Quiet") (Utilities|Struct|MakeLinearColor :R 1.0 :G 1.0 :B 1.0 :A 1.0)) :InUseSRGB true)))
