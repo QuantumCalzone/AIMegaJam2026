@@ -1,0 +1,67 @@
+; UIStyle.UIColor(Role) -> Color. The doc's palette by role (Art Inspiration tab, UI > Palette and type).
+; Values are linear; the sRGB hex from the doc is in each comment. Unknown roles return magenta so mistakes show.
+(fn UIColor (Role)
+  ; Ink: #161225 at 92%, panel fill: header, chat, input row, banner
+  (if (Utilities|String|EqualExactly(String) Role "Ink")
+    (return (Utilities|Struct|MakeLinearColor 0.0080 0.0060 0.0185 0.92)))
+  ; InkSolid: #161225, ink at full opacity
+  (if (Utilities|String|EqualExactly(String) Role "InkSolid")
+    (return (Utilities|Struct|MakeLinearColor 0.0080 0.0060 0.0185 1.00)))
+  ; OldGold: #A9873A, panel trim only
+  (if (Utilities|String|EqualExactly(String) Role "OldGold")
+    (return (Utilities|Struct|MakeLinearColor 0.3968 0.2423 0.0423 1.00)))
+  ; Paper: #F5E9CF, paper cards: your part, ballot tickets, reviews, playbill
+  (if (Utilities|String|EqualExactly(String) Role "Paper")
+    (return (Utilities|Struct|MakeLinearColor 0.9131 0.8148 0.6240 1.00)))
+  ; PaperText: #2B1D12, text on paper
+  (if (Utilities|String|EqualExactly(String) Role "PaperText")
+    (return (Utilities|Struct|MakeLinearColor 0.0242 0.0123 0.0060 1.00)))
+  ; PaperQuiet: #6B5B4A, quiet text on paper
+  (if (Utilities|String|EqualExactly(String) Role "PaperQuiet")
+    (return (Utilities|Struct|MakeLinearColor 0.1470 0.1046 0.0685 1.00)))
+  ; Gold: #F2C14E, act now: your move, primary button, focus ring
+  (if (Utilities|String|EqualExactly(String) Role "Gold")
+    (return (Utilities|Struct|MakeLinearColor 0.8879 0.5333 0.0762 1.00)))
+  ; Red: #C8202F, the vote, the cut, YOU: HUMAN, errors (fill, white text)
+  (if (Utilities|String|EqualExactly(String) Role "Red")
+    (return (Utilities|Struct|MakeLinearColor 0.5776 0.0144 0.0284 1.00)))
+  ; Amber: #F29E1F, the PROVIDER: AI stamp
+  (if (Utilities|String|EqualExactly(String) Role "Amber")
+    (return (Utilities|Struct|MakeLinearColor 0.8879 0.3419 0.0137 1.00)))
+  ; Text: #FFFFFF, speech on ink
+  (if (Utilities|String|EqualExactly(String) Role "Text")
+    (return (Utilities|Struct|MakeLinearColor 1.0000 1.0000 1.0000 1.00)))
+  ; Quiet: #C9C3DA, actions, hints, captions on ink
+  (if (Utilities|String|EqualExactly(String) Role "Quiet")
+    (return (Utilities|Struct|MakeLinearColor 0.5841 0.5457 0.7011 1.00)))
+  ; Inset: #0E0B18, input box fill (proposed)
+  (if (Utilities|String|EqualExactly(String) Role "Inset")
+    (return (Utilities|Struct|MakeLinearColor 0.0044 0.0033 0.0091 1.00)))
+  ; Raised: #2A2342, secondary button fill (proposed)
+  (if (Utilities|String|EqualExactly(String) Role "Raised")
+    (return (Utilities|Struct|MakeLinearColor 0.0232 0.0168 0.0545 1.00)))
+  ; Gold.Hover: #F4CA69, gold 15% toward white
+  (if (Utilities|String|EqualExactly(String) Role "Gold.Hover")
+    (return (Utilities|Struct|MakeLinearColor 0.9047 0.5906 0.1413 1.00)))
+  ; Gold.Pressed: #D5AA45, gold 12% toward black
+  (if (Utilities|String|EqualExactly(String) Role "Gold.Pressed")
+    (return (Utilities|Struct|MakeLinearColor 0.6654 0.4020 0.0595 1.00)))
+  ; Red.Hover: #D0414E, red 15% toward white
+  (if (Utilities|String|EqualExactly(String) Role "Red.Hover")
+    (return (Utilities|Struct|MakeLinearColor 0.6308 0.0529 0.0762 1.00)))
+  ; Red.Pressed: #B01C29, red 12% toward black
+  (if (Utilities|String|EqualExactly(String) Role "Red.Pressed")
+    (return (Utilities|Struct|MakeLinearColor 0.4342 0.0116 0.0222 1.00)))
+  ; Paper.Hover: #F6ECD6, paper 15% toward white
+  (if (Utilities|String|EqualExactly(String) Role "Paper.Hover")
+    (return (Utilities|Struct|MakeLinearColor 0.9216 0.8388 0.6724 1.00)))
+  ; Paper.Pressed: #D8CDB6, paper 12% toward black
+  (if (Utilities|String|EqualExactly(String) Role "Paper.Pressed")
+    (return (Utilities|Struct|MakeLinearColor 0.6867 0.6105 0.4678 1.00)))
+  ; Raised.Hover: #3A3158, raised, lighter
+  (if (Utilities|String|EqualExactly(String) Role "Raised.Hover")
+    (return (Utilities|Struct|MakeLinearColor 0.0423 0.0307 0.0976 1.00)))
+  ; Raised.Pressed: #1E1933, raised, darker
+  (if (Utilities|String|EqualExactly(String) Role "Raised.Pressed")
+    (return (Utilities|Struct|MakeLinearColor 0.0130 0.0097 0.0331 1.00)))
+  (return (Utilities|Struct|MakeLinearColor 1.0 0.0 1.0 1.0)))

@@ -1,0 +1,119 @@
+; UIStyle.UISize(Role) -> Value. Type sizes (UMG points at 1080p), spacing steps, component sizes and opacities.
+; From the doc's UI direction (Art Inspiration tab); spacing steps and component sizes the doc lacks are T32 proposals.
+; Unknown roles return 20 (body).
+(fn UISize (Role)
+  ; Caption = 18: actions and captions
+  (if (Utilities|String|EqualExactly(String) Role "Caption")
+    (return 18.00))
+  ; Action = 18: chat action line
+  (if (Utilities|String|EqualExactly(String) Role "Action")
+    (return 18.00))
+  ; Hint = 18: input hint
+  (if (Utilities|String|EqualExactly(String) Role "Hint")
+    (return 18.00))
+  ; Body = 20: speech and body
+  (if (Utilities|String|EqualExactly(String) Role "Body")
+    (return 20.00))
+  ; Speech = 20: chat speech
+  (if (Utilities|String|EqualExactly(String) Role "Speech")
+    (return 20.00))
+  ; Name = 20: chat names (bold)
+  (if (Utilities|String|EqualExactly(String) Role "Name")
+    (return 20.00))
+  ; Button = 20: button labels (display, light text)
+  (if (Utilities|String|EqualExactly(String) Role "Button")
+    (return 20.00))
+  ; ButtonInk = 20: button labels in dark text, no outline (gold and paper buttons)
+  (if (Utilities|String|EqualExactly(String) Role "ButtonInk")
+    (return 20.00))
+  ; CardTitle = 24: card titles
+  (if (Utilities|String|EqualExactly(String) Role "CardTitle")
+    (return 24.00))
+  ; Header = 32: phase header
+  (if (Utilities|String|EqualExactly(String) Role "Header")
+    (return 32.00))
+  ; Banner = 48: banner
+  (if (Utilities|String|EqualExactly(String) Role "Banner")
+    (return 48.00))
+  ; Result = 72: end result
+  (if (Utilities|String|EqualExactly(String) Role "Result")
+    (return 72.00))
+  ; Stamp = 120: reveal stamp
+  (if (Utilities|String|EqualExactly(String) Role "Stamp")
+    (return 120.00))
+  ; S1 = 4: spacing step 1
+  (if (Utilities|String|EqualExactly(String) Role "S1")
+    (return 4.00))
+  ; S2 = 8: spacing step 2
+  (if (Utilities|String|EqualExactly(String) Role "S2")
+    (return 8.00))
+  ; S3 = 12: spacing step 3
+  (if (Utilities|String|EqualExactly(String) Role "S3")
+    (return 12.00))
+  ; S4 = 16: spacing step 4
+  (if (Utilities|String|EqualExactly(String) Role "S4")
+    (return 16.00))
+  ; S5 = 24: spacing step 5
+  (if (Utilities|String|EqualExactly(String) Role "S5")
+    (return 24.00))
+  ; S6 = 32: spacing step 6
+  (if (Utilities|String|EqualExactly(String) Role "S6")
+    (return 32.00))
+  ; S7 = 48: spacing step 7
+  (if (Utilities|String|EqualExactly(String) Role "S7")
+    (return 48.00))
+  ; Edge = 24: every panel sits this far from the window edge
+  (if (Utilities|String|EqualExactly(String) Role "Edge")
+    (return 24.00))
+  ; ButtonHeight = 48: button height
+  (if (Utilities|String|EqualExactly(String) Role "ButtonHeight")
+    (return 48.00))
+  ; ButtonRadius = 12: button corner radius
+  (if (Utilities|String|EqualExactly(String) Role "ButtonRadius")
+    (return 12.00))
+  ; ButtonOutline = 3: button outline
+  (if (Utilities|String|EqualExactly(String) Role "ButtonOutline")
+    (return 3.00))
+  ; ButtonPadX = 20: button label side padding
+  (if (Utilities|String|EqualExactly(String) Role "ButtonPadX")
+    (return 20.00))
+  ; ButtonPadY = 8: button label top and bottom padding
+  (if (Utilities|String|EqualExactly(String) Role "ButtonPadY")
+    (return 8.00))
+  ; PressDrop = 2: pressed label drops this far
+  (if (Utilities|String|EqualExactly(String) Role "PressDrop")
+    (return 2.00))
+  ; PanelRadius = 16: panel and card corner radius
+  (if (Utilities|String|EqualExactly(String) Role "PanelRadius")
+    (return 16.00))
+  ; PanelTrim = 2: old-gold trim on ink panels
+  (if (Utilities|String|EqualExactly(String) Role "PanelTrim")
+    (return 2.00))
+  ; CardTrim = 3: old-gold trim on paper cards
+  (if (Utilities|String|EqualExactly(String) Role "CardTrim")
+    (return 3.00))
+  ; InputOutline = 2: input box outline
+  (if (Utilities|String|EqualExactly(String) Role "InputOutline")
+    (return 2.00))
+  ; FocusRing = 3: gold focus ring
+  (if (Utilities|String|EqualExactly(String) Role "FocusRing")
+    (return 3.00))
+  ; SeatBar = 6: seat-color bar on chat lines and tickets
+  (if (Utilities|String|EqualExactly(String) Role "SeatBar")
+    (return 6.00))
+  ; TagRadius = 10: name tag pill radius
+  (if (Utilities|String|EqualExactly(String) Role "TagRadius")
+    (return 10.00))
+  ; TextOutline = 2: dark outline on display type
+  (if (Utilities|String|EqualExactly(String) Role "TextOutline")
+    (return 2.00))
+  ; PanelOpacity = 0.92: ink panel opacity
+  (if (Utilities|String|EqualExactly(String) Role "PanelOpacity")
+    (return 0.92))
+  ; Disabled = 0.4: disabled controls opacity
+  (if (Utilities|String|EqualExactly(String) Role "Disabled")
+    (return 0.40))
+  ; YouTint = 0.12: teal tint behind my chat lines
+  (if (Utilities|String|EqualExactly(String) Role "YouTint")
+    (return 0.12))
+  (return 20.0))

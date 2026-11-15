@@ -1,0 +1,21 @@
+; UIStyle.MakeButton(Fill, Hover, Press, Line, HoverLine, Text) -> ButtonStyle. The four states from one set of colors:
+; hover brightens the fill and lights the outline, pressed darkens it and drops the label 2 px,
+; disabled drops to 40% and loses its outline. The label follows the button's foreground.
+(fn MakeButton (Fill Hover Press Line HoverLine Text)
+  (bind r (CallFunction|UISize :Role "ButtonRadius"))
+  (bind w (CallFunction|UISize :Role "ButtonOutline"))
+  (bind dim (CallFunction|UISize :Role "Disabled"))
+  (bind px (CallFunction|UISize :Role "ButtonPadX"))
+  (bind py (CallFunction|UISize :Role "ButtonPadY"))
+  (bind drop (CallFunction|UISize :Role "PressDrop"))
+  (bind bN (CallFunction|Brush :Fill Fill :Outline Line :Width w :Radius r))
+  (bind bH (CallFunction|Brush :Fill Hover :Outline HoverLine :Width w :Radius r))
+  (bind bP (CallFunction|Brush :Fill Press :Outline Line :Width w :Radius r))
+  (bind bD (CallFunction|Brush :Fill (Math|Color|NewOpacity(LinearColor) Fill dim) :Outline Line :Width 0.0 :Radius r))
+  (bind fg (Utilities|Struct|MakeSlateColor :SpecifiedColor Text))
+  (bind fgD (Utilities|Struct|MakeSlateColor :SpecifiedColor (Math|Color|NewOpacity(LinearColor) Text dim)))
+  (return (Utilities|Struct|MakeButtonStyle
+    :Normal bN :Hovered bH :Pressed bP :Disabled bD
+    :NormalForeground fg :HoveredForeground fg :PressedForeground fg :DisabledForeground fgD
+    :NormalPadding (Utilities|Struct|MakeMargin px py px py)
+    :PressedPadding (Utilities|Struct|MakeMargin px (+ py drop) px (- py drop)))))

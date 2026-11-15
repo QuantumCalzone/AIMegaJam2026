@@ -1,0 +1,24 @@
+; UIStyle.UITime(Role) -> Seconds. The doc's motion times (Art Inspiration tab, UI > Motion and rules). Unknown roles return 0.25.
+(fn UITime (Role)
+  ; Hover = 0.12: hovers and presses
+  (if (Utilities|String|EqualExactly(String) Role "Hover")
+    (return 0.12))
+  ; Panel = 0.25: panels in and out, easing out
+  (if (Utilities|String|EqualExactly(String) Role "Panel")
+    (return 0.25))
+  ; Shrink = 0.4: the call sheet shrinks to its corner
+  (if (Utilities|String|EqualExactly(String) Role "Shrink")
+    (return 0.40))
+  ; Banner = 4: a banner holds, then fades
+  (if (Utilities|String|EqualExactly(String) Role "Banner")
+    (return 4.00))
+  ; StampIn = 0.2: the stamp slams in from 3x
+  (if (Utilities|String|EqualExactly(String) Role "StampIn")
+    (return 0.20))
+  ; StampHold = 3.5: the stamp holds
+  (if (Utilities|String|EqualExactly(String) Role "StampHold")
+    (return 3.50))
+  ; StampFade = 1: the stamp fades
+  (if (Utilities|String|EqualExactly(String) Role "StampFade")
+    (return 1.00))
+  (return 0.25))

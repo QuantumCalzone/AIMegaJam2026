@@ -1,0 +1,12 @@
+; UIStyle.StyleButton(Button, Label, Kind). Every button in the game calls this: the kind's four state brushes,
+; the display font on its label (no dark outline on the dark labels of Primary and Paper), and the label color
+; following the button's state.
+(fn StyleButton (Button Label Kind)
+  (bind s (CallFunction|ButtonStyle :Kind Kind))
+  (Class|Button|SetStyle :self Button :WidgetStyle s)
+  (Class|Button|SetBackgroundColor :self Button :BackgroundColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (Class|Button|SetColorandOpacity :self Button :ColorAndOpacity (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (bind dark (or (Utilities|String|EqualExactly(String) Kind "Primary") (Utilities|String|EqualExactly(String) Kind "Paper")))
+  (bind f (CallFunction|UIFont :Role (select dark "ButtonInk" "Button")))
+  (Class|Text|SetFont :self Label :Font f)
+  (Class|Text|SetColorandOpacity :self Label :ColorAndOpacity (Utilities|Struct|MakeSlateColor :ColorUseRule "UseColor_Foreground")))

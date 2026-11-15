@@ -1,0 +1,10 @@
+; UIStyle.Brush(Fill, Outline, Width, Radius) -> SlateBrush. A rounded box with an outline: every panel, card and button state.
+(fn Brush (Fill Outline Width Radius)
+  (return (Utilities|Struct|MakeSlateBrush
+    :TintColor (Utilities|Struct|MakeSlateColor :SpecifiedColor Fill)
+    :DrawAs "RoundedBox"
+    :OutlineSettings (Utilities|Struct|MakeSlateBrushOutlineSettings
+      :CornerRadii (Math|Vector4|MakeVector4 Radius Radius Radius Radius)
+      :Color (Utilities|Struct|MakeSlateColor :SpecifiedColor Outline)
+      :Width Width
+      :RoundingType "FixedRadius"))))
