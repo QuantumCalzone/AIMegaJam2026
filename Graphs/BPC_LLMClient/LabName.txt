@@ -1,0 +1,6 @@
+; T37: a provider's display name (its persona's 'name' in personas.json), or the id if no persona has it.
+(fn LabName (Prov)
+  (set NoteIdx (Utilities|Array|FindItem (V PProv) Prov))
+  (if (< (V NoteIdx) 0)
+    (return Prov))
+  (return (get (V PNames) (V NoteIdx))))

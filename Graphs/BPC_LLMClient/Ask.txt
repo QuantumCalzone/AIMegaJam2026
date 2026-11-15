@@ -1,3 +1,4 @@
+; T37: every actor ask is tracked (TrackActorAsk) for the backstage note and error_test.
 (fn Ask (Tag Role System User)
   (if (V Down)
     (print (cat "NHOS: LLM " Tag " held relay down"))
@@ -18,6 +19,8 @@
     (CallFunction|ClearReply)
     (CallFunction|Deliver :Tag Tag :Ok false :Error "no provider for this ask" :Seconds "0")
     (return))
+  (if (streq Role "actor")
+    (CallFunction|TrackActorAsk :Tag Tag :User User))
   (if (streq (V Mode) "free")
     (add (V LocalTags) Tag)
     (add (V LocalUsers) User)

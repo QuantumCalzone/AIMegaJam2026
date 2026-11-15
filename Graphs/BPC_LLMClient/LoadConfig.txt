@@ -1,3 +1,4 @@
+; T37: also loads errors.json (cases, test_replies) and the error_test switch.
 (fn LoadConfig ()
   (bind _dir (Utilities|Paths|GetProjectDirectory))
   (bind _cdir (Utilities|Paths|GetProjectContentDirectory))
@@ -51,6 +52,12 @@
     (set FreePhases _fph)
     (bind _fac (Json|GetField _fo "scene_actions"))
     (set FreeActions _fac))
+  (bind (_eo _eok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _cdir "NHOS/Data/errors.json"))))
+  (if _eok
+    (bind _ec (Json|GetField _eo "cases"))
+    (set ErrCases _ec)
+    (bind _etr (Json|GetField _eo "test_replies"))
+    (set ErrTests _etr))
   (bind (_ko _kok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _dir "Local/llm_key.json"))))
   (if _kok
     (set KeyObj _ko)
@@ -58,6 +65,7 @@
       (bind _ke (Json|LoadJsonfromString "{}"))
       (set KeyObj _ke)))
   (set BurnTest false)
+  (set ErrTest "")
   (bind (_so _sok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _dir "Local/switches.json"))))
   (if _sok
     (bind _hm (Json|HasField _so "mode"))
@@ -67,7 +75,11 @@
     (bind _hb (Json|HasField _so "burn_test"))
     (if _hb
       (bind _sb (Json|GetField _so "burn_test"))
-      (set BurnTest _sb)))
+      (set BurnTest _sb))
+    (bind _het (Json|HasField _so "error_test"))
+    (if _het
+      (bind _set (Json|GetField _so "error_test"))
+      (set ErrTest _set)))
   (set Relaunched false)
   (bind _gm (Game|GetGameMode))
   (bind _opt (GameOptions|ParseOption :Options (Class|GameModeBase|GetOptionsString :self _gm) :Key "nhosmode"))
@@ -83,5 +95,5 @@
   (set Session (Guid|ToString(Guid) (Guid|NewGuid)))
   (set Ready true)
   (bind _n (CallFunction|KeyCount))
-  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest))))
+  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest)) " error_test=" (V ErrTest)))
   (return true ""))
