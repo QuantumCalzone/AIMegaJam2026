@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 08:39 UTC",
+    "generation": "1f1e0d00-5085-6e90-980c-3ca50ce0c6f8",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A grand opera-house chandelier: tiers of curved gold arms holding cream candle bulbs, with hanging crystal drops. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1111029168,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

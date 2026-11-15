@@ -696,12 +696,12 @@
       "texture": true,
       "polycount": 15000,
       "size_cm": 180,
-      "images": null,
-      "pick": null,
-      "ref": null,
-      "task": null,
-      "credits": null,
-      "fbx": null
+      "images": "1f1e0d00-5085-6e90-980c-3ca50ce0c6f8",
+      "pick": 2,
+      "ref": "Docs/PropArt/chandelier/ref.png",
+      "task": "01a1de5c-faaa-76fe-a3d5-6cabeefe7cc7",
+      "credits": 30,
+      "fbx": "Docs/PropArt/chandelier/chandelier.fbx"
     },
     {
       "id": "cherub",
@@ -711,12 +711,12 @@
       "texture": true,
       "polycount": 15000,
       "size_cm": 60,
-      "images": null,
-      "pick": null,
-      "ref": null,
-      "task": null,
-      "credits": null,
-      "fbx": null
+      "images": "1f1e0d00-4f1c-6950-a332-62711e1d90ed",
+      "pick": 3,
+      "ref": "Docs/PropArt/cherub/ref.png",
+      "task": "01a1de5c-faab-751c-ba56-7ac8a98ab36b",
+      "credits": 30,
+      "fbx": "Docs/PropArt/cherub/cherub.fbx"
     },
     {
       "id": "theater_box",
@@ -726,12 +726,12 @@
       "texture": true,
       "polycount": 15000,
       "size_cm": 300,
-      "images": null,
-      "pick": null,
-      "ref": null,
-      "task": null,
-      "credits": null,
-      "fbx": null
+      "images": "1f1e0d00-4e34-6a60-84a4-cd2ea9505bbf",
+      "pick": 3,
+      "ref": "Docs/PropArt/theater_box/ref.png",
+      "task": "01a1de5c-fa97-7178-8ac9-a3e2fb75503d",
+      "credits": 30,
+      "fbx": "Docs/PropArt/theater_box/theater_box.fbx"
     }
   ]
 }

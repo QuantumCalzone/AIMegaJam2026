@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 08:39 UTC",
+    "generation": "1f1e0d00-4e34-6a60-84a4-cd2ea9505bbf",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "One horseshoe opera-house theater box seen from the front: a curved balcony with a gold balustrade of round posts, a crimson velvet rail cushion and crimson curtains framing the opening. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1174267421,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]
