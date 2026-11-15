@@ -253,9 +253,16 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/Data/scenes.json`, `Content/NHOS/Data/props.json` (or a new `costumes.json`), `Content/NHOS/Stage/BP_Robot.uasset`, `Content/NHOS/Core/BP_Show.uasset` (Scene Prep), `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T47.md](tasks/T47.md)
 
+- [ ] **T74 Re-shoot the design doc's stage and cast captures**
+  - **Model and effort:** Opus 5.5, high. Dress the stage for each card in an editor without saving, capture it, and swap the pictures in the design doc.
+  - **Depends on:** T45 (each card's props on the table), T47 (the headpieces), T48 (the backdrops)
+  - **Needs:** an editor + Unreal MCP (a second editor of its own is fine; see its file), the Claude Docs connector. My OK for the doc edit is given (2026-11-15).
+  - **Touches:** the design doc's "Art Inspiration" and "Stories" tabs (pictures and their captions only), `Docs/tasks/T74.md`. No asset is saved.
+  - **Details:** [Docs/tasks/T74.md](tasks/T74.md)
+
 - [ ] **T70 The itch.io page: the description, screenshots, a cover and a gameplay video**
   - **Model and effort:** Opus 5.5, high. Claude plays shows for the best moments, picks the frames, cuts a captioned video, and rewrites the page text to match the finished game.
-  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T71, T72, T62, T63, T64, T65, T66, T73, T67, T68, T69, T38, T34, T60, T61, T45, T47, T48. A task that is cut comes off this line, and every new task goes on it (T70 stays last; see "Changing the plan").
+  - **Depends on:** every open task above it, because the page shows the finished game: T55, T57, T58, T71, T72, T62, T63, T64, T65, T66, T73, T67, T68, T69, T38, T34, T60, T61, T45, T47, T48, T74. A task that is cut comes off this line, and every new task goes on it (T70 stays last; see "Changing the plan").
   - **Needs:** a packaged build (T22's command) or the game window at 1920 × 1080, Play via Relay for the recorded shows and my OK for their cost (about $0.11 a show, two or three shows), ffmpeg to record and cut (not on the PC yet: my OK before Claude installs it with winget), my OK on the page text. No editor change.
   - **Touches:** `Docs/ItchPage.md`, `Docs/Submission.md` (the shot list and "Left to do"), new `Docs/ItchMedia/` (`cover.png`, `screenshots/`, `gameplay.mp4` and `description.html`), `Docs/tasks/T70.md`.
   - **Details:** [Docs/tasks/T70.md](tasks/T70.md)
