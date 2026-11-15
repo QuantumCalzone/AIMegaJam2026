@@ -187,6 +187,13 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Docs/MoneyBurnArt/logo_*.png` and `Content/NHOS/UI/MoneyBurn/T_Logo_*.uasset`, `Content/NHOS/UI/WBP_BurningBill.uasset`, `Content/NHOS/UI/WBP_MoneyBurn.uasset` (`Burn`), `Content/NHOS/Core/BPC_LLMClient.uasset` (`Burn` only), `Docs/MoneyBurnArt.md`, `Docs/Assets.md`, `Graphs/BPC_LLMClient/Burn.txt`, `Graphs/WBP_MoneyBurn/Burn.txt`, new `Graphs/WBP_BurningBill/SetLogo.txt`.
   - **Details:** [Docs/tasks/T36.md](tasks/T36.md)
 
+- [ ] **T37 Error messages say what went wrong, with a joke**
+  - **Model and effort:** Opus 5.5, high. It sorts every error path in the client into cases, and adds one note that crosses the client, the show and the banner.
+  - **Depends on:** T29 (the banner), T30 (the banner waits for the line queue), T33 (it lays out the key screen and the unavailable screen that show these lines). T21 is done.
+  - **Needs:** editor + Unreal MCP running, Test for Free with the new `error_test` switch for the PIE shows, T21's local stub relay for the budget message, and one fake Anthropic key for the key test (no tokens). No relay or key-mode show.
+  - **Touches:** new `Content/NHOS/Data/errors.json`, `Content/NHOS/Core/BPC_LLMClient.uasset` (new `ErrorKind` and `ErrorLine`; `ParseReply`, `HandleHttp`, `OnHealth`, `OnKeyTest`, `KeyTestResult`, `SetMode`, `Deliver` and the free-mode path for `error_test`), `Content/NHOS/Core/BP_Show.uasset` (one node that shows the note on the banner), `Content/NHOS/UI/WBP_Stage.uasset` only if the banner needs a longer hold for a note, `Tools/check_prompts.py`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes.
+  - **Details:** [Docs/tasks/T37.md](tasks/T37.md)
+
 - [ ] **T31 Tab completes names, places and props (cut if we fall behind)**
   - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
   - **Depends on:** T27 (the input row), T30 (the lock on `WBP_Stage`)
@@ -196,7 +203,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T23 Submission**
   - **Model and effort:** Sonnet 5.5, medium. Writing and checklists.
-  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, T31 if it is done, and T36 if it is done
+  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, T31 if it is done, T36 if it is done, and T37 if it is done
   - **Needs:** me, to record the video, set up the itch.io page and send the form. The packaged build, which I make myself.
   - **Touches:** `Docs/ItchPage.md`, new `Docs/Submission.md`, `Packaged/` (not in git).
   - **Details:** [Docs/tasks/T23.md](tasks/T23.md)
