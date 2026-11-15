@@ -1,0 +1,226 @@
+{
+  "space_plans": [
+    {
+      "role": "A farm kid",
+      "headpiece": "wide_brim_hat",
+      "color": "#E3C770",
+      "doc_color": "sandy straw yellow"
+    },
+    {
+      "role": "A masked villain",
+      "headpiece": "saucepan_helmet",
+      "color": "#222226",
+      "doc_color": "black"
+    },
+    {
+      "role": "An old desert hermit",
+      "headpiece": "hood",
+      "color": "#7A5232",
+      "doc_color": "earthy brown"
+    },
+    {
+      "role": "A smuggler pilot",
+      "headpiece": "dark_shades",
+      "color": "#1A1A1E",
+      "doc_color": "black lenses"
+    },
+    {
+      "role": "A rebel princess",
+      "headpiece": "tiara",
+      "color": "#D9DEE6",
+      "doc_color": "silver and white"
+    }
+  ],
+  "mine_bridge": [
+    {
+      "role": "A barefoot homebody",
+      "headpiece": "bob_wig",
+      "color": "#8B4A26",
+      "doc_color": "chestnut brown"
+    },
+    {
+      "role": "A bossy old wizard",
+      "headpiece": "wizard_hat",
+      "color": "#8C8A86",
+      "doc_color": "dusty grey"
+    },
+    {
+      "role": "A brooding ranger",
+      "headpiece": "hood",
+      "color": "#5E7A3A",
+      "doc_color": "moss green"
+    },
+    {
+      "role": "A loud, proud dwarf",
+      "headpiece": "horned_helmet_beard",
+      "color": "#6B6F75",
+      "doc_color": "iron grey (ginger beard dropped)"
+    },
+    {
+      "role": "A vain elf",
+      "headpiece": "tiara",
+      "color": "#C9CED6",
+      "doc_color": "pale silver"
+    }
+  ],
+  "dino_island": [
+    {
+      "role": "The billionaire park owner",
+      "headpiece": "top_hat",
+      "color": "#F0E6CC",
+      "doc_color": "cream white"
+    },
+    {
+      "role": "A dinosaur expert",
+      "headpiece": "wide_brim_hat",
+      "color": "#7A7A3A",
+      "doc_color": "olive green"
+    },
+    {
+      "role": "A runaway dinosaur with tiny arms",
+      "headpiece": "dino_hood",
+      "color": "#5DA642",
+      "doc_color": "grass green"
+    },
+    {
+      "role": "A kid on the tour",
+      "headpiece": "ball_cap",
+      "color": "#C8202E",
+      "doc_color": "cherry red"
+    },
+    {
+      "role": "The park's nervous lawyer",
+      "headpiece": "dark_shades",
+      "color": "#1A1A1E",
+      "doc_color": "black"
+    }
+  ],
+  "favor_father": [
+    {
+      "role": "The family boss, father of the bride",
+      "headpiece": "fedora",
+      "color": "#2A2A2E",
+      "doc_color": "charcoal black (red band dropped)"
+    },
+    {
+      "role": "The hot-headed eldest son",
+      "headpiece": "ball_cap_back",
+      "color": "#E0482E",
+      "doc_color": "tomato red, worn backwards"
+    },
+    {
+      "role": "The reluctant youngest son",
+      "headpiece": "hood",
+      "color": "#6B6B30",
+      "doc_color": "olive green"
+    },
+    {
+      "role": "The family adviser",
+      "headpiece": "dark_shades",
+      "color": "#1A1A1E",
+      "doc_color": "black"
+    },
+    {
+      "role": "A washed-up crooner",
+      "headpiece": "top_hat",
+      "color": "#8A3FB8",
+      "doc_color": "glittery purple"
+    }
+  ],
+  "glowing_briefcase": [
+    {
+      "role": "A chatty errand man in a black suit",
+      "headpiece": "dark_shades",
+      "color": "#121216",
+      "doc_color": "glossy black"
+    },
+    {
+      "role": "A nosy errand man in a black suit",
+      "headpiece": "fedora",
+      "color": "#4A4A4E",
+      "doc_color": "dark gray (black band dropped)"
+    },
+    {
+      "role": "The boss's bored wife",
+      "headpiece": "bob_wig",
+      "color": "#141416",
+      "doc_color": "jet black"
+    },
+    {
+      "role": "A runaway boxer who refused to lose",
+      "headpiece": "hood",
+      "color": "#B8262A",
+      "doc_color": "red (gold trim dropped)"
+    },
+    {
+      "role": "A smooth fixer in a tuxedo",
+      "headpiece": "top_hat",
+      "color": "#1C1C20",
+      "doc_color": "black (white band dropped)"
+    }
+  ],
+  "league_night": [
+    {
+      "role": "A laid-back slacker in a bathrobe",
+      "headpiece": "hood",
+      "color": "#D9C9A3",
+      "doc_color": "oatmeal beige"
+    },
+    {
+      "role": "A hot-headed teammate who knows every rule",
+      "headpiece": "saucepan_helmet",
+      "color": "#6E7438",
+      "doc_color": "olive green"
+    },
+    {
+      "role": "A quiet bowler nobody listens to",
+      "headpiece": "ball_cap",
+      "color": "#9CCCEB",
+      "doc_color": "pale sky blue"
+    },
+    {
+      "role": "A flashy rival bowler",
+      "headpiece": "top_hat",
+      "color": "#F0459A",
+      "doc_color": "hot pink"
+    },
+    {
+      "role": "An avant-garde artist",
+      "headpiece": "bob_wig",
+      "color": "#1F4FC8",
+      "doc_color": "cobalt blue"
+    }
+  ],
+  "pick_a_pill": [
+    {
+      "role": "A sleepy office worker",
+      "headpiece": "beanie",
+      "color": "#6E7F92",
+      "doc_color": "dull office gray-blue"
+    },
+    {
+      "role": "A grand leader in a long coat",
+      "headpiece": "wide_brim_hat",
+      "color": "#6E1E2A",
+      "doc_color": "deep maroon"
+    },
+    {
+      "role": "A rebel in black leather",
+      "headpiece": "bob_wig",
+      "color": "#18181C",
+      "doc_color": "glossy black"
+    },
+    {
+      "role": "A stern agent in a dark suit",
+      "headpiece": "dark_shades",
+      "color": "#1A1A1E",
+      "doc_color": "black"
+    },
+    {
+      "role": "A fortune-teller baking cookies",
+      "headpiece": "wizard_hat",
+      "color": "#B9A3DE",
+      "doc_color": "soft lavender"
+    }
+  ]
+}
