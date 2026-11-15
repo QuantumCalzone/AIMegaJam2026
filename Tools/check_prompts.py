@@ -11,7 +11,7 @@ Usage (from anywhere; Python 3.10+, no packages needed):
     python Tools/check_prompts.py --log        # check the AI lines of the last show in the editor log
     python Tools/check_prompts.py --log --all-shows Saved/Logs/AIMegaJam2026.log
 
-It reads Content/NHOS/Data/{llm,prompts,personas,scenes}.json and the keys in
+It reads Content/NHOS/Data/{llm,prompts,personas,scenes,errors}.json and the keys in
 Local/llm_key.json, and never prints a key.
 
 Providers (T16): each actor ask goes to its persona's 'provider' (personas.json),
@@ -52,6 +52,12 @@ persona) as Player 3. A check fails if a provider name (a persona's 'name')
 is in any system text or state an actor or the Director reads, or in a reply
 of the input converter, which must turn provider names into Player names.
 --offline runs that check too, since it needs no API calls.
+
+Error lines (T37): the file check also checks errors.json, the lines the player
+reads when an AI call fails. Every case in ERROR_CASES below has a list of
+lines, no case is unknown, a line uses only the placeholders its case gets
+({lab}, {n}, {type}), and no line has a persona name, a lab's name written out
+(that comes from {lab}) or a banned name.
 
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
@@ -237,11 +243,74 @@ def relay_problems(llm, providers) -> list[str]:
     return out
 
 
+# errors.json (T37): every case BPC_LLMClient.ErrorLine can be asked for, with the placeholders
+# its caller fills. A line may use only its case's placeholders.
+ERROR_CASES = {
+    # the unavailable screen
+    "health_no_reply": set(), "health_unreadable": set(), "health_too_few_labs": {"n"},
+    "budget_used_up": set(), "session_limit": set(), "player_limit": set(),
+    "provider_unavailable": {"lab"}, "down_no_reply": set(),
+    # backstage notes during a show
+    "out_of_credits": {"lab"}, "rate_limited": {"lab"}, "overloaded": {"lab"}, "key_rejected": {"lab"},
+    "no_reply": {"lab"}, "cut_off": {"lab"}, "refused": {"lab"}, "unreadable": {"lab"},
+    "relay_429": {"lab"}, "relay_provider": {"lab"}, "unknown": {"lab", "type"},
+    # the key screen
+    "keytest_no_keys": set(), "keytest_too_few_keys": set(), "keytest_key_rejected": {"lab", "type"},
+    "keytest_out_of_credits": {"lab"}, "keytest_no_reply": {"lab"}, "keytest_all_pass": {"n"},
+}
+ERROR_PLACEHOLDERS = {"lab", "n", "type"}
+# Persona names the bots once had or could be called by. The persona ids in personas.json are
+# added to these. The bots go by their provider's name only, which a line gets from {lab}.
+OLD_PERSONA_NAMES = ["overseer"]
+
+
+def error_line_problems(data, plist) -> list[str]:
+    """Problems in errors.json, as a list (empty = fine)."""
+    cases = data.get("cases") if isinstance(data, dict) else None
+    if not isinstance(cases, dict):
+        return ["errors.json: needs a 'cases' object"]
+    out = []
+    if not data.get("_readme"):
+        out.append("errors.json: needs a _readme")
+    for key in sorted(set(ERROR_CASES) - set(cases)):
+        out.append(f"errors.json: case {key!r} is missing")
+    for key in sorted(k for k in set(cases) - set(ERROR_CASES) if not k.startswith("_")):
+        out.append(f"errors.json: unknown case {key!r} (add it to ERROR_CASES in Tools/check_prompts.py if it's new)")
+    personas = [(n, re.compile(r"(?i)\b" + re.escape(n) + r"\b"))
+                for n in [p.get("id", "") for p in plist] + OLD_PERSONA_NAMES if n]
+    labs = provider_res(plist)
+    for key, lines in cases.items():
+        if key.startswith("_") or key not in ERROR_CASES:
+            continue
+        if not is_lines(lines) or not all(s.strip() for s in lines):
+            out.append(f"errors.json: case {key!r} needs a list of lines, none empty")
+            continue
+        for i, line in enumerate(lines, 1):
+            where = f"errors.json: {key} line {i}"
+            used = set(re.findall(r"\{(\w+)\}", line))
+            for name in sorted(used - ERROR_PLACEHOLDERS):
+                out.append(f"{where}: unknown placeholder {{{name}}} (only {{lab}}, {{n}} and {{type}})")
+            for name in sorted((used & ERROR_PLACEHOLDERS) - ERROR_CASES[key]):
+                out.append(f"{where}: {{{name}}} isn't filled in for this case")
+            if re.search(r"[{}]", re.sub(r"\{\w+\}", "", line)):
+                out.append(f"{where}: a stray brace")
+            for name, r in personas:
+                if r.search(line):
+                    out.append(f"{where}: a persona name ({name!r}); use {{lab}}")
+            for name in provider_leaks(line, labs):
+                out.append(f"{where}: a lab's name written out ({name!r}); use {{lab}}")
+            for word, r in BANNED_RES:
+                if r.search(line):
+                    out.append(f"{where}: a banned name ({word!r})")
+    return out
+
+
 def check_files(errors: list[str]):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
     personas = load_json("personas.json", errors)
     scenes = load_json("scenes.json", errors)
+    error_lines = load_json("errors.json", errors)
     if errors:
         return None
 
@@ -349,6 +418,9 @@ def check_files(errors: list[str]):
     for word in BANNED:
         if re.search(r"\b" + re.escape(word) + r"\b", texts, re.I):
             errors.append(f"banned name in the prompt files: {word!r}")
+
+    # errors.json: the error lines the player reads (T37).
+    errors.extend(error_line_problems(error_lines, plist))
 
     if errors:
         return None
@@ -1107,7 +1179,7 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, and the relay's allow-list")
     if args.log:
         return check_log(Path(args.log), data["personas"], args.all_shows)
 

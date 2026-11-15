@@ -1,0 +1,116 @@
+{
+	"_readme": [
+		"Error lines (T37): what the player reads when an AI call fails. Each line says what went wrong in its first sentence, then makes a joke in the show's playful, petty voice. The first line of each case is the one approved on 2026-11-15; the second is in the same voice. The game picks one of a case's lines at random.",
+		"Read by BPC_LLMClient.ErrorLine(Kind, Lab, N, Type). Every place that writes error text uses it: OnHealth, the two GoDown calls in HandleHttp, OnKeyTest, KeyTestResult and SetMode, and the backstage note when an actor's reply fails after its retry.",
+		"Case keys. A plain key is a kind that BPC_LLMClient.ErrorKind returns, so the game can use it as it is. A key that starts with a screen name (health_, down_, keytest_) is that screen's own line for a kind: the caller tries '<screen>_<kind>' first, then '<kind>'. The screens match the 'where' in the log line NHOS: ERROR <kind> provider=<id> where=<health|down|keytest|turn>.",
+		"The unavailable screen, before a relay show (OnHealth, where=health): health_no_reply (the relay doesn't answer), health_unreadable (its reply can't be read), health_too_few_labs (fewer than 3 labs can serve calls), and the relay's own error types budget_used_up, session_limit, player_limit and provider_unavailable.",
+		"The unavailable screen, during a relay show (GoDown in HandleHttp, where=down): down_no_reply (the relay stopped answering), or the relay's type (budget_used_up, session_limit, player_limit, provider_unavailable). For a relay type with no case here, the relay's own error.message stays the fallback.",
+		"Backstage notes during a show (where=turn), one per kind: out_of_credits, rate_limited, overloaded, key_rejected, no_reply, cut_off, refused, unreadable, relay_429 (the lab said 429 through the relay, which can't tell a rate limit from our spending cap), relay_provider (any other relay provider_error) and unknown.",
+		"The key screen (OnKeyTest, KeyTestResult and SetMode, where=keytest): keytest_no_keys (Test keys with nothing pasted), keytest_too_few_keys (Save and Play with keys for fewer than 3 labs), keytest_key_rejected, keytest_out_of_credits and keytest_no_reply (one lab's test result), keytest_all_pass (every pasted key works). A key-test failure of any other kind falls back to its plain kind.",
+		"Placeholders, and only these: {lab} = the provider's display name, its 'name' in personas.json (OpenAI, Anthropic, SpaceXAI or Meta). {n} = a count: how many labs the relay can reach (health_too_few_labs) or how many keys passed (keytest_all_pass). {type} = the error's 'type' field as the provider or the relay sent it, such as authentication_error. Both lines of a case use the same placeholders.",
+		"Never put the provider's own error message in a line: some providers echo part of the key (T21). ErrorKind reads it only for keywords. No persona names (the bots go by their provider, and that comes from {lab}), no lab name written out, no real people's names.",
+		"Tools/check_prompts.py --offline checks this file: every case has its lines, no unknown case or placeholder, and no persona name, lab name or banned name."
+	],
+	"cases": {
+		"health_no_reply": [
+			"The AI relay isn't answering: it's down, or you're offline. The robots are standing in the dark, waiting for their cue.",
+			"The game can't reach the AI relay: it's down, or your internet is. The cast is in the green room, refusing to come out."
+		],
+		"health_unreadable": [
+			"The AI relay answered, but the game can't read the reply. Even the robots couldn't make sense of it.",
+			"The AI relay sent back a reply the game doesn't understand. Somebody handed out the wrong script."
+		],
+		"budget_used_up": [
+			"Today's free AI budget is used up (it resets at midnight UTC). Our producers are cheap and burned it all.",
+			"Today's free AI budget has run out (it resets at midnight UTC). The producers spent it all on craft services."
+		],
+		"health_too_few_labs": [
+			"The relay can reach only {n} of the 4 AI labs, and a show needs 3. Half the cast called in sick.",
+			"Only {n} of the 4 AI labs are answering the relay, and a show needs 3. The rest of the cast is stuck in traffic."
+		],
+		"session_limit": [
+			"This show has used all its free AI calls. The producers cut the budget mid-scene. Enter your own API keys to finish.",
+			"This show is out of free AI calls. The money ran out before the final act. Enter your own API keys to see how it ends."
+		],
+		"player_limit": [
+			"You've used all of today's free AI calls. That's a lot of improv. Enter your own keys, or come back tomorrow.",
+			"Your free AI calls for today are all used up. You've earned a standing ovation, and a break. Enter your own keys, or come back tomorrow."
+		],
+		"provider_unavailable": [
+			"The relay has no key for {lab}, so {lab} can't go on. Someone forgot to sign its contract.",
+			"The relay isn't set up with a key for {lab}, so {lab} can't perform. Its agent never returned our calls."
+		],
+		"down_no_reply": [
+			"The AI relay stopped answering: it went down, or your connection dropped. The lights are on, but nobody's home.",
+			"The game lost the AI relay mid-show: it went down, or your connection did. Someone tripped over the power cable backstage."
+		],
+		"out_of_credits": [
+			"{lab}'s API key is out of credits, so it has no tokens left to think with. Whoever owns that key is cheap. (If it's yours: hi.)",
+			"{lab}'s API key has run out of credits, so it can't afford another word. Somebody's been skipping the bills."
+		],
+		"rate_limited": [
+			"{lab} hit its rate limit: too many requests, too fast. It's on a mandatory union break.",
+			"{lab} is rate limited: it got too many requests in too short a time. It's been sent to its trailer to cool off."
+		],
+		"overloaded": [
+			"{lab}'s servers are full right now, so its line never came. Everyone else is asking {lab} for things too.",
+			"{lab} is overloaded right now and couldn't take this request. It's doing a matinee for the rest of the internet."
+		],
+		"key_rejected": [
+			"{lab} rejected its API key (wrong, expired or revoked). It won't perform without a valid contract.",
+			"{lab} didn't accept its API key (it's wrong, expired or revoked). Security won't let it past the stage door."
+		],
+		"no_reply": [
+			"{lab} never answered: the request timed out or the connection dropped. It froze like it forgot its lines.",
+			"{lab}'s reply never arrived: the request timed out or the connection broke. It's standing in the wings, staring into space."
+		],
+		"cut_off": [
+			"{lab}'s reply hit its length limit and got cut mid-sentence. It was going to be brilliant. Probably.",
+			"{lab}'s reply ran past its length limit and was cut off before the end. The director yelled 'cut' a little too early."
+		],
+		"refused": [
+			"{lab}'s safety filter refused this line. Very principled. Very method.",
+			"{lab} refused to give this line because its safety filter stepped in. It has notes on the script."
+		],
+		"unreadable": [
+			"{lab} answered, but in a shape the game can't read. It ad-libbed so hard it broke the script.",
+			"{lab} replied in a format the game can't read. It's speaking in interpretive dance."
+		],
+		"relay_429": [
+			"{lab} told the relay 'too many requests': it's rate limited, or our producers hit their spending cap.",
+			"The relay got 'too many requests' back from {lab}: it's rate limited, or we hit our spending cap. Either way, {lab} is taking five."
+		],
+		"relay_provider": [
+			"{lab} didn't answer through the relay; the problem is on {lab}'s end. It'll try again next turn.",
+			"The relay reached {lab}, but {lab} had a problem on its end. It's backstage fixing a costume malfunction and will try again next turn."
+		],
+		"unknown": [
+			"{lab}'s request failed with an error the game doesn't recognize ({type}). It's improvising silence.",
+			"{lab} failed with an error the game has never seen before ({type}). Call it a dramatic pause."
+		],
+		"keytest_no_keys": [
+			"Paste at least one key to test. The robots don't work for exposure.",
+			"No keys are pasted in yet, so there's nothing to test. No key, no audition."
+		],
+		"keytest_too_few_keys": [
+			"Enter keys for at least 3 of the 4 AI labs. A show needs a cast, not a monologue.",
+			"Add keys for at least 3 of the 4 AI labs to start a show. Anything less is a podcast."
+		],
+		"keytest_key_rejected": [
+			"{lab}: key rejected ({type}). It's not you, it's the key.",
+			"{lab}: the key didn't work ({type}). The bouncer says it's not on the list."
+		],
+		"keytest_out_of_credits": [
+			"{lab}: out of credits. Someone's been cheap.",
+			"{lab}: the key works, but it has no credits left. Time to pass the hat."
+		],
+		"keytest_no_reply": [
+			"{lab} didn't answer.",
+			"{lab} didn't answer. Stage fright, probably."
+		],
+		"keytest_all_pass": [
+			"All {n} keys work. The cast is hired.",
+			"All {n} keys passed the test. Places, everyone!"
+		]
+	}
+}
