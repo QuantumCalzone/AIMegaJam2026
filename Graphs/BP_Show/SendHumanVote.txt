@@ -1,0 +1,6 @@
+; T09: my vote's reason (the pick is HumanPick). T63: the reason takes the spelling path (SpellAsk).
+; Written from the editor's read-back in T63.
+(fn SendHumanVote (Line)
+  (set HumanSent true)
+  (Class|WBPStage|SetVoteEnabled :self (Variables|Default|GetStage) :Enabled false)
+  (CallFunction|SpellAsk :Line Line :InPhase "free talk"))

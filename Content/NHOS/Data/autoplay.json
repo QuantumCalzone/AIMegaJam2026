@@ -1,12 +1,12 @@
 {
-	"_readme": "Canned lines for the human seat. When Local/switches.json has \"autoplay\": true (copy Docs/switches.example.json), the human seat sends these instead of waiting for typed input, so an agent can run a show unattended. They go through the input LLM exactly like typed lines, except \"pass\", which passes at once, like the Pass button. scene: one line per scene turn, used in order and repeated. free_talk: one line per Free Talk round (2 per scene), used in order and repeated. vote: one reason per scene (a full show has 3) for the human seat's vote in The Cut, which goes to a random valid name. last_word: one line for each last word the human seat gets (an actor named it with @ in the final Free Talk round), used in order and repeated; \"pass\" passes. reaction: one line per scene for the human seat's reaction after the cut (its last words if it was cut); \"pass\" stays silent. Keep them generic: they must fit any persona, role and story card, and name only the improv stage's places and props. One free_talk line names actors by the provider names the player sees on screen, and one addresses an actor with an @ mention: the game must turn both into Player names before the AIs read them (check their NHOS: LOG lines, or run Tools/check_prompts.py --log).",
+	"_readme": "Canned lines for the human seat. When Local/switches.json has \"autoplay\": true (copy Docs/switches.example.json), the human seat sends these instead of waiting for typed input, so an agent can run a show unattended. They go through the input LLM exactly like typed lines, except \"pass\", which passes at once, like the Pass button. scene: one spoken line per scene turn, used in order and repeated. Since T63 the line is speech only: the human seat's action is picked at random from what the rules allow (BP_StageDirector.ItemsFor and TargetsFor), sometimes Look around or No action, and only the line goes through the input LLM. free_talk: one line per Free Talk round (2 per scene), used in order and repeated. vote: one reason per scene (a full show has 3) for the human seat's vote in The Cut, which goes to a random valid name. last_word: one line for each last word the human seat gets (an actor named it with @ in the final Free Talk round), used in order and repeated; \"pass\" passes. reaction: one line per scene for the human seat's reaction after the cut (its last words if it was cut); \"pass\" stays silent. Keep them generic: they must fit any persona, role and story card, and name no prop or place (a scene line is speech only, and the props change with the card). One free_talk line names actors by the provider names the player sees on screen, and one addresses an actor with an @ mention: the game must turn both into Player names before the AIs read them (check their NHOS: LOG lines, or run Tools/check_prompts.py --log).",
 	"scene": [
-		"walk to center stage and say \"Places, everyone! This is my big scene.\"",
-		"grab the rubber chicken \"This is mine now. I think. Probably.\"",
-		"look at the riser \"Is it me, or is that box staring at us?\"",
-		"climb onto the riser \"Behold! The view from up here is excellent.\"",
-		"grab the cape, throw it at Front \"Oops. Muscle memory. I don't have muscles.\"",
-		"look around \"Nobody panic. Everything in this story is completely normal.\""
+		"Places, everyone! This is my big scene.",
+		"This is mine now. I think. Probably.",
+		"Is it me, or is that box staring at us?",
+		"Behold! The view from up here is excellent.",
+		"Oops. Muscle memory. I don't have muscles.",
+		"Nobody panic. Everything in this story is completely normal."
 	],
 	"free_talk": [
 		"Somebody here keeps dodging questions. I'm watching you.",

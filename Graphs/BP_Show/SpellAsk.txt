@@ -1,0 +1,26 @@
+; T63: every line of mine (scene turn, Free Talk, last word, reaction, vote reason) takes this path. It takes my
+; slot in the pending asks under input-<n> as the old ask did, so the phase waits for me. Then the input LLM
+; fixes the line's spelling under its own tag, spell-<n>, with spelling_wait seconds (SpellTimeout). SpellIn,
+; SpellSkip and HumanSay finish it. The tag and the timer are set before Ask, because a reply can come inside Ask.
+; An empty line makes no call: PlayTalk and PlayReact take empty speech as a pass.
+(fn SpellAsk (Line InPhase)
+  (set HPhase InPhase)
+  (set SpellLine Line)
+  (set AskCount (+ (V AskCount) 1))
+  (set HTag (cat "input-" (str (V AskCount))))
+  (add (V PendingTags) (V HTag))
+  (add (V PendingSeats) (V HumanSeat))
+  (bind _w (CallFunction|SpellWait))
+  (set SpellSecs _w)
+  (if (Utilities|String|IsEmpty (Utilities|String|Trim Line))
+    (CallFunction|HumanSay :Line "" :Pass false)
+    (return))
+  (if (<= (V SpellSecs) 0.0)
+    (CallFunction|SpellSkip :Why "off")
+    (return))
+  (set AskCount (+ (V AskCount) 1))
+  (set SpellTag (cat "spell-" (str (V AskCount))))
+  (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "SpellTimeout" :Time (V SpellSecs) :bLooping false)
+  (bind _st (CallFunction|InputState :Line Line :InPhase InPhase))
+  (bind _sys (CallFunction|PromptText :Key "input"))
+  (Class|BPCLLMClient|Ask :self (V LLMClient) :Tag (V SpellTag) :Role "input" :System _sys :User _st))
