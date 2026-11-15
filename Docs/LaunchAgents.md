@@ -23,10 +23,10 @@ More sessions working at once is the goal. The only limit is that two sessions m
 | The editor on this machine | One session at a time | Unreal MCP runs one call at a time on the editor's game thread. |
 | Each `.uasset` or `.umap` | One session, until its commit is pushed | Binary assets can't be merged. Most editor tasks change `BP_Show` or `WBP_Stage`. |
 | Each text file in this folder | One session with changes not committed yet | Every session in the folder shares one working copy. |
-| `Local/switches.json` | The playtest that is open | The game window reads it while you play. |
+| `Local/switches.json` and the assets under test | A key-mode playtest in the repo folder, until you're done | Other playtests run from a copy at the task's commit, which has its own switches (see the plan's "When only my check is left"). |
 | You | Everyone, but one ask at a time | Most tasks stop for your OK or a playtest. The dispatcher puts first the ask whose answer frees the most work. |
 
-A session that waits only for your playtest doesn't hold the editor, because you play in a game window. It still holds its files until its commit is pushed.
+A task that waits only for your check pushes its work first, and you play from a copy at that commit. So it holds nothing but its claim, and the next task in its chain can start at once, even on the same assets.
 
 ## Prompt
 
@@ -49,12 +49,13 @@ First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/Plan.md`
   - **waiting on me:** it has a `Waiting:` line, or its session says it waits for me.
   - **blocked:** it has a `Blocked:` line.
   - **held elsewhere:** it has a claim lock but no status file here. Another machine may be running it, or a session may have stopped halfway. Check the handoffs and messages. If they don't settle it, ask me once about all such tasks together.
-  - **not ready:** a task in its Depends on line is not checked.
+  - **not ready:** a task in its Depends on line is neither checked nor waiting only for my check. A task waits only for my check when its work is pushed and its `Waiting:` line leaves only my playtest, my verdict, or a run that needs something from me.
   - **free:** none of the above.
 - For each task, also write what it holds while it runs:
   - the editor, if its Needs line names the editor or Unreal MCP
   - each path in its Touches line. A folder in Touches means every asset that already exists in that folder; new files are not shared with anyone. If a Touches line is too vague to compare, read the task's file to narrow it.
-  - `Local/switches.json`, while its playtest is open
+  - `Local/switches.json` and the assets under test, while a key-mode playtest is open in the repo folder
+  - nothing but its claim, while it waits only for my check
 - Write the ledger to `Agents/status/dispatcher.md` and keep it current. It lets you recover after a restart or after your context is summarized, and it lets other sessions see what runs.
 - Show me a short table: each open task's state, and the sessions you will start now. Then start them without waiting for me. This message is my OK.
 
@@ -76,10 +77,10 @@ Use sessions, not subagents. Each task stops to ask me things (an OK on prompt t
 You get a note each time a session you started ends a turn. A note quotes only the first 400 characters of the session's report, so read git and the session's status file too. Don't poll. On each note, and on each message from me:
 
 1. **Check git, not only the note.** Look for the task's commit in `git log`, its checked box in the plan, its status file gone, and `git status -sb` for commits that are not pushed.
-2. **Update the ledger.** Work out what the change freed. A session whose commit is pushed frees everything it held. A session that waits only for my playtest frees the editor, but keeps its files. Re-read the plan's Open list each time, because I add, move and drop tasks, and sessions add tasks for the fixes they find. Put each new task in the ledger by its Needs and Touches.
-3. **Tell me what waits on me.** One line per ask, with a link to the session. Put first the ask whose answer frees the most work. When two sessions both wait for a playtest, tell me that one show can answer both.
+2. **Update the ledger.** Work out what the change freed. A session whose commit is pushed frees everything it held. A session that pushed its work to wait for my check frees everything but its claim, so the next task in its chain can start. Re-read the plan's Open list each time, because I add, move and drop tasks, and sessions add tasks for the fixes they find. Put each new task in the ledger by its Needs and Touches.
+3. **Tell me what waits on me.** One line per ask, with a link to the session. Put first the ask whose answer frees the most work. When two sessions both wait for a playtest, tell me that one show can answer both. In a chain, the later task's copy holds the earlier task's work too.
 4. **Fill every free slot,** in this order:
-   1. **The editor lane.** If no session drives the editor, start the first free task in plan order that needs the editor and whose Touches overlap nothing a running or waiting session holds.
+   1. **The editor lane.** If no session drives the editor, start the first free task in plan order that needs the editor and whose Touches overlap nothing a running session holds. That includes the next task in a chain whose earlier task waits only for my check. But a fix comes first: if my check found a problem, then as soon as no running session holds that task's assets, tell its session with `SendMessage` (to its `local_…` id) that it can fix them now, and start no other editor task until the fix is pushed.
    2. **Other tasks.** Start every other free task whose Touches overlap nothing that is held, in plan order: data files, docs, the relay.
    3. **Prep pieces.** When a task is not ready, or its files are held, start a piece of it that needs no editor and writes only new files of its own. Good prep pieces: find and license assets; write the text a task will need (the itch.io page, the submission lists, the video plan); read the `Graphs/` sources a later editor task will change and write a build sheet that names each graph, node and pin it changes, so that task spends less time in the editor. Start each piece once. Prep at most two tasks ahead in the editor lane's order, because the tasks before them may change what they need.
 
@@ -88,7 +89,7 @@ You get a note each time a session you started ends a turn. A note quotes only t
 6. **Pushing and claims.** Each session pushes its own commit, and may push without asking. If a commit sits unpushed after its session has ended, run `git push` yourself. Then release the claim (`git lfs unlock Docs/claims/Txx`) of every checked task whose commit went up. If the push is rejected, tell me, and don't pull or rebase while other sessions have work that isn't committed. Never force-push, and never push `main`. A worktree session merges its own branch, as the plan's Worktrees note says. If it left the merge undone, tell me.
 7. **Steps that need me first.**
    - Packaging needs the editor closed. Before you start it, ask me to close the editor, and wait for my answer.
-   - A task with a `Waiting:` line starts only when I say that what it waits for is ready. Its `Left:` part says what that is.
+   - A task with a `Waiting:` line needs no new session while its own session still waits. If that session has ended, start a new one for what is left only when I say that what it waits for is ready. The line's `Left:` part says what that is.
    - The submission task needs me for the video, the itch.io page and the form. Start its prep pieces early; start the task itself when its Depends on line allows.
 8. **Watch the clock.** Compare the time with the plan's "Time check". Count about an hour of editor time for each open editor task. When a target is more than an hour late, or the editor tasks left don't fit before the packaging target, tell me early and propose the next cut from the plan's cut order. Cut nothing without my OK.
 9. **When nothing can start,** tell me in one line what each lane waits for, update the ledger, and end your turn. The next note wakes you.
@@ -111,7 +112,7 @@ End every brief with these lines:
 
 > - Several sessions work in this folder and on this branch at the same time. Stage only your own files, by path (never `git add -A` or `git add .`). Don't switch branches. Push your commit with `git push` without asking. If the push is rejected, don't pull or rebase, and tell me. Never force-push.
 > - Your status file has a line `- Editor: driving` or `- Editor: not using`. Only one session drives the Unreal Editor at a time. Before you use the editor, check `Agents/status/`: if another session's file says `Editor: driving`, tell me and wait. When you stop to wait for me, set your line to `not using`, so the next task can have the editor. If you need the editor only for a PIE check, tell me before you start PIE and wait for my go.
-> - When you need me to play, follow the "Playtests run in a game window" build note in the plan: save, check that a free autoplay show reaches `SHOW END`, set autoplay off, and give me the game-window command. Don't ask me to play in PIE. If another session's playtest is still open, don't change `Local/switches.json` until I say it's done.
+> - When only my check is left, follow "When only my check is left" in the plan: push your work first, free what you hold, and for a playtest give me the game-window command for a playtest copy at your commit. Don't ask me to play in PIE. If a key-mode playtest is open in the repo folder, don't change `Local/switches.json` or save the assets under test until I say it's done.
 > - In the editor, read only the graphs you need, keep graph sources in `Graphs/`, and build new systems in their own Blueprints, as the plan's build notes say.
 > - I picked Opus 5.5 at xhigh effort for this session on purpose, so don't ask me about the model or the effort.
 > - Start the last thing you write in each turn (your wrap-up recap, if you write one) with one of these: `DONE`, `WAITING ON YOU: <what>`, or `BLOCKED: <what>`. The dispatcher sees only the first 400 characters.
@@ -120,11 +121,12 @@ End every brief with these lines:
 
 For a task from the plan. Put the task's number and title in place of `Txx` and `<title>`:
 
-> Run Txx (<title>) from `Docs/Plan.md`, following "How to run a task" there. Your task is Txx, so skip the pick in step 1, but do the rest of step 1: pull, read `Agents/` and check `git lfs locks`. If Txx is claimed or checked, or a task it depends on isn't checked, stop and tell me. Name your status file `Agents/status/task-Txx.md`.
+> Run Txx (<title>) from `Docs/Plan.md`, following "How to run a task" there. Your task is Txx, so skip the pick in step 1, but do the rest of step 1: pull, read `Agents/` and check `git lfs locks`. If Txx is claimed or checked, or a task it depends on is neither checked nor waiting only for my check (see "When only my check is left"), stop and tell me. Name your status file `Agents/status/task-Txx.md`.
 
 Add a line for each of these that applies:
 
 - A prep piece for this task is done: "Start from `<file>`, which a prep session wrote for this task."
+- A task it depends on waits only for my check: "Tyy is pushed and waits for my check. Build on it as pushed. If my check finds a problem, its fix goes first, after you push."
 - A running or waiting session holds files near this task's: "`<session>` holds `<files>`. Don't edit them."
 - The task packages the build: "I closed the editor."
 - The task had a `Waiting:` line: "What it waited for is ready: <what I said>."

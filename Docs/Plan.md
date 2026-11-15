@@ -30,11 +30,11 @@ First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), 
 
 When I say **"Next task"** or **"Next ask"**:
 
-1. `git pull` (if the branch is not on the remote yet, say so and go on). Read `Agents/`. Open this file and run `git lfs locks`. Take the first task in "Open" that is free (see "Claiming a task") and whose **Depends on** tasks are all checked. Then read the task's file, `Docs/tasks/Txx.md` (its **Details** link): it holds the Why, the Steps, the Done-when check and what earlier work found. Read another task's file only when yours points to it.
+1. `git pull` (if the branch is not on the remote yet, say so and go on). Read `Agents/`. Open this file and run `git lfs locks`. Take the first task in "Open" that is free (see "Claiming a task") and whose **Depends on** tasks are all checked, or wait only for my check (see "When only my check is left"). Then read the task's file, `Docs/tasks/Txx.md` (its **Details** link): it holds the Why, the Steps, the Done-when check and what earlier work found. Read another task's file only when yours points to it.
 2. Tell me the task and its recommended model and effort. If this session runs a different model, say so and ask whether to go on.
 3. Check its Needs. If something is missing (for example, Unreal MCP is not connected), tell me what to do and stop.
 4. Claim the task (see "Claiming a task"). Write a status file, `Agents/status/task-T07.md`, and lock assets as `Agents/README.md` says.
-5. Do the work, then run the Done-when check. If the check fails, do not mark the task done: write what blocks it under the task's entry in this file (a `Blocked:` line, never only in the task's file) and tell me.
+5. Do the work, then run the Done-when check. If the check fails, do not mark the task done: write what blocks it under the task's entry in this file (a `Blocked:` line, never only in the task's file) and tell me. If the only part of the check left is mine (a playtest, my verdict, or a run that needs something from me), follow "When only my check is left" instead of step 6.
 6. Make one commit that holds the work; the task's entry in this file with its box checked, moved to the end of "Done" and cut down to its title line and its **Details** line; the task's file with the lines cut from the entry (**Model and effort**, **Depends on**, **Needs**, **Touches**) moved to the top of its "## Task" section, the line under its title changed to say the task is done, a **Result:** line at the end of "## Task", and what the task found under "## Findings" at the end of the file; the updated "Next up" line; and one line in [DevLog.md](DevLog.md) (the jam's Glass Box category needs a dev log). Message: `T07: <title>`. Then push it with `git push`. You don't need to ask. If the push is rejected, don't pull or rebase while other sessions have uncommitted work in this folder; tell me.
 7. Delete the status file. Once the commit that checks the box is pushed, release the claim. Unlock the assets the task changed too, unless another running session still has uncommitted changes in them (`git status`, `Agents/status/`). End by naming the next task with its model and effort, so I can switch before I send "Next task".
 
@@ -51,6 +51,21 @@ A claim is an LFS lock on the task's claim file. Everyone sees it at once, on ev
 - If you stop without finishing, add a `Blocked:` line under the task and commit it as `Plan: T07 blocked`. Release the claim only if someone else should take the task.
 
 Never edit the claim files. They exist only to be locked.
+
+## When only my check is left
+
+Most tasks end with my playtest, my verdict, or a run that needs something from me. The next task doesn't wait for it:
+
+1. **Push the work first.** When the work is built and the Done-when check passes except for the part only I can do, commit and push now. The commit holds the work, its `Graphs/` files, the task's file with what it found so far, a `Waiting:` line under the task's entry in this file (it ends `Left: <what I must do>`), the "Next up" line and one line in [DevLog.md](DevLog.md). Message: `Txx: <title> (waits for <what>)`. The box stays unchecked.
+2. **Free what you hold.** Unlock the assets the task changed, keep the claim, and set the `Editor:` line in your status file to `not using`. Keep the status file: it says what you wait for.
+3. **Playtest from a copy.** If I must play, make a playtest copy at your commit, and give me the game-window command for the copy's `.uproject`, not the repo folder's:
+   - `git worktree add --detach "<repo folder>-playtest/Txx" <your commit>`
+   - The copy holds the committed work and nothing else, so the next task can change the same assets in the repo folder while I play. Never change anything in the copy.
+   - It has no `Local/` folder, so every switch is off. If the playtest needs a switch, write `Local/switches.json` in the copy. Never copy the key file there, so key mode doesn't work in a copy. A key-mode playtest runs in the repo folder, as before, and no session saves the assets under test until I say I'm done.
+   - The game's log is in the copy's `Saved/Logs/`. The first launch from a new copy may take a few minutes while it builds its caches.
+4. **The next task can start.** A task may start when each task in its **Depends on** line is checked, or has its work pushed with a `Waiting:` line that leaves only my check. It builds on that work as pushed.
+5. **If my check passes,** make the closing commit as step 6 of "How to run a task" says: check the box, remove the `Waiting:` line, move the entry to "Done", and add the Result and the findings. It needs a DevLog line only if the check changed something. Message: `Txx: <title> (checked)`. Push it, release the claim, delete the status file, and remove the copy with `git worktree remove "<repo folder>-playtest/Txx"`.
+6. **If my check finds a problem,** the fix goes first in the editor lane, but only once no running session holds the task's assets (`git lfs locks`, `Agents/status/`). Until then, tell me, and wait. When they are free, lock them again, fix the problem, push with the `Waiting:` line kept, and give me a new copy at the new commit. That copy also holds the work of any task that started after yours, so one show checks both. Tell me what the fix changed, so that later tasks that built on your work can check it.
 
 ## Changing the plan
 
@@ -107,8 +122,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - A worktree has no `Local/` folder, and nothing gets copied into it, the key file least of all. Run `Tools/check_prompts.py` there with `--offline`, `--free` or `--relay`. A run that calls the providers with direct keys waits until after the merge, in the repo folder.
   - When the work is committed, merge `noHumansOnSet` into your branch and fix any conflicts there. Then merge your branch into the repo folder with `git -C <repo folder> merge --no-ff <branch>`, and push. If that merge stops because it would overwrite uncommitted changes in the repo folder, leave it and tell me.
 - **New systems get their own Blueprint.** Put new logic in a new Blueprint or component, or in the actor it belongs to (such as `BP_Robot`), and have `BP_Show` call it from one node. Scripts that wrote `BP_Show` graphs took about 43 s each, and every editor task so far has needed the `BP_Show` lock.
-- **Playtests run in a game window, not PIE.** When a task needs me to play, it saves every asset it changed, checks that the saved game runs (a free autoplay show reaches `SHOW END`), sets `autoplay` to false in `Local/switches.json`, and gives me the game-window command from `CLAUDE.md`. The game window plays what is saved on disk, so the editor stays free and the next task can start while I play. Until I say I'm done, no session changes `Local/switches.json`, because the game window reads it too. Its log is a second file in `Saved/Logs/`. T27 was the first task to use it; its findings in [Docs/tasks/T27.md](tasks/T27.md) have the Mac command, the Mac log paths and how to screenshot a game window.
-- **Each task leaves the game runnable.** One task = one session = one commit, about an hour of agent work at most.
+- **Playtests run in a game window, not PIE.** When a task needs me to play, it saves every asset it changed, checks that the saved game runs (a free autoplay show reaches `SHOW END`), sets `autoplay` to false in `Local/switches.json`, pushes its work, and gives me the game-window command from `CLAUDE.md` for a playtest copy at that commit (see "When only my check is left"). The copy plays only the committed work, so the editor stays free and the next task can start, even on the same assets, while I play. A key-mode playtest runs in the repo folder instead, because the key file never goes in a copy. Until I say I'm done with it, no session changes `Local/switches.json` or saves the assets under test. Its log is a second file in `Saved/Logs/`. T27 was the first task to use it; its findings in [Docs/tasks/T27.md](tasks/T27.md) have the Mac command, the Mac log paths and how to screenshot a game window.
+- **Each task leaves the game runnable.** One task = one session = one commit (two when it waits for my check), about an hour of agent work at most.
 
 ## Tasks
 
