@@ -1,0 +1,42 @@
+[
+  {
+    "time": "2026-11-15 07:44 UTC",
+    "generation": "1f1e0c85-92cd-6f30-91ea-ccf5e954748d",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A tall, floppy pointed wizard hat with a wide brim and a bent tip, shown alone with nothing under it, sized as a hat for a small capsule-shaped robot, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1255417941,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 07:47 UTC",
+    "generation": "1f1e0c8b-36b4-69f0-bf14-5e48887c968f",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A tall, floppy pointed wizard hat with a wide brim and a bent tip, an empty hat resting flat on its brim on the floor. No head, no face, no ball and nothing under it, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 33608125,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "time": "2026-11-15 07:44 UTC",
+    "generation": "1f1e0c85-1405-6e50-91c3-186c00732b26",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A short, rounded bob-cut wig with a straight fringe, chunky sculpted hair strands, shown alone with nothing under it, sized as a hat for a small capsule-shaped robot, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 891488729,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 07:46 UTC",
+    "generation": "1f1e0c8a-ef6f-6fe0-9e52-e786b1cf4657",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "An empty bob-cut wig on its own, like a hair helmet: a rounded hair cap with a straight fringe and chunky sculpted strands, hollow inside, with an open empty gap at the front where a face would go. No head, no face, no mannequin and nothing inside it, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 900948446,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

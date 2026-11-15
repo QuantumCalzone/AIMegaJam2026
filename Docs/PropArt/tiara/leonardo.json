@@ -1,0 +1,42 @@
+[
+  {
+    "time": "2026-11-15 07:44 UTC",
+    "generation": "1f1e0c85-c786-60b0-92b9-f0168e869f05",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A small tiara with rounded points and three round gems, shown alone with nothing under it, sized as a hat for a small capsule-shaped robot, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 719211070,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 07:47 UTC",
+    "generation": "1f1e0c8b-66e7-67d0-a4a0-dc00050b4aa7",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A small tiara on its own, an open ring band with rounded points and three round gems, lying on the floor. No head, no face, no ball and nothing inside the ring, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1141401918,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

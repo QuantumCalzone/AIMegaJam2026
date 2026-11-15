@@ -1,0 +1,62 @@
+[
+  {
+    "time": "2026-11-15 07:44 UTC",
+    "generation": "1f1e0c84-d166-63b0-8678-4d85cafc4d69",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A pair of chunky dark sunglasses with thick rounded frames and big lenses, shown alone with nothing under it, sized as a hat for a small capsule-shaped robot, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 128187153,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 07:46 UTC",
+    "generation": "1f1e0c8a-ef21-6de0-b9a4-e75b5988792b",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A pair of chunky dark sunglasses with thick rounded frames, big lenses and both arms unfolded, standing on their own on the floor. No head, no face and nothing behind them, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 2036364306,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  },
+  {
+    "time": "2026-11-15 07:47 UTC",
+    "generation": "1f1e0c8d-0036-6340-90ef-a61b9597e451",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A product photo of a single pair of chunky dark sunglasses with thick rounded frames, big round lenses and both arms open, lying on a table. Only the glasses: no head, no face, no character, no body, no hands, no legs, all in one neutral mid-gray clay color. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "blood, gore, text, letters, numbers, logo, watermark, people, hands, multiple objects, cropped, cut off, busy background, strong shadows, photorealistic, glossy plastic"
+    },
+    "api_credit_cost": null,
+    "seed": 1254443016,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]
