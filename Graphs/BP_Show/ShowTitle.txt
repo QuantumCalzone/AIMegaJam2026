@@ -1,0 +1,13 @@
+(fn ShowTitle ()
+  (CallFunction|LoadSwitches)
+  (bind _rl (Class|BPCLLMClient|IsRelaunch :self (Variables|Default|GetLLMClient)))
+  (if (or (Variables|Default|GetAutoplay) _rl)
+    (if _rl
+      (Development|PrintString "NHOS: TITLE skipped relaunch" false))
+    (CallFunction|SetupShow)
+    (else
+      (bind _returnvalue (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Title.WBP_Title_C" (Game|GetPlayerController 0)))
+      (Variables|Default|SetTitleScreen _returnvalue)
+      (UserInterface|Viewport|AddtoViewport :self _returnvalue :ZOrder 20)
+      (Class|WBPStage|SetPhase :self (Variables|Default|GetStage) :Phase "NO HUMANS ON SET")
+      (Development|PrintString "NHOS: TITLE shown" false))))

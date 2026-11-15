@@ -4,4 +4,5 @@
   (if (Utilities|String|IsEmpty (V TmpStr2))
     (return))
   (set KeyStr (Utilities|String|Trim Key))
-  (Json|SetField (V KeyObj) (V TmpStr2) (V KeyStr)))
+  (Json|SetField (V KeyObj) (V TmpStr2) (V KeyStr))
+  (print (cat "NHOS: KEY set " Prov " chars=" (str (Utilities|String|Len (V KeyStr))))))

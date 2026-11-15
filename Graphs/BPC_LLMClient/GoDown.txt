@@ -1,0 +1,6 @@
+(fn GoDown (Msg)
+  (if (V Down)
+    (return))
+  (set Down true)
+  (print (cat "NHOS: SHOW UNAVAILABLE relay " Msg))
+  (CallFunction|ShowUnavailable :Msg Msg))

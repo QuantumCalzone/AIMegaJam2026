@@ -1,0 +1,33 @@
+(event UserInterface|EventPreConstruct (IsDesignTime))
+
+(event UserInterface|EventConstruct
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _cl (Class|BPShow|GetLLMClient :self _show))
+  (bind _m (Class|BPCLLMClient|DownText :self _cl))
+  (Widget|SetText(Text) :self (Variables|WBP_Unavailable|GetReason) :InText (Utilities|Text|ToText(String) _m))
+  (print "NHOS: UNAVAILABLE construct"))
+
+(event UserInterface|EventTick (MyGeometry InDeltaTime))
+
+(event OnClicked(KeysButton)
+  (print "NHOS: UNAVAILABLE click keys")
+  (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Keys.WBP_Keys_C" (Game|GetPlayerController 0)))
+  (UserInterface|Viewport|AddtoViewport :self _w :ZOrder 50))
+
+(event OnClicked(FreeButton)
+  (print "NHOS: UNAVAILABLE click free")
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _cl (Class|BPShow|GetLLMClient :self _show))
+  (bind _re (Class|BPCLLMClient|Relaunch :self _cl :NewMode "free"))
+  (if (not _re)
+    (bind (_ok _err) (Class|BPCLLMClient|SetMode :self _cl :InMode "free"))
+    (Widget|RemovefromParent :self self)
+    (Class|BPShow|StartfromTitle :self _show)))
+
+(event OnClicked(TitleButton)
+  (print "NHOS: UNAVAILABLE click title")
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _cl (Class|BPShow|GetLLMClient :self _show))
+  (bind _re (Class|BPCLLMClient|Relaunch :self _cl :NewMode ""))
+  (if (not _re)
+    (Widget|RemovefromParent :self self)))

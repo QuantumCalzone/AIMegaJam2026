@@ -13,7 +13,8 @@
     (bind _c (Class|BPCLLMClient|CanSeat :self (V LLMClient) :Prov (V DrawProv)))
     (if _c
       (add (V PersonaArr) _p)
-      (add (V DrawList) (V DrawProv))))
+      (else
+        (add (V DrawList) (V DrawProv)))))
   (print (cat "NHOS: DRAW ai=" (str (len (V PersonaArr))) " providers=" (Utilities|String|JoinStringArray (V DrawList) ",")))
   (if (< (len (V PersonaArr)) 3)
     (CallFunction|SetUnavailable :Reason "fewer than 3 AI players can take a seat.")

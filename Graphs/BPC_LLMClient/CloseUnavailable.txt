@@ -1,0 +1,5 @@
+(fn CloseUnavailable ()
+  (Utilities|IsValid (V UnavailW)
+    (:"Is Valid"
+      (Widget|RemovefromParent :self (V UnavailW)))
+    (:"Is Not Valid")))

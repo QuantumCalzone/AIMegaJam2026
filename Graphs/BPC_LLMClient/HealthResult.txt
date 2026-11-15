@@ -1,0 +1,6 @@
+(fn HealthResult ()
+  (if (streq (V Health) "wait")
+    (return false false ""))
+  (if (streq (V Health) "ok")
+    (return true true ""))
+  (return true false (V HealthMsg)))

@@ -1,4 +1,5 @@
 (fn StartShowSession ()
+  (set ShowOn true)
   (set Session (Guid|ToString(Guid) (Guid|NewGuid)))
   (if (not (V Ready))
     (return false "the AI settings did not load"))

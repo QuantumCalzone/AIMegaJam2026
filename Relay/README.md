@@ -57,7 +57,7 @@ There are no keys in this folder, and none may ever go in git. Players who enter
 
 The game can't read HTTP status codes (the `HttpBlueprint` nodes don't give them), so it must branch on `error.type`. The statuses are for curl and logs.
 
-**`GET /health`** returns `{ "ok": true, "providers": ["anthropic"], "budget_left": true }`. `providers` lists the providers that can serve calls right now, so the game knows which personas can take AI seats through the relay. Use it for the pre-show check; it costs no tokens. If it doesn't answer, or `budget_left` is false, show the "AI service unavailable" screen with key entry.
+**`GET /health`** returns `{ "ok": true, "providers": ["anthropic"], "budget_left": true }`. `providers` lists the providers that can serve calls right now, so the game knows which personas can take AI seats through the relay. It costs no tokens. Since T21 the game calls it when the player clicks **Play via Relay**: if it doesn't answer, `budget_left` is false or fewer than 3 providers are listed, the game shows its "AI service unavailable" screen, which offers key entry and Test for Free. In the middle of a show, `session_limit`, `player_limit`, `budget_used_up` and `provider_unavailable` (and a relay that stops answering) bring up the same screen with `error.message`.
 
 ## Limits
 
@@ -128,13 +128,13 @@ Cloudflare builds and deploys the relay from GitHub on its own machines, so nobo
 3. Click Deploy. The create form has no branch choice, so this first build runs on `main` and fails if `main` has no `Relay/` folder yet. That is fine.
 4. **Settings > Builds > Production branch:** pick the branch the relay is on (`noHumansOnSet` now, `main` after the merge) and save. "Retry build" rebuilds the old commit, so start a new build with a push to that branch, or add a **Deploy Hook** for the branch, `curl -X POST` its URL once, and delete the hook.
 5. **Settings > Variables and secrets > Add variable:** `ANTHROPIC_API_KEY`, tick **Secret**, paste the key, "Add variable and deploy". Do the same for `OPENAI_API_KEY`, `XAI_API_KEY` and `META_API_KEY` when T16 adds those providers. Keys never go in chat, git or a command line.
-6. The address is on the Worker's page, `https://nhos-relay.<account subdomain>.workers.dev`. Put it in `Content/NHOS/Data/llm.json` (T21's game side).
+6. The address is on the Worker's page, `https://nhos-relay.<account subdomain>.workers.dev`. Put it in `relay` in `Content/NHOS/Data/llm.json`.
 
 **Every push to the production branch redeploys** (the build watch path is `*`). That is harmless, because the code only changes when `Relay/` does. The build log shows a warning that the local config differs from the dashboard (vars, compatibility date); with `keep_vars = true` the dashboard vars and secrets stay, as the limit tests showed.
 
 `wrangler.toml` has `keep_vars = true`, so vars and secrets set in the dashboard survive every deploy. `.node-version` asks the build for Node 22, which wrangler 4.162 needs.
 
-**Before you submit:** set a hard spending limit at every provider's console, and decide the daily limits for judging week.
+**Before you submit:** set a hard spending limit at every provider's console, and decide the daily limits for judging week. Both were settled on 2026-11-15 (T21): the limits are set at all four providers, and judging keeps the default limits above.
 
 **To take it down fast** (for example if the bill climbs): delete a secret in the dashboard, which turns that provider off at once, or delete the Worker. **Logs:** the Worker's **Logs** tab (observability is on).
 

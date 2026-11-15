@@ -1,0 +1,2 @@
+(fn IsRelaunch ()
+  (return (V Relaunched)))

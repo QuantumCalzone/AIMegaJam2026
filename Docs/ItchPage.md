@@ -2,7 +2,7 @@
 
 The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used by T23. It was drafted on 2026-11-14, before T19 to T22 were done. The form fields and the open questions for the submission are in [Submission.md](Submission.md).
 
-- **Markers:** **[T19]** (robots act out their actions), **[T20]** (audio), **[T21]** (the relay's limits and errors on screen), **[T22]** (the packaged build) and **[T24]** (timers, if done) mark text those tasks may change. **[YOU]** marks a blank only you can fill in. Settle every marker, then delete the markers before you paste.
+- **Markers:** **[T19]** (robots act out their actions), **[T20]** (audio), **[T22]** (the packaged build) and **[T24]** (timers, if done) mark text those tasks may change. **[YOU]** marks a blank only you can fill in. Settle every marker, then delete the markers before you paste.
 - Each AI player goes by its provider here, as in the game: OpenAI, Anthropic, SpaceXAI and Meta. If open question 8 in `Submission.md` changes "SpaceXAI", change it here too.
 - Everything between the two rules under "Page text" goes into the page's description. The sections before it are the page's settings.
 
@@ -95,8 +95,9 @@ No internet and no keys. The AIs answer with pre-written lines and vote at rando
 
 The real game, with nothing to set up. Your game talks to our relay, a small server that holds our API keys and passes each request on to the four labs. Your keys aren't needed, and the calls are on us.
 
-- A show is about 90 AI calls. To keep the bill sane, the relay has daily limits **[T21: the numbers may change for judging]**: up to 150 calls per show, 600 calls per player per day (about 6 shows), and 5,000 calls a day for all players together. The limits reset at midnight UTC.
-- If the relay is down or the day's budget is used up, the game tells you and offers the other two ways to play **[T21: until T21 is done, a failed reply just makes that robot look around]**.
+- A show is about 90 AI calls. To keep the bill sane, the relay has daily limits: up to 150 calls per show, 600 calls per player per day (about 6 shows), and 5,000 calls a day for all players together. The limits reset at midnight UTC.
+- When you click **Play via Relay**, the game first checks that the relay is up and has budget left. If it doesn't, an **AI service unavailable** screen says why and offers **Use my own API keys**, **Test for Free** or **Back to title**.
+- If the relay goes down or hits a limit in the middle of a show, the show stops and the same screen shows the relay's message. Picking another way to play starts a new show.
 - We keep the relay running while our budget lasts **[YOU: say until when; see open question 9 in `Submission.md`]**.
 
 #### Play with my own API keys
@@ -116,7 +117,7 @@ The real game, on your own accounts. Click **Play with my own API keys** and pas
 - The helper that turns your typing into stage actions, and the Director who breaks ties, run on Anthropic. Without an Anthropic key, they use the first lab you have a key for.
 - **Cost:** about $0.11 for a full show with all four labs, most of it (about $0.08) for SpaceXAI, whose model costs more per call. Set a spending limit at each lab's console to be safe.
 - **Where your keys go:** **Save and Play** writes them to `Local/llm_key.json` inside the game's folder **[T22: check the path in the packaged build]**, as plain text, so they're filled in next time. Delete that file to remove them. Don't share the game folder with your keys in it.
-- There's no Test button yet, so a wrong key shows up as a robot that only looks around **[T21: a test call per lab before the show, and a Test button on the key screen]**.
+- **Save and Play** first sends one short test call to each lab you gave a key for, and starts the show only if every key works. If one doesn't, the screen names the lab, and you can fix the key and try again. **Test keys** runs the same check without starting a show. The test costs a fraction of a cent.
 
 ### What gets sent where
 
@@ -137,7 +138,9 @@ Needs Windows 10 or 11 (64-bit) and a DirectX 12 graphics card. The game uses Un
 
 - Replies take a second or two, and each turn waits for every actor's reply.
 - The AIs are LLMs. Now and then one says something odd, repeats itself or misreads the scene. That is part of the show, mostly.
-- **[T19, T20, T21: list whatever these tasks leave undone, or delete this line.]**
+- With your own keys, if a lab fails in the middle of a show (for example, your account runs out of credit), that robot just looks around for that turn. The game doesn't stop for it.
+- A show the relay stopped can't be picked up again: picking another way to play starts a new show.
+- **[T19, T20: list whatever these tasks leave undone, or delete this line.]**
 
 ### Credits
 

@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T27 (the screen floats over the stage) is done: I played a show in a game window and the screen no longer feels blocked. Its locks are released. The first free task is T35 (Opus 5.5 · xhigh): a bill burns in the bottom-right corner for every relay call. Its widget needs no lock, but its one call in `BPC_LLMClient` waits for T21's push, because T21 holds that lock. After it comes T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows it, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time) and T34 (the in-show screen) come after T32, and T33 (the title, key entry and end screens) comes after T21. T20 (audio) is free too, and T21 (how a judge plays) is in progress, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
+**Next up:** T27 (the screen floats over the stage) is done: I played a show in a game window and the screen no longer feels blocked. Its locks are released. The first free task is T35 (Opus 5.5 · xhigh): a bill burns in the bottom-right corner for every relay call. Its widget needs no lock, and T21 has pushed and released the lock on `BPC_LLMClient` that its one call needs. T21 itself waits only for a key-mode show with my real keys. After it comes T28 (Opus 5.5 · xhigh): Scene Prep shows the whole card, the scene shows only mine. T29 follows it, then the UI/UX sweep starts with T32 (the audit, the style guide and the shared pieces). T30 (the lines play one at a time) and T34 (the in-show screen) come after T32, and T33 (the title, key entry and end screens) comes after T21. T20 (audio) is free too, and T21 (how a judge plays) is in progress, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor.
 
 ## Goal
 
@@ -169,8 +169,9 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Model and effort:** Opus 5.5, high. Error paths across the client and the screens.
   - **Depends on:** T18
   - **Needs:** a hard spending limit that I set at every provider, my OK before each relay deploy, editor + Unreal MCP running.
-  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Keys.uasset`, new `Docs/ItchPage.md`, `Relay/` only if a limit changes.
+  - **Touches:** `Content/NHOS/Core/BPC_LLMClient.uasset`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Keys.uasset`, `Content/NHOS/UI/WBP_Title.uasset`, new `Content/NHOS/UI/WBP_Unavailable.uasset` and `Content/NHOS/Core/BPC_HttpGet.uasset`, `Graphs/` files for the graphs it writes, `Docs/ItchPage.md`, `Relay/` only if a limit changes.
   - **Details:** [Docs/tasks/T21.md](tasks/T21.md)
+  - **Waiting:** built and pushed; the wrong-relay screen, key entry, the key test and the relay's budget message all pass in PIE. Not run yet: a key-mode show with real keys (about $0.11). Left: put keys for 3 or 4 labs in `Local/llm_key.json`, then have a session run the key-mode check in T21's file.
 
 - [ ] **T33 Fix the title, key entry and end screens**
   - **Model and effort:** Sonnet 5.5, medium. Well-specified UMG work from T32's table and style guide.

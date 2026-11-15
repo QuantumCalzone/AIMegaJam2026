@@ -1,0 +1,7 @@
+(fn ShowUnavailable (Msg)
+  (set DownMsg Msg)
+  (print (cat "NHOS: UNAVAILABLE shown " Msg))
+  (CallFunction|CloseUnavailable)
+  (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Unavailable.WBP_Unavailable_C" (Game|GetPlayerController 0)))
+  (set UnavailW _w)
+  (UserInterface|Viewport|AddtoViewport :self _w :ZOrder 40))

@@ -1,4 +1,7 @@
 (fn Ask (Tag Role System User)
+  (if (V Down)
+    (print (cat "NHOS: LLM " Tag " held relay down"))
+    (return))
   (set CurProv "")
   (bind _hr (Json|HasField (V Roles) Role))
   (if (not (V Ready))
