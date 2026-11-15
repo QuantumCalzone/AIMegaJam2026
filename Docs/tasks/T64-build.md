@@ -24,11 +24,13 @@ Each place is named by its text first. Find each line by its text before you cha
 - **`BP_Show`** (part 5): **one call at each scene turn**, `WBP_Stage.BuilderTurn(HumanSeat)` in `StartTurn`, just before its header cue; one call in `HandleSend`'s scene branch, `WBP_Stage.TakeAction()`, whose three outputs replace T63's `none`, `""`, `""` on `SendHumanTurn`; and two text literals in `ComputePrompt` (step 9's hints).
 - **`UIStyle`** (part 1) gets a mono font: `F_Mono`, a copy of the engine's Droid Sans Mono (Apache 2.0, ships with the engine, nothing to download), as `UIFont("Mono")` at `UISize("Mono")` 18. `Docs/Assets.md` gets its row.
 - **The builder opens when the turn's header shows on screen** (the `"phase"` cue runs `SetPhase`), not when the logic reaches `StartTurn`, and closes at the next header or Scene Prep. So it shows only in my scene turns (step 8), never over the last turn's lines.
-- **One question for my person** (below): how the lower panel makes room for the builder.
+- **One question for my person** (below), answered: while the builder shows, the lower panel widens to 1000 and the chat shortens to 160.
 
 ## Questions for my person
 
 The recommended answer is first.
+
+**Answer (my person, 2026-11-15, to the prep session):** 1: **widen to 1000, chat 160**, as recommended. Don't ask again; copy this answer under "Findings" in `T64.md`. The sheet is written for it.
 
 1. **How the lower panel makes room for the builder.** The builder adds about 220 px at 1080p (the preview line, a row of action buttons, and up to three rows of chips: Look offers 4 actors, 4 props and 7 places). The lower panel is 640 wide, and its top already sits about 50 px under the robots' feet (T27). If it grows upward, the leftmost robot ends up behind it, which the doc forbids ("Nothing covers a robot, its name tag or a thrown prop").
    - **While the builder shows, the lower panel widens from 640 to 1000 and the chat shortens from 380 to 160 (Recommended).** The seven actions fit one row at the normal 48 px button size, most chip lists fit one row, and the panel's top doesn't move. The chat keeps its newest lines at the bottom (about three entries; at 1000 wide, fewer of them wrap). The panel goes back to 640 × 380 in Free Talk, the vote and the reactions. Nothing in `UIStyle` changes but the mono font. T34 can make the wider panel permanent when it polishes the screen.
