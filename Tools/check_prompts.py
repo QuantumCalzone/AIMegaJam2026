@@ -75,6 +75,10 @@ Word cap (T59): every line is capped at MAX_WORDS (15) words. The file check
 fails a free_mode.json line (placeholders filled with their longest value) or an
 autoplay.json line that runs over it.
 
+Scene clock (T53): a show has one scene fewer than the cast, so every sample
+state says scenes = 4 (SAMPLE_SCENES). --log also fails a show whose SETUP
+lines don't say scenes = its seat count - 1.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -535,6 +539,7 @@ HUMAN = "human"
 SAMPLE_CARD = "star_crossed"
 SAMPLE_NOTE = "hold_prop"
 SAMPLE_CAST = ["visionary", "worrier", HUMAN, "overclocker", "copycat"]
+SAMPLE_SCENES = len(SAMPLE_CAST) - 1  # T53: a show has one scene fewer than the cast (4 with 5 actors)
 PERSONAS = [p for p in SAMPLE_CAST if p != HUMAN]
 # Seats of the card: 0 Romeo, 1 Juliet, 2 the Nurse, 3 Tybalt, 4 Friar Laurence.
 SAMPLE_SEATS = {HUMAN: 0, "visionary": 1, "worrier": 2, "overclocker": 3, "copycat": 4}
@@ -701,7 +706,7 @@ class Show:
 
     def actor_state(self, pid, ask, now, log, cut=None, game_messages=None, options=None):
         return {
-            "show": {"scene": 1, "scenes": 3, "now": now},
+            "show": {"scene": 1, "scenes": SAMPLE_SCENES, "now": now},
             "set": {"name": self.set["name"], "places": self.set["places"], "props": self.set["props"]},
             "scene_card": {"title": self.card["title"], "premise": self.card["premise"],
                            "note_category": self.note["category"]},
@@ -797,7 +802,7 @@ class Show:
                 if pid == HUMAN:
                     continue
                 st = {
-                    "show": {"scene": scene, "scenes": 3, "now": "the scene, turn 1 of 3"},
+                    "show": {"scene": scene, "scenes": SAMPLE_SCENES, "now": "the scene, turn 1 of 3"},
                     "set": {"name": self.set["name"], "places": self.set["places"], "props": self.set["props"]},
                     "scene_card": {"title": card["title"], "premise": card["premise"],
                                    "note_category": note["category"]},
@@ -832,7 +837,7 @@ class Show:
                  (c, a, self.vote_reason(self.name(a))), (d, b, self.vote_reason(self.name(b))),
                  (e, c, self.vote_reason(self.name(c)))]
         return {
-            "show": {"scene": 1, "scenes": 3, "now": "the cut, tiebreak"},
+            "show": {"scene": 1, "scenes": SAMPLE_SCENES, "now": "the cut, tiebreak"},
             "cast": self.cast(),
             "log": self.log(turns=3, talk=2, votes=votes),
             "game_messages": [f"The vote is tied 2 to 2 between {self.name(a)} and {self.name(b)}."],
@@ -1124,16 +1129,20 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
         shows = shows[-1:]
 
     res = provider_res(personas)
-    n = bad = 0
+    n = bad = clock_bad = 0
     for i, show in enumerate(shows, 1):
         human = None
         cards = []
+        seats = total = None
         for kind, rest in show:
             if kind == "SEATS":
                 # Since T26: "NHOS: SEATS human=<Player number> seats=5 cast=<ids in seat order>".
                 m = re.search(r"human=(\d+)", rest)
                 if m:
                     human = f"Player {m.group(1)}"
+                m = re.search(r"seats=(\d+)", rest)
+                if m:
+                    seats = int(m.group(1))
                 continue
             if kind == "SETUP":
                 # Older logs name the human's persona here (human=<persona id>); since T26 it says human=human.
@@ -1143,6 +1152,10 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 m = re.search(r"scene=(\S+)", rest)
                 if m:
                     cards.append(m.group(1))
+                # Since T53: "... scenes=<n>", the show's scene count (the seat count - 1).
+                m = re.search(r"\bscenes=(\d+)", rest)
+                if m:
+                    total = int(m.group(1))
                 continue
             if kind == "LOG":
                 parts = rest.split(" | ", 3)
@@ -1174,9 +1187,12 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 print(f"[FAIL] show {i} | {kind} | {who}: {text}")
                 for p in problems:
                     print("    FAIL:", p if p.startswith(("cut off", "a word", "a real")) else "hard to read: " + p)
-        print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}.")
+        if seats and total and total != seats - 1:
+            clock_bad += 1
+            print(f"[FAIL] show {i} | SETUP | scenes={total}, but {seats} seats means {seats - 1} scenes")
+        print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad else 0
+    return 1 if bad or clock_bad else 0
 
 
 # ---------------------------------------------------------------- main

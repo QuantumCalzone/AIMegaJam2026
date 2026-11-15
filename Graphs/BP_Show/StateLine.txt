@@ -1,0 +1,5 @@
+; T53: a check line with the "show" object an AI reads, once per AI on turn 1 of each scene.
+; ActorState calls it before it returns, with the show object as a JSON string. Never sent to an AI.
+(fn StateLine (Seat AskKey Show)
+  (if (and (streq AskKey "scene_turn") (== (V TurnNum) 1))
+    (print (cat "NHOS: STATE " (get (V SeatName) Seat) " show=" Show))))

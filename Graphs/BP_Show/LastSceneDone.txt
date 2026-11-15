@@ -1,0 +1,4 @@
+; T53: true when the scene that just ended was the show's last (SceneNum >= SceneCount).
+; EndReactions calls it after the reactions; T52 calls it after a tie, which cuts nobody.
+(fn LastSceneDone ()
+  (return (>= (V SceneNum) (V SceneCount))))

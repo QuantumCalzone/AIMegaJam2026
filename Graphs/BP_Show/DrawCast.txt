@@ -15,6 +15,20 @@
       (add (V PersonaArr) _p)
       (else
         (add (V DrawList) (V DrawProv)))))
+  ; T53: the ai_seats switch in Local/switches.json seats fewer AIs (3 or more), dropped at random,
+  ; for a 4-actor test show. 0 or missing seats every AI that can sit. It is read here, at each show's draw.
+  (set AiSeats 0)
+  (bind (_sw _swok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectDirectory) "Local/switches.json"))))
+  (if _swok
+    (bind _has (Json|HasField _sw "ai_seats"))
+    (if _has
+      (bind _as (Json|GetField _sw "ai_seats"))
+      (set AiSeats _as)))
+  ; DropCount is a variable, because a pure count would shrink as the loop removes.
+  (if (and (>= (V AiSeats) 3) (< (V AiSeats) (len (V PersonaArr))))
+    (set DropCount (- (len (V PersonaArr)) (V AiSeats)))
+    (for _d (range (V DropCount))
+      (Utilities|Array|RemoveIndex (V PersonaArr) (Math|Random|RandomIntegerInRange 0 (- (len (V PersonaArr)) 1)))))
   (print (cat "NHOS: DRAW ai=" (str (len (V PersonaArr))) " providers=" (Utilities|String|JoinStringArray (V DrawList) ",")))
   (if (< (len (V PersonaArr)) 3)
     (CallFunction|SetUnavailable :Reason "fewer than 3 AI players can take a seat.")

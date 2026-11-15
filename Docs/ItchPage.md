@@ -55,7 +55,7 @@ We built it the same way. A small crew of Claude agents did the work, directed b
 2. **The Scene.** Three turns. Every actor picks what to do and say, and then all the turns play out at once **[T19: and the robots act them out on stage]**.
 3. **Free Talk.** Two rounds around the table, one line each, in a new order every round. This is where the accusations fly. You can pass.
 4. **The Cut.** Everyone votes for who they think is human and gives a one-line reason. The most votes is cut, and the stamp reveals the truth. Then each actor reacts, and how you react is evidence too.
-5. Repeat until two actors are left. A full cast plays three scenes.
+5. Repeat until two actors are left or the last scene ends. A cast of five has four scenes, a cast of four has three.
 
 If you're cut, you lose, and the AIs gloat. Either way, the end screen shows how each AI voted and why.
 
@@ -113,7 +113,7 @@ The real game, on your own accounts. Click **Play with my own API keys** and pas
   | SpaceXAI | `grok-4.3` | console.x.ai |
   | Meta | `muse-ember-1.0` | dev.meta.ai |
 
-- With all 4 keys, the cast is four AIs and you, over three scenes. With 3 keys, the lab without a key sits out, and the show has three AIs and you, over two scenes. With fewer than 3, the game names the missing keys. Every robot's label is always true: no AI ever runs on another lab's key.
+- With all 4 keys, the cast is four AIs and you, over up to four scenes. With 3 keys, the lab without a key sits out, and the show has three AIs and you, over up to three scenes. With fewer than 3, the game names the missing keys. Every robot's label is always true: no AI ever runs on another lab's key.
 - The helper that turns your typing into stage actions, and the Director who breaks ties, run on Anthropic. Without an Anthropic key, they use the first lab you have a key for.
 - **Cost:** about $0.11 for a full show with all four labs, most of it (about $0.08) for SpaceXAI, whose model costs more per call. Set a spending limit at each lab's console to be safe.
 - **Where your keys go:** **Save and Play** writes them to `Local/llm_key.json` inside the game's folder **[T22: check the path in the packaged build]**, as plain text, so they're filled in next time. Delete that file to remove them. Don't share the game folder with your keys in it.

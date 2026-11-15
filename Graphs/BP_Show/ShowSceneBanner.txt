@@ -1,0 +1,7 @@
+; T53: the banner that opens each Scene Prep (ShowPrep calls it where it called ShowBanner).
+; The clapperboard shows the count, so the banner names the scene, or says it is the last one.
+(fn ShowSceneBanner ()
+  (bind _t (select (>= (V SceneNum) (V SceneCount))
+             (cat "Last scene: " (V CardTitle))
+             (cat "Scene " (str (V SceneNum)) ": " (V CardTitle))))
+  (Class|WBPStage|ShowBanner :self (Variables|Default|GetStage) :Line _t))

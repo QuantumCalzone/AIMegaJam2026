@@ -1,0 +1,10 @@
+; T53: the clapperboard under the header, "SCENE n / total" from Scene Prep to the end of the show.
+; BP_Show.ShowPrep calls it at each Scene Prep with SceneNum and SceneCount. A Scene under 1 hides it (RestartShow).
+(fn SetClapper (Scene Total)
+  (if (< Scene 1)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetClapperBox) :InVisibility "Collapsed")
+    (return))
+  (CallFunction|StyleClapper)
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetClapText) :Text (Utilities|Text|ToText(String) (cat "SCENE " (str Scene) " / " (str Total))))
+  (Widget|SetVisibility :self (Variables|WBP_Stage|GetClapperBox) :InVisibility "HitTestInvisible")
+  (print (cat "NHOS: CLAPPER scene=" (str Scene) " total=" (str Total))))
