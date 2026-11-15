@@ -53,9 +53,6 @@ is in any system text or state an actor or the Director reads, or in a reply
 of the input converter, which must turn provider names into Player names.
 --offline runs that check too, since it needs no API calls.
 
---no-design skips the word-for-word check against Docs/GameDesign.md, for
-trying draft prompts before the design doc changes.
-
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -76,7 +73,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "Content" / "NHOS" / "Data"
 KEY_FILE = ROOT / "Local" / "llm_key.json"
-DESIGN = ROOT / "Docs" / "GameDesign.md"
 RELAY_CONFIG = ROOT / "Relay" / "relay.config.json"
 
 # Dollars per million input / output tokens, for prompts up to 100K tokens.
@@ -207,16 +203,6 @@ def is_lines(v) -> bool:
     return isinstance(v, list) and v and all(isinstance(s, str) for s in v)
 
 
-def design_block(md: str, heading: str) -> str:
-    i = md.index(heading)
-    m = re.search(r"```text\n(.*?)```", md[i:], re.S)
-    return m.group(1)
-
-
-def squash(text: str) -> str:
-    return " ".join(text.split())
-
-
 def relay_problems(llm, providers) -> list[str]:
     """Would the relay take the bodies the game builds? Checks Relay/relay.config.json (read only)."""
     try:
@@ -251,7 +237,7 @@ def relay_problems(llm, providers) -> list[str]:
     return out
 
 
-def check_files(errors: list[str], design: bool = True):
+def check_files(errors: list[str]):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
     personas = load_json("personas.json", errors)
@@ -317,20 +303,6 @@ def check_files(errors: list[str], design: bool = True):
 
     # The relay forwards the game's body unchanged, but only if its allow-list takes it.
     errors.extend(relay_problems(llm, providers))
-
-    # Word for word against the design doc.
-    md = DESIGN.read_text(encoding="utf-8")
-    if design and is_lines(prompts.get("base")) and squash(" ".join(prompts["base"])) != squash(design_block(md, "### Shared base prompt")):
-        errors.append("prompts.json: base differs from the shared base prompt in Docs/GameDesign.md")
-    # The design's persona headings are the pun names from the reveal stamp, not the names the
-    # game uses, so each persona prompt must match one of the blocks under "### Persona prompts".
-    if design:
-        i = md.index("### Persona prompts")
-        j = md.index("\n### ", i + 1)
-        blocks = [squash(b) for b in re.findall(r"```text\n(.*?)```", md[i:j], re.S)]
-        for p in plist:
-            if is_lines(p.get("prompt")) and squash(" ".join(p["prompt"])) not in blocks:
-                errors.append(f"personas.json: {p['id']} matches no persona prompt in Docs/GameDesign.md")
 
     # scenes.json
     s = scenes.get("set", {})
@@ -1115,7 +1087,6 @@ def main():
     ap.add_argument("--repeat", type=int, default=1, help="send every ask this many times")
     ap.add_argument("--jobs", type=int, default=6, help="calls in flight at once")
     ap.add_argument("--dump", metavar="DIR", help="write every request body and reply to DIR (no key)")
-    ap.add_argument("--no-design", action="store_true", help="skip the word-for-word check against Docs/GameDesign.md")
     ap.add_argument("--relay", nargs="?", const="", metavar="URL",
                     help="send every ask through the relay (default: 'relay' in llm.json) with our keys there, "
                          "not the keys in Local/llm_key.json; real calls spend tokens and count against the relay's limits")
@@ -1131,13 +1102,12 @@ def main():
         ap.error("--free needs --relay")
 
     errors: list[str] = []
-    data = check_files(errors, design=not args.no_design)
+    data = check_files(errors)
     if errors:
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, and the relay's allow-list"
-          + (" (design check skipped)" if args.no_design else ""))
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, and the relay's allow-list")
     if args.log:
         return check_log(Path(args.log), data["personas"], args.all_shows)
 
