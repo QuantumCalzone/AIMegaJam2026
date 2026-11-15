@@ -1,0 +1,6 @@
+; WBP_EndCard.SetRival(Rival), called by WBP_EndScreen.SetRival on a win (T60): the AI's rival, by the name the
+; player sees, under its reasons. The two rows stay collapsed on a loss.
+(fn SetRival (Rival)
+  (Widget|SetText(Text) :self (Variables|WBP_EndCard|GetRivalText) :InText (Utilities|Text|ToText(String) Rival))
+  (Widget|SetVisibility :self (Variables|WBP_EndCard|GetRivalTitle) :InVisibility "SelfHitTestInvisible")
+  (Widget|SetVisibility :self (Variables|WBP_EndCard|GetRivalText) :InVisibility "SelfHitTestInvisible"))

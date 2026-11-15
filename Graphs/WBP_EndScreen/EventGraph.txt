@@ -1,6 +1,7 @@
 ; WBP_EndScreen.EventGraph (T33). The result on its plate, one line under it, then one paper review card per AI,
 ; Play Again as the one primary button and Quit as secondary. Every color, size and font comes from UIStyle.
 ; While the end screen is up, the stage's own widgets are hidden (they would show through the ink); Play Again brings them back.
+; T60: the top reason on a loss is one large gold line under the cards.
 (event UserInterface|EventPreConstruct (IsDesignTime)
   (Class|Border|SetBrushColor :self (Variables|WBP_EndScreen|GetBackground) :BrushColor (Class|UIStyle|UIColor :Role "Ink"))
   (Class|Text|SetFont :self (Variables|WBP_EndScreen|GetTitleText) :Font (Class|UIStyle|UIFont :Role "Result"))
@@ -8,6 +9,8 @@
   (Class|Text|SetColorandOpacity :self (Variables|WBP_EndScreen|GetSubText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
   (Class|Text|SetFont :self (Variables|WBP_EndScreen|GetAisTitle) :Font (Class|UIStyle|UIFont :Role "CardTitle"))
   (Class|Text|SetColorandOpacity :self (Variables|WBP_EndScreen|GetAisTitle) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (Class|Text|SetFont :self (Variables|WBP_EndScreen|GetReasonText) :Font (Class|UIStyle|UIFont :Role "Header"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_EndScreen|GetReasonText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Gold")))
   (Class|UIStyle|StyleButton :Button (Variables|WBP_EndScreen|GetRestartButton) :Label (Variables|WBP_EndScreen|GetRestartLabel) :Kind "Primary")
   (Class|UIStyle|StyleButton :Button (Variables|WBP_EndScreen|GetQuitButton) :Label (Variables|WBP_EndScreen|GetQuitLabel) :Kind "Secondary")
   (CallFunction|ShowRing :Ring (Variables|WBP_EndScreen|GetRestartRing) :On false)

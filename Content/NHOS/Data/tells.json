@@ -1,0 +1,17 @@
+{
+	"_readme": [
+		"The tells (T60): the kinds of evidence a vote can name. Every vote reply fills 'tell' with one of these ids: llm.json reply_schema 'tell', whose enum is \"\" and then these ids, in this order. prompts.json 'game' explains each one to the AIs in its '\"tell\"' line under How to reply.",
+		"When the human is cut, the lose screen counts the tells of the votes that cut them and shows the top one's 'line' (BP_Show.TopReason). A tie for the top goes to the tell listed first here, so 'other' is last. 'means' is for people reading this file; no AI reads this file.",
+		"Each line follows the game's legibility rules: one plain sentence, 15 words at most, no brackets, emoji or all-caps words. Tools/check_prompts.py checks this file against llm.json, prompts.json and free_mode.json."
+	],
+	"tells": [
+		{"id": "late_copy", "means": "copied the others a turn late", "line": "They caught you copying late."},
+		{"id": "note", "means": "only matched the note's category, or missed the note", "line": "They caught you guessing at the director's note."},
+		{"id": "silence", "means": "passed or went quiet", "line": "They caught you going quiet."},
+		{"id": "polish", "means": "lines too smooth or polished for a bot", "line": "They caught you sounding too polished."},
+		{"id": "human_slip", "means": "hunger, sleep, feelings or family as their own, or a dodged question", "line": "They caught you sounding a little too human."},
+		{"id": "no_persona", "means": "no clear persona of their own, or a flat copy of another's", "line": "They caught you without a persona of your own."},
+		{"id": "role", "means": "didn't play their role or chase their want", "line": "They caught you drifting out of your role."},
+		{"id": "other", "means": "anything else", "line": "They caught you, each for a reason of their own."}
+	]
+}
