@@ -10,11 +10,11 @@ A pane beside the chat that shows the tasks in [Docs/Plan.md](../../Docs/Plan.md
 
 - **Done:** one collapsed line. Click it to see the tasks, crossed out.
 - **In progress:** an unchecked task with a `Waiting:` or `Blocked:` line in the plan, a status file in `Agents/status/`, a claim lock on `Docs/claims/Txx`, or a session running in the desktop app. Each shows why (waits on you, blocked, running, claimed), the line it waits on, and the Code sessions whose title or name has its number (`T18: ...`, `t18-...`). Click a task or a session to open that session.
-- **Not started:** each with "ready" or the unfinished tasks it waits for.
+- **Not started:** a tree. Each task sits under the not-started task it waits on that comes last in the plan, since that one finishes last when the tasks run in the plan's order. So the top level holds the tasks that can start now (`○ ... · ready`). A task that waits only on tasks in progress stays at the top level as `◌ ... · after T52`. A nested task (`└`) names any other unfinished tasks it waits on (`· also after T57`).
 
-Tasks keep the plan's order, which is its priority order. A task added later shows where it sits in the plan, not where its number would put it.
+Tasks keep the plan's order, which is its priority order. A task added later shows where it sits in the plan, not where its number would put it. The one exception is a nested task under Not started: it shows right under the task it waits on, so it can sit above a task that comes before it in the plan. It can't start before its parent is done anyway.
 
-The pane finds a task only under `## Tasks` in the plan, as a line that starts `- [ ] **Txx Title**` or `- [x] **Txx Title**`. "Changing the plan" in the plan describes that form. A task's status file is `Agents/status/task-Txx.md`; the older name, `mvp-Txx.md`, still counts.
+The pane finds a task only under `## Tasks` in the plan, as a line that starts `- [ ] **Txx Title**` or `- [x] **Txx Title**`. It reads what the task waits on from the task's `**Depends on:**` line: every `Txx` there, except one written as `Txx if it is done`. "Changing the plan" in the plan describes that form. A task's status file is `Agents/status/task-Txx.md`; the older name, `mvp-Txx.md`, still counts.
 
 It reads everything again every 20 seconds, and the claim locks every 2 minutes, because `git lfs locks` asks GitHub. `/task-list` opens the pane again after you close it.
 
