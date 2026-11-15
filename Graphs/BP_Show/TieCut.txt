@@ -1,5 +1,5 @@
-; T52: a tie for the most votes cuts nobody (the Rules tab, The Cut, step 3). Tally calls it in place of
-; the Director's tiebreak, with TiedSeats, TiedNames and MaxVotes filled. The AIs read the full message
+; T52: a tie for the most votes cuts nobody (the Rules tab, The Cut, step 3). Tally calls it when two or more
+; actors tie for the most votes, with TiedSeats, TiedNames and MaxVotes filled. The AIs read the full message
 ; (who tied, with how many votes) in game_messages. The scene still counts: the
 ; "tie" cue (RunCue) stops the drum roll and starts the reactions with no reveal, and EndReactions then
 ; goes on to the next Scene Prep, or ends the show after the last scene (T53's LastSceneDone).

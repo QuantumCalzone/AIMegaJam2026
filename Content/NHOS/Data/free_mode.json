@@ -15,17 +15,6 @@
 			"echo_typed": true
 		},
 		{
-			"id": "tiebreak",
-			"ask_contains": ["Tiebreak"],
-			"vote": true,
-			"reasons": [
-				"Cut {vote}. That last scene had no heart, only lag.",
-				"{vote} goes. Too careful, too human. Print it.",
-				"I pick {vote}. Nobody that nervous runs on a battery.",
-				"{vote}. The timing was off all night. That's a wrap."
-			]
-		},
-		{
 			"id": "closing",
 			"ask_contains": ["The show is over"],
 			"vote": true,
@@ -64,11 +53,11 @@
 			"ask_contains": ["Reactions"],
 			"actions": [0, 1],
 			"lines": [
-				"Wow, that was a robot. The human is still here.",
+				"Wow. I did not see that vote coming.",
 				"Well, that went badly. Who do we trust now?",
 				"I knew it. Wait, no, I did not know it.",
-				"One less robot on stage. I feel a little lonely.",
-				"So the human is still among us. Interesting."
+				"That vote told me more than the whole scene did.",
+				"Interesting. I am updating my suspicions right now."
 			]
 		},
 		{
