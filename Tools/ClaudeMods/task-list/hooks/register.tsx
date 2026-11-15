@@ -5,9 +5,10 @@ import type { SessionRef, Snapshot, Task, TaskFlag } from '../types'
 
 // The task list of Docs/Plan.md in a pane beside the chat:
 // done tasks collapsed and crossed out, in-progress tasks with the Code
-// sessions that work on them (a click opens one), and the tasks not started.
-// Tasks keep the plan's order, which is the priority order: a new task can
-// sit anywhere in the plan, whatever its number.
+// sessions that work on them (a click opens one), and the tasks not started,
+// each nested under the task it waits on. Tasks keep the plan's order, which
+// is the priority order: a new task can sit anywhere in the plan, whatever
+// its number.
 
 type Engine = EngineInterface
 
@@ -83,7 +84,8 @@ function parsePlan(text: string): PlanTask[] {
     const deps = /^\s+- \*\*Depends on:\*\*(.*)/.exec(line)
     if (deps) {
       const required = (deps[1] ?? '').replace(/T\d+ if it is done/g, '')
-      current.deps = [...required.matchAll(/\bT\d+\b/g)].map(m => m[0])
+      // A line can name a task twice ("T38 (...). If T38 is cut, ...").
+      current.deps = [...new Set([...required.matchAll(/\bT\d+\b/g)].map(m => m[0]))]
     }
     const waiting = /^\s+- \*\*Waiting:\*\*\s*(.*)/.exec(line)
     if (waiting) {
@@ -273,6 +275,57 @@ async function refresh($: Engine, options: { withClaims?: boolean } = {}) {
   } finally {
     isBusy = false
   }
+}
+
+type TreeRow = { task: Task; depth: number; parent?: string; others: string[] }
+
+// Not started as a tree. Each task sits under the not-started task it waits
+// on that comes last in the plan: run in the plan's order, that one finishes
+// last. So the top level holds the tasks that can start (and those that wait
+// only on tasks in progress), in the plan's order, and siblings keep the
+// plan's order too. A row names the unfinished tasks it waits on besides its
+// parent.
+function todoTree(todo: Task[]): TreeRow[] {
+  const rank = new Map(todo.map((t, i) => [t.id, i]))
+  const parentOf = new Map<string, string>()
+  for (const t of todo) {
+    let parent: string | undefined
+    for (const dep of t.waitsOn) {
+      const r = rank.get(dep)
+      if (r === undefined || dep === t.id) continue
+      if (parent === undefined || r > (rank.get(parent) ?? -1)) parent = dep
+    }
+    if (parent !== undefined) parentOf.set(t.id, parent)
+  }
+  const children = new Map<string, Task[]>()
+  for (const t of todo) {
+    const parent = parentOf.get(t.id)
+    if (parent !== undefined) children.set(parent, [...(children.get(parent) ?? []), t])
+  }
+  const rows: TreeRow[] = []
+  const seen = new Set<string>()
+  const visit = (t: Task, depth: number, parent?: string) => {
+    if (seen.has(t.id)) return
+    seen.add(t.id)
+    rows.push({ task: t, depth, parent, others: t.waitsOn.filter(d => d !== parent) })
+    for (const child of children.get(t.id) ?? []) visit(child, depth + 1, t.id)
+  }
+  for (const t of todo) if (!parentOf.has(t.id)) visit(t, 0)
+  // Only a loop in the plan's Depends on lines leaves a task unvisited: follow
+  // its parents until one repeats, and show that one at the top level.
+  for (const t of todo) {
+    if (seen.has(t.id)) continue
+    const chain = new Set<string>()
+    let id = t.id
+    while (!chain.has(id)) {
+      chain.add(id)
+      id = parentOf.get(id) ?? id
+    }
+    const top = todo.find(x => x.id === id)
+    if (top) visit(top, 0)
+    visit(t, 0)
+  }
+  return rows
 }
 
 const REFUSED = /refus|not started|ask the user|only (this|sessions)|cannot|can't|unknown|not found/i
@@ -467,16 +520,28 @@ export const register: Register = on => {
         <Box flexDirection="column">
           {heading(`NOT STARTED (${todo.length})`)}
           {todo.length === 0 && <Text dimColor>Nothing left.</Text>}
-          {todo.map(t => (
-            <Box key={`todo:${t.id}`}>
-              <Text wrap="truncate-end">
-                ○ <Text weight="semibold">{t.id}</Text> {t.title}{' '}
-                <Text dimColor>
-                  {t.waitsOn.length > 0 ? `· after ${t.waitsOn.join(', ')}` : '· ready'}
+          {todoTree(todo).map(({ task: t, depth, others }) => {
+            // ○ can start, ◌ waits only on tasks in progress, └ waits on the
+            // row it sits under.
+            const mark = depth > 0 ? '└' : others.length > 0 ? '◌' : '○'
+            const label =
+              depth > 0
+                ? others.length > 0
+                  ? `also after ${others.join(', ')}`
+                  : ''
+                : others.length > 0
+                  ? `after ${others.join(', ')}`
+                  : 'ready'
+            return (
+              <Box key={`todo:${t.id}`} paddingLeft={2 * depth}>
+                <Text wrap="truncate-end">
+                  <Text dimColor={depth > 0}>{mark}</Text> <Text weight="semibold">{t.id}</Text>{' '}
+                  {t.title}
+                  {label !== '' && <Text dimColor> · {label}</Text>}
                 </Text>
-              </Text>
-            </Box>
-          ))}
+              </Box>
+            )
+          })}
         </Box>
 
         {snap.updatedAt > 0 && (

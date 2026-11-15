@@ -56,6 +56,8 @@ const worktrees = (repo: string, ...others: string[]) =>
   [repo, ...others].map(path => `worktree ${path}\nHEAD 0123abc\nbranch refs/heads/x\n`).join('\n')
 const file = (name: string) => ({ name, kind: 'file', size: 1, mtimeMs: 0, isLink: false }) as const
 const slashes = (path: string) => path.replace(/\\/g, '/')
+// A row of Not started: ○ can start, ◌ waits on tasks in progress, └ nested.
+const TODO_ROW = /^[○◌└] T\d+/
 
 test('the pane sorts tasks and opens a session on a press, on every surface', async ($, on) => {
   const opened: unknown[] = []
@@ -103,10 +105,16 @@ test('the pane sorts tasks and opens a session on a press, on every surface', as
       '1 done · 3 in progress · 3 not started',
     )
     expect(await ui.find({ type: 'Text', text: /an older status file/ })).toBeDefined()
-    // Not started keeps the plan's order, not the order of the numbers.
-    const todo = await ui.findAll({ type: 'Text', text: /^○ T\d+/ })
-    expect(todo.map(row => /T\d+/.exec(row.text ?? '')?.[0])).toEqual(['T27', 'T19', 'T22'])
-    expect((await ui.find({ type: 'Text', text: /T27 Added later/ }))?.text).toContain('· ready')
+    // Not started keeps the plan's order, not the order of the numbers. T19
+    // waits only on tasks in progress, so it stays at the top level, and T22
+    // sits under T19, the task it waits on (T24 counts only if it is done).
+    const todo = await ui.findAll({ type: 'Text', text: TODO_ROW })
+    expect(todo.map(row => row.text)).toEqual([
+      '○ T27 Added later, placed first · ready',
+      '◌ T19 Robots act · after T17, T18',
+      '└ T22 Package',
+    ])
+    expect((await ui.find({ key: 'todo:T22' }))?.props.paddingLeft).toBe(2)
     // Done is collapsed until its header is pressed, then crossed out.
     expect(await ui.find({ type: 'Text', text: /T01 Spike one/ })).toBeUndefined()
     await ui.press({ key: 'done-toggle' })
@@ -116,8 +124,6 @@ test('the pane sorts tasks and opens a session on a press, on every surface', as
 
     expect((await ui.find({ type: 'Text', text: /I watch a show/ }))?.text).toBe('I watch a show.')
     expect(await ui.find({ type: 'Text', text: /planning done/ })).toBeDefined()
-    expect((await ui.find({ type: 'Text', text: /after T19/ }))?.text).toContain('· after T19')
-    expect((await ui.find({ type: 'Text', text: /after T19/ }))?.text).not.toContain('T24')
     expect(await ui.find({ type: 'Text', text: /T98|T99/ })).toBeUndefined()
     expect(await ui.find({ key: 'session:T17:local_b' })).toBeDefined()
     expect(await ui.find({ key: 'session:T18:local_c' })).toBeUndefined()
@@ -127,6 +133,86 @@ test('the pane sorts tasks and opens a session on a press, on every surface', as
   }
 
   expect(opened[0]).toEqual({ session_id: 'local_a', target: 'focus' })
+})
+
+// The plan's Depends on lines as a tree: each task under the task it waits on
+// that comes last in the plan, the others named on its row.
+const TREE_PLAN = [
+  '# Plan',
+  '## Tasks',
+  '### Open',
+  '- [ ] **T52 A tie cuts nobody**',
+  '  - **Depends on:** T53 (the spare scene)',
+  '- [ ] **T54 New win condition**',
+  '  - **Depends on:** T53, T52',
+  '- [ ] **T55 Remove the Director AI**',
+  '  - **Depends on:** T52',
+  '- [ ] **T57 A pass shows**',
+  '  - **Depends on:** T55',
+  '- [ ] **T38 Speech bubbles**',
+  '  - **Depends on:** T30',
+  // T38 is named twice, and T57 comes before T38 in the plan: T34 sits
+  // under T38 and names T57.
+  '- [ ] **T34 Fix the in-show screen**',
+  '  - **Depends on:** T38 (the bubbles). If T38 is cut, take it off this line. Also T57.',
+  // T60 waits on T54 and T55; T55 comes later in the plan.
+  '- [ ] **T60 End screens**',
+  '  - **Depends on:** T54, T55',
+  '- [ ] **T36 Logos on bills**',
+  '  - **Depends on:** T34',
+  // A loop: neither task may vanish from the list.
+  '- [ ] **T70 Loop one**',
+  '  - **Depends on:** T71',
+  '- [ ] **T71 Loop two**',
+  '  - **Depends on:** T70',
+  '- [ ] **T24 Timers**',
+  '  - **Depends on:** T30',
+  '### Done',
+  '- [x] **T53 Scene clock**',
+  '- [x] **T30 Line queue**',
+].join('\n')
+
+test('not started nests each task under the task it waits on', async ($, on) => {
+  on('ui.open', () => ({ value: { isPlaced: true } }))
+  on('ui.log', () => ({ value: undefined }))
+  on('session.root', () => ({ value: '/repo' }))
+  on('fs.read', (_, e) =>
+    slashes(e.path).endsWith('/repo/Docs/Plan.md') ? { value: TREE_PLAN } : { deny: `ENOENT: ${e.path}` },
+  )
+  on('fs.list', () => ({ value: [] }))
+  on('process.run', (_, e) => ran(e.argv[1] === 'worktree' ? worktrees('/repo') : ''))
+  on('mcp.call', () => ({ value: { content: [{ type: 'text', text: '[]' }], isError: false } }))
+
+  await $.command.run({
+    command: 'task-list',
+    args: '',
+    origin: { kind: 'composer' },
+    presentation: { isFullscreen: true, columns: 80 },
+  })
+
+  const ui = await $.ui.mount({ ...PANE, surface: 'desktop' })
+  const todo = await ui.findAll({ type: 'Text', text: TODO_ROW })
+  expect(todo.map(row => row.text)).toEqual([
+    '○ T52 A tie cuts nobody · ready',
+    '└ T54 New win condition',
+    '└ T55 Remove the Director AI',
+    '└ T57 A pass shows',
+    '└ T60 End screens · also after T54',
+    '○ T38 Speech bubbles · ready',
+    '└ T34 Fix the in-show screen · also after T57',
+    '└ T36 Logos on bills',
+    '○ T24 Timers · ready',
+    '◌ T70 Loop one · after T71',
+    '└ T71 Loop two',
+  ])
+  const indent = async (id: string) => (await ui.find({ key: `todo:${id}` }))?.props.paddingLeft
+  expect(await indent('T52')).toBe(0)
+  expect(await indent('T55')).toBe(2)
+  expect(await indent('T57')).toBe(4)
+  expect(await indent('T60')).toBe(4)
+  expect(await indent('T36')).toBe(4)
+  expect(await indent('T71')).toBe(2)
+  await ui.unmount()
 })
 
 // A session in a worktree cut from main: its folder has no Docs/Plan.md, and

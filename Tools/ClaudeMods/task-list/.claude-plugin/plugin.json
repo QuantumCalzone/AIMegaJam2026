@@ -1,6 +1,6 @@
 {
   "name": "task-list",
-  "version": "0.2.0",
-  "description": "A pane with the tasks of Docs/Plan.md: done (collapsed, crossed out), in progress (click to open its session) and not started, in the plan's order.",
+  "version": "0.3.0",
+  "description": "A pane with the tasks of Docs/Plan.md: done (collapsed, crossed out), in progress (click to open its session) and not started (each under the task it waits on), in the plan's order.",
   "types": "./types/index.d.ts"
 }
