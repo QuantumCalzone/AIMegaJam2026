@@ -1,4 +1,5 @@
 ; T37: every actor ask is tracked (TrackActorAsk) for the backstage note and error_test.
+; T68: each ask notes its model for the analytics call counts (NoteModel).
 (fn Ask (Tag Role System User)
   (if (V Down)
     (print (cat "NHOS: LLM " Tag " held relay down"))
@@ -22,6 +23,7 @@
   (if (streq Role "actor")
     (CallFunction|TrackActorAsk :Tag Tag :User User))
   (if (streq (V Mode) "free")
+    (CallFunction|NoteModel :Tag Tag :Model "free")
     (add (V LocalTags) Tag)
     (add (V LocalUsers) User)
     (add (V LocalProv) (V CurProv))
@@ -47,4 +49,5 @@
     (else
       (bind _url (CallFunction|ProvField :Prov (V CurProv) :Field "endpoint"))
       (set AskUrl _url)))
+  (CallFunction|NoteModel :Tag Tag :Model (V Model))
   (CallFunction|SendReq :Tag Tag :Prov (V CurProv) :Url (V AskUrl) :Payload (V AskBody) :Try 0))

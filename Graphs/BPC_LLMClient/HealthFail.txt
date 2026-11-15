@@ -1,5 +1,8 @@
 ; T37: the unavailable screen's line when the relay's health check fails (OnHealth).
+; T68: also sends the analytics error event.
 (fn HealthFail (Kind N)
   (bind _l (CallFunction|ErrorLine :Kind (cat "health_" Kind) :Lab "" :N N :Type ""))
   (set HealthMsg _l)
-  (print (cat "NHOS: ERROR " Kind " provider= where=health")))
+  (print (cat "NHOS: ERROR " Kind " provider= where=health"))
+  (if (V HaveStats)
+    (Class|BPCAnalytics|Error :self (V Stats) :Kind (cat "health_" Kind))))

@@ -1,0 +1,12 @@
+; T68: finds the analytics component on the same owner (BP_Show's Analytics, BPC_Analytics) for LoadConfig.
+; While BP_Show has no such component, HaveStats stays false and every call into Stats is skipped, so the
+; game runs as before. Its own function because IsValid ends the flow in the DSL (T45).
+(fn FindStats ()
+  (set HaveStats false)
+  (bind _st (Actor|GetComponentbyClass :self (Components|GetOwner) :ComponentClass "/Game/NHOS/Core/BPC_Analytics.BPC_Analytics_C"))
+  (set Stats _st)
+  (Utilities|IsValid _st
+    (:"Is Valid"
+      (set HaveStats true))
+    (:"Is Not Valid"
+      (print "NHOS: CLIENT no analytics component"))))

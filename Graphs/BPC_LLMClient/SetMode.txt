@@ -1,4 +1,5 @@
 ; T37: too few keys takes its line from errors.json.
+; T68: a pick that succeeds reports the analytics mode event (BPC_Analytics.ModePicked).
 (fn SetMode (InMode)
   (set Mode InMode)
   (if (streq InMode "relay")
@@ -11,4 +12,6 @@
       (bind _fk (CallFunction|ErrorLine :Kind "keytest_too_few_keys" :Lab "" :N 0 :Type ""))
       (return false _fk)))
   (print (cat "NHOS: MODE " InMode))
+  (if (V HaveStats)
+    (Class|BPCAnalytics|ModePicked :self (V Stats)))
   (return true ""))

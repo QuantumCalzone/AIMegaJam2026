@@ -1,0 +1,17 @@
+; WBP_Title.ShowStats (T68): the Play stats toggle's label says what the game does now (BPC_Analytics.IsOn,
+; the player's own setting, not the switch). BP_Show's analytics component is found by class: while BP_Show has
+; none (before the chain's part of T68 adds it), the whole row is collapsed.
+(fn ShowStats ()
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (Utilities|IsValid _show
+    (:"Is Valid"
+      (bind _an (Actor|GetComponentbyClass :self _show :ComponentClass "/Game/NHOS/Core/BPC_Analytics.BPC_Analytics_C"))
+      (Utilities|IsValid _an
+        (:"Is Valid"
+          (bind _on (Class|BPCAnalytics|IsOn :self _an))
+          (Widget|SetVisibility :self (Variables|WBP_Title|GetStatsRow) :InVisibility "Visible")
+          (Widget|SetText(Text) :self (Variables|WBP_Title|GetStatsLabel) :InText (Utilities|Text|ToText(String) (select _on "Play stats: on" "Play stats: off"))))
+        (:"Is Not Valid"
+          (Widget|SetVisibility :self (Variables|WBP_Title|GetStatsRow) :InVisibility "Collapsed"))))
+    (:"Is Not Valid"
+      (Widget|SetVisibility :self (Variables|WBP_Title|GetStatsRow) :InVisibility "Collapsed"))))

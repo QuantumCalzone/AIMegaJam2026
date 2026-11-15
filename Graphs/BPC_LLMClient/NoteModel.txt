@@ -1,0 +1,4 @@
+; T68: remembers an ask's model by its tag, until Deliver counts it (CountCall). "free" in Test for Free.
+(fn NoteModel (Tag Model)
+  (add (V AskTags) Tag)
+  (add (V AskModels) Model))
