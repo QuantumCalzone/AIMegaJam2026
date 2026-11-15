@@ -1,0 +1,16 @@
+; T75: makes the four parts every robot needs for emotions, once, at BeginPlay: two brows (EmBrowL, EmBrowR)
+; and the mouth's two corner bars (MouthCL, MouthCR). Made at run time, so the robots already placed in
+; L_Stage get them with no re-place (T17, T46, T47). Never called from the construction script.
+(fn FaceSetup ()
+  (if (V FaceReady)
+    (return))
+  (bind _a (CallFunction|NewPart))
+  (set EmBrowL _a)
+  (bind _b (CallFunction|NewPart))
+  (set EmBrowR _b)
+  (bind _c (CallFunction|NewPart))
+  (set MouthCL _c)
+  (bind _d (CallFunction|NewPart))
+  (set MouthCR _d)
+  (set FaceReady true)
+  (CallFunction|FaceRest))

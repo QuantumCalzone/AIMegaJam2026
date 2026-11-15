@@ -1,0 +1,3 @@
+; T75: attaches a new part to a face part's parent, keeping its relative transform (FaceApply sets it).
+(fn AttachPart (P To)
+  (Transformation|AttachComponentToComponent :self P :Parent To :LocationRule "KeepRelative" :RotationRule "KeepRelative" :ScaleRule "KeepRelative" :bWeldSimulatedBodies false))

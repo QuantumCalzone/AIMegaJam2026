@@ -1,0 +1,18 @@
+; T75: the gesture's offsets for the Rig (GX, GZ, GPitch, GRoll, GYaw, GScale), which Event Tick adds.
+; The pose and the waves are scaled by GW (the hold, eased) and GK (zero while the robot moves or acts).
+; A burst wave (secs > 0) fades out over its secs, so it never stops with a jerk.
+(fn GestTick ()
+  (bind _t (- (V Clock) (V EmStart)))
+  (bind _e1 (select (> (V G1Secs) 0.0) (Math|Float|Clamp(Float) :Value (- 1.0 (/ _t (Math|Float|Max(Float) (V G1Secs) 0.01))) :Min 0.0 :Max 1.0) 1.0))
+  (bind _s1 (Math|Trig|Sin(Radians) (* 6.28318 (* (V G1Hz) _t))))
+  (bind _v1 (select (V G1On) (* _e1 (* (V G1Amp) (select (V G1Abs) (Math|Float|Absolute(Float) _s1) _s1))) 0.0))
+  (bind _e2 (select (> (V G2Secs) 0.0) (Math|Float|Clamp(Float) :Value (- 1.0 (/ _t (Math|Float|Max(Float) (V G2Secs) 0.01))) :Min 0.0 :Max 1.0) 1.0))
+  (bind _s2 (Math|Trig|Sin(Radians) (* 6.28318 (* (V G2Hz) _t))))
+  (bind _v2 (select (V G2On) (* _e2 (* (V G2Amp) (select (V G2Abs) (Math|Float|Absolute(Float) _s2) _s2))) 0.0))
+  (bind _k (* (V GW) (V GK)))
+  (set GX (* _k (+ (V GPoseX) (+ (select (== (V G1Ch) 0) _v1 0.0) (select (== (V G2Ch) 0) _v2 0.0)))))
+  (set GZ (* _k (+ (V GPoseZ) (+ (select (== (V G1Ch) 1) _v1 0.0) (select (== (V G2Ch) 1) _v2 0.0)))))
+  (set GPitch (* _k (+ (V GPosePitch) (+ (select (== (V G1Ch) 2) _v1 0.0) (select (== (V G2Ch) 2) _v2 0.0)))))
+  (set GRoll (* _k (+ (V GPoseRoll) (+ (select (== (V G1Ch) 3) _v1 0.0) (select (== (V G2Ch) 3) _v2 0.0)))))
+  (set GYaw (* _k (+ (V GPoseYaw) (+ (select (== (V G1Ch) 4) _v1 0.0) (select (== (V G2Ch) 4) _v2 0.0)))))
+  (set GScale (* _k (+ (V GPoseScale) (+ (select (== (V G1Ch) 5) _v1 0.0) (select (== (V G2Ch) 5) _v2 0.0))))))

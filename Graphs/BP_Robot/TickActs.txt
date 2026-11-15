@@ -28,4 +28,6 @@
     (Utilities|Array|RemoveIndex (V QLoc) 0)
     (Utilities|Array|RemoveIndex (V QProp) 0)
     (Utilities|Array|RemoveIndex (V QBot) 0)
-    (CallFunction|StartAct :Verb (V CurVerb) :Loc (V CurLoc) :Prop (V CurProp) :Bot (V CurBot))))
+    (CallFunction|StartAct :Verb (V CurVerb) :Loc (V CurLoc) :Prop (V CurProp) :Bot (V CurBot)))
+  ; T75: the emotion's face and gesture, and the emote_test cycle.
+  (CallFunction|EmoteTick :Delta Delta))

@@ -1,0 +1,8 @@
+; T75: a new part takes the head's mesh and material; an LED part (SetCol) takes the color too. Glow is the
+; glow it should have now (0 for a part that doesn't glow; clay has no Glow, so it does nothing there).
+(fn PartLook (P Mat Mesh Col SetCol Glow)
+  (Components|StaticMesh|SetStaticMesh :self P :NewMesh Mesh)
+  (Rendering|Material|SetMaterial :self P :ElementIndex 0 :Material Mat)
+  (if SetCol
+    (Rendering|Material|SetVectorParameterValueonMaterials :self P :ParameterName "Color" :ParameterValue Col))
+  (Rendering|Material|SetScalarParameterValueonMaterials :self P :ParameterName "Glow" :ParameterValue Glow))

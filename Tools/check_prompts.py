@@ -150,6 +150,14 @@ picked from the rules. --log counts my scene turns (NHOS: HUMAN) and the lines
 sent as typed (NHOS: SPELLING skipped), and fails a HUMAN line with an unknown
 verb.
 
+Emotions (T75): the file check reads emotes.json, the emotions each robot can
+show (BP_Robot.Emote). 'neutral' is there and is the resting face (every face
+value at rest, gesture none, hold 0); every emotion has id, word, face, gesture
+and hold; ids and words are unique; each face value is in its range in
+EMOTE_FACE (a mouth always shows, and never a screaming one); and each gesture
+is 'none' or one in 'gestures', whose pose and waves use only the channels in
+GESTURE_CHANNELS. A gesture no emotion uses fails too.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -694,12 +702,137 @@ def costume_problems(cards, cdata) -> list[str]:
     return out
 
 
+# T75: emotes.json, the emotions BP_Robot.Emote shows. Every field here is one the robot reads.
+EMOTE_FIELDS = ["id", "word", "face", "gesture", "hold"]
+EMOTE_FACE = {  # field: (lowest, highest, its value in neutral, the resting face)
+    "eye_w": (0.3, 1.6, 1), "eye_h": (0.3, 1.6, 1),
+    "eye_dz": (-4, 4, 0), "eye_dx": (-4, 4, 0), "eye_tilt": (-30, 30, 0),
+    "brow_angle": (-35, 35, 0), "brow_dz": (-5, 8, 0), "brow_skew": (-6, 6, 0),
+    "mouth_w": (0.4, 1.6, 1), "mouth_h": (0.8, 4.0, 1),  # a mouth always shows, and never a screaming one
+    "mouth_curve": (-35, 35, 0), "mouth_tilt": (-20, 20, 0), "tint_mix": (0, 1, 0),
+}
+GESTURE_CHANNELS = {"x": 12, "z": 20, "pitch": 15, "roll": 15, "yaw": 30, "scale": 0.1}  # largest pose value or wave amp
+EMOTE_HOLD = (0.5, 6.0)
+EMOTE_ID = re.compile(r"[a-z][a-z_]*")
+
+
+def _num(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def gesture_problems(name, g) -> list[str]:
+    where = f"emotes.json: gesture {name!r}"
+    if name == "none" or not EMOTE_ID.fullmatch(name):
+        return [f"{where}: a gesture's name is lowercase letters and _, and never 'none'"]
+    if not isinstance(g, dict) or set(g) != {"pose", "waves"}:
+        return [f"{where}: needs pose and waves, and nothing else"]
+    errs = []
+    pose = g["pose"]
+    if not isinstance(pose, dict) or set(pose) != set(GESTURE_CHANNELS):
+        errs.append(f"{where}: pose needs {', '.join(GESTURE_CHANNELS)}, and nothing else")
+    else:
+        for ch, v in pose.items():
+            if not _num(v) or abs(v) > GESTURE_CHANNELS[ch]:
+                errs.append(f"{where}: pose {ch} = {v!r} is outside -{GESTURE_CHANNELS[ch]} to {GESTURE_CHANNELS[ch]}")
+    waves = g["waves"]
+    if not isinstance(waves, list) or len(waves) > 2:
+        return errs + [f"{where}: waves must be a list of at most 2 (the robot reads two)"]
+    for i, w in enumerate(waves, 1):
+        ww = f"{where}: wave {i}"
+        if not isinstance(w, dict) or set(w) != {"ch", "amp", "hz", "secs", "abs"}:
+            errs.append(f"{ww} needs ch, amp, hz, secs and abs, and nothing else")
+            continue
+        if w["ch"] not in GESTURE_CHANNELS:
+            errs.append(f"{ww}: ch {w['ch']!r} is not one of {', '.join(GESTURE_CHANNELS)}")
+        elif not _num(w["amp"]) or not 0 < w["amp"] <= GESTURE_CHANNELS[w["ch"]]:
+            errs.append(f"{ww}: amp {w['amp']!r} must be above 0 and at most {GESTURE_CHANNELS[w['ch']]} for {w['ch']}")
+        if not _num(w["hz"]) or not 0.1 <= w["hz"] <= 14:
+            errs.append(f"{ww}: hz {w['hz']!r} must be 0.1 to 14")
+        if not _num(w["secs"]) or not 0 <= w["secs"] <= 3:
+            errs.append(f"{ww}: secs {w['secs']!r} must be 0 (the whole hold) to 3")
+        if not isinstance(w["abs"], bool):
+            errs.append(f"{ww}: abs must be true or false")
+    return errs
+
+
+def emote_problems(em) -> list[str]:
+    """T75: emotes.json holds the emotions each robot can show, and the gestures they use."""
+    if not isinstance(em, dict):
+        return ["emotes.json: must be an object with _readme, emotes and gestures"]
+    errs = []
+    if not is_lines(em.get("_readme")):
+        errs.append("emotes.json: _readme must be a list of lines")
+    gestures = em.get("gestures")
+    if not isinstance(gestures, dict) or not gestures:
+        errs.append("emotes.json: gestures must be an object of named gestures")
+        gestures = {}
+    for name, g in gestures.items():
+        errs.extend(gesture_problems(name, g))
+    emotes = em.get("emotes")
+    if not isinstance(emotes, list) or not emotes:
+        return errs + ["emotes.json: emotes must be a list of emotions"]
+    ids, words, used = [], [], set()
+    for e in emotes:
+        if not isinstance(e, dict):
+            errs.append("emotes.json: every emotion must be an object")
+            continue
+        eid = e.get("id")
+        where = f"emotes.json: emotion {eid!r}"
+        if set(e) != set(EMOTE_FIELDS):
+            errs.append(f"{where} needs {', '.join(EMOTE_FIELDS)}, and nothing else")
+        if not isinstance(eid, str) or not EMOTE_ID.fullmatch(eid):
+            errs.append(f"{where}: an id is lowercase letters and _")
+        elif eid in ids:
+            errs.append(f"{where} is listed twice")
+        ids.append(eid)
+        word = e.get("word")
+        if eid == "neutral":
+            if word != "":
+                errs.append(f"{where}: neutral's word must be empty (T77 writes nothing for it)")
+        elif not isinstance(word, str) or not re.fullmatch(r"[a-z]+", word):
+            errs.append(f"{where}: word must be one plain lowercase word, as T77 writes it in the shared log")
+        elif word in words:
+            errs.append(f"{where}: word {word!r} is used twice")
+        else:
+            words.append(word)
+        face = e.get("face")
+        if not isinstance(face, dict) or set(face) != set(EMOTE_FACE) | {"tint"}:
+            errs.append(f"{where}: face needs {', '.join(list(EMOTE_FACE) + ['tint'])}, and nothing else")
+        else:
+            for k, (lo, hi, rest) in EMOTE_FACE.items():
+                v = face[k]
+                if not _num(v) or not lo <= v <= hi:
+                    errs.append(f"{where}: face {k} = {v!r} is outside {lo} to {hi}")
+                elif eid == "neutral" and v != rest:
+                    errs.append(f"{where}: neutral is the resting face, so {k} must be {rest}")
+            t = face["tint"]
+            if not (isinstance(t, list) and len(t) == 3 and all(_num(c) and 0 <= c <= 1 for c in t)):
+                errs.append(f"{where}: face tint must be [r, g, b], each 0 to 1")
+        gesture = e.get("gesture")
+        if gesture != "none" and gesture not in gestures:
+            errs.append(f"{where}: gesture {gesture!r} is not in gestures (or 'none')")
+        used.add(gesture)
+        hold = e.get("hold")
+        if eid == "neutral":
+            if gesture != "none" or hold != 0:
+                errs.append(f"{where}: neutral has gesture 'none' and hold 0")
+        elif not _num(hold) or not EMOTE_HOLD[0] <= hold <= EMOTE_HOLD[1]:
+            errs.append(f"{where}: hold {hold!r} must be {EMOTE_HOLD[0]} to {EMOTE_HOLD[1]} seconds")
+    if "neutral" not in ids:
+        errs.append("emotes.json: needs 'neutral', the resting face that an empty or unknown id shows")
+    for name in gestures:
+        if name not in used:
+            errs.append(f"emotes.json: gesture {name!r} is used by no emotion; drop it or use it")
+    return errs
+
+
 def check_files(errors: list[str]):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
     personas = load_json("personas.json", errors)
     scenes = load_json("scenes.json", errors)
     error_lines = load_json("errors.json", errors)
+    emotes = load_json("emotes.json", errors)  # T75
     if errors:
         return None
 
@@ -891,6 +1024,9 @@ def check_files(errors: list[str]):
     # free_mode.json and autoplay.json: every pre-written line fits the word cap (T59).
     errors.extend(prewritten_problems(scenes, errors))
 
+    # emotes.json: the emotions each robot can show (T75).
+    errors.extend(emote_problems(emotes))
+
     # input.json: the player's turn input (T63). spelling_wait = the seconds the input LLM gets per line.
     inp = load_json("input.json", errors)
     if inp is not None:
@@ -918,7 +1054,7 @@ def check_files(errors: list[str]):
 
     if errors:
         return None
-    return {"llm": llm, "prompts": prompts, "personas": plist, "scenes": scenes}
+    return {"llm": llm, "prompts": prompts, "personas": plist, "scenes": scenes, "emotes": emotes}
 
 
 # ---------------------------------------------------------------- sample show
@@ -1934,7 +2070,7 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, input.json, props.json, costumes.json and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, input.json, props.json, costumes.json, emotes.json and the relay's allow-list")
     if args.log:
         return check_log(Path(args.log), data["personas"], args.all_shows)
 

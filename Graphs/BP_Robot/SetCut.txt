@@ -1,4 +1,6 @@
 (fn SetCut (Stamp)
+  ; T75: a cut robot stops emoting, and its face is at rest before it goes dark.
+  (CallFunction|EmoteStop)
   (CallFunction|DropAll)
   (clear (V QVerb))
   (clear (V QLoc))
