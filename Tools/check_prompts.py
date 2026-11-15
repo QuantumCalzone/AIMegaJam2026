@@ -106,6 +106,14 @@ No Director (T55): no AI outside the cast is ever asked anything. The file
 check fails if llm.json has a 'director' role, prompts.json a 'director'
 prompt, or prompts.json an ask the game doesn't send (not in ALL_ASKS).
 
+Passes (T57): a pass in Free Talk shows "passed" by that actor's name, and
+silence and too-polished lines are evidence. The file check finds the design
+doc's line in prompts.json 'game', word for word (DOC_SILENCE_LINE), and fails
+the old rule that how a line is typed is never evidence. Each persona's
+free_talk ask also goes out in round 2, after a round 1 with a pass. --log fails
+a show whose Free Talk passes (NHOS: LOG ... | passes |) and "passed" markers
+(NHOS: PASSED) don't match one for one.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -162,6 +170,8 @@ DOC_NOTE_LINES = [
 ]
 # T52: the design doc's tie rule (Bot Prompts, "Opening prompt: game rules"), word for word.
 DOC_TIE_LINE = "A tied vote cuts nobody and still uses up a scene. If the human is still on stage when the last scene ends, the human wins."
+# T57: the design doc's silence rule (Bot Prompts, "Opening prompt: game rules"), word for word.
+DOC_SILENCE_LINE = "Silence is evidence, and so is a line that sounds too polished. Notice who passes and who sounds unlike the rest."
 
 # Real people and products that must never appear in prompts or on screen. The bots go by
 # their provider's name (the 'name' fields in personas.json), so those names are allowed.
@@ -725,6 +735,10 @@ def check_files(errors: list[str]):
         errors.append("prompts.json: 'game' lost the design doc's tie rule (DOC_TIE_LINE)")
     if any("Director breaks" in g for g in game):
         errors.append("prompts.json: 'game' still says the Director breaks ties; since T52 a tie cuts nobody")
+    if not any(DOC_SILENCE_LINE in g for g in game):
+        errors.append("prompts.json: 'game' lost the design doc's silence rule (DOC_SILENCE_LINE)")
+    if any("How a line is typed is never evidence" in g for g in game):
+        errors.append("prompts.json: 'game' still says how a line is typed is never evidence; since T57 a too-polished line is evidence")
     # T54: goal 1 names both ways the human wins.
     goal1 = next((g for g in game if g.startswith("1. ")), "")
     if "final two" not in goal1 or "last scene ends" not in goal1:
@@ -964,6 +978,8 @@ class Show:
         cases["scene_turn"] = self.actor_state(pid, "scene_turn", "the scene, turn 2 of 3", self.log(turns=1))
         cases["free_talk"] = self.actor_state(pid, "free_talk", "free talk, round 1 of 2", self.log(turns=3))
         cases["vote"] = self.actor_state(pid, "vote", "the cut, voting", self.log(turns=3, talk=2), options=self.others(pid))
+        # T57: round 2, after a round 1 in which visionary passed (TALK[0]), so the pass is in the log.
+        cases["free_talk_r2"] = self.actor_state(pid, "free_talk", "free talk, round 2 of 2", self.log(turns=3, talk=1))
 
         # Reaction to someone else's cut. SpaceXAI sees the human cut; the others see an AI cut.
         h, oc = self.name(HUMAN), self.name("overclocker")
@@ -1342,7 +1358,7 @@ def check_reply(reply, ask, ctx):
 
 # ---------------------------------------------------------------- PIE log
 
-LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE)\b ?(.*)$")
+LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED)\b ?(.*)$")
 
 
 def check_log(path: Path, personas, all_shows: bool) -> int:
@@ -1376,13 +1392,21 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
     n = bad = clock_bad = 0
     vote_bad = 0  # T52: scenes whose vote didn't end in exactly one CUT or TIE
     end_bad = 0  # T54: shows whose SHOW END reason doesn't match how they ended
+    pass_bad = 0  # T57: shows whose passes and "passed" markers don't match
     for i, show in enumerate(shows, 1):
         human = None
         cards = []
         seats = total = None
+        cast_ids, passes, marks = [], [], []  # T57
         ends, scene, ties = [], 0, 0  # T52
         cuts, end = 0, None  # T54
         for kind, rest in show:
+            if kind == "PASSED":
+                # T57: "NHOS: PASSED <seat id> scene=<n> round=<r>", printed when the marker shows.
+                m = re.match(r"(\S+) scene=(\d+) round=(\S+)", rest)
+                if m:
+                    marks.append(m.groups())
+                continue
             if kind in ("CUT", "TIE"):
                 ends.append(kind)
                 continue
@@ -1408,6 +1432,9 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 m = re.search(r"seats=(\d+)", rest)
                 if m:
                     seats = int(m.group(1))
+                m = re.search(r"cast=(\S+)", rest)
+                if m:
+                    cast_ids = m.group(1).split(",")  # T57: Player n is cast_ids[n - 1]
                 continue
             if kind == "SETUP":
                 # Older logs name the human's persona here (human=<persona id>); since T26 it says human=human.
@@ -1424,6 +1451,13 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 continue
             if kind == "LOG":
                 parts = rest.split(" | ", 3)
+                # T57: every Free Talk pass shows a "passed" marker (NHOS: PASSED, with the seat id).
+                # A pass's line ends "| passes |", which the strip above leaves as 3 parts.
+                m = re.match(r"scene (\d+), free talk round (\d+)$", parts[0])
+                if m and len(parts) >= 3 and parts[2].rstrip(" |") == "passes":
+                    pn = re.match(r"Player (\d+)$", parts[1])
+                    k = int(pn.group(1)) if pn else 0
+                    passes.append((cast_ids[k - 1] if 0 < k <= len(cast_ids) else parts[1], m.group(1), m.group(2)))
                 if len(parts) < 4:
                     continue
                 if parts[1] == human:
@@ -1468,10 +1502,13 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
         if seats and total and total != seats - 1:
             clock_bad += 1
             print(f"[FAIL] show {i} | SETUP | scenes={total}, but {seats} seats means {seats - 1} scenes")
+        if sorted(passes) != sorted(marks):
+            pass_bad += 1
+            print(f"[FAIL] show {i} | PASSED | Free Talk passes {sorted(passes)}, but markers {sorted(marks)}")
         print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}, ties = {ties}, "
-              f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}.")
+              f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad or vote_bad or end_bad else 0
+    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad else 0
 
 
 # ---------------------------------------------------------------- main
@@ -1498,6 +1535,13 @@ def build_jobs(data, show, asks, personas, repeat):
                        "note": st["you"]["note"]}
                 pv = provider_for(data, "actor", pid)
                 jobs.append(("reaction", f"{show.name(pid)} after a tie", pv,
+                             request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
+            if "free_talk" in asks:  # T57: Free Talk round 2, with round 1's pass in the log
+                st = cases["free_talk_r2"]
+                ctx = {"places": places, "props": props, "actors": actors, "me": show.name(pid), "options": [],
+                       "note": st["you"]["note"]}
+                pv = provider_for(data, "actor", pid)
+                jobs.append(("free_talk", f"{show.name(pid)} after a pass", pv,
                              request_body(data, pv, "actor", system_text(data, "actor", pid), st), ctx))
         if "scene_turn" in asks:
             for card_id, pid, role, st in show.card_cases():
