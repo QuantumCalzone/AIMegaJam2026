@@ -2,7 +2,7 @@
 
 How each generated 3D asset is made: its reference image, its Meshy settings and its import. The files live in `Docs/PropArt/`, one folder per asset. `.gitattributes` already sends `*.png` and `*.fbx` to LFS.
 
-**Status:** style test, one asset. If it passes, a plan task makes the rest the same way. The art direction (stop-motion clay), the 13 headpieces and the props of each story are in the design doc: the "Art Inspiration" tab and the "Stories" tab. The story drafts behind them are in `Docs/StoryDrafts/`.
+**Status:** the style test passed on 2026-11-15 (see "Test result" at the end). The plan's asset tasks make the rest the same way with `Tools/art_gen.py`. The art direction (stop-motion clay), the 13 headpieces and the props of each story are in the design doc: the "Art Inspiration" tab and the "Stories" tab. The story drafts behind them are in `Docs/StoryDrafts/`.
 
 ## The look to match
 
@@ -55,6 +55,19 @@ One try costs about 30 credits. Two or three tries are fine.
 - It imports with no errors, at about 5,000 triangles or fewer.
 
 If it fails, try once with Meshy's text-to-3D, or fall back to engine shapes with `M_Clay`.
+
+## Test result (2026-11-15)
+
+**Passed, by image to 3D.** `SM_PlushHorseHead` reads as a plush clay horse head close up, with the stitching, the white blaze, the button eyes, the smile and the yarn mane of its reference. From the house camera it reads as a brown horse head on the prop table. Next to today's glossy shape-built props it looks richer, so the clay restyle of the stage will close the gap.
+
+- **Image to 3D beat text to 3D.** Both cost 30 credits on Meshy 7.1 with a 2K texture. Text to 3D ignored "head only" and made a whole pony; image to 3D followed the picture. So the batch makes a Leonardo image first.
+- **Leonardo:** `lucid-origin` through the v2 API, 4 candidates, about 1 minute. Candidate 2, a three-quarter view with a neck stump, was the clear pick; the three front views were flatter. The v2 reply had no `apiCreditCost`. The API has its own pay-as-you-go balance, apart from the web plan: with none, it answers HTTP 402 "Insufficient tokens".
+- **Meshy:** image to 3D at `target_polycount` 15000 took about a minute. At 5,000 triangles (the text-to-3D try) the clay shows facets; at about 15,600 it stays smooth.
+- **Meshy's texture is the look.** It already reads as clay and carries the details (seams, buttons, blaze) that a flat clay color would lose, so `M_Clay` was not made. Props keep Meshy's texture; a flat clay material is for things built from engine shapes, and for headpieces, which each come in several colors.
+- **Import:** `StaticMeshTools.import_file` took the FBX with its embedded texture and made `Material_001` and `texture_0`. Rename them at once (`M_<Asset>`, `T_<Asset>_BaseColor`), or the next import collides. The importer also leaves a `<name>.fbm/` folder beside the FBX; it belongs in `Local/art/props/`, not git.
+- **Size and facing:** Meshy scales every model to about 1.9 m, so the horse head needs a scale of 0.17 for about 30 cm. Its face points along +Y: yaw 90 turns it to the house.
+- **Credits:** 60 of 1,100 for the test (two models). 1,040 left.
+- **Kept in git:** `ref.png`, the FBX, the thumbnails and the three JSON logs. The other candidates, the GLBs and the texture maps are in `Local/art/props/plush_horse_head/`.
 
 ## Recording each asset
 

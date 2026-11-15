@@ -27,6 +27,14 @@ The money burn (T35) is the only 2D art: four textures in `Content/NHOS/UI/Money
 | `Content/NHOS/UI/MoneyBurn/T_FlameSheet` (`flame_sheet.png`) | The flame flipbook: one row of 8 frames, played at 14 fps. | Kenney, Particle Pack 1.1, `muzzle_02/03/05.png`, scaled, mirrored and recolored by `makeart.swift`. https://kenney.nl/assets/particle-pack | CC0 1.0 (the pack's `License.txt`). |
 | `Content/NHOS/UI/MoneyBurn/T_Ember` (`ember.png`) | One soft ember for the sparks that rise from the burn. | Kenney, Particle Pack 1.1, `circle_05.png`, scaled and recolored by `makeart.swift`. https://kenney.nl/assets/particle-pack | CC0 1.0. |
 
+### Generated 3D models
+
+Made with Leonardo.ai (a reference image, through its paid API, private) and Meshy (image to 3D, on the Pro plan, which gives ownership). `Docs/PropArt.md` has how; each model's folder in `Docs/PropArt/` has its reference image and the JSON logs of its prompts, settings and credits. Not in the game yet.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Content/NHOS/Stage/Props/Meshes/SM_PlushHorseHead` (with `M_PlushHorseHead`, `T_PlushHorseHead_BaseColor`) | The crime-family story's plush horse head prop, in clay style. | Leonardo.ai `lucid-origin` image (prompt in `Docs/PropArt/plush_horse_head/leonardo.json`), then Meshy 7.1 image to 3D with a 2K texture, 15,584 triangles, 2026-11-15. | Ours: made on paid Leonardo API and Meshy Pro plans. |
+
 ## Audio
 
 None yet (T20).

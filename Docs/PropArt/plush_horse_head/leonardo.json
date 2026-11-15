@@ -1,0 +1,21 @@
+[
+  {
+    "time": "2026-11-15 06:56 UTC",
+    "generation": "1f1e0c1a-49ae-62c0-a6a0-e955ce67ea08",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "A plush toy horse head made of modeling clay, in a stop-motion claymation style: a chunky, rounded, cuddly brown horse head with a cream muzzle, a short black yarn mane, two round button eyes and a soft stitched seam, cut off neatly at the neck like a stuffed toy. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4
+    },
+    "api_credit_cost": null,
+    "seed": 1652951439,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]
