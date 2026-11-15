@@ -3,6 +3,7 @@
 ; (BPC_LinePlayer.Cue "banner", the call BP_Show.CueBanner makes), so it waits for the lines in front of it.
 ; The client finds the line player on its own owner, so BP_Show has no node for it (my person's call,
 ; 2026-11-15). The note is for the player's screen only: never the shared log or game_messages.
+; T68: also sends the analytics error event, held notes too.
 (fn BackstageNote (Tag Ok Error)
   (set NoteIdx (Utilities|Array|FindItem (V ActTags) Tag))
   (if (< (V NoteIdx) 0)
@@ -15,6 +16,8 @@
     (return))
   (bind _k (CallFunction|ErrorKind :Reason Error))
   (print (cat "NHOS: ERROR " _k " provider=" (V CurProv) " where=turn"))
+  (if (V HaveStats)
+    (Class|BPCAnalytics|Error :self (V Stats) :Kind _k))
   (if (>= (Utilities|Array|FindItem (V NoteSeen) (V NoteKey)) 0)
     (print (cat "NHOS: NOTE held " (V NoteKey)))
     (return))

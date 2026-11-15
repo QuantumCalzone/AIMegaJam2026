@@ -1,0 +1,9 @@
+; BPC_Stagehand.Enqueue(Key, Line, Spot) (T61): adds a line to the earpiece's own queue, and starts it if idle.
+(fn Enqueue (Key Line Spot)
+  (if (Utilities|String|IsEmpty Line)
+    (return))
+  (add (V QKey) Key)
+  (add (V QLine) Line)
+  (add (V QSpot) Spot)
+  (if (not (V Busy))
+    (CallFunction|Next)))

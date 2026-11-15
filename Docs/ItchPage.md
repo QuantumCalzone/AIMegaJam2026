@@ -89,7 +89,7 @@ Pick one on the title screen.
 
 #### Test for Free
 
-No internet and no keys. The AIs answer with pre-written lines and vote at random, so they don't really read what you type and can't really catch you. Use it to learn the controls and see how a show runs. For the real game, pick one of the other two.
+No keys, and no internet needed. The AIs answer with pre-written lines and vote at random, so they don't really read what you type and can't really catch you. Use it to learn the controls and see how a show runs. For the real game, pick one of the other two.
 
 #### Play via Relay
 
@@ -121,10 +121,11 @@ The real game, on your own accounts. Click **Play with my own API keys** and pas
 
 ### What gets sent where
 
-- **Test for Free** sends nothing anywhere.
+- **Test for Free** makes no AI call. It sends only the play stats below.
 - **Play via Relay** sends the game's prompts, the scene, the chat log and your typed lines to our relay, which passes them on to the four labs. The relay doesn't store your lines. To count calls for the daily limits, it keeps your address only as a hash salted with the day. Each lab's own data policy applies to what it receives.
 - **Play with my own API keys** sends the same requests straight to each lab, under your own account and that lab's policy.
 - The AI actors never see your keys, your raw typing (only the line the helper made from it) or which robot is you.
+- **Play stats.** Every way to play sends our relay a few anonymous events: a random player id the game makes on your first launch (nothing from your Epic account, your computer or your keys), which way you play, how far each show gets, how many AI calls went to each lab with their token counts, and the kind of any error. Never your typed lines, your keys or your address (the relay keeps only a hash of it, salted with the day, as it does for the call limits). Turn them off on the title screen with **Play stats**.
 
 ### Install and run (Windows) [T22]
 

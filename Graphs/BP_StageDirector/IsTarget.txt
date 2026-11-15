@@ -1,0 +1,5 @@
+; T62: true when seat S is an actor that Seat may target: another seat, still on stage.
+(fn IsTarget (Seat S)
+  (if (or (< S 0) (or (== S Seat) (>= S (len (V ROut)))))
+    (return false))
+  (return (not (get (V ROut) S))))

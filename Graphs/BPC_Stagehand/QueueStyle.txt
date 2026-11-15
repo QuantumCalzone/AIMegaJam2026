@@ -1,0 +1,8 @@
+; BPC_Stagehand.QueueStyle(Key) (T61): queues style.<Key>, the first-show style tip that follows that moment, if any.
+(fn QueueStyle (Key)
+  (bind _hs (Json|HasField (V Style) Key))
+  (if (not _hs)
+    (return))
+  (bind _st (Json|GetField (V Style) Key))
+  (set TmpS _st)
+  (CallFunction|Enqueue :Key (cat Key " style") :Line (V TmpS) :Spot "stage"))

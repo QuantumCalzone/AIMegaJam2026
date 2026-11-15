@@ -1,0 +1,5 @@
+; WBP_HowToPlay.OpenOver(InBack) (T61): the opener's one call after CreateWidget. Shows the screen at Z 30, over the title (20),
+; and keeps InBack (the title's How to play button) to give keyboard focus back to when it closes.
+(fn OpenOver (InBack)
+  (set Back InBack)
+  (UserInterface|Viewport|AddtoViewport :self self :ZOrder 30))

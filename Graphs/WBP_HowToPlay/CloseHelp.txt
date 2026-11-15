@@ -1,0 +1,9 @@
+; WBP_HowToPlay.CloseHelp (T61): closes the screen and gives keyboard focus back to Back (set by OpenOver), so Tab
+; reaches the title's buttons again (T33 found the same after Back on the key screen).
+(fn CloseHelp ()
+  (print "NHOS: HOWTOPLAY close")
+  (Widget|RemovefromParent :self self)
+  (Utilities|IsValid (V Back)
+    (:"Is Valid"
+      (Widget|SetKeyboardFocus :self (V Back)))
+    (:"Is Not Valid")))

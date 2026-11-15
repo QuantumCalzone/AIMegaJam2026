@@ -1,0 +1,28 @@
+; T68: counts one finished ask for the analytics "calls" event: its provider (CurProv), the model Ask noted
+; for its tag, and a failure or the reply's tokens (UsageIn, UsageOut; ClearReply resets them to "" for each
+; reply, which counts as 0). An ask that failed before it was sent (no provider, no key) has no note and
+; isn't counted.
+(fn CountCall (Tag Ok)
+  (set CIdx (Utilities|Array|FindItem (V AskTags) Tag))
+  (if (< (V CIdx) 0)
+    (return))
+  (set CModel (get (V AskModels) (V CIdx)))
+  (set CKey (cat (V CurProv) "|" (V CModel)))
+  (Utilities|Array|RemoveIndex (V AskTags) (V CIdx))
+  (Utilities|Array|RemoveIndex (V AskModels) (V CIdx))
+  (set CIdx (Utilities|Array|FindItem (V CntKey) (V CKey)))
+  (if (< (V CIdx) 0)
+    (add (V CntKey) (V CKey))
+    (add (V CntProv) (V CurProv))
+    (add (V CntModel) (V CModel))
+    (add (V CntCalls) 0)
+    (add (V CntFailed) 0)
+    (add (V CntIn) 0)
+    (add (V CntOut) 0)
+    (set CIdx (- (len (V CntKey)) 1)))
+  (Utilities|Array|SetArrayElem (V CntCalls) (V CIdx) (+ (get (V CntCalls) (V CIdx)) 1))
+  (if (not Ok)
+    (Utilities|Array|SetArrayElem (V CntFailed) (V CIdx) (+ (get (V CntFailed) (V CIdx)) 1))
+    (return))
+  (Utilities|Array|SetArrayElem (V CntIn) (V CIdx) (+ (get (V CntIn) (V CIdx)) (Utilities|String|StringToInteger (V UsageIn))))
+  (Utilities|Array|SetArrayElem (V CntOut) (V CIdx) (+ (get (V CntOut) (V CIdx)) (Utilities|String|StringToInteger (V UsageOut)))))

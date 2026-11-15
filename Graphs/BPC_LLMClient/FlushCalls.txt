@@ -1,0 +1,22 @@
+; T68: one analytics "calls" event per provider and model asked since the last flush, then clears the
+; counts. BPC_Analytics calls it at each Scene Prep (SendPhase) and at the end screen (ShowEnd).
+; With analytics off, Send drops each event and the counts still clear. Without the analytics component
+; (HaveStats false) it only clears.
+(fn FlushCalls ()
+  (if (V HaveStats)
+    (for _i (range (len (V CntKey)))
+      (bind _f (Json|LoadJsonfromString "{}"))
+      (Json|SetField _f "provider" (get (V CntProv) _i))
+      (Json|SetField _f "model" (get (V CntModel) _i))
+      (Json|SetField _f "calls" (get (V CntCalls) _i))
+      (Json|SetField _f "failed" (get (V CntFailed) _i))
+      (Json|SetField _f "tokens_in" (get (V CntIn) _i))
+      (Json|SetField _f "tokens_out" (get (V CntOut) _i))
+      (Class|BPCAnalytics|Send :self (V Stats) :Event "calls" :Fields _f)))
+  (clear (V CntKey))
+  (clear (V CntProv))
+  (clear (V CntModel))
+  (clear (V CntCalls))
+  (clear (V CntFailed))
+  (clear (V CntIn))
+  (clear (V CntOut)))

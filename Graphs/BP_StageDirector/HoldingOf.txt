@@ -1,0 +1,7 @@
+; T62: the props the seat holds, for the state's "holding" (BP_Show.HeldBy) and T64's preview.
+(fn HoldingOf (Seat)
+  (clear (V RHeld))
+  (for _i (range (len (V RProps)))
+    (if (== (get (V HoldBy) _i) Seat)
+      (add (V RHeld) (get (V RProps) _i))))
+  (return (V RHeld)))

@@ -1,0 +1,12 @@
+; BPC_Stagehand.QueueMoment(Key) (T61): queues moments.<Key>.line at moments.<Key>.spot, if the key has a moment.
+(fn QueueMoment (Key)
+  (bind _hm (Json|HasField (V Moments) Key))
+  (if (not _hm)
+    (return))
+  (bind _m (Json|GetField (V Moments) Key))
+  (set Mom _m)
+  (bind _l (Json|GetField (V Mom) "line"))
+  (set TmpS _l)
+  (bind _sp (Json|GetField (V Mom) "spot"))
+  (set TmpSpot _sp)
+  (CallFunction|Enqueue :Key Key :Line (V TmpS) :Spot (V TmpSpot)))

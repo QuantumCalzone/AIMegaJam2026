@@ -1,0 +1,12 @@
+; BPC_Stagehand.Say(Key) (T61): one node per moment in BP_Show. Queues the key's moment line, then its style tip,
+; once per show, on a teaching show only. A key with neither is marked shown and shows nothing.
+; Static text for the player's screen only: it never goes to the shared log, game_messages or an AI.
+(fn Say (Key)
+  (if (not (V TipsOn))
+    (return))
+  (bind _seen (Utilities|Array|FindItem (V Shown) Key))
+  (if (>= _seen 0)
+    (return))
+  (add (V Shown) Key)
+  (CallFunction|QueueMoment :Key Key)
+  (CallFunction|QueueStyle :Key Key))

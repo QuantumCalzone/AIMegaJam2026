@@ -1,0 +1,7 @@
+; BPC_Stagehand.EndLine(Win, Reason) (T61): the end screen's line: "win", or on a loss T60's top reason when given, else "lose".
+(fn EndLine (Win Reason)
+  (if (or Win (Utilities|String|IsEmpty Reason))
+    (CallFunction|Say :Key (select Win "win" "lose"))
+    (return))
+  (add (V Shown) "lose")
+  (CallFunction|Enqueue :Key "lose" :Line Reason :Spot "end"))

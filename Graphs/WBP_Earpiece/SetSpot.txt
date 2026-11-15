@@ -1,0 +1,9 @@
+; WBP_Earpiece.SetSpot(Spot) (T61): both spots sit one Edge (24) from the bottom. "stage" is StageX (default 112) right of
+; center, in the gap between the chat column (bottom left) and the card (right). "end" is EndX (default -470) left of center,
+; beside the end screen's Play Again and Quit row, so it never covers the cards, the buttons or T60's ReasonText line just
+; above the buttons. StageX and EndX are the values to change if T34 or T60 move those panels.
+(fn SetSpot (Spot)
+  (bind _e (Class|UIStyle|UISize :Role "Edge"))
+  (bind _end (streq Spot "end"))
+  (bind _x (select _end (V EndX) (V StageX)))
+  (Layout|CanvasSlot|SetPosition :self (Slot|SlotasCanvasSlot (Variables|WBP_Earpiece|GetEarBox)) :InPosition (Math|Vector2D|MakeVector2D _x (- 0.0 _e))))

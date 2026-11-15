@@ -1,0 +1,14 @@
+; BPC_Stagehand.TipsNext -> Boolean (T61): what the next show will do, from Local/progress.json's "tips".
+; A missing file, or one without the field, means true (a first show). The title's toggle shows it.
+(fn TipsNext ()
+  (bind _p (cat (Utilities|Paths|GetProjectDirectory) "Local/progress.json"))
+  (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath _p)))
+  (if (not _ok)
+    (return true))
+  (set Prog _o)
+  (bind _h (Json|HasField (V Prog) "tips"))
+  (if (not _h)
+    (return true))
+  (bind _t (Json|GetField (V Prog) "tips"))
+  (set TmpB _t)
+  (return (V TmpB)))

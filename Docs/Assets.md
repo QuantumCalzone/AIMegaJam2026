@@ -103,6 +103,14 @@ Made with Leonardo.ai's paid API (private), from our own concept art. `Docs/Itch
 |---|---|---|---|
 | `Docs/ItchMedia/cover.png` (and `cover_art/cover_full.png`, 1129 × 896) | The itch.io cover, 630 × 500: the five robots on a red-curtained stage, the AIs squinting at the sweating cardboard costume in the middle, under the name NO HUMANS ON SET. | Our collage of `Docs/BotArt/cast.png` (`cover_art/layout.swift`), repainted with Leonardo.ai's instruction edit (`gemini-2.5-flash-image`), 156 API credits for six edited images, 2026-11-15. The name is set by our script `cover_art/title.swift` in Roboto Black. | Ours: made on the paid Leonardo API. The name is set in Roboto (Apache License 2.0, see "Fonts"). |
 
+### The stagehand's portrait
+
+Made with Leonardo.ai through its paid API (a private generation) on 2026-11-15 (T61), on my person's OK: one generation of four 1024 × 1024 candidates, picked by eye (candidate 2: soft pink eyes and a smile read as friendly; two of the others had red glowing eyes). The pick is cropped to the head and scaled to 256 × 256 for the earpiece's 66 px frame. `Docs/StagehandArt/leonardo.json` has the prompt, the negative prompt, the generation id and the seed.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Content/NHOS/UI/Stagehand/T_Stagehand_Portrait` (`Docs/StagehandArt/portrait_256.png`, from `Docs/StagehandArt/stagehand.png`) | The friendly AI stagehand's portrait in the earpiece (`WBP_Earpiece`): a cream clay robot head with soft pink screen eyes, a smile, a knit beanie and a backstage headset. | Leonardo.ai `lucid-origin` image, seed 1293198392 (prompt in `Docs/StagehandArt/leonardo.json`), about 67 API credits for four candidates, 2026-11-15 (T61). | Ours: made on the paid Leonardo API. |
+
 ## Audio
 
 Imported in T20 (2026-11-15) from `SourceAssets/Audio/` (see `Docs/AudioShortlist.md`) into `Content/NHOS/Audio/`. No AI audio tools were used. Kenney's packs are CC0, so no credit is needed; optional credit: "Kenney (www.kenney.nl)". The two CC BY files need the credit lines below in the credits and on the itch.io page.

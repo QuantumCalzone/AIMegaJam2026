@@ -1,0 +1,7 @@
+; T62: how many of the card's props the seat holds now (HoldBy).
+(fn HeldCount (Seat)
+  (set RCount 0)
+  (for _h (V HoldBy)
+    (if (== _h Seat)
+      (set RCount (+ (V RCount) 1))))
+  (return (V RCount)))

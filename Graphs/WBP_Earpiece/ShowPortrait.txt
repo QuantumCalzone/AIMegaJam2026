@@ -1,0 +1,10 @@
+; WBP_Earpiece.ShowPortrait (T61): puts PortraitTex in the rose ring, or collapses the portrait and its gap while it is empty.
+(fn ShowPortrait ()
+  (Utilities|IsValid (V PortraitTex)
+    (:"Is Valid"
+      (Class|Image|SetBrush :self (Variables|WBP_Earpiece|GetPortrait) :Brush (Widget|Brush|MakeBrushfromTexture :Texture (V PortraitTex) :Width 66 :Height 66))
+      (Widget|SetVisibility :self (Variables|WBP_Earpiece|GetPortraitBox) :InVisibility "HitTestInvisible")
+      (Widget|SetVisibility :self (Variables|WBP_Earpiece|GetEarGap) :InVisibility "HitTestInvisible"))
+    (:"Is Not Valid"
+      (Widget|SetVisibility :self (Variables|WBP_Earpiece|GetPortraitBox) :InVisibility "Collapsed")
+      (Widget|SetVisibility :self (Variables|WBP_Earpiece|GetEarGap) :InVisibility "Collapsed"))))

@@ -1,0 +1,13 @@
+; BPC_Stagehand.ReadSwitches (T61): Autoplay and TmpB (stagehand_tips) from Local/switches.json; both false if it is missing.
+(fn ReadSwitches ()
+  (set Autoplay false)
+  (set TmpB false)
+  (bind _dir (Utilities|Paths|GetProjectDirectory))
+  (bind (_sw _swok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _dir "Local/switches.json"))))
+  (if (not _swok)
+    (return))
+  (set Sw _sw)
+  (bind _a (CallFunction|SwBool :Key "autoplay"))
+  (set Autoplay _a)
+  (bind _t (CallFunction|SwBool :Key "stagehand_tips"))
+  (set TmpB _t))

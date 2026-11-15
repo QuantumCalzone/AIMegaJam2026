@@ -1,0 +1,8 @@
+; T62: a scene turn's or a reaction's does passes the stage director's rules before the shared log
+; (BP_StageDirector.AcceptDoes): Max 1 in a scene turn, 0 in a reaction. With no director, it goes through as it is.
+(fn CheckDoes (Seat Does Max)
+  (bind _dir (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Stage/BP_StageDirector.BP_StageDirector_C"))
+  (if (== _dir (V NullDir))
+    (return Does))
+  (bind _d (Class|BPStageDirector|AcceptDoes :self _dir :Seat Seat :Does Does :Max Max))
+  (return _d))
