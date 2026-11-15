@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T28 (Scene Prep shows the whole card, the scene shows only mine) is pushed and waits only for my OK on its Rules tab edit; its claim stays until then. Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. The first free task is T32 (Opus 5.5 · xhigh), which starts the UI/UX sweep (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done, so T40 (the headpieces), T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but all three write `Docs/PropArt/manifest.json`, so commit their manifest changes one at a time.
+**Next up:** T28 (Scene Prep shows the whole card, the scene shows only mine) is pushed and waits only for my OK on its Rules tab edit; its claim stays until then. Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. The first free task is T32 (Opus 5.5 · xhigh), which starts the UI/UX sweep (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done, so T40 (the headpieces), T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but all three write `Docs/PropArt/manifest.json`, so commit their manifest changes one at a time. The design's rules changed on 2026-11-15 (only the bots get the director's note, no decoy, a tie cuts nobody, a scene clock, no Director AI, rivals, visible passes, a last word, a 15-word cap, new end screens and a stagehand who teaches the rules); T50 to T61 build them, one task per change. T56 (the rivals) needs no editor and is free now. The others start after T30, in this order: T51, T50, T59, T53, T52, T54, T55, T57, T58, all before T38 and T34. T60 and T61 come after T33.
 
 ## Goal
 
@@ -159,6 +159,76 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T30.md](tasks/T30.md)
 
+- [ ] **T56 The bots want to survive, and each has a rival**
+  - **Model and effort:** Opus 5.5, high. Prompt design: two new goals that must not pull the bots away from finding the human.
+  - **Depends on:** T16, T26 (both done: the persona prompts and the Player names). No open task.
+  - **Needs:** the relay for a `--relay --free` check (no tokens). No editor, so it can run beside the editor lane. It changes `prompts.json`, as T51, T50, T59, T52, T54, T55, T57 and T58 do, so commit those changes one at a time.
+  - **Touches:** `Content/NHOS/Data/personas.json`, `Content/NHOS/Data/prompts.json` (`game`), `Tools/check_prompts.py`, `Docs/tasks/T56.md`.
+  - **Details:** [Docs/tasks/T56.md](tasks/T56.md)
+
+- [ ] **T51 No decoy note, and every note gets a category**
+  - **Model and effort:** Opus 5.5, high. The notes' data, the deal in `BP_Show`, two prompts and the checker change together.
+  - **Depends on:** T30 (the locks on `BP_Show` and `WBP_Stage`), T28 (the card that shows the note). T29 is done.
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay for a `--relay --free` check (no tokens). No show by hand: T50's covers it.
+  - **Touches:** `Content/NHOS/Data/scenes.json` (`notes`), `Content/NHOS/Data/prompts.json` (`game`, `director`, `_readme`), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` (the note deal in `ScenePrep`, `DecoySeat`, `DecoyText`, the `SETUP` line), `Content/NHOS/UI/WBP_Stage.uasset` (the decoy sentence on the card), `Graphs/` files for the graphs it writes, `Docs/tasks/T51.md`.
+  - **Details:** [Docs/tasks/T51.md](tasks/T51.md)
+
+- [ ] **T50 Only the bots get the director's note**
+  - **Model and effort:** Opus 5.5, high. The headline rule change: who gets the note, what my card shows and what the bots are told all change together.
+  - **Depends on:** T51 (the categories, and no decoy), T28 (my card)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay for a `--relay --free` check, and one relay show that Claude plays by hand itself (the check is how the real AIs play the note).
+  - **Touches:** `Content/NHOS/Data/prompts.json` (`game`, `asks.scene_turn`, `asks.free_talk`, `_readme`), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` (the note deal, `ActorState`), `Content/NHOS/UI/WBP_Stage.uasset` (my card: the category and the blacked-out note), `Graphs/` files for the graphs it writes, `Docs/ItchPage.md`, `Docs/tasks/T50.md`.
+  - **Details:** [Docs/tasks/T50.md](tasks/T50.md)
+
+- [ ] **T59 Every line is capped at 15 words, mine too**
+  - **Model and effort:** Sonnet 5.5, medium. One number, changed in every place that holds it.
+  - **Depends on:** T50 (the lock on `BP_Show`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay for a `--relay --free` check. My OK before the relay is deployed again, if its free mode holds the old cap.
+  - **Touches:** `Content/NHOS/Data/prompts.json` (`input`, `game`), `Content/NHOS/Data/llm.json` (`_readme`), `Content/NHOS/Data/free_mode.json`, `Relay/` (free mode, if it cuts at 25), `Tools/check_prompts.py` (`MAX_WORDS`), `Content/NHOS/Core/BP_Show.uasset` (`CapWords`), `Docs/ItchPage.md`, `Graphs/` files for the graphs it writes, `Docs/tasks/T59.md`.
+  - **Details:** [Docs/tasks/T59.md](tasks/T59.md)
+
+- [ ] **T53 Scene clock: one scene fewer than the cast, on a clapperboard**
+  - **Model and effort:** Opus 5.5, high. The show's length and its end check change, and a new piece goes on the in-show screen.
+  - **Depends on:** T59 (the lock on `BP_Show`), T30 (the lock on `WBP_Stage`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset` (`SceneCount` in `SetupShow`, the end check after the reactions, the scene banner's text), `Content/NHOS/UI/WBP_Stage.uasset` (the clapperboard), `Content/NHOS/Data/prompts.json` (`game`), `Tools/check_prompts.py` (`show.scenes`), `Graphs/` files for the graphs it writes, `Docs/tasks/T53.md`.
+  - **Details:** [Docs/tasks/T53.md](tasks/T53.md)
+
+- [ ] **T52 A tie cuts nobody**
+  - **Model and effort:** Opus 5.5, high. A new branch in The Cut that must leave every later phase in a good state.
+  - **Depends on:** T53 (the spare scene, and the show's end after the last scene)
+  - **Needs:** editor + Unreal MCP running, Test for Free with `force_tie` for the PIE shows, my answer to one question (do the reactions run after a tie?).
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset` (`Tally` and the step after a tie), `Content/NHOS/Data/prompts.json` (`game`), `Tools/check_prompts.py`, `Docs/switches.example.json` (`force_tie`), `Graphs/` files for the graphs it writes, `Docs/tasks/T52.md`.
+  - **Details:** [Docs/tasks/T52.md](tasks/T52.md)
+
+- [ ] **T54 New win condition: the final two, or on stage when the last scene ends**
+  - **Model and effort:** Sonnet 5.5, medium. The end is already built (T53, T52); this task makes every text say the new rule.
+  - **Depends on:** T53, T52 (a show can now end after its last scene with more than two actors on stage)
+  - **Needs:** editor + Unreal MCP running, Test for Free with `force_tie` and `spare_human` for the PIE shows, the relay for a `--relay --free` check.
+  - **Touches:** `Content/NHOS/Data/prompts.json` (`game`, `asks.closing`), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` (`EndShow`, `ShowEndScreen`, the `SHOW END` line), `Docs/ItchPage.md`, `Graphs/` files for the graphs it writes, `Docs/tasks/T54.md`.
+  - **Details:** [Docs/tasks/T54.md](tasks/T54.md)
+
+- [ ] **T55 Remove the Director AI**
+  - **Model and effort:** Opus 5.5, high. A role comes out of the prompts, the settings, free mode, the checker and `BP_Show` with nothing left pointing at it.
+  - **Depends on:** T52 (no tie reaches the Director any more)
+  - **Needs:** editor + Unreal MCP running, Test for Free with `force_tie` for the PIE shows, the relay for a `--relay --free` check, my OK before the relay is deployed again (it bundles `free_mode.json`).
+  - **Touches:** `Content/NHOS/Data/prompts.json` (`director`, `asks.tiebreak`, `_readme`), `Content/NHOS/Data/llm.json` (`roles.director`, the readmes), `Content/NHOS/Data/free_mode.json` (the `tiebreak` phase), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` (`AskDirector`, `PlayTiebreak`, `DirectorCut`, `DirectorState`, the tiebreak branch of `HandleReply`), `Relay/`, `Docs/switches.example.json`, `Docs/ItchPage.md`, `Graphs/` files for the graphs it writes, `Docs/tasks/T55.md`.
+  - **Details:** [Docs/tasks/T55.md](tasks/T55.md)
+
+- [ ] **T57 Silence and polish are tells: a pass shows as "passed"**
+  - **Model and effort:** Opus 5.5, high. A prompt change that reverses an old rule ("how a line is typed is never evidence"), plus a marker on the in-show screen.
+  - **Depends on:** T30 (the line queue plays each Free Talk line), T50 (the rule lines it sits beside), T55 (the lock on `BP_Show`)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay for a `--relay --free` check.
+  - **Touches:** `Content/NHOS/Data/prompts.json` (`game`, `asks.free_talk`), `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` (`PlayTalk`, the start of each Free Talk), `Content/NHOS/UI/WBP_Stage.uasset` or `Content/NHOS/Stage/BP_Robot.uasset` (the "passed" marker), `Graphs/` files for the graphs it writes, `Docs/tasks/T57.md`.
+  - **Details:** [Docs/tasks/T57.md](tasks/T57.md)
+
+- [ ] **T58 Last word: a reply for anyone @-mentioned in the final round**
+  - **Model and effort:** Opus 5.5, high. A new step between Free Talk and The Cut, with a new ask and a human turn.
+  - **Depends on:** T57 (the lock on `BP_Show`, and Free Talk as it leaves it), T30 (the line queue)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, the relay for a `--relay --free` check, my OK before the relay is deployed again (a new free-mode phase).
+  - **Touches:** `Content/NHOS/Data/prompts.json` (new `asks.last_word`, `game`), `Content/NHOS/Data/free_mode.json`, `Content/NHOS/Data/autoplay.json`, `Tools/check_prompts.py`, `Content/NHOS/Core/BP_Show.uasset` (`NextTalker`, `EndFreeTalk`, new functions, `ComputePrompt`), `Relay/`, `Graphs/` files for the graphs it writes, `Docs/tasks/T58.md`.
+  - **Details:** [Docs/tasks/T58.md](tasks/T58.md)
+
 - [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click (optional)**
   - **Model and effort:** Opus 5.5, high. A new widget placed over moving robots, timed by the line queue, and a new hidden state for the chat.
   - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style)
@@ -168,7 +238,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
-  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line.
+  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes).
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_SpeechBubble.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
@@ -187,10 +257,24 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/UI/WBP_Title.uasset`, `WBP_Keys.uasset`, `WBP_EndScreen.uasset`, `WBP_EndCard.uasset`, T21's unavailable-screen widget, `Graphs/` files for the graphs it writes, `Docs/tasks/T33.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T33.md](tasks/T33.md)
 
+- [ ] **T60 Win and lose screens: the reasoning, the top reason and the rivals**
+  - **Model and effort:** Opus 5.5, high. It turns the vote history into one named reason, and adds a reveal to the end screen.
+  - **Depends on:** T33 (the end screens' layout), T56 (the rivals), T54 (the two ways to win), T55 (no Director line in the vote history)
+  - **Needs:** editor + Unreal MCP running, Test for Free with `spare_human` and `force_tie` for the PIE shows, my answer to one question (how the top reason is found).
+  - **Touches:** `Content/NHOS/Core/BP_Show.uasset` (`ShowEndScreen`, `StoreClosing`, the vote history), `Content/NHOS/UI/WBP_EndScreen.uasset`, `Content/NHOS/UI/WBP_EndCard.uasset`, `Content/NHOS/Data/personas.json` (read only: `rival`), maybe `Content/NHOS/Data/llm.json` and `prompts.json` (if a vote names its tell), `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes, `Docs/tasks/T60.md`.
+  - **Details:** [Docs/tasks/T60.md](tasks/T60.md)
+
+- [ ] **T61 Stagehand onboarding: earpiece tips, a tips toggle and How to play**
+  - **Model and effort:** Opus 5.5, high. A new system with its own data file, component and widgets, called from the show at eight moments.
+  - **Depends on:** T33 (the title screen), T34 (the in-show screen), T50, T52, T53, T57, T58 (the rules its lines teach), T60 (the lose and win screens it speaks on)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
+  - **Touches:** new `Content/NHOS/Data/stagehand.json`, new `Content/NHOS/Core/BPC_Stagehand.uasset`, new `Content/NHOS/UI/WBP_Earpiece.uasset` and `WBP_HowToPlay.uasset`, `Content/NHOS/UI/WBP_Title.uasset` (the How to play button and the tips toggle), `Content/NHOS/UI/WBP_Stage.uasset` (the earpiece's place), `Content/NHOS/Core/BP_Show.uasset` (one call per moment), a new file in `Local/` for the first-show flag, `Tools/check_prompts.py`, `Docs/ItchPage.md`, `Graphs/` files for the graphs it writes, `Docs/tasks/T61.md`.
+  - **Details:** [Docs/tasks/T61.md](tasks/T61.md)
+
 - [ ] **T36 Each burning bill shows the logo of the provider it paid**
   - **Model and effort:** Sonnet 5.5, medium. Four small images, one image added to a widget that is already built, and one value passed through two calls.
   - **Depends on:** T35 (the money burn), T34 (it may change `WBP_MoneyBurn`). Steps 1 and 2 (find the logos and make the badges) need no editor and can run as prep at any time.
-  - **Needs:** my OK before each logo download, editor + Unreal MCP running, Test for Free with `burn_test` on for the checks, and my look at one free show in a game window. No relay show: in relay mode, `Burn` reads the same `CurProv` that `Deliver` prints for each relay reply.
+  - **Needs:** my OK before each logo download, editor + Unreal MCP running, Test for Free with `burn_test` on for the checks. No relay show: in relay mode, `Burn` reads the same `CurProv` that `Deliver` prints for each relay reply.
   - **Touches:** new `Docs/MoneyBurnArt/logo_*.png` and `Content/NHOS/UI/MoneyBurn/T_Logo_*.uasset`, `Content/NHOS/UI/WBP_BurningBill.uasset`, `Content/NHOS/UI/WBP_MoneyBurn.uasset` (`Burn`), `Content/NHOS/Core/BPC_LLMClient.uasset` (`Burn` only), `Docs/MoneyBurnArt.md`, `Docs/Assets.md`, `Graphs/BPC_LLMClient/Burn.txt`, `Graphs/WBP_MoneyBurn/Burn.txt`, new `Graphs/WBP_BurningBill/SetLogo.txt`.
   - **Details:** [Docs/tasks/T36.md](tasks/T36.md)
 
@@ -210,7 +294,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T44 The seven film-parody cards in the data files**
   - **Model and effort:** Opus 5.5, high. Story data, the director's notes and the checker's rules change together, and the base prompt changes in the doc first.
-  - **Depends on:** T34, T33, T36, T37 (my call on 2026-11-15: the art goes in after the UI tasks)
+  - **Depends on:** T34, T33, T36, T37 (my call on 2026-11-15: the art goes in after the UI tasks), T51 (a note has a category and no decoy)
   - **Needs:** my accept of the Rules tab's two suggested edits and my OK on the Bot Prompts edit, the relay for a `--relay --free` check (no tokens). No editor.
   - **Touches:** `Content/NHOS/Data/scenes.json`, `Content/NHOS/Data/prompts.json`, `Tools/check_prompts.py`, the design doc (Rules and Bot Prompts tabs), `Docs/tasks/T44.md`.
   - **Details:** [Docs/tasks/T44.md](tasks/T44.md)
@@ -218,35 +302,35 @@ These hold for every task, and for editor work outside the task list too. If one
 - [ ] **T45 Each card's props on the prop table**
   - **Model and effort:** Opus 5.5, high. Props become data-driven meshes across the prop actor, the stage director and the state the AIs read.
   - **Depends on:** T44 (the cards' props), T43 (the prop models and their fit)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** new `Content/NHOS/Data/props.json`, `Content/NHOS/Stage/BP_Prop.uasset`, `Content/NHOS/Stage/BP_StageDirector.uasset` (`ResetStage`), `Content/NHOS/Core/BP_Show.uasset` (the state's `set.props` at Scene Prep), `Content/NHOS/Maps/L_Stage.umap` (four prop actors), `Content/NHOS/Data/scenes.json`, `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T45.md](tasks/T45.md)
 
 - [ ] **T46 The two-tone capsule pill bots**
   - **Model and effort:** Opus 5.5, high. A new body for every robot that keeps all of T17's and T19's motion working.
   - **Depends on:** T43 (`M_Clay`), T45 (the lock on `L_Stage`)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset`, `M_Clay` instances in `Content/NHOS/Stage/Materials/`, `Content/NHOS/Maps/L_Stage.umap` (if the robots must be re-placed), `Graphs/BP_Robot/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T46.md](tasks/T46.md)
 
 - [ ] **T47 A headpiece for each role**
   - **Model and effort:** Opus 5.5, high. Costume data per seat, a new component on the robot and one call at Scene Prep.
   - **Depends on:** T44 (the seats), T46 (the head), T43 (the headpiece models)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/Data/scenes.json`, `Content/NHOS/Data/props.json` (or a new `costumes.json`), `Content/NHOS/Stage/BP_Robot.uasset`, `Content/NHOS/Core/BP_Show.uasset` (Scene Prep), `Tools/check_prompts.py`, `Graphs/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T47.md](tasks/T47.md)
 
 - [ ] **T48 The seven painted backdrops**
   - **Model and effort:** Opus 5.5, high. Seven images picked by eye, and a backdrop material that the stage lights don't wash out.
   - **Depends on:** T44 (the backdrop ids), T39 (the tool). Steps 1 and 2 (making and picking the images) need no editor and can run as prep once T44 is done.
-  - **Needs:** the Leonardo key in `Local/` and a few dollars of its API credit, editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Needs:** the Leonardo key in `Local/` and a few dollars of its API credit, editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** new `Docs/BackdropArt/` and `Docs/BackdropArt.md`, `Docs/Assets.md`, new `Content/NHOS/Stage/Backdrops/`, `Content/NHOS/Stage/Materials/M_Backdrop.uasset`, `Content/NHOS/Stage/BP_Backdrop.uasset`, `Graphs/BP_Backdrop/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T48.md](tasks/T48.md)
 
 - [ ] **T49 The clay opera-house stage**
   - **Model and effort:** Opus 5.5, high. Set dressing and materials across the whole level, framed for the house camera.
   - **Depends on:** T42 and T43 (the set pieces and `M_Clay`), T46 (the audience bots' body and the lock on `L_Stage`)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my look at one free show in a game window.
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/Materials/` (`M_Set` and its instances), `Content/NHOS/Stage/Set/`, `Docs/tasks/T49.md`.
   - **Details:** [Docs/tasks/T49.md](tasks/T49.md)
 
