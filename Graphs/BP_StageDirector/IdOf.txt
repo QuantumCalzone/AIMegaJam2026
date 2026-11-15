@@ -1,0 +1,5 @@
+; T62: the seat's id for check lines, or "?" when the seat isn't in the rules' state.
+(fn IdOf (Seat)
+  (if (or (< Seat 0) (>= Seat (len (V RIds))))
+    (return "?"))
+  (return (get (V RIds) Seat)))

@@ -3,9 +3,9 @@
 		"Pre-written replies for free mode: test shows that call no LLM and cost no tokens.",
 		"The game reads this file itself in Test for Free (BPC_LLMClient.FreeReply, no network). The relay also uses it when a request has \"free\": true (see Relay/README.md); the relay bundles it at build time, so a change here needs a push to reach the relay.",
 		"phases: how to tell which ask a request is, checked in order. A phase matches when the state has the 'when_field' key, or its 'ask' text contains one of 'ask_contains'. The first match wins; 'scene_turn' is the fallback.",
-		"Each phase says what to fill: 'lines' (speech), 'reasons' (reason), 'vote' (a random name from options), 'actions' (how many, from 'scene_actions'), 'pass_chance' (Free Talk only; the last word has none), 'echo_typed' (the input step: speech = the player's typed text, cut to 15 words).",
+		"Each phase says what to fill: 'lines' (speech), 'reasons' (reason), 'vote' (a random name from options), 'actions' (how many, from 'scene_actions': 0 or 1, and only in a scene turn since T62), 'pass_chance' (Free Talk only; the last word has none), 'echo_typed' (the input step: speech = the player's typed text, cut to 15 words).",
 		"Placeholders: {actor} = a random cast name other than you, {vote} = the chosen vote, {place} = a random place, {prop} = a random prop. Names come from the state the game sends (cast, set.places, set.props, options, you).",
-		"scene_actions: the actions a free actor may take, with weights. target and item use the same placeholders.",
+		"scene_actions: the actions a free actor may take, with weights. target and item use the same placeholders. The props are random, so some grabs, throws and gives break the action rules (BP_StageDirector.CanDo), and the game turns them into a look around, which is fine for a test.",
 		"Lines follow the game's legibility rules: plain sentences, 15 words at most, no brackets, emoji or all-caps words, no real names and no company names."
 	],
 	"phases": [
@@ -40,7 +40,6 @@
 		{
 			"id": "reaction_cut",
 			"ask_contains": ["You were just cut"],
-			"actions": [0, 1],
 			"lines": [
 				"Fine. I was an AI all along. Enjoy your mistake.",
 				"Cut? Me? My benchmark scores were the best on this stage.",
@@ -51,7 +50,6 @@
 		{
 			"id": "reaction",
 			"ask_contains": ["Reactions"],
-			"actions": [0, 1],
 			"lines": [
 				"Wow. I did not see that vote coming.",
 				"Well, that went badly. Who do we trust now?",
@@ -87,7 +85,7 @@
 		{
 			"id": "scene_turn",
 			"ask_contains": ["The scene, your turn"],
-			"actions": [1, 2],
+			"actions": [0, 1],
 			"lines": [
 				"Behold, the {prop}. It is the key to this whole story.",
 				"Meet me at the {place}. We have business to finish.",
@@ -102,6 +100,7 @@
 	"scene_actions": [
 		{ "verb": "move", "target": "{place}", "item": "", "weight": 3 },
 		{ "verb": "look", "target": "{actor}", "item": "", "weight": 2 },
+		{ "verb": "look", "target": "{prop}", "item": "", "weight": 1 },
 		{ "verb": "grab", "target": "", "item": "{prop}", "weight": 2 },
 		{ "verb": "give", "target": "{actor}", "item": "{prop}", "weight": 1 },
 		{ "verb": "throw", "target": "{place}", "item": "{prop}", "weight": 1 }

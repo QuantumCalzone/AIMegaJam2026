@@ -1,0 +1,14 @@
+; T62: the props a verb may use (T64's chips). grab: the card's props nobody holds, while the seat holds
+; fewer than MaxHeld. throw, give: the props the seat holds. Any other verb: none.
+(fn ItemsFor (Seat Verb)
+  (clear (V RList))
+  (bind _n (CallFunction|HeldCount :Seat Seat))
+  (if (and (streq Verb "grab") (< _n (V MaxHeld)))
+    (for _i (range (len (V RProps)))
+      (if (< (get (V HoldBy) _i) 0)
+        (add (V RList) (get (V RProps) _i)))))
+  (if (or (streq Verb "throw") (streq Verb "give"))
+    (for _j (range (len (V RProps)))
+      (if (== (get (V HoldBy) _j) Seat)
+        (add (V RList) (get (V RProps) _j)))))
+  (return (V RList)))

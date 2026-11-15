@@ -1,0 +1,21 @@
+; T62: the targets a verb may use (T64's chips). move: the places. look: the actors on stage but the seat,
+; the card's props, the places. throw: the actors on stage but the seat, the places. give: the actors on
+; stage but the seat who hold fewer than MaxHeld. Any other verb: none.
+(fn TargetsFor (Seat Verb)
+  (clear (V RList))
+  (bind _look (streq Verb "look"))
+  (bind _throw (streq Verb "throw"))
+  (bind _give (streq Verb "give"))
+  (if (or _look (or _throw _give))
+    (for _s (range (len (V RNames)))
+      (bind _ok (CallFunction|IsTarget :Seat Seat :S _s))
+      (bind _hc (CallFunction|HeldCount :Seat _s))
+      (if (and _ok (or (not _give) (< _hc (V MaxHeld))))
+        (add (V RList) (get (V RNames) _s)))))
+  (if _look
+    (for _p (V RProps)
+      (add (V RList) _p)))
+  (if (or (streq Verb "move") (or _look _throw))
+    (for _m (V RPlaces)
+      (add (V RList) _m)))
+  (return (V RList)))

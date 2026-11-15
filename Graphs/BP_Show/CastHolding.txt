@@ -1,0 +1,8 @@
+; T62: each cast entry (Cast[i] is seat i, BuildCast) gets "holding", the props that seat holds now.
+; ActorState calls it before every ask, because who holds what changes every turn and BuildCast runs only at
+; Scene Prep and a cut. Set Field changes the shared JSON object, so the entry in Cast changes too.
+(fn CastHolding ()
+  (for _i (range (len (V Cast)))
+    (bind _c (get (V Cast) _i))
+    (bind _h (CallFunction|HeldBy :Seat _i))
+    (Json|SetField _c "holding" _h)))

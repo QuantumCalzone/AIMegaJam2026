@@ -1,0 +1,12 @@
+; T62: who holds what, as an accepted action leaves it. AcceptPart calls it after CanDo says yes.
+; grab: the seat holds it. throw: nobody (it lands free). give: the target holds it.
+(fn Accept (Seat Verb Item Target)
+  (bind _pi (CallFunction|Match :List (V RProps) :Name Item))
+  (if (< _pi 0)
+    (return))
+  (bind _to (CallFunction|Match :List (V RNames) :Name Target))
+  (bind _who (select (streq Verb "grab") Seat (select (streq Verb "give") _to (- 0 1))))
+  (bind _hid (CallFunction|IdOf :Seat _who))
+  (if (or (streq Verb "grab") (or (streq Verb "throw") (streq Verb "give")))
+    (Utilities|Array|SetArrayElem (V HoldBy) _pi _who)
+    (print (cat "NHOS: HOLD " (get (V RProps) _pi) " " (select (< _who 0) "-" _hid)))))

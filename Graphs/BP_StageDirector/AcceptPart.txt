@@ -1,0 +1,15 @@
+; T62: one parsed part (ParsePart's PVerb, PItem, PTgt) is checked: a yes keeps it and changes who holds
+; what; a no becomes "looks around" and prints the rule, in Fallback's form. "looks around" itself passes.
+(fn AcceptPart (Seat)
+  (bind _sep (select (Utilities|String|IsEmpty (V AOut)) "" "; "))
+  (if (streq (V PVerb) "around")
+    (set AOut (cat (V AOut) _sep "looks around"))
+    (return))
+  (bind (_ok _why) (CallFunction|CanDo :Seat Seat :Verb (V PVerb) :Item (V PItem) :Target (V PTgt)))
+  (if _ok
+    (CallFunction|Accept :Seat Seat :Verb (V PVerb) :Item (V PItem) :Target (V PTgt))
+    (set AOut (cat (V AOut) _sep (V PPart)))
+    (return))
+  (bind _id (CallFunction|IdOf :Seat Seat))
+  (print (cat "NHOS: ACT " _id " look around - (" _why ": " (V PPart) ")"))
+  (set AOut (cat (V AOut) _sep "looks around")))

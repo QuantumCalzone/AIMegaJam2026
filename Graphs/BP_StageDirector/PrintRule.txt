@@ -1,0 +1,4 @@
+; T62: a check line for the Done-when's CanDo cases, run through Unreal MCP in a PIE show. The game never calls it.
+(fn PrintRule (Seat Verb Item Target)
+  (bind (_ok _why) (CallFunction|CanDo :Seat Seat :Verb Verb :Item Item :Target Target))
+  (print (cat "NHOS: RULE " Verb " " (select (Utilities|String|IsEmpty Item) "-" Item) " " (select (Utilities|String|IsEmpty Target) "-" Target) " = " (select _ok "yes" "no") " " _why)))

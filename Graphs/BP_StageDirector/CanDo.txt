@@ -1,0 +1,18 @@
+; T62: the one check for every actor's action, mine and the AIs' (AcceptDoes before the shared log,
+; T63's built action). A look with no target is a look around, always allowed. Why is "ok" or the rule.
+(fn CanDo (Seat Verb Item Target)
+  (if (and (streq Verb "look") (Utilities|String|IsEmpty Target))
+    (return true "ok"))
+  (if (not (or (streq Verb "move") (or (streq Verb "look") (or (streq Verb "grab") (or (streq Verb "throw") (streq Verb "give"))))))
+    (return false "unknown verb"))
+  (if (or (< Seat 0) (or (>= Seat (len (V RNames))) (>= Seat (len (V ROut)))))
+    (return false "unknown actor"))
+  (if (get (V ROut) Seat)
+    (return false "cut"))
+  (bind _iw (CallFunction|ItemCheck :Seat Seat :Verb Verb :Item Item))
+  (if (not (streq _iw "ok"))
+    (return false _iw))
+  (bind _tw (CallFunction|TargetCheck :Seat Seat :Verb Verb :Target Target))
+  (if (not (streq _tw "ok"))
+    (return false _tw))
+  (return true "ok"))
