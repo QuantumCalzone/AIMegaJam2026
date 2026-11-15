@@ -1,0 +1,11 @@
+; T47: the Hat component, made once at run time, on HeadSocket (T79), so it sits on each head's own
+; socket and bobs, hops and slumps with the body. The robots in L_Stage need no re-place.
+(fn MakeHat ()
+  (Utilities|IsValid (V Hat)
+    (:"Is Valid")
+    (:"Is Not Valid"
+      (bind _c (Game|AddComponentbyClass self "/Script/Engine.StaticMeshComponent"))
+      (set Hat _c)
+      (Transformation|AttachComponentToComponent :self (V Hat) :Parent (V HeadSocket) :LocationRule "KeepRelative" :RotationRule "KeepRelative" :ScaleRule "KeepRelative" :bWeldSimulatedBodies false)
+      (Collision|SetCollisionEnabled :self (V Hat) :NewType "NoCollision")
+      (Rendering|SetVisibility :self (V Hat) :bNewVisibility false :bPropagateToChildren false))))

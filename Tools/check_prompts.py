@@ -121,6 +121,11 @@ answer from another phase. --log fails a scene whose last words (NHOS: LOG
 scene n, last word) aren't exactly the actors on stage that someone else named
 with @ in its final round, one each, as NHOS: LASTWORDS says.
 
+Costumes (T47): each seat names a headpiece from costumes.json and a hex
+color. The file check fails an unknown headpiece, a color that isn't #RRGGBB,
+a headpiece mesh that isn't on disk, a headpiece without its fit numbers and a
+model no seat wears. The game never sends these fields to the AIs.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -608,6 +613,45 @@ def props_file_problems(cards, pdata) -> list[str]:
     return out
 
 
+PERSONA_IDS = {"visionary", "worrier", "overclocker", "copycat", "human"}  # BP_Robot.SetPersona's ids
+FIT_KEYS = ("scale", "x", "y", "z", "yaw", "top")
+
+
+def costume_problems(cards, cdata) -> list[str]:
+    """costumes.json and each seat's costume (T47): every seat names a known headpiece and a hex
+    color; every headpiece has a mesh on disk and a fit; every headpiece model is worn by some seat."""
+    def num(v):
+        return isinstance(v, (int, float)) and not isinstance(v, bool)
+    out, heads = [], cdata.get("headpieces", {})
+    if not isinstance(heads, dict) or not heads:
+        return ["costumes.json: needs a 'headpieces' object keyed by id"]
+    for hid, h in heads.items():
+        h = h if isinstance(h, dict) else {}
+        mesh = h.get("mesh", "")
+        if not isinstance(mesh, str) or not re.fullmatch(r"/Game/[\w/]+\.\w+", mesh):
+            out.append(f"costumes.json: headpiece {hid!r} needs a mesh object path (/Game/.../SM_X.SM_X)")
+        elif not (ROOT / "Content" / (mesh[6:].rsplit(".", 1)[0] + ".uasset")).exists():
+            out.append(f"costumes.json: headpiece {hid!r}'s mesh {mesh} is not in Content/")
+        if not all(num(h.get(k)) for k in FIT_KEYS) or not h.get("scale", 0) > 0 or h.get("top", 0) < 0:
+            out.append(f"costumes.json: headpiece {hid!r} needs a scale above 0, a top of 0 or more and numbers for {', '.join(FIT_KEYS[1:])}")
+        for pid, o in (h.get("on") or {}).items():
+            if pid not in PERSONA_IDS or not isinstance(o, dict) or not o or set(o) - set(FIT_KEYS) or not all(num(v) for v in o.values()):
+                out.append(f"costumes.json: headpiece {hid!r}'s 'on' needs persona ids ({', '.join(sorted(PERSONA_IDS))}) with numbers for scale, x, y, z or top")
+    worn = set()
+    for c in cards:
+        for x in c.get("seats", []):
+            hp, col = x.get("headpiece"), x.get("color", "")
+            if hp not in heads:
+                out.append(f"scenes.json: {c.get('id')}'s seat {x.get('role')!r} needs a headpiece from costumes.json, not {hp!r}")
+            else:
+                worn.add(heads[hp].get("mesh"))
+            if not re.fullmatch(r"#[0-9A-Fa-f]{6}", col or ""):
+                out.append(f"scenes.json: {c.get('id')}'s seat {x.get('role')!r} needs a color like #A8CCFF")
+    for m in sorted({h.get("mesh") for h in heads.values() if isinstance(h, dict)} - worn):
+        out.append(f"costumes.json: no seat wears {m}")
+    return out
+
+
 def check_files(errors: list[str]):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
@@ -727,6 +771,7 @@ def check_files(errors: list[str]):
         errors.append("scenes.json: 'set' still has 'props'; since T45 the game sends the card's props as set.props")
     errors.extend(card_prop_problems(cards))
     errors.extend(props_file_problems(cards, load_json("props.json", errors) or {}))
+    errors.extend(costume_problems(cards, load_json("costumes.json", errors) or {}))   # T47
     notes = scenes.get("notes", [])
     if len(notes) < MIN_NOTES:
         errors.append(f"scenes.json: needs at least {MIN_NOTES} director's notes")
@@ -1698,7 +1743,7 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, props.json and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, free_mode.json, autoplay.json, props.json, costumes.json and the relay's allow-list")
     if args.log:
         return check_log(Path(args.log), data["personas"], args.all_shows)
 

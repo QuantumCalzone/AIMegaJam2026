@@ -1,0 +1,12 @@
+; T47: costumes.json, read once per robot. A missing or broken file leaves CostObj empty, so every
+; headpiece is "unknown" and the robot stays bare-headed.
+(fn LoadCostumes ()
+  (if (V CostLoaded)
+    (return))
+  (set CostLoaded true)
+  (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectContentDirectory) "NHOS/Data/costumes.json"))))
+  (if (not _ok)
+    (print "NHOS: COSTUME costumes.json missing or not valid JSON")
+    (return))
+  (bind _h (Json|GetField _o "headpieces"))
+  (set CostObj _h))

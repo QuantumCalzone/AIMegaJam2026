@@ -1,0 +1,21 @@
+; T47: puts the headpieces on and off at the right moments with no change to BP_Show (my person's
+; call, 2026-11-15). EventTick calls this. It watches BP_Show's SceneNum, which goes up at each Scene
+; Prep: then every standing robot takes its headpiece off (a cut robot keeps its own as it lies
+; there), and a dress is due. The dress (DressFromShow) comes as soon as Phase is no longer
+; "scene prep", that is when the scene starts. SceneNum, not Phase alone, because an autoplay show
+; passes Scene Prep inside one frame, so a tick never sees Phase at "scene prep" there.
+(fn WatchShow ()
+  (Utilities|IsValid (V ShowRef)
+    (:"Is Valid"
+      (bind _n (Class|BPShow|GetSceneNum :self (V ShowRef)))
+      (if (!= _n (V ShowScene))
+        (set ShowScene _n)
+        (set DressDue true)
+        (if (not (V IsCut))
+          (CallFunction|SetHeadpiece :Id "" :Color "")))
+      (if (and (V DressDue) (not (streq (Class|BPShow|GetPhase :self (V ShowRef)) "scene prep")))
+        (set DressDue false)
+        (CallFunction|DressFromShow)))
+    (:"Is Not Valid"
+      (bind _s (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+      (set ShowRef _s))))
