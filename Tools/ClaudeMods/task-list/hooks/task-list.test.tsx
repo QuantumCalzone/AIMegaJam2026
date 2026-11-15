@@ -1,4 +1,5 @@
 import { expect, test } from 'claude-code/testing'
+import type { TestBody } from 'claude-code/testing'
 
 const PANE = {
   plugin: 'task-list',
@@ -283,5 +284,102 @@ test('with no plan in either folder, the error names both', async ($, on) => {
   expect((await ui.find({ type: 'Text', text: /^No Docs/ }))?.text).toBe(
     'No Docs/Plan.md in /elsewhere/wt or in the repo folder /elsewhere.',
   )
+  await ui.unmount()
+})
+
+// Two machines: this one has the tasks with a status file or a running
+// session here; a claim of yours with nothing here is your other machine's;
+// a teammate's claim names no machine.
+const MACHINE_PLAN = [
+  '# Plan',
+  '## Tasks',
+  '### Open',
+  '- [ ] **T52 A tie cuts nobody**',
+  '- [ ] **T37 Error messages**',
+  '- [ ] **T40 A teammate takes it**',
+  '- [ ] **T41 Runs here with no status file**',
+  '- [ ] **T42 Waits on me**',
+  '  - **Waiting:** the work is pushed. Left: my check.',
+  '- [ ] **T43 Not started**',
+].join('\n')
+
+const lock = (path: string, owner: string) => ({ id: path, path, owner: { name: owner }, locked_at: '' })
+const VERIFIED = JSON.stringify({
+  ours: [
+    lock('Docs/claims/T52', 'QuantumCalzone'),
+    lock('Content/NHOS/Core/BP_Show.uasset', 'QuantumCalzone'),
+    lock('Docs/claims/T37', 'QuantumCalzone'),
+  ],
+  theirs: [lock('Docs/claims/T40', 'Robotresistance')],
+})
+
+const mountMachines = async (
+  $: Parameters<TestBody>[0],
+  on: Parameters<TestBody>[1],
+  root: string,
+  locks: (argv: readonly string[]) => ReturnType<typeof ran>,
+) => {
+  on('ui.open', () => ({ value: { isPlaced: true } }))
+  on('ui.log', () => ({ value: undefined }))
+  on('session.root', () => ({ value: root }))
+  on('fs.read', (_, e) => {
+    const path = slashes(e.path)
+    if (path.endsWith('/Docs/Plan.md')) return { value: MACHINE_PLAN }
+    if (path.endsWith('/Agents/status/task-T52.md')) return { value: '- State: building' }
+    return { deny: `ENOENT: ${path}` }
+  })
+  on('fs.list', () => ({ value: [file('task-T52.md')] }))
+  on('process.run', (_, e) => (e.argv[1] === 'worktree' ? ran(worktrees(root)) : locks(e.argv)))
+  on('mcp.call', () => ({
+    value: {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify([{ sessionId: 'local_r', title: 'T41: Runs here', isRunning: true }]),
+        },
+      ],
+      isError: false,
+    },
+  }))
+  await $.command.run({
+    command: 'task-list',
+    args: '',
+    origin: { kind: 'composer' },
+    presentation: { isFullscreen: true, columns: 80 },
+  })
+  return $.ui.mount({ ...PANE, surface: 'desktop' })
+}
+
+test('each task in progress shows the machine that has it', async ($, on) => {
+  const ui = await mountMachines($, on, 'C:/repo', argv =>
+    argv.includes('--verify') ? ran(VERIFIED) : ran(''),
+  )
+  const row = async (id: string) => (await ui.find({ key: `task:${id}` }))?.text ?? ''
+  expect((await ui.find({ type: 'Text', text: /done · / }))?.text).toBe(
+    '0 done · 5 in progress · 1 not started',
+  )
+  // This PC: T52's status file is here, and a session here runs T41.
+  expect(await row('T52')).toContain('🪟 T52')
+  expect(await row('T41')).toContain('🪟 T41')
+  // The Mac: the claim is ours and nothing here works on it.
+  expect(await row('T37')).toContain('🍎 T37')
+  // A teammate's claim, and a task that only waits on me: no machine.
+  expect(await row('T40')).toMatch(/^● T40/)
+  expect(await row('T42')).toMatch(/^● T42/)
+  expect(await ui.find({ type: 'Text', text: /claimed by Robotresistance/ })).toBeDefined()
+  await ui.unmount()
+})
+
+test('without --verify every claim counts as yours, seen from a Mac', async ($, on) => {
+  const asked: string[] = []
+  const failed = { value: { exitCode: 1, stdout: '', stderr: 'no push access', isStdoutTruncated: false, isStderrTruncated: false } }
+  const ui = await mountMachines($, on, '/Users/me/repo', argv => {
+    asked.push(argv.join(' '))
+    return argv.includes('--verify') ? failed : ran('Docs/claims/T37\tQuantumCalzone\tID:2\n')
+  })
+  const row = async (id: string) => (await ui.find({ key: `task:${id}` }))?.text ?? ''
+  expect(asked).toEqual(['git lfs locks --verify --json', 'git lfs locks'])
+  expect(await row('T52')).toContain('🍎 T52')
+  expect(await row('T37')).toContain('🪟 T37')
   await ui.unmount()
 })
