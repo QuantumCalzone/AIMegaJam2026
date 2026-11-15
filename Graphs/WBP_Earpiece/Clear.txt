@@ -1,0 +1,7 @@
+; WBP_Earpiece.Clear (T61): stops the fade and hides the line at once (a new show, or a restart mid-line).
+(fn Clear ()
+  (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "Step")
+  (set Alpha 0.0)
+  (set Fading 0)
+  (Widget|SetRenderOpacity :self (Variables|WBP_Earpiece|GetEarBox) :InOpacity 0.0)
+  (Widget|SetVisibility :self (Variables|WBP_Earpiece|GetEarBox) :InVisibility "Collapsed"))

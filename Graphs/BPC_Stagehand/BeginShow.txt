@@ -1,0 +1,17 @@
+; BPC_Stagehand.BeginShow (T61): BP_Show calls it at each show's draw (DrawCast), restarts included.
+; It hushes the earpiece, forgets the keys shown, and decides whether this show teaches: the first show
+; (no Local/progress.json), or the show after the title's toggle set tips to true. With autoplay on,
+; only if Local/switches.json has stagehand_tips true.
+(fn BeginShow ()
+  (if (not (V Loaded))
+    (CallFunction|Load))
+  (CallFunction|Hush)
+  (clear (V Shown))
+  (CallFunction|ReadSwitches)
+  (if (V Autoplay)
+    (set TipsOn (and (V TmpB) (V Loaded)))
+    (print (cat "NHOS: STAGEHAND tips=" (select (V TipsOn) "on" "off") " why=autoplay"))
+    (return))
+  (bind _next (CallFunction|TipsNext))
+  (set TipsOn (and _next (V Loaded)))
+  (print (cat "NHOS: STAGEHAND tips=" (select (V TipsOn) "on" "off") " why=progress")))

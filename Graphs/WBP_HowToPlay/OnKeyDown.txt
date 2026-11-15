@@ -1,0 +1,8 @@
+; WBP_HowToPlay.OnKeyDown (T61, an override): Escape closes the screen; every other key goes on as before.
+(fn OnKeyDown (MyGeometry InKeyEvent)
+  (bind _k (Input|KeyEvent|GetKey InKeyEvent))
+  (bind _n (Utilities|String|ToString(Text) (Input|Key|GetKeyDisplayName _k false)))
+  (if (or (streq _n "Escape") (streq _n "Esc"))
+    (CallFunction|CloseHelp)
+    (return (Widget|EventReply|Handled)))
+  (return (Widget|EventReply|Unhandled)))

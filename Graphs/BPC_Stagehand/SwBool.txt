@@ -1,0 +1,8 @@
+; BPC_Stagehand.SwBool(Key) -> Boolean (T61): a true/false switch from the loaded switches.json (Sw); false if missing.
+(fn SwBool (Key)
+  (bind _h (Json|HasField (V Sw) Key))
+  (if (not _h)
+    (return false))
+  (bind _v (Json|GetField (V Sw) Key))
+  (set TmpB2 _v)
+  (return (V TmpB2)))

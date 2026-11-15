@@ -1,0 +1,10 @@
+; WBP_Earpiece.Play(Line, Hold) (T61): shows Line, fades in over UITime "Panel", holds Hold seconds, fades out, collapses.
+(fn Play (Line Hold)
+  (Class|Text|SetText :self (Variables|WBP_Earpiece|GetEarText) :Text (Utilities|Text|ToText(String) Line))
+  (set HoldLeft Hold)
+  (set Alpha 0.0)
+  (set Fading 1)
+  (Widget|SetRenderOpacity :self (Variables|WBP_Earpiece|GetEarBox) :InOpacity 0.0)
+  (Widget|SetVisibility :self (Variables|WBP_Earpiece|GetEarBox) :InVisibility "HitTestInvisible")
+  (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "Step")
+  (CallFunction|Step))

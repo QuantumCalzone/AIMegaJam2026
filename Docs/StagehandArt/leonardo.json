@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-15 21:54 UTC",
+    "generation": "1f1e13f1-116e-6b60-a615-acf95335a1a8",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Head-and-shoulders portrait of a friendly robot stagehand, polished claymation style: smooth saturated matte clay with faint thumbprints, chunky toy-like forms, small gold accents. A round cream-colored robot head with a rose-pink glowing screen face showing kind round eyes and a warm smile, wearing a black backstage headset with a small microphone boom and a dark knit beanie, a black stagehand t-shirt with a tiny gold wrench pin. Facing the viewer, centered, looking helpful and a little conspiratorial. Soft warm stage light, plain dark plum background. Cute, never creepy.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, logo, watermark, signature, human face, realistic photo, creepy, scary, skull, multiple characters, frame, border, hands"
+    },
+    "api_credit_cost": null,
+    "seed": 1293198392,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

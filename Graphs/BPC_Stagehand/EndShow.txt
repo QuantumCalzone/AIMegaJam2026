@@ -1,0 +1,11 @@
+; BPC_Stagehand.EndShow(Win, Reason) (T61): one node at the end screen. On a teaching show it says the win or lose line
+; over the end screen, then the next show won't teach (until the title's toggle). Reason is T60's top-reason line on a loss,
+; or "" (then stagehand.json's lose line, the doc's example, is said). TipsOn stays true until the next BeginShow,
+; so the end line still shows after the file says false. Autoplay never writes the file. A show that taught nothing writes nothing.
+(fn EndShow (Win Reason)
+  (if (not (V TipsOn))
+    (return))
+  (CallFunction|EndLine :Win Win :Reason Reason)
+  (if (V Autoplay)
+    (return))
+  (CallFunction|SetTipsNext :On false))

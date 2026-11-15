@@ -95,6 +95,14 @@ Made with Leonardo.ai through its paid API (private generations), one 2048 × 10
 | `Content/NHOS/Stage/Backdrops/T_Backdrop_bowling_lanes` (`Docs/BackdropArt/bowling_lanes.png`) | Painted backdrop for the bowling card: lanes, pins and retro triangle wall panels. | Leonardo.ai `lucid-origin` image (prompt and seed in `Docs/BackdropArt.md`), 67 API credits per four candidates, 2026-11-15 (T48). | Ours: made on the paid Leonardo API. |
 | `Content/NHOS/Stage/Backdrops/T_Backdrop_midnight_cubicles` (`Docs/BackdropArt/midnight_cubicles.png`) | Painted backdrop for the office card: gray cubicles with glowing green screens and a rainy window. | Leonardo.ai `lucid-origin` image (prompt and seed in `Docs/BackdropArt.md`), 67 API credits per four candidates, 2026-11-15 (T48). | Ours: made on the paid Leonardo API. |
 
+### The stagehand's portrait
+
+Made with Leonardo.ai through its paid API (a private generation) on 2026-11-15 (T61), on my person's OK: one generation of four 1024 × 1024 candidates, picked by eye (candidate 2: soft pink eyes and a smile read as friendly; two of the others had red glowing eyes). The pick is cropped to the head and scaled to 256 × 256 for the earpiece's 66 px frame. `Docs/StagehandArt/leonardo.json` has the prompt, the negative prompt, the generation id and the seed.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Content/NHOS/UI/Stagehand/T_Stagehand_Portrait` (`Docs/StagehandArt/portrait_256.png`, from `Docs/StagehandArt/stagehand.png`) | The friendly AI stagehand's portrait in the earpiece (`WBP_Earpiece`): a cream clay robot head with soft pink screen eyes, a smile, a knit beanie and a backstage headset. | Leonardo.ai `lucid-origin` image, seed 1293198392 (prompt in `Docs/StagehandArt/leonardo.json`), about 67 API credits for four candidates, 2026-11-15 (T61). | Ours: made on the paid Leonardo API. |
+
 ## Audio
 
 Imported in T20 (2026-11-15) from `SourceAssets/Audio/` (see `Docs/AudioShortlist.md`) into `Content/NHOS/Audio/`. No AI audio tools were used. Kenney's packs are CC0, so no credit is needed; optional credit: "Kenney (www.kenney.nl)". The two CC BY files need the credit lines below in the credits and on the itch.io page.

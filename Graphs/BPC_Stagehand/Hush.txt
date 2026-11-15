@@ -1,0 +1,11 @@
+; BPC_Stagehand.Hush (T61): clears the queue and the earpiece (a new show, or a restart mid-line).
+(fn Hush ()
+  (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "Next")
+  (clear (V QKey))
+  (clear (V QLine))
+  (clear (V QSpot))
+  (set Busy false)
+  (Utilities|IsValid (V Ear)
+    (:"Is Valid"
+      (Class|WBPEarpiece|Clear :self (V Ear)))
+    (:"Is Not Valid")))
