@@ -49,7 +49,6 @@ When you believe your task is done, tell your person in one line that it is done
 Source: the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). The Official Rules PDF linked there is the final authority.
 
 - **Theme: "Director's Cut".** Revealed at the kickoff livestream on Nov 11, 2026. Theme counts as one of the judging criteria, so the game should clearly be built around it.
-- **Dates:** The theme is revealed at the kickoff livestream on Nov 11, 2026, 11 AM PST. Building runs from Nov 12, 12:00 AM EST, to the **deadline on Nov 15, 5:59 PM PST (8:59 PM EST)**. Late entries are disqualified.
 - **No game assets before Nov 12.** The organizers told the team that setting up the project and planning the design before the jam is fine, but making assets is not. Anything made before the jam (prompts, scripts, design notes) must still be declared in the submission. This includes this repo's setup files (CLAUDE.md, `.gitignore`, `.gitattributes`, `Agents/README.md`).
 - **AI:** Any AI tools are allowed, with no limit on agents.
 - **Outside assets** (Fab and others) are allowed if the license permits. Every one must be listed in the submission, so record each asset's source and license in [Docs/Assets.md](Docs/Assets.md) when you add it.

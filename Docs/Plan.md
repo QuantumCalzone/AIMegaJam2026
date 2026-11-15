@@ -8,23 +8,13 @@ In this file, "I" and "my" mean the person at the keyboard. "Claude" means the a
 
 ## Goal
 
-Finish **No Humans On Set** and submit it to the 2026 Epic AI MegaJam before the deadline (see "Time check"). The "Open" tasks below are what we know is still to do. I add tasks as the game needs them, and a new task goes wherever it belongs in that list (see "Changing the plan").
+Finish **No Humans On Set** and submit it to the 2026 Epic AI MegaJam. The "Open" tasks below are what we know is still to do. I add tasks as the game needs them, and a new task goes wherever it belongs in that list (see "Changing the plan").
 
 **How the plan began.** It started as the plan for an MVP (T01 to T12), which had to answer one question as fast as possible: is it fun to fool an all-AI cast, and do the AIs catch a human at a fair rate (not every time, not never)? The gate (T12, 2026-11-14) said go. I liked it. Since then the plan covers the whole game. Until 2026-11-14 this file was `Docs/MVPPlan.md`. Finished tasks' files, the dev log and older notes in `Agents/` still use that name. Until 2026-11-14 this file also held every task's full text and a Findings section; since then each task has its own file in `Docs/tasks/` (see "Tasks").
 
-## Time check
+## Cut order
 
-First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), Fri Nov 13, about 10 PM PST. The deadline is Sun Nov 15, 5:59 PM PST (Nov 16, 01:59 UTC). That leaves about 44 hours, sleep included. T01 to T12 finished ahead of the first schedule.
-
-| Target | When (PST) |
-|---|---|
-| Plain speech (T13), UI/UX polish (T14) and story scenes (T15) | Sat Nov 14, by noon |
-| One LLM per AI player (T16, T18) and the stage art (T17) | Sat Nov 14, by 6 PM |
-| Robots act out their actions (T19), the UI fixes from my playtest (T27 to T31), speech bubbles (T38), the money burn (T35), the UI/UX sweep (T32 to T34), audio (T20), relay and key entry (T21) | Sun Nov 15, by 10 AM |
-| Packaged, played and the submission ready (by me, by hand; T22 and T23 were dropped) | Sun Nov 15, by 2 PM |
-| Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
-
-12 tasks at up to an hour each is about 12 hours of agent time, plus your time on checks and playtests. Two lanes can run at once: tasks that need no editor (T13, T15, T16, and finding audio files for T20) beside the editor tasks (T14, T17, T18 to T21), which go one at a time. If we fall behind, cut in this order: T24 (timers), then T31 (Tab completion), then T38 (speech bubbles; the chat stays as it is now, and T34 polishes that), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
+If I decide to cut scope, cut in this order: T24 (timers), then T31 (Tab completion), then T38 (speech bubbles; the chat stays as it is now, and T34 polishes that), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
 
 ## How to run a task
 
@@ -160,7 +150,7 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T30.md](tasks/T30.md)
 
-- [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click (cut if we fall behind)**
+- [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click (optional)**
   - **Model and effort:** Opus 5.5, high. A new widget placed over moving robots, timed by the line queue, and a new hidden state for the chat.
   - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
@@ -202,16 +192,16 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/Data/errors.json`, `Content/NHOS/Core/BPC_LLMClient.uasset` (new `ErrorKind` and `ErrorLine`; `ParseReply`, `HandleHttp`, `OnHealth`, `OnKeyTest`, `KeyTestResult`, `SetMode`, `Deliver` and the free-mode path for `error_test`), `Content/NHOS/Core/BP_Show.uasset` (one node that shows the note on the banner), `Content/NHOS/UI/WBP_Stage.uasset` only if the banner needs a longer hold for a note, `Tools/check_prompts.py`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes.
   - **Details:** [Docs/tasks/T37.md](tasks/T37.md)
 
-- [ ] **T31 Tab completes names, places and props (cut if we fall behind)**
+- [ ] **T31 Tab completes names, places and props (optional)**
   - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
   - **Depends on:** T27 (the input row), T30 (the lock on `WBP_Stage`)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (the input box's keys and the suggestion row), maybe `Content/NHOS/Core/BP_Show.uasset` (to hand the names, places and props to the widget), `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T31.md](tasks/T31.md)
 
-- [ ] **T24 Timers (only if time allows)**
+- [ ] **T24 Timers (optional)**
   - **Model and effort:** Sonnet 5.5, medium. Small additions to phases that already work.
-  - **Depends on:** T19, T30 (the input row and the line queue; it took over this task's AI typing delay on 2026-11-14). Cut it first if we fall behind.
+  - **Depends on:** T19, T30 (the input row and the line queue; it took over this task's AI typing delay on 2026-11-14). First in the cut order.
   - **Needs:** editor + Unreal MCP running, my API key.
   - **Touches:** `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Data/scenes.json`.
   - **Details:** [Docs/tasks/T24.md](tasks/T24.md)
