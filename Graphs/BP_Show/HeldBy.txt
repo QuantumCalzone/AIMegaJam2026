@@ -1,0 +1,11 @@
+; T62: the props a seat holds, for the state's "holding" (ActorState, CastHolding). A cut seat holds nothing
+; (its robot dropped everything, BP_Robot.DropAll); the next Scene Prep resets the rules anyway. Empty with no director.
+(fn HeldBy (Seat)
+  (clear (V HeldTmp))
+  (if (get (V SeatCut) Seat)
+    (return (V HeldTmp)))
+  (bind _dir (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Stage/BP_StageDirector.BP_StageDirector_C"))
+  (if (== _dir (V NullDir))
+    (return (V HeldTmp)))
+  (bind _h (Class|BPStageDirector|HoldingOf :self _dir :Seat Seat))
+  (return _h))

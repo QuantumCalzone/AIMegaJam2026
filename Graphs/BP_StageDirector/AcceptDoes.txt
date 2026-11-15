@@ -1,0 +1,22 @@
+; T62: the step between a reply and the shared log, for every actor's scene turn (Max 1) and reaction (Max 0),
+; through BP_Show.CheckDoes. Keeps the first Max actions, prints NHOS: EXTRA for the rest, and checks each
+; kept one (AcceptPart). With no action kept, "passes" and "stands still" stay; dropped actions leave "stands still".
+(fn AcceptDoes (Seat Does Max)
+  (set AOut "")
+  (set AKept 0)
+  (set ADrop 0)
+  (bind _parts (Utilities|String|ParseIntoArray :SourceString Does :Delimiter "; " :CullEmptyStrings true))
+  (for _p _parts
+    (CallFunction|ParsePart :Part _p)
+    (if (not (Utilities|String|IsEmpty (V PVerb)))
+      (if (< (V AKept) Max)
+        (set AKept (+ (V AKept) 1))
+        (CallFunction|AcceptPart :Seat Seat)
+        (else
+          (set ADrop (+ (V ADrop) 1))))))
+  (bind _id (CallFunction|IdOf :Seat Seat))
+  (if (> (V ADrop) 0)
+    (print (cat "NHOS: EXTRA " _id " " (str (V ADrop)) " dropped")))
+  (if (== (V AKept) 0)
+    (return (select (> (V ADrop) 0) "stands still" Does)))
+  (return (V AOut)))

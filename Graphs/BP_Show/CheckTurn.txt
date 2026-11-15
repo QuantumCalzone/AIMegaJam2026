@@ -1,0 +1,5 @@
+; T62: PlayTurn calls it first for each seat, in the shuffled log order, so "the first to play gets it" holds.
+; The checked does replaces the stored one, so MakeEntry, ShowLine and the NHOS: LOG line all read it.
+(fn CheckTurn (Seat)
+  (bind _d (CallFunction|CheckDoes :Seat Seat :Does (get (V TurnDoes) Seat) :Max 1))
+  (Utilities|Array|SetArrayElem (V TurnDoes) Seat _d))
