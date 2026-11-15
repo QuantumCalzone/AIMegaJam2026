@@ -1,0 +1,6 @@
+; T63: spelling_wait ran out (SpellAsk's timer). An empty SpellTag means the reply came in time.
+; The late reply finds no tag and HandleReply drops it (NHOS: STALE reply spell-<n>).
+(fn SpellTimeout ()
+  (if (Utilities|String|IsEmpty (V SpellTag))
+    (return))
+  (CallFunction|SpellSkip :Why "late"))
