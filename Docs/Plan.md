@@ -24,7 +24,7 @@ First written Fri Nov 13, 2026, about 3:20 PM PST. Rewritten at the gate (T12), 
 | Packaged and played (by me, by hand; T22 was dropped), submission ready (T23) | Sun Nov 15, by 2 PM |
 | Submit | Sun Nov 15, by 3 PM. Keep 3 hours of margin. |
 
-12 tasks at up to an hour each is about 12 hours of agent time, plus your time on checks and playtests. Two lanes can run at once: tasks that need no editor (T13, T15, T16, and finding audio files for T20) beside the editor tasks (T14, T17, T18 to T21), which go one at a time. If we fall behind, cut in this order: T24 (timers), then T31 (Tab completion), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
+12 tasks at up to an hour each is about 12 hours of agent time, plus your time on checks and playtests. Two lanes can run at once: tasks that need no editor (T13, T15, T16, and finding audio files for T20) beside the editor tasks (T14, T17, T18 to T21), which go one at a time. If we fall behind, cut in this order: T24 (timers), then T31 (Tab completion), then T38 (speech bubbles; the chat stays as it is now, and T34 polishes that), then T19 to Move and Look only, then T20 to music and three sounds, then T17's robot motion.
 
 ## How to run a task
 
@@ -159,7 +159,7 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T30.md](tasks/T30.md)
 
-- [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click**
+- [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click (cut if we fall behind)**
   - **Model and effort:** Opus 5.5, high. A new widget placed over moving robots, timed by the line queue, and a new hidden state for the chat.
   - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style)
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
@@ -168,7 +168,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
-  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen)
+  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line.
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_SpeechBubble.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
@@ -210,7 +210,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T23 Submission**
   - **Model and effort:** Sonnet 5.5, medium. Writing and checklists.
-  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T38, T24 if it is done, T31 if it is done, T36 if it is done, and T37 if it is done
+  - **Depends on:** T19, T20, T21, T27, T28, T29, T30, T32, T33, T34, T35, T24 if it is done, T31 if it is done, T36 if it is done, T37 if it is done, and T38 if it is done
   - **Needs:** me, to record the video, set up the itch.io page and send the form. The packaged build, which I make myself.
   - **Touches:** `Docs/ItchPage.md`, new `Docs/Submission.md`, `Packaged/` (not in git).
   - **Details:** [Docs/tasks/T23.md](tasks/T23.md)
