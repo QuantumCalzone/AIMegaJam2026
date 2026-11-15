@@ -1,0 +1,6 @@
+(fn OpenPrep ()
+  (Class|WBPStage|SetPrepMode :self (Variables|Default|GetStage) :Prep true)
+  (Development|PrintString (Utilities|String|Append "NHOS: PREP shown scene=" (Utilities|String|ToString(Integer) (Variables|Default|GetSceneNum))) false)
+  (CallFunction|LoadSwitches)
+  (if (Variables|Default|GetAutoplay)
+    (CallFunction|StartFromPrep)))

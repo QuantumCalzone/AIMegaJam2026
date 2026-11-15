@@ -1,0 +1,4 @@
+(fn PrepPrompt ()
+  (if (and (Variables|Default|GetReady) (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "scene prep"))
+    (Variables|Default|SetPTurn "Read the card on the right: the scene, your role and secret note, the cast and the stage. Press Start the scene when you are ready.")
+    (Variables|Default|SetPHint "Read your card first.")))

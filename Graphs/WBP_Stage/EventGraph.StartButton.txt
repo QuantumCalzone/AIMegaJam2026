@@ -1,0 +1,5 @@
+; Only the StartButton chain of WBP_Stage's EventGraph (T28). The rest of EventGraph has no source here.
+; write_graph_dsl keeps the event chains it doesn't name, so this writes only this one.
+(event OnClicked(StartButton)
+  (bind _show (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (Class|BPShow|StartFromPrep :self _show))

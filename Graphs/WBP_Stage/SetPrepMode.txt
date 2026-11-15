@@ -1,0 +1,11 @@
+(fn SetPrepMode (Prep)
+  (if Prep
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "SelfHitTestInvisible")
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetStartButton) :InVisibility "Visible")
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Collapsed")
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Collapsed")
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "Collapsed")
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetStartButton) :InVisibility "Collapsed")
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Visible")
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Visible"))))

@@ -1,0 +1,5 @@
+(fn StartFromPrep ()
+  (if (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "scene prep")
+    (Class|WBPStage|SetPrepMode :self (Variables|Default|GetStage) :Prep false)
+    (Development|PrintString (Utilities|String|Append "NHOS: PREP start scene=" (Utilities|String|ToString(Integer) (Variables|Default|GetSceneNum))) false)
+    (CallFunction|StartScene)))
