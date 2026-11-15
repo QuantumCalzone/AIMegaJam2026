@@ -8,7 +8,7 @@ The design doc was read, not changed: Art Inspiration, "The bots" (still T46's p
 
 Sources read: `Docs/tasks/T75.md` to `T80.md` and their plan entries, `T46.md`, `T19.md` (Findings), `T57-build.md`, `T60-build.md`, `T47-build.md`, `T38-build.md` (its `BP_Robot` part), `Docs/BotArt.md`, every file in `Graphs/BP_Robot/`, `Graphs/BPC_LinePlayer/LoadPacing.txt` and `Graphs/BPC_LLMClient/{LoadConfig,FreeAction}.txt` (the JSON and switch forms), `Tools/check_prompts.py`, `Tools/dslpp.py` and `Docs/switches.example.json`.
 
-> **WAITING FOR MY PERSON'S ANSWERS:** two questions on the new cast's faces, under "Questions for my person". Neither blocks parts 1 to 4; both change only `FaceParts` (part 2g) and the box's and Meta's brows.
+> **My person answered both questions** (2026-11-15, to the prep session), as recommended: the box's drawn mouth is posed like the others, and Meta's and the box's brows are dark and don't glow. See "Answers" under "Questions for my person". Don't ask again.
 
 ## In short
 
@@ -30,6 +30,8 @@ Sources read: `Docs/tasks/T75.md` to `T80.md` and their plan entries, `T46.md`, 
 ## Questions for my person
 
 Both are about the new cast (T80), so they change only `FaceParts` and the brows' material. My recommendation is first in each.
+
+**Answers (my person, 2026-11-15, to the prep session):** 1: **pose the drawn mouth**, as recommended (part 2g's last bullet doesn't apply). 2: **dark brows that don't glow**, as recommended (`BrowMat` is `ClayMat` or a black marker material for Meta and the box, `TintBrows` off). Copy these answers under "Findings" in `T75.md`.
 
 1. **My cardboard box's drawn mouth.** T80 draws a smile on the box. **(Recommended) Pose it like the bots' mouths:** a black marker line that changes shape with each emotion. It's a cartoon, and with a fixed smile my robot would show far less than the four bots (only its eyes, brows and gesture), which reads as a tell. **Or keep the drawn smile fixed:** only the eyes behind the slots, the brows and the gesture change.
 2. **Brows on Meta's doll head and my box.** **(Recommended) Dark brows that don't glow:** dark clay just above Meta's glasses, black marker just above the box's eye slots. Glowing brows suit only a screen. **Or glowing LED brows** like the screen faces of OpenAI, Anthropic and SpaceXAI.
