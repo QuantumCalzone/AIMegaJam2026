@@ -4,13 +4,18 @@ Back to [T68](T68.md). A PC prep session wrote this on 2026-11-15, without the e
 
 **What lands before T68 and may move these places:** T71, T72 and T73 (audio; T71 changes `RunCue`'s music calls and may give the `"phase"` cue a key of its own, T73 changes `BPC_LinePlayer`), T57, T58, T62 to T66 (the chain on `BP_Show` and `WBP_Stage`), T79 and T80 (`BP_Robot` only), and **T67** (the relay's `POST /event`). The sheet was first written from [T67.md](T67.md); before the push, **T67 landed on `origin` (`69988c5`, "waits for the deploy OK and the live checks")**, and the route, the body, every event's fields and caps, the limit and the report were checked against it (`Relay/src/index.js` `checkEvent`, `Relay/relay.config.json` `events`, `Tools/analytics_report.py`, `Relay/README.md`'s new section, `T67.md`'s Findings). Everything below matches it. Where a line still says **check against T67**, re-check only if T67 changed after `69988c5`.
 
+**My person changed T68 on 2026-11-15, in T67's session** (T67's closing commit `c0ae863` added two bullets to step 5 of `T68.md` and a "Builds only" line to T68's plan entry), and this sheet follows both:
+- **Builds only.** The game sends events only when it runs as a packaged build. PIE and game windows started from the editor send nothing, whatever the other settings say, except when the `analytics` switch is `test` (then every event is marked `"test": true`, so the checks still work). Part 2b's `Init` tests for a packaged build with **`Content/Paks/` exists**: on this PC the packaged build has `Packaged/Windows/AIMegaJam2026/Content/Paks/AIMegaJam2026-Windows.pak` (and no `.uproject`), and the project folder has no `Content/Paks/`. `Is Packaged for Distribution` is true only for Shipping, and the jam build is Development (the task says so).
+- **Our own machines.** The game prints its player id once at launch, `NHOS: ANALYTICS player <id>`, so each of our machines' ids can go in `ignore_players` in `Local/stats.json` (T67's report leaves those players out).
+
 **Sources read:** `T68.md` and its plan entry; `T69.md` (what it needs from T68); `T67.md` and T67's commit `69988c5`; `T71-build.md` (`1c52b3a`: its own `PhaseKey` for the music and its `RunCue`), `T65-build.md` and `T66-build.md` (`54d81d9`, `20da1e2`: no change to `CueHeader`, `RunCue`, `OpenPrep`, `DrawCast` or the header texts); `T61-build.md` part 5 and 7 (the title toggle and the per-moment hooks, the model for part 6 here); `T57-build.md`, `T58-build.md` (the last word's header), `T64-build.md` (the turn header and `SetPhase`), `T71.md`, `T66.md`; findings in `T05.md` (`BPC_LLMRequest`), `T18.md`, `T21.md` (`BPC_HttpGet`, relaunch), `T28.md` (`OpenPrep`), `T30.md` (the cue queue), `T37.md` (`ErrorKind`, `errors.json`), `T53.md` (the header texts), `T54-build.md` (`WinReason`, `SHOW END`); the `Graphs/` sources of `BP_Show` (`RunCue`, the six `Cue*`, `OpenPrep`, `DrawCast`, `ShowTitle`, `EndShow`, `SetWinReason`), `BPC_LLMClient` (`SetMode`, `Ask`, `SendReq`, `HandleHttp`, `Deliver`, `ParseReply`, `FlushLocal`, `FlushOne`, `ErrorTestFail`, `ErrorKind`, `BackstageNote`, `HealthFail`, `CheckRelay`, `GoDown`, `ShowUnavailable`, `LoadConfig`, `StartShowSession`, `Relaunch`), `BPC_LinePlayer` (`Cue`, `CueHoldFor`, `Pump`), `WBP_Title`, `WBP_Unavailable`, `WBP_Keys`, `UIStyle`; `Tools/check_prompts.py` (the `llm.json` checks); `CLAUDE.md`, `Docs/ItchPage.md`, `Relay/README.md`, `Content/NHOS/Data/llm.json`, `Docs/switches.example.json`; the `NHOS: CUE` lines of this PC's last game logs (`Saved/Logs/`). The design doc (Tech & Build rev 28, Rules rev 45) was read, not changed: it says nothing about analytics or the title screen, and T68 doesn't touch it.
 
 ## In short
 
 - **`SG_Player`** (new SaveGame, slot `player`): `PlayerId` (32 lowercase hex, no dashes, from `New Guid`), `FirstSeen` (`YYYY-MM-DD`, UTC), `Launches`, `AnalyticsOn` (true at first). Three tiny functions (`Fill`, `Bump`, `SetOn`) so no other Blueprint sets its variables directly.
 - **`BPC_Analytics`** (new component on `BP_Show`, as `Analytics`): `Send(Event, Fields)` builds T67's body and posts it to `<relay>/event` through a **`BPC_LLMRequest`**, the request component every LLM ask already uses. The reply comes back through **`BPC_LLMClient.HandleHttp`**, which hands any `event-` tag straight to `BPC_Analytics.OnSent` (one new block at its top). No retry and no queue of its own: a failed event is printed and dropped. Named wrappers keep each caller to one node: `Launch`, `ModePicked`, `ShowStart`, `CuePhase`, `SendPhase`, `ShowEnd`, `Error`, `SetOn`, `IsOn`.
-- **Prints:** `NHOS: ANALYTICS <event> <fields JSON>` for every send, `NHOS: ANALYTICS ok <event>` when the relay answers `ok`, `NHOS: ANALYTICS fail <event> <why>` when it doesn't, `NHOS: ANALYTICS ready ...` at load, or only `NHOS: ANALYTICS off why=<switch|autoplay|player>` when nothing will be sent.
+- **Prints:** `NHOS: ANALYTICS <event> <fields JSON>` for every send, `NHOS: ANALYTICS ok <event>` when the relay answers `ok`, `NHOS: ANALYTICS fail <event> <why>` when it doesn't. At load, `NHOS: ANALYTICS player <id> test=... build=... packaged=...` when events will go out, or only `NHOS: ANALYTICS off why=<switch|editor|autoplay|player> player=<id> packaged=...` when nothing will be sent (the id is on that line too, so an off run still prints one `NHOS: ANALYTICS` line).
+- **Who sends:** a packaged build (`Content/Paks/` exists), unless the switch is `off`, autoplay is on, or the player turned Play stats off; and any game, editor included, when the switch is `test`.
 - **When it sends (one node per caller):**
   - `launch`: `BP_Show.ShowTitle`, after `LoadSwitches` (the title **and** autoplay both pass there; `WBP_Title` alone would miss autoplay, and the Done-when needs `launch` in an autoplay show).
   - `mode`: `BPC_LLMClient.SetMode`, right before its `(return true "")`; and from `ShowStart` when nothing was picked in this level (autoplay, a relaunch).
@@ -21,7 +26,7 @@ Back to [T68](T68.md). A PC prep session wrote this on 2026-11-15, without the e
   - `calls`: `BPC_LLMClient` counts each ask by provider and model (`NoteModel` in `Ask`, `CountCall` in `Deliver`), and `FlushCalls` sends one event per provider and model, then clears. `BPC_Analytics` calls it at each Scene Prep and at the end (question 1).
 - **The opt-outs:** a "Play stats: on/off" button with the caption "Sends anonymous play stats" on the title's playbill (`WBP_Title`), and the `analytics` switch (`off`, `test`, or missing/`""`). Autoplay sends only with `test`.
 - **Docs:** `CLAUDE.md` (Test for free; packaging), `Docs/ItchPage.md` (Test for Free, What gets sent where), `llm.json` (`build`, `_readme`), `Docs/switches.example.json` (`analytics`, `_readme`), `Relay/README.md` (the game's free mode; what the game sends, next to T67's drop-off sentence). **A push that touches `Relay/` redeploys the relay**, so it needs my person's OK typed in the T68 session (T55, T58 found the same).
-- **Runs:** two short launches (`launches` 1 then 2, same id), a free autoplay show with `"analytics": "test"` (every event, `ok` acks, no `LogScript`), the same with `"off"`, a PIE title check with screenshots and the toggle, then `python Tools/analytics_report.py --test`.
+- **Runs:** two short launches (`launches` 1 then 2, same id), a free autoplay show with `"analytics": "test"` (every event, `ok` acks, no `LogScript`), the same with `"off"` and with `""` (the editor sends nothing), a PIE title check with screenshots and the toggle, `python Tools/analytics_report.py --test`, and one packaged build that prints `packaged=true`.
 
 ## Questions for my person
 
@@ -56,7 +61,9 @@ The T68 session shows this list to my person when it closes the task.
 16. **The toggle is a button, not a check box,** as T61 found for its tips toggle (decision 13 there): `UIStyle` has no check box style, and a button takes T33's focus ring and keyboard. Label "Play stats: on" / "Play stats: off" (Secondary), caption "Sends anonymous play stats" (the task's words), on the playbill right under the three mode buttons.
 17. **Turning stats back on sends nothing**; the next event goes out as usual.
 18. **`build` is the build day, `YYYY-MM-DD`,** starting at `"2026-11-15"`. T70 sets it to the day it packages the submission build.
-19. **An autoplay run sends only when the switch is `test`;** a missing switch with autoplay on is off (`why=autoplay`).
+19. **An autoplay run sends only when the switch is `test`;** a missing switch with autoplay on is off (`why=autoplay`). In the editor that case is already off (`why=editor`), so `autoplay` matters only in a packaged build.
+20. **A packaged build is one whose content folder has `Paks/`** (`Utilities|Paths|DirectoryExists` on `GetProjectContentDirectory` + `Paks`). It is set at `Init` as `Packaged` and printed on the load line, so a check can see it. Every build T70 makes uses `-pak` (`CLAUDE.md`'s package command), so it always has the folder; the editor's project folder never has one (git doesn't track one, and nothing writes there).
+21. **The id print is the load line.** With events going out it is `NHOS: ANALYTICS player <id> ...`, the task's words. With nothing going out the one `off` line carries `player=<id>`, because the Done-when allows only `NHOS: ANALYTICS off` in an off run. Either way the id prints once per level load, and a packaged build with no switches file prints the first form. The title toggle's own print is `NHOS: ANALYTICS toggle on|off`, so it never looks like an id.
 
 ## Wording that comes from the task or the doc
 
@@ -94,7 +101,7 @@ The T68 session shows this list to my person when it closes the task.
    3. `ObjectTools.list_properties` on `BPC_LLMClient`: the types of `UsageIn`, `UsageOut` (expected String: `FlushOne` sets `"0"`, `Deliver` concatenates them), `Model`, `Mode`, `Session` (String), `FreeHeaders` (`HttpHeader`), `TmpObj` (the JSON object type that `Json|LoadJsonfromString` returns; `Send`'s `Fields` input and `FlushCalls`' local use it), and whether `Session`, `Mode` and `FreeHeaders` can be read from another object (`Class|BPCLLMClient|GetSession :self ...`, the form `WBP_Title` uses for `Class|BPShow|GetLLMClient`). If not, add three pure getter functions to the client (`GetSessionId`, `GetModeNow`, `GetHeaders`) and use those.
    4. `find_nodes` in `BP_Show` for `K2Node_VariableGet` titled `Get TurnNum`, `Get TalkRound`, `Get SceneNum`, `Get ShowWin`, `Get WinReason` (use the full node class path, T30). `TurnNum` and `TalkRound` are T61-build's names (from T06, T08); if they differ, use the real ones in part 4b.
    5. **`WBP_Title`'s widget tree** (the UMG toolset from `list_toolsets`; T33 built it with it): the playbill's `VerticalBox` inside `Bill`, the slots of `PlayRing`, `FreeRing`, `KeysRing` and their captions `PlayCap`, `FreeCap`, `KeysCap`, then `ModeNote` and `CreditText`; their slot paddings (for part 6a's spacing).
-   6. **Node names the DSL hasn't used yet** (`BlueprintTools` describes the DSL; `get_node_type_pins` leaves no nodes behind, T18): the SaveGame nodes (written here as `Game|SaveGame|DoesSaveGameExist`, `LoadGamefromSlot`, `SaveGametoSlot`, `CreateSaveGameObject`), the cast to `SG_Player` (written `Utilities|Casting|CastToSG_Player`, the form of `CastToStaticMesh` in `BP_Prop/SetProp.txt`), String to Int (written `Utilities|String|StringToInt`), `Utilities|String|ToLower`, and the date parts (written `Math|DateTime|GetYear`, `GetMonth`, `GetDay`). Use the real names in parts 1 to 3.
+   6. **Node names the DSL hasn't used yet** (`BlueprintTools` describes the DSL; `get_node_type_pins` leaves no nodes behind, T18): the Blueprint Paths library's Directory Exists (written `Utilities|Paths|DirectoryExists`, next to the `Utilities|Paths|GetProjectContentDirectory` the files already use), the SaveGame nodes (written here as `Game|SaveGame|DoesSaveGameExist`, `LoadGamefromSlot`, `SaveGametoSlot`, `CreateSaveGameObject`), the cast to `SG_Player` (written `Utilities|Casting|CastToSG_Player`, the form of `CastToStaticMesh` in `BP_Prop/SetProp.txt`), String to Int (written `Utilities|String|StringToInt`), `Utilities|String|ToLower`, and the date parts (written `Math|DateTime|GetYear`, `GetMonth`, `GetDay`). Use the real names in parts 1 to 3.
 
 ## 1. `SG_Player` (new SaveGame)
 
@@ -143,7 +150,8 @@ Three functions, so `BPC_Analytics` never sets another object's variables (only 
 |---|---|---|---|
 | `Ready` | Boolean | false | `Init` has run |
 | `Active` | Boolean | false | events go out: `SwitchOk` and `PlayerOn` |
-| `SwitchOk` | Boolean | false | the switch allows sending (not `off`; with autoplay, only `test`) |
+| `SwitchOk` | Boolean | false | sending is allowed: `test`, or a packaged build with the switch not `off` and autoplay off |
+| `Packaged` | Boolean | false | this is a packaged build (`Content/Paks/` exists) |
 | `PlayerOn` | Boolean | true | the player's own setting (the save's `AnalyticsOn`) |
 | `Test` | Boolean | false | the switch is `test`: every event says `"test": true` |
 | `AutoOn` | Boolean | false | `autoplay` in `Local/switches.json` |
@@ -166,8 +174,9 @@ Each in its own file in `Graphs/BPC_Analytics/`, named after the function. The f
 **`Init()`**: reads its settings, the switch and the save. `Launch` calls it first; every other entry point calls it if `Ready` is false.
 
 ```lisp
-; T68: settings (llm.json relay and build), the analytics and autoplay switches, and the player's save.
-; It runs once per level load, from Launch (BP_Show.ShowTitle); the other entry points call it if it hasn't.
+; T68: settings (llm.json relay and build), the analytics and autoplay switches, whether this is a packaged
+; build, and the player's save. Builds only (my person's call): only a packaged build sends, unless the switch
+; is "test". It runs once per level load, from Launch (BP_Show.ShowTitle); the other entry points call it if it hasn't.
 (fn Init ()
   (set Ready true)
   (bind _cl (Actor|GetComponentbyClass :self (Components|GetOwner) :ComponentClass "/Game/NHOS/Core/BPC_LLMClient.BPC_LLMClient_C"))
@@ -200,7 +209,8 @@ Each in its own file in `Graphs/BPC_Analytics/`, named after the function. The f
       (bind _sp (Json|GetField _so "autoplay"))
       (set AutoOn _sp)))
   (set Test (streq (V Switch) "test"))
-  (set SwitchOk (and (not (streq (V Switch) "off")) (or (not (V AutoOn)) (V Test))))
+  (set Packaged (Utilities|Paths|DirectoryExists (cat (Utilities|Paths|GetProjectContentDirectory) "Paks")))
+  (set SwitchOk (or (V Test) (and (V Packaged) (and (not (streq (V Switch) "off")) (not (V AutoOn))))))
   (bind _ex (Game|SaveGame|DoesSaveGameExist :SlotName "player" :UserIndex 0))
   (if _ex
     (bind _sg (Game|SaveGame|LoadGamefromSlot :SlotName "player" :UserIndex 0))
@@ -216,11 +226,15 @@ Each in its own file in `Graphs/BPC_Analytics/`, named after the function. The f
   (set PlayerId (Class|SGPlayer|GetPlayerId :self (V Save)))
   (set PlayerOn (Class|SGPlayer|GetAnalyticsOn :self (V Save)))
   (set Active (and (V SwitchOk) (V PlayerOn)))
+  (set TmpStr (cat " packaged=" (Utilities|String|ToString(Boolean) (V Packaged))))
   (if (V Active)
-    (print (cat "NHOS: ANALYTICS ready player=" (V PlayerId) " test=" (Utilities|String|ToString(Boolean) (V Test)) " build=" (V Build) " relay=" (Utilities|String|ToString(Boolean) (not (Utilities|String|IsEmpty (V Url))))))
+    (print (cat "NHOS: ANALYTICS player " (V PlayerId) " test=" (Utilities|String|ToString(Boolean) (V Test)) " build=" (V Build) " relay=" (Utilities|String|ToString(Boolean) (not (Utilities|String|IsEmpty (V Url)))) (V TmpStr)))
     (else
-      (print (cat "NHOS: ANALYTICS off why=" (select (V SwitchOk) "player" (select (streq (V Switch) "off") "switch" "autoplay")))))))
+      (print (cat "NHOS: ANALYTICS off why=" (select (V SwitchOk) "player" (select (streq (V Switch) "off") "switch" (select (V Packaged) "autoplay" "editor"))) " player=" (V PlayerId) (V TmpStr))))))
 ```
+
+- The `why` order: `switch` (the switch is `off`), then `editor` (not packaged, switch not `test`), then `autoplay` (packaged, autoplay on), then `player` (Play stats off).
+- If `Utilities|Paths|DirectoryExists` isn't the node's name (survey 6), the Blueprint Paths library's "Directory Exists" is the one. A second test that also works: `<project dir>/AIMegaJam2026.uproject` exists only outside a packaged build (`FileExists`); use it only if the first fails, and write which under Findings.
 
 - **The `off` line is the only `NHOS: ANALYTICS` line an off run prints** (the Done-when), once the save exists. A first launch also prints `NHOS: ANALYTICS new player` (`NewSave`), even when off; run B (part 10) comes after run E made the save, so it prints only the off line.
 - `Utilities|IsValid` on a variable that was never set is the `IsValid` macro `BackstageNote` uses.
@@ -271,8 +285,9 @@ Each in its own file in `Graphs/BPC_Analytics/`, named after the function. The f
 
 ```lisp
 ; T68: posts one analytics event to <relay>/event (T67) and never waits for the answer: the reply comes back
-; through BPC_LLMClient.HandleHttp, which hands any event- tag to OnSent. Nothing goes out when the analytics
-; switch is off, when autoplay runs without "test", or when the player turned Play stats off.
+; through BPC_LLMClient.HandleHttp, which hands any event- tag to OnSent. Nothing goes out from the editor
+; (PIE, a game window) unless the analytics switch is "test", nor when it is "off", when autoplay runs
+; without "test", or when the player turned Play stats off (Init sets Active).
 (fn Send (Event Fields)
   (if (not (V Ready))
     (CallFunction|Init))
@@ -458,7 +473,7 @@ Each in its own file in `Graphs/BPC_Analytics/`, named after the function. The f
   (Class|SGPlayer|SetOn :self (V Save) :On NewOn)
   (Game|SaveGame|SaveGametoSlot :SaveGameObject (V Save) :SlotName "player" :UserIndex 0)
   (set Active (and (V SwitchOk) (V PlayerOn)))
-  (print (cat "NHOS: ANALYTICS player " (select NewOn "on" "off"))))
+  (print (cat "NHOS: ANALYTICS toggle " (select NewOn "on" "off"))))
 ```
 
 ```lisp
@@ -486,14 +501,15 @@ Each in its own file in `Graphs/BPC_Analytics/`, named after the function. The f
 
 Read by `BPC_Analytics.Init`, once per level load, from `Local/switches.json` (the other readers stay as they are: `BPC_LLMClient.LoadConfig` reads `mode`, `burn_test` and `error_test` once at load; `BP_Show.LoadSwitches` reads `autoplay`, `force_tie` and `spare_human` at each scene and Cut; `DrawCast` reads `ai_seats`; `BPC_LinePlayer.LoadPacing` reads `fast_lines`).
 
-| `analytics` | `autoplay` false | `autoplay` true |
-|---|---|---|
-| missing or `""` | sends (a player's game) | off (`why=autoplay`) |
-| `"test"` | sends, `"test": true` | sends, `"test": true` |
-| `"off"` | off (`why=switch`) | off (`why=switch`) |
+| `analytics` | Editor (PIE, a game window from the editor) | Packaged, `autoplay` false | Packaged, `autoplay` true |
+|---|---|---|---|
+| missing or `""` | off (`why=editor`) | sends (a player's game) | off (`why=autoplay`) |
+| `"test"` | sends, `"test": true` | sends, `"test": true` | sends, `"test": true` |
+| `"off"` | off (`why=switch`) | off (`why=switch`) | off (`why=switch`) |
 
-- **This PC:** add `"analytics": "off"` to `Local/switches.json` as part of T68 (step 5 of the task), and leave it there. Write a note in `Agents/` for `all` (a new file, `<UTC timestamp>-quantumcalzone-analytics-switch.md`): "T68 is in: set `"analytics": "off"` in your `Local/switches.json`, or every PIE and game-window show you run sends real events. Use `"test"` for a check that needs them."
+- **This PC:** add `"analytics": "off"` to `Local/switches.json` as part of T68 (step 5 of the task), and leave it there. The editor sends nothing without `test` anyway; the switch makes it plain, and it covers a package run that finds the file. Write a note in `Agents/` for `all` (a new file, `<UTC timestamp>-quantumcalzone-analytics-switch.md`): "T68 is in. The editor sends no analytics events unless `Local/switches.json` has `"analytics": "test"` (for checks). A packaged build sends real events: before you test one, put `{"analytics": "off"}` or `"test"` in its `Local/switches.json`, or add its id (the log's `NHOS: ANALYTICS player <id>`) to `ignore_players` in `Local/stats.json`."
 - **A packaged build** has no `Local/switches.json`, so it sends normally: part 9b's `CLAUDE.md` line covers test runs of a package.
+- **Our ids for `ignore_players`:** the packaged build keeps its own save (under the user's local app data), apart from the editor's `Saved/SaveGames/player.sav`, so it has its own id. Run F prints it; give it to my person for `Local/stats.json` (the file is per machine and not in git; the T68 session may add it itself if `Local/stats.json` exists, since it is this PC's own file).
 
 ## 4. `BP_Show`
 
@@ -839,7 +855,7 @@ Not edited by this prep session; the T68 session makes these edits.
 
   and add at the end of the `_readme`:
 
-  > build: the game's version (the build day, YYYY-MM-DD), sent with every analytics event; at most 20 characters. Every mode, Test for Free included, sends a few anonymous analytics events to the relay's /event (BPC_Analytics, T68): an id made on the first launch, the mode, how far each show gets, call counts and tokens per provider and model, and error kinds. Nothing goes when the player turns Play stats off on the title, or when Local/switches.json has "analytics": "off".
+  > build: the game's version (the build day, YYYY-MM-DD), sent with every analytics event; at most 20 characters. In a packaged build, every mode, Test for Free included, sends a few anonymous analytics events to the relay's /event (BPC_Analytics, T68): an id made on the first launch, the mode, how far each show gets, call counts and tokens per provider and model, and error kinds. Nothing goes when the player turns Play stats off on the title, or when Local/switches.json has "analytics": "off". The editor sends none unless that switch is "test".
 
 - `free_mode.json`'s `_readme` line "(BPC_LLMClient.FreeReply, no network)" stays: `FreeReply` itself still makes no network call. Changing that file would redeploy the relay.
 
@@ -868,7 +884,7 @@ Replace the last sentence
 
 with
 
-> In free mode the game makes no LLM call: `BPC_LLMClient` builds each reply itself from the pre-written lines in `Content/NHOS/Data/free_mode.json`, the same way the relay's own free mode does. Free mode still sends analytics events to the relay, as every mode does (`BPC_Analytics`, T68), unless they are turned off. Keep `"analytics": "off"` in your `Local/switches.json`, so your test shows stay out of the data, and set it to `"test"` only for a check that needs the events.
+> In free mode the game makes no LLM call: `BPC_LLMClient` builds each reply itself from the pre-written lines in `Content/NHOS/Data/free_mode.json`, the same way the relay's own free mode does. A packaged build still sends analytics events to the relay in free mode, as in every mode (`BPC_Analytics`, T68), unless they are turned off. The editor (PIE, and game windows started from it) sends none unless `Local/switches.json` has `"analytics": "test"`, which marks every event as a test; use that only for a check that needs the events, and keep `"analytics": "off"` otherwise.
 
 ### 9b. `CLAUDE.md`, "Package a Windows build"
 
@@ -878,7 +894,7 @@ Replace
 
 with
 
-> It reads the API keys from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`, and the switches from `Local/switches.json` in the same folder. With no switches file it sends real analytics events (T68), so before you test a package, put `{"analytics": "test"}` in that `switches.json`. Delete both files before you zip a build.
+> It reads the API keys from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`, and the switches from `Local/switches.json` in the same folder. A packaged build sends real analytics events (T68), so before you test one, put `{"analytics": "off"}` (or `"test"`) in that `switches.json`, or add the package's player id (its log prints `NHOS: ANALYTICS player <id>`) to `ignore_players` in `Local/stats.json`. Delete both files before you zip a build.
 
 ### 9c. `Docs/ItchPage.md`
 
@@ -901,7 +917,7 @@ with
 
 After the **Free mode** paragraph (it ends with the canned reply's description), add a paragraph:
 
-> The game's own **Test for Free** doesn't use this flag: it builds its replies itself and makes no LLM call. It still sends analytics events to `/event`, as every mode does, unless the player turns Play stats off or `Local/switches.json` has `"analytics": "off"` (T68).
+> The game's own **Test for Free** doesn't use this flag: it builds its replies itself and makes no LLM call. A packaged build still sends analytics events to `/event` in Test for Free, as in every mode, unless the player turns Play stats off or `Local/switches.json` has `"analytics": "off"` (T68).
 
 ### 9e. `Relay/README.md`, T67's `/event` section (step 4)
 
@@ -922,7 +938,7 @@ T67's opening paragraph ("Test for Free makes no network call to it for asks") i
 - Add `"analytics": "off"` after `"error_test": ""`.
 - In `_readme`, replace "free makes no network call:" with "free makes no LLM call:", and add at the end:
 
-  > analytics (T68): "off" sends no analytics event; "test" sends them marked "test": true, which Tools/analytics_report.py leaves out unless given --test; missing or "" sends them as a player's game does. An autoplay run sends only when it is "test". It is read once when the game loads. Keep it "off" on a dev machine, so test shows stay out of the data.
+  > analytics (T68): "off" sends no analytics event; "test" sends them marked "test": true, from the editor too, and Tools/analytics_report.py leaves them out unless given --test; missing or "" sends them only from a packaged build, as a player's game does (the editor sends none). An autoplay run sends only when it is "test". It is read once when the game loads. Keep it "off" on a dev machine.
 
 ### 9g. The relay deploy
 
@@ -943,7 +959,7 @@ All runs in a game window on the saved assets, from the repo folder, with this P
    grep -h "NHOS: ANALYTICS" Saved/Logs/T68e1.log Saved/Logs/T68e2.log
    ```
 
-   `T68e1`: `new player`, `ready player=<32 hex> test=true build=2026-11-15 relay=true`, `launch {"launches":1,"first_seen":"<today>"}`, `ok launch`. `T68e2`: `ready player=<the same id>`, `launch {"launches":2,...}`, `ok launch`. No `fail`. (JSON spacing may differ.)
+   `T68e1`: `new player`, `player <32 hex> test=true build=2026-11-15 relay=true packaged=false`, `launch {"launches":1,"first_seen":"<today>"}`, `ok launch`. `T68e2`: `player <the same id> ...`, `launch {"launches":2,...}`, `ok launch`. No `fail`. (JSON spacing may differ.)
 
 ### Run A: a free autoplay show, analytics on (the Done-when's first check)
 
@@ -956,7 +972,7 @@ All runs in a game window on the saved assets, from the repo folder, with this P
    grep -c "LogScript" Saved/Logs/T68on.log
    ```
 
-   - In order: `ready`, `launch` (`launches` 3 after run E), `mode {}`, `show_start {}`, `phase {"phase":"scene_prep","scene":1}`, then per scene `turn_1` to `turn_3`, `free_talk_1`, `free_talk_2`, `last_word` (only if `NHOS: LASTWORDS ... named=` isn't `none`), `vote`, `reactions`, the next `scene_prep` preceded by its `calls` events (one per provider: `"model":"free"`, `tokens_in` 0, `failed` ≥ 1 for the providers `error_test` hit), ..., `closing`, the last `calls`, `show_end {"result":"win","reason":"final_two"}` (or `last_scene`; with `spare_human` the human is never cut, and T54's runs ended at the final two after 3 scenes). `reason` matches the `NHOS: SHOW END reason=` line.
+   - In order: `player <id> ... packaged=false`, `launch` (`launches` 3 after run E), `mode {}`, `show_start {}`, `phase {"phase":"scene_prep","scene":1}`, then per scene `turn_1` to `turn_3`, `free_talk_1`, `free_talk_2`, `last_word` (only if `NHOS: LASTWORDS ... named=` isn't `none`), `vote`, `reactions`, the next `scene_prep` preceded by its `calls` events (one per provider: `"model":"free"`, `tokens_in` 0, `failed` ≥ 1 for the providers `error_test` hit), ..., `closing`, the last `calls`, `show_end {"result":"win","reason":"final_two"}` (or `last_scene`; with `spare_human` the human is never cut, and T54's runs ended at the final two after 3 scenes). `reason` matches the `NHOS: SHOW END reason=` line.
    - `error {"kind":"overloaded"}` lines (the `errors.json` case `ErrorKind` gave; check it against the `NHOS: ERROR ... where=turn` lines).
    - An `ok <event>` for every sent event, and no `fail` line.
    - `LogScript`: 0.
@@ -973,7 +989,7 @@ All runs in a game window on the saved assets, from the repo folder, with this P
        ev, rest = m.groups()
        if ev == "ok": ok += 1
        elif ev == "fail": fail += 1; print("FAIL", rest)
-       elif ev in ("ready", "off", "new", "player"): pass
+       elif ev in ("player", "off", "new", "toggle"): pass
        else:
            sent.append(ev)
            if ev == "phase": f = json.loads(rest); phases.append((f["scene"], f["phase"]))
@@ -998,17 +1014,25 @@ All runs in a game window on the saved assets, from the repo folder, with this P
 
 1. Switches as run A, but `"analytics": "off"` and `"error_test": ""`.
 2. Launch with `-log=T68off.log`, wait for `NHOS: SHOW END`, close it.
-3. Expected: `grep -h "NHOS: ANALYTICS" Saved/Logs/T68off.log` prints exactly one line, `NHOS: ANALYTICS off why=switch`. `NHOS: CUE stat` lines still print (the queue runs the same). `SHOW END` reached, `LogScript` 0.
-4. **Run C (the autoplay rule):** the same with `"analytics": ""` prints only `NHOS: ANALYTICS off why=autoplay`. A short run is enough: close it after `NHOS: PREP shown scene=1`.
+3. Expected: `grep -h "NHOS: ANALYTICS" Saved/Logs/T68off.log` prints exactly one line, `NHOS: ANALYTICS off why=switch player=<run E's id> packaged=false`. `NHOS: CUE stat` lines still print (the queue runs the same). `SHOW END` reached, `LogScript` 0.
+4. **Run C (builds only):** the same with `"analytics": ""` prints only `NHOS: ANALYTICS off why=editor player=<id> packaged=false`: a game window from the editor sends nothing without `test`. A short run is enough: close it after `NHOS: PREP shown scene=1`.
 
 ### Run D: PIE, the title and the toggle (the Done-when's third check)
 
 1. Switches: `"autoplay": false`, `"analytics": "test"`, `"error_test": ""`, `"fast_lines": false`, `"spare_human": false`. Follow your brief's rule for starting PIE, and check `Agents/status/` that nobody else drives the editor.
 2. PIE in a 1600 × 900 floating window. Screenshot the title: `Saved/T68/shots/title_p16.png` (not in git): the "Play stats: on" button with its caption under the three ways to play, in the playbill's paper style, no clipping. Also at 1280 × 720: `title_p12.png`.
-3. Tab to Play stats (four Tabs from Play via Relay; the gold ring shows on it: `stats_focus.png`), press Enter: the label reads "Play stats: off" (`stats_off.png`), and the log prints `NHOS: TITLE click stats=off`, `NHOS: ANALYTICS analytics_off {}`, `NHOS: ANALYTICS player off`, then `NHOS: ANALYTICS ok analytics_off`.
+3. Tab to Play stats (four Tabs from Play via Relay; the gold ring shows on it: `stats_focus.png`), press Enter: the label reads "Play stats: off" (`stats_off.png`), and the log prints `NHOS: TITLE click stats=off`, `NHOS: ANALYTICS analytics_off {}`, `NHOS: ANALYTICS toggle off`, then `NHOS: ANALYTICS ok analytics_off`.
 4. Click Test for Free and play into turn 1 (or the whole scene). The log has **no** `NHOS: ANALYTICS <event>` line after `analytics_off` (no `mode`, `show_start` or `phase`), and the `NHOS: CUE stat` lines still print.
-5. Stop PIE. Start PIE again: the title reads "Play stats: off" (the save kept it), and the log prints `NHOS: ANALYTICS off why=player` and no `launch`. Press Enter on Play stats again: "Play stats: on", `NHOS: ANALYTICS player on`, nothing sent for it. Stop PIE.
+5. Stop PIE. Start PIE again: the title reads "Play stats: off" (the save kept it), and the log prints `NHOS: ANALYTICS off why=player player=<id> packaged=false` and no `launch`. Press Enter on Play stats again: "Play stats: on", `NHOS: ANALYTICS toggle on`, nothing sent for it. Stop PIE.
 6. **As a first-time player** (write it under Findings): is the line findable but quiet, does "Play stats" read as a choice and not a mode, does the playbill still read top to bottom.
+
+### Run F: a packaged build knows it is one (the task's "Builds only" finding)
+
+1. Package a Windows build with `CLAUDE.local.md`'s command, from a `.bat` file run with `cmd //c` (`CLAUDE.md`), in the background (about 6 minutes the first time). It cooks with `UnrealEditor-Cmd.exe` in its own process, so the open editor can stay open; if the cook complains about a locked file, tell my person and wait.
+2. Put `{"analytics": "off", "autoplay": false}` in `Packaged/Windows/AIMegaJam2026/Local/switches.json` (make the folder), so this run sends nothing real.
+3. Start `Packaged/Windows/AIMegaJam2026.exe -windowed -ResX=1600 -ResY=900`, wait for `NHOS: TITLE shown` in `Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`, close it by its process id.
+4. Expected: `NHOS: ANALYTICS off why=switch player=<a new id> packaged=true`, and `NHOS: ANALYTICS new player` (the package keeps its own save). Write the test (`Content/Paks/` exists) and this line under Findings. The id is this PC's packaged id for `ignore_players` (part 3).
+5. Delete `Packaged/Windows/AIMegaJam2026/Local/switches.json` afterwards (and never zip it; part 9b). `Packaged/` is ignored by git.
 
 ### Clean up
 
@@ -1051,6 +1075,8 @@ One commit, `T68: The game sends its analytics events` (or two, the second for t
 | Step 4, drop-off in T67's README section | 9e |
 | Step 5, the title toggle and `analytics_off` | Part 6; 2b `SetOn`, `IsOn`; decisions 16, 17 |
 | Step 5, the `analytics` switch, `switches.example.json`, this machine, autoplay | Part 3; 9f; decision 19 |
+| Step 5, builds only (a check true only in a packaged build, in Findings) | `Init` in 2b; part 3's table; decision 20; runs C and F |
+| Step 5, our own machines (`NHOS: ANALYTICS player <id>`, `ignore_players`) | `Init` in 2b; part 3; decision 21; runs E and F |
 | Step 6, the docs on free mode | 7 (`llm.json`), 9a, 9d, 9f |
 | Step 7, the itch page's privacy line | 9c |
 | Done when: the free autoplay show with `test` | Part 10, run A |
