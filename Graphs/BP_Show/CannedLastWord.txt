@@ -1,0 +1,9 @@
+; T58: the next canned last word, in order and repeated across the show; "pass" when there is none.
+(fn CannedLastWord ()
+  (if (== (len (V CannedLast)) 0)
+    (return "pass"))
+  (if (>= (V LWCanned) (len (V CannedLast)))
+    (set LWCanned 0))
+  (set LWLine (get (V CannedLast) (V LWCanned)))
+  (set LWCanned (+ (V LWCanned) 1))
+  (return (V LWLine)))

@@ -1,5 +1,7 @@
 ; T57: every "passed" marker comes off at the end of each Free Talk (EndFreeTalk) and at the start of the
 ; next (StartFreeTalk). A cue, so it waits for the lines in front of it.
+; T58: it also ends the last words: a Restart in the middle of them leaves LastWordOn set until the next Free Talk starts.
 (fn PassClear ()
   (clear (V PassSeats))
+  (set LastWordOn false)
   (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "unpass" :Text "" :Num -1))

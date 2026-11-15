@@ -1,0 +1,6 @@
+; T58: the shared log's "when" for a Free Talk line: "scene 2, free talk round 1", or "scene 2, last word"
+; during the last words. PlayTalk uses it for the entry and its NHOS: LOG line.
+(fn TalkWhen ()
+  (if (V LastWordOn)
+    (return (cat "scene " (str (V SceneNum)) ", last word")))
+  (return (cat "scene " (str (V SceneNum)) ", free talk round " (str (V TalkRound)))))

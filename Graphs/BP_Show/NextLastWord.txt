@@ -1,0 +1,22 @@
+; T58: the next last word, one speaker at a time like a Free Talk round. PlayTalk logs each reply (its
+; when from TalkWhen) and calls NextTalker, which sends it back here while LastWordOn is set.
+; The AI branch is NextTalker's, with the last_word ask.
+(fn NextLastWord ()
+  (if (>= (V TalkPos) (len (V TalkOrder)))
+    (CallFunction|EndLastWords)
+    (return))
+  (set TalkSeat (get (V TalkOrder) (V TalkPos)))
+  (print (cat "NHOS: LASTWORD " (get (V SeatId) (V TalkSeat)) " scene=" (str (V SceneNum))))
+  (if (== (V TalkSeat) (V HumanSeat))
+    (set HumanSent false)
+    (Class|WBPStage|SetPassEnabled :self (Variables|Default|GetStage) :Enabled true)
+    (if (V Autoplay)
+      (bind _line (CallFunction|CannedLastWord))
+      (CallFunction|SendHumanTalk :Line _line))
+    (return))
+  (set AskCount (+ (V AskCount) 1))
+  (set LWTag (cat (get (V SeatId) (V TalkSeat)) "-" (str (V AskCount))))
+  (add (V PendingTags) (V LWTag))
+  (add (V PendingSeats) (V TalkSeat))
+  (bind _st (CallFunction|ActorState :Seat (V TalkSeat) :AskKey "last_word" :Now "free talk, last word"))
+  (Class|BPCLLMClient|Ask :self (V LLMClient) :Tag (V LWTag) :Role "actor" :System (get (V SeatSystem) (V TalkSeat)) :User _st))

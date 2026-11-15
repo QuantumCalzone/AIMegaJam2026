@@ -2,12 +2,13 @@
 ; in Free Talk, before the line goes into the queue, so the marker changes as that line comes up.
 ; A pass queues a "passed" cue; a spoken line from an actor whose marker is up queues "unpass".
 ; PassSeats holds the seats whose marker is up, as the logic sees it (it runs ahead of the screen).
+; T58: a pass in a last word prints round=last.
 (fn PassCue (Seat Does)
   (set PassIdx (Utilities|Array|FindItem (V PassSeats) Seat))
   (if (streq Does (V DoesPass))
     (if (< (V PassIdx) 0)
       (add (V PassSeats) Seat))
-    (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "passed" :Text (cat "scene=" (str (V SceneNum)) " round=" (str (V TalkRound))) :Num Seat)
+    (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "passed" :Text (cat "scene=" (str (V SceneNum)) " round=" (select (V LastWordOn) "last" (str (V TalkRound)))) :Num Seat)
     (return))
   (if (>= (V PassIdx) 0)
     (Utilities|Array|RemoveIndex (V PassSeats) (V PassIdx))
