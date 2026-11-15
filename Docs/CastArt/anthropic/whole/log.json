@@ -1,0 +1,47 @@
+{
+ "part": "anthropic/whole",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/8e60a7d6-c152-4fc8-ab4e-31048da75388",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 40000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "8e60a7d6-c152-4fc8-ab4e-31048da75388",
+ "upload_id": "C9GQMpI6OcUGpcIf6XB_Rw",
+ "use": "method test (a), not a game part",
+ "prompt": "A cute claymation robot made of smooth matte orange clay: a round orange head shell with a dark glossy screen face, round gold wire glasses, cream ear pods and a gold neck collar; a round egg-shaped orange body with a cream oval belly and three dark buttons; two orange arms with charcoal joint bands, gold wrist bands and mitten hands; two round orange feet. Toy-like, chunky forms, no hair, no wires, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "reference.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 40000,
+  "vertices": 19982,
+  "bbox_min": [
+   -0.536,
+   -0.419,
+   -0.952
+  ],
+  "bbox_max": [
+   0.536,
+   0.418,
+   0.952
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   19981
+  ],
+  "open_edges": 0
+ },
+ "files_not_kept": "model.fbx and its textures: a method test, not a game part; fetch them again with rodin_get_result and the generation id"
+}

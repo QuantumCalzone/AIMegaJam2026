@@ -1,0 +1,50 @@
+{
+ "part": "spacexai/body",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/6464507a-ae0a-47b0-bdae-19345c1b6eb1",
+ "reference": "reference.png (cropped from Docs/BotArt by crop_spec.json)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "6464507a-ae0a-47b0-bdae-19345c1b6eb1",
+ "upload_id": "IYB7LZNIhXBlPg2wngpJow",
+ "prompt": "Only the torso and legs of a cute claymation robot: a round lime green ball-shaped body with a cream oval belly, standing on two steel coil spring legs with chunky lime green boots. No head, no arms: the neck top and the shoulders are smooth closed surfaces. One closed piece, matte clay, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7498,
+  "bbox_min": [
+   -0.668,
+   -0.625,
+   -0.951
+  ],
+  "bbox_max": [
+   0.666,
+   0.625,
+   0.949
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7497
+  ],
+  "open_edges": 0
+ }
+}

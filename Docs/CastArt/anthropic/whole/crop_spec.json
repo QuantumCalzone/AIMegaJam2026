@@ -1,0 +1,10 @@
+{
+ "src": "Docs/BotArt/anthropic.png",
+ "out": "reference.png",
+ "rect": [
+  150,
+  200,
+  580,
+  900
+ ]
+}

@@ -1,0 +1,56 @@
+{
+ "part": "openai/body",
+ "service": "Hyper3D Rodin (hyper3d.ai) through the hyper3d MCP server",
+ "made": "2026-11-15",
+ "task": "T81",
+ "display_url": "https://hyper3d.ai/workspace/rodin/ce175489-3ccc-4597-9dd7-a3604ed66f4b",
+ "reference": "none (text only; reference.png was used by the dropped first try)",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "geometry_file_format": "fbx",
+ "texture_delight": false,
+ "generation_id": "ce175489-3ccc-4597-9dd7-a3604ed66f4b",
+ "tries": [
+  {
+   "generation_id": "a9639275-4d94-4c7f-bcaa-192ef00d2008",
+   "upload_id": "juF6gAxIRBsyOicTJsSdpw",
+   "dropped": "the paint patch over the folded arms became a white blob, curtain bits became red stubs"
+  }
+ ],
+ "prompt": "Only the torso and legs of a cute claymation robot, no head and no arms: a smooth pale blue teardrop-shaped body that narrows toward the top, the upper half wrapped in a short gray chunky cable-knit turtleneck sweater with no sleeves, the sweater hem ending at mid body; below it a large cream oval belly patch on the pale blue body; two short stubby pale blue legs with gray knit cuffs and round pale blue feet. The neck top and the shoulders are smooth closed surfaces. One closed piece, matte clay, toy-like, front view symmetrical, no logos.",
+ "credits": "not reported per call by the MCP tools; the task's total is in Docs/tasks/T81.md",
+ "files": [
+  "crop_spec.json",
+  "mesh_stats.json",
+  "model.fbx",
+  "reference.png",
+  "texture_diffuse.png",
+  "texture_metallic.png",
+  "texture_normal.png",
+  "texture_roughness.png",
+  "thumbnail.png",
+  "turntable.png"
+ ],
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7498,
+  "bbox_min": [
+   -0.71,
+   -0.513,
+   -0.95
+  ],
+  "bbox_max": [
+   0.71,
+   0.512,
+   0.945
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7498
+  ],
+  "open_edges": 0
+ }
+}
