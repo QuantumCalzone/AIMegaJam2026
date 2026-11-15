@@ -147,7 +147,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T32 UI/UX audit, style guide and shared pieces**
   - **Model and effort:** Opus 5.5, high. Design judgment across every screen, and one style that all the widgets share.
-  - **Depends on:** T28, T29, T35 (Scene Prep, my card and the chat's content are final, `WBP_Stage` is unlocked, and the money-burn overlay exists to audit). T27 is done. T30 comes after this task, so its typing line is T34's to check.
+  - **Depends on:** T28, T29, T35 (Scene Prep, my card and the chat's content are final, `WBP_Stage` is unlocked, and the money-burn overlay exists to audit). T27 is done.
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows. No playtest: I read the findings and any doc edits and say go.
   - **Touches:** the design doc's UI section (after my OK), `Docs/Assets.md`, a new style Blueprint under `Content/NHOS/UI/`, `Content/NHOS/UI/WBP_ChatLine.uasset`, `Docs/tasks/T32.md`, `Graphs/` files for the graphs it writes. It only reads the other widgets.
   - **Details:** [Docs/tasks/T32.md](tasks/T32.md)
