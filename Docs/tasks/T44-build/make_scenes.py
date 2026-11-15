@@ -2,7 +2,8 @@
 
 Usage, from the repo root, on the OLD scenes.json (it reads the _readme, set and notes from it):
     python Docs/tasks/T44-build/make_scenes.py . Content/NHOS/Data/scenes.json
-It writes the file Docs/tasks/T44-build/scenes.json holds. See Docs/tasks/T44-build.md."""
+On the scenes.json of commit 6ada2ab (T51: every note holds only id, category and note) it writes
+the file Docs/tasks/T44-build/scenes.json holds. See Docs/tasks/T44-build.md."""
 import json, sys
 from pathlib import Path
 repo = Path(sys.argv[1]); out = Path(sys.argv[2])
@@ -29,11 +30,15 @@ assert "'props' is the four props" in readme[2]
 readme[4] = readme[4].replace("and each one must work in every story.", "and each one must work in every story, with any card's four props.")
 assert "four props" in readme[4]
 
+# T44 step 3: say_chicken names a prop no card has now. Its replacement works with any card and keeps
+# say_chicken's category, Speech. A note holds only id, category and note (T51).
 notes = []
 for n in old["notes"]:
+    assert set(n) == {"id", "category", "note"}, f"note {n.get('id')} is not in T51's form (id, category, note)"
     if n["id"] == "say_chicken":
-        n = {"id": "favorite_prop", "note": "Mention your favorite prop every time you speak.", "decoy": "Never mention a prop."}
+        n = {"id": "favorite_prop", "category": "Speech", "note": "Mention your favorite prop every time you speak."}
     notes.append(n)
+assert any(n["id"] == "favorite_prop" for n in notes), "no say_chicken note to replace"
 
 def j(v): return json.dumps(v, ensure_ascii=False)
 L = ["{", '\t"_readme": [']
@@ -48,8 +53,9 @@ for i, c in enumerate(cards):
     L += [f'\t\t\t\t{{ "role": {j(s["role"])}, "want": {j(s["want"])} }},' for s in c["seats"]]; L[-1] = L[-1][:-1]
     L += ["\t\t\t]", "\t\t}" + ("," if i < len(cards) - 1 else "")]
 L += ["\t],", '\t"notes": [']
-L += [f'\t\t{{ "id": {j(n["id"])}, "note": {j(n["note"])}, "decoy": {j(n["decoy"])} }},' for n in notes]; L[-1] = L[-1][:-1]
+L += [f'\t\t{{ "id": {j(n["id"])}, "category": {j(n["category"])}, "note": {j(n["note"])} }},' for n in notes]; L[-1] = L[-1][:-1]
 L += ["\t]", "}", ""]
 out.write_text("\n".join(L), encoding="utf-8")
 json.loads(out.read_text(encoding="utf-8"))
+assert all(set(n) == {"id", "category", "note"} for n in json.loads(out.read_text(encoding="utf-8"))["notes"])
 print("wrote", out)
