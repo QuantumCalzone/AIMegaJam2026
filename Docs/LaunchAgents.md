@@ -10,7 +10,7 @@ Instructions for one Claude Fable 5.2 session. It starts Claude Opus 5.5 session
 2. In the Claude desktop app's Code tab, start a new session on the repo folder itself, with no worktree, and pick Fable 5.2 as its model. The sessions it starts share that folder, because that is the folder the editor has open.
 3. Drag this file into the chat and send it. You don't need to type anything else. Typing `Follow the Prompt section of Docs/LaunchAgents.md.` works too.
 
-The dispatcher only starts sessions and keeps track of them. Each task runs in a normal session in the sidebar. Open that session to answer its questions, approve downloads and play your playtests. A session archives itself when it is done and leaves you nothing to decide or do. You can still open it from the sidebar's Archived list. Unless the sessions run in auto mode, the app asks you to approve each archive.
+The dispatcher only starts sessions and keeps track of them. Each task runs in a normal session in the sidebar. Open that session to answer its questions and approve downloads. No task asks you to playtest: each session plays its own shows. A session archives itself when it is done and leaves you nothing to decide or do. You can still open it from the sidebar's Archived list. Unless the sessions run in auto mode, the app asks you to approve each archive.
 
 The app wakes the dispatcher only when every session it started is idle, or when you send it a message. If a lane looks empty while one long task runs, send the dispatcher `check`.
 
@@ -25,8 +25,7 @@ More sessions working at once is the goal. The only limit is that two sessions m
 | The editor on this machine | One session at a time | Unreal MCP runs one call at a time on the editor's game thread. |
 | Each `.uasset` or `.umap` | One session, until its commit is pushed | Binary assets can't be merged. Most editor tasks change `BP_Show` or `WBP_Stage`. |
 | Each text file in this folder | One session with changes not committed yet | Every session in the folder shares one working copy. |
-| `Local/switches.json` and the assets under test | A key-mode playtest in the repo folder, until you're done | Other playtests run from a copy at the task's commit, which has its own switches (see the plan's "When only my check is left"). |
-| You | Everyone, but one ask at a time | Most tasks stop for your OK or a playtest. The dispatcher puts first the ask whose answer frees the most work. |
+| You | Everyone, but one ask at a time | Some tasks stop for your OK. The dispatcher puts first the ask whose answer frees the most work. |
 
 A task that waits only for your check pushes its work first, and you play from a copy at that commit. So it holds nothing but its claim, and the next task in its chain can start at once, even on the same assets.
 
@@ -34,7 +33,7 @@ A task that waits only for your check pushes its work first, and you play from a
 
 You are the dispatcher for the jam project in this folder. You start Claude Opus 5.5 sessions at xhigh effort that do the tasks in `Docs/Plan.md`, and you manage them until the submission.
 
-**Your goal** is the most checked tasks, with no two sessions ever holding the same editor, asset or file at once. Idle capacity is the failure to watch for. Whenever a piece of work could run and conflicts with nothing that is running, start it. The editor lane is the critical path, because most open tasks need it, so it must never sit idle while I play or read.
+**Your goal** is the most checked tasks, with no two sessions ever holding the same editor, asset or file at once. Idle capacity is the failure to watch for. Whenever a piece of work could run and conflicts with nothing that is running, start it. The editor lane is the critical path, because most open tasks need it, so it must never sit idle while I read.
 
 **You do no task work yourself.** You don't edit project files, drive the editor, run PIE, pull, rebase or commit task work. You may read any file, run read-only git commands and `git fetch`, write your own status file and notes in `Agents/`, and push and unlock as step 3.6 says.
 
@@ -51,12 +50,11 @@ First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/Plan.md`
   - **waiting on me:** it has a `Waiting:` line, or its session says it waits for me.
   - **blocked:** it has a `Blocked:` line.
   - **held elsewhere:** it has a claim lock but no status file here. Another machine may be running it, or a session may have stopped halfway. Check the handoffs and messages. If they don't settle it, ask me once about all such tasks together. While another machine runs its own dispatcher, step 5 says how to tell its tasks apart, and you don't ask me about those.
-  - **not ready:** a task in its Depends on line is neither checked nor waiting only for my check. A task waits only for my check when its work is pushed and its `Waiting:` line leaves only my playtest, my verdict, or a run that needs something from me.
+  - **not ready:** a task in its Depends on line is neither checked nor waiting only for my check. A task waits only for my check when its work is pushed and its `Waiting:` line leaves only my verdict, my OK on a doc edit, or a run that needs something from me.
   - **free:** none of the above.
 - For each task, also write what it holds while it runs:
   - the editor, if its Needs line names the editor or Unreal MCP
   - each path in its Touches line. A folder in Touches means every asset that already exists in that folder; new files are not shared with anyone. If a Touches line is too vague to compare, read the task's file to narrow it.
-  - `Local/switches.json` and the assets under test, while a key-mode playtest is open in the repo folder
   - nothing but its claim, while it waits only for my check
 - Write the ledger to `Agents/status/dispatcher.md` and keep it current. It lets you recover after a restart or after your context is summarized, and it lets other sessions see what runs.
 - Show me a short table: each open task's state, and the sessions you will start now. Then start them without waiting for me. This message is my OK.
@@ -72,7 +70,7 @@ Start each piece of work as its own Claude Code session with your session-starti
 
 Right before each start, run `git lfs locks` and list `Agents/status/` again, because things may have changed since your last look.
 
-Use sessions, not subagents. Each task stops to ask me things (an OK on prompt text, a download, a playtest), and a subagent can't do that. If you can't start sessions, stop and tell me.
+Use sessions, not subagents. Each task stops to ask me things (an OK on prompt text, a download), and a subagent can't do that. If you can't start sessions, stop and tell me.
 
 ### 3. Keep every lane busy
 
@@ -80,13 +78,13 @@ The app wakes you when every session you started is idle, or when I send you a m
 
 1. **Check git, not only the note.** Look for the task's commit in `git log`, its checked box in the plan, its status file gone, and `git status -sb` for commits that are not pushed.
 2. **Update the ledger.** Work out what the change freed. A session whose commit is pushed frees everything it held. A session that pushed its work to wait for my check frees everything but its claim, so the next task in its chain can start. Re-read the plan's Open list each time, because I add, move and drop tasks, and sessions add tasks for the fixes they find. Put each new task in the ledger by its Needs and Touches.
-3. **Tell me what waits on me.** One line per ask, with a link to the session. Put first the ask whose answer frees the most work. When two sessions both wait for a playtest, tell me that one show can answer both. In a chain, the later task's copy holds the earlier task's work too.
+3. **Tell me what waits on me.** One line per ask, with a link to the session. Put first the ask whose answer frees the most work.
 4. **Fill every free slot,** in this order:
    1. **The editor lane.** If no session drives the editor, start the first free task in plan order that needs the editor and whose Touches overlap nothing a running session holds. That includes the next task in a chain whose earlier task waits only for my check. But a fix comes first: if my check found a problem, then as soon as no running session holds that task's assets, tell its session with `SendMessage` (to its `local_…` id) that it can fix them now, and start no other editor task until the fix is pushed.
    2. **Other tasks.** Start every other free task whose Touches overlap nothing that is held, in plan order: data files, docs, the relay.
    3. **Prep pieces.** When a task is not ready, or its files are held, start a piece of it that needs no editor and writes only new files of its own. Good prep pieces: find and license assets; write the text a task will need (the itch.io page, the submission lists, the video plan); read the `Graphs/` sources a later editor task will change and write a build sheet that names each graph, node and pin it changes, so that task spends less time in the editor. Start each piece once. Prep at most two tasks ahead in the editor lane's order, because the tasks before them may change what they need.
 
-   Don't start two sessions whose Touches overlap, even in worktrees, unless each one only creates new files. Don't start a session that would at once wait for me or for another session. A task that ends with a playtest can start: only its end waits for me. If you can't tell whether two pieces of work conflict, don't start the second one, and ask me in one line.
+   Don't start two sessions whose Touches overlap, even in worktrees, unless each one only creates new files. Don't start a session that would at once wait for me or for another session. A task that ends with my OK can start: only its end waits for me. If you can't tell whether two pieces of work conflict, don't start the second one, and ask me in one line.
 5. **Model and effort.** Every session runs `claude-opus-5-5` at effort `xhigh`, whatever model and effort the plan names for the task. That is my choice. Never use `max`.
 6. **Pushing and claims.** Each session pushes its own commit, and may push without asking. If a commit sits unpushed after its session has ended, run `git push` yourself. Then release the claim (`git lfs unlock Docs/claims/Txx`) of every checked task whose commit went up. If the push is rejected, tell me, and don't pull or rebase while other sessions have work that isn't committed. Never force-push, and never push `main`. A worktree session merges its own branch, as the plan's Worktrees note says. If it left the merge undone, tell me.
 7. **Steps that need me first.**
@@ -130,11 +128,11 @@ End every brief with these lines:
 
 > - Several sessions work in this folder and on this branch at the same time. Stage only your own files, by path (never `git add -A` or `git add .`). Don't switch branches. Push your commit with `git push` without asking. If the push is rejected, don't pull or rebase, and tell me. Never force-push.
 > - Your status file has a line `- Editor: driving` or `- Editor: not using`. Only one session drives the Unreal Editor at a time. Before you use the editor, check `Agents/status/`: if another session's file says `Editor: driving`, tell me and wait. When you stop to wait for me, set your line to `not using`, so the next task can have the editor. If you need the editor only for a PIE check, tell me before you start PIE and wait for my go.
-> - When only my check is left, follow "When only my check is left" in the plan: push your work first, free what you hold, and for a playtest give me the game-window command for a playtest copy at your commit. Don't ask me to play in PIE. If a key-mode playtest is open in the repo folder, don't change `Local/switches.json` or save the assets under test until I say it's done.
+> - When only my check is left, follow "When only my check is left" in the plan: push your work first and free what you hold. Never ask me to playtest: where your check needs a show played, play it yourself, as the plan's build note "Claude does the playing" says.
 > - In the editor, read only the graphs you need, keep graph sources in `Graphs/`, and build new systems in their own Blueprints, as the plan's build notes say.
 > - I picked Opus 5.5 at xhigh effort for this session on purpose, so don't ask me about the model or the effort.
 > - Start the last thing you write in each turn (your wrap-up recap, if you write one) with one of these: `DONE`, `WAITING ON YOU: <what>`, or `BLOCKED: <what>`. The dispatcher sees only the first 400 characters.
-> - Archive yourself when you are done. I asked for this: "Have each dispatched session archive itself if it has no remaining recommended actions or decisions from me." So when your turn ends with `DONE` and leaves me nothing to decide or do (no question, no recommended next step, no proposed session), archive yourself as the very last step, with `archive_session` and `session_id: "self"` (load it with ToolSearch if it is deferred). First check that your commits are pushed, your claim is released, your status file and any playtest copy are gone and, if you work in a worktree, your branch is merged into the repo folder, because archiving deletes your worktree. The conversation ends when the call returns, so write your final `DONE` line (and your wrap-up, if you use one) before it, in the same message as the call or earlier. If the call is declined or refused, end your turn and don't try again. Never archive yourself while you wait for me or are blocked.
+> - Archive yourself when you are done. I asked for this: "Have each dispatched session archive itself if it has no remaining recommended actions or decisions from me." So when your turn ends with `DONE` and leaves me nothing to decide or do (no question, no recommended next step, no proposed session), archive yourself as the very last step, with `archive_session` and `session_id: "self"` (load it with ToolSearch if it is deferred). First check that your commits are pushed, your claim is released, your status file is gone and, if you work in a worktree, your branch is merged into the repo folder, because archiving deletes your worktree. The conversation ends when the call returns, so write your final `DONE` line (and your wrap-up, if you use one) before it, in the same message as the call or earlier. If the call is declined or refused, end your turn and don't try again. Never archive yourself while you wait for me or are blocked.
 
 #### Task brief
 

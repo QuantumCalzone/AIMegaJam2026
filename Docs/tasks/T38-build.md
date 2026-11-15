@@ -666,11 +666,11 @@ If `EventConstruct` exists, add the call to the end of its chain instead; that c
 13. **`BPC_LinePlayer`:** `BubbleSeat`, `RobotAt` (or `BP_Show.RobotAt`), `HushBubble`, and the insertions in `PlayCur`, `Pump` and `Clear`. Compile, save. **Then the probe (E4):** PIE in a 1600 × 900 floating window, Test for Free, autoplay off, played by hand through the Slate inspector (T27); take a screenshot during an AI line of a scene turn, and one with a robot at Right; read the log for `NHOS: BUBBLE`. Decide the mode and write why.
 14. **Only if E4 fails, layer mode:** remove the `Bubble` component; add `BubbleLayer` and `AddBubble` to `WBP_Stage`; write `BP_Robot`'s layer `InitBubble` and `BubblePoint` and the bubble's layer `Place` and `SetRobot`. Compile, save, and repeat the probe.
 15. **Compile and save all.** Read the editor log for `LogBlueprint` errors. Compiling may mark `L_Stage` and `BPC_LLMClient` dirty with no change (T08, T10): leave them unsaved.
-16. **The checks below.** Then the `Graphs/` files, the Findings, the doc edit proposal, the commit with a `Waiting:` line, and the playtest copy, as "When only my check is left" in the plan says.
+16. **The checks below.** Then the `Graphs/` files, the Findings, the doc edit proposal, and the commit, with a `Waiting:` line only if the doc edit still waits for my OK ("When only my check is left" in the plan).
 
 ## Checks (the Done-when)
 
-1. **Free autoplay** in a game window: `autoplay: true`, `mode: free` and `fast_lines: true` in `Local/switches.json` (don't change it while a key-mode playtest is open in the repo folder), `-log=T38auto.log`. It reaches `NHOS: SHOW END` with no new `LogScript` warning (the missing key file is the only known one), and the pairing check finds no missing or extra bubble:
+1. **Free autoplay** in a game window: `autoplay: true`, `mode: free` and `fast_lines: true` in `Local/switches.json`, `-log=T38auto.log`. It reaches `NHOS: SHOW END` with no new `LogScript` warning (the missing key file is the only known one), and the pairing check finds no missing or extra bubble:
 
    ```bash
    python - Saved/Logs/T38auto.log <<'EOF'
@@ -700,7 +700,7 @@ If `EventConstruct` exists, add the call to the end of its chain instead; that c
 3. **The same scene turn with the chat shown:** click "Show chat" (`NHOS: CHAT shown` in the log); every line so far is there, newest at the bottom; on my turn the input box has the focus after the click. Click again (`NHOS: CHAT hidden`).
 4. **The edge cases:** a long AI line (about 25 words) wraps and stays inside the 24-unit margin; a robot at Right keeps its bubble clear of my card; a robot on the riser or at Left near the header moves its bubble sideways or down with its tail still pointing at it; my own line's bubble shows over my robot ("You"); while the reveal stamp shows, no bubble covers it; a cut robot shows no bubble.
 5. **The text:** measure the bubble's text contrast on its fill from a screenshot (4.5:1 or better), and that the speech is at least 18 pt.
-6. **Set `autoplay` and `fast_lines` back to false.** Then the playtest copy: the person plays one show in a game window and says they can follow the talk from the bubbles, and that the chat opens and hides on a click.
+6. **Set `autoplay` and `fast_lines` back to false.** Then Claude plays one show by hand (check 2's setup) and checks from screenshots that the talk can be followed from the bubbles, and that the chat opens and hides on a click. No playtest by the person.
 
 ## The design doc edit to propose (step 7)
 

@@ -533,7 +533,7 @@ At these values a scene turn of five lines takes about 15 to 25 s, and a two-sce
 ### `fast_lines`
 
 - `Docs/switches.example.json`: add `"fast_lines": false` after `"burn_test": false`, and add this sentence at the end of `_readme`: `fast_lines: cuts every wait of the line queue (Content/NHOS/Data/pacing.json) to a tenth, so an autoplay check runs fast. It is read at the first line of a run. Set it back to false before a person plays.`
-- `Local/switches.json`: add the same field (git ignores it). Don't change it while a key-mode playtest is open in the repo folder.
+- `Local/switches.json`: add the same field (git ignores it).
 
 ## Editor steps in order (each one Unreal MCP call, or one short script)
 
@@ -560,7 +560,7 @@ Before step 1: `git pull`, read `Agents/`, `git lfs locks`, claim T30, lock `Con
 19. **Swaps, part 2:** the banner and `SetStamp` sites.
 20. **Swaps, part 3:** `StartCut`, `Tally`, `DirectorCut`, `EndReactions`, `StoreClosing` (and `RestartShow` if chosen).
 21. **Compile and save all.** Read the editor log for `LogBlueprint` errors. Compiling `BP_Show` may mark `L_Stage` and `BPC_LLMClient` dirty with no change (T08, T10): leave them unsaved.
-22. **The checks below.** Then the `Graphs/` files, the findings, the commit with a `Waiting:` line, and the playtest copy, as "When only my check is left" in the plan says.
+22. **The checks below.** Then the `Graphs/` files, the findings, and the commit, with a `Waiting:` line only if the doc edit still waits for my OK ("When only my check is left" in the plan).
 
 ## Checks (the Done-when)
 
@@ -573,7 +573,7 @@ Before step 1: `git pull`, read `Agents/`, `git lfs locks`, claim T30, lock `Con
 
 3. **Screenshot:** PIE in a 1600 × 900 floating window, Test for Free, autoplay off, played by hand with the Slate inspector (T27, T28). Take it during an AI line of a scene turn: one robot lit and bouncing, maybe moving, and its line the newest in the chat. To widen the window for the shot, set `line_min` to 6.0 in `pacing.json` for that run, then set it back. Also take one shot of "<name> is typing..." in Free Talk. Save to `Saved/T30/shots/`.
 4. **The order on screen:** in check 2's log, the `NHOS: CUE phase` for a turn header comes after the last `NHOS: LINE` of the turn before it. Each `NHOS: CUE votes <names>` comes after the last Free Talk `LINE`, and `NHOS: CUE prep` and `NHOS: CUE end` come after the last reaction `LINE`.
-5. **Set `autoplay` and `fast_lines` back to false.** Then the playtest copy, and the person plays one show and says the lines are easy to follow.
+5. **Set `autoplay` and `fast_lines` back to false.** Then Claude plays one show by hand (check 3's setup) and checks from screenshots that the lines are easy to follow. No playtest by the person.
 
 ## The design doc edit to propose (step 6)
 

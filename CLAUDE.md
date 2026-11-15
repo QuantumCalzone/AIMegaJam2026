@@ -82,7 +82,7 @@ Open the editor (Windows shown; on macOS use the macOS editor binary):
 "<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor.exe" "<PROJECT>"
 ```
 
-Play the game in its own window, outside the editor, so a person can playtest while an agent keeps using the editor. It plays the assets as saved on disk, reads the same `Local/switches.json`, and writes its log to a second file in `Saved/Logs/`:
+Play the game in its own window, outside the editor, so a session can check the saved game while another keeps using the editor. It plays the assets as saved on disk, reads the same `Local/switches.json`, and writes its log to a second file in `Saved/Logs/`:
 
 ```bash
 "<UE_ROOT>/Engine/Binaries/Win64/UnrealEditor.exe" "<PROJECT>" -game -windowed -ResX=1600 -ResY=900

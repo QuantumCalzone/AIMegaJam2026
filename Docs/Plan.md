@@ -4,7 +4,7 @@ The living plan for our jam game: the tasks in priority order, how to run one an
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** T28 (Scene Prep shows the whole card, the scene shows only mine) is pushed and waits for my playtest of one show and my OK on its Rules tab edit; its claim stays until then. T29 (the chat holds only chat) is done. The first free task is T32 (Opus 5.5 · xhigh), which starts the UI/UX sweep (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done, so T40 (the headpieces), T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but all three write `Docs/PropArt/manifest.json`, so commit their manifest changes one at a time.
+**Next up:** T28 (Scene Prep shows the whole card, the scene shows only mine) is pushed and waits only for my OK on its Rules tab edit; its claim stays until then. Since 2026-11-15 no task waits for me to play: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). T29 (the chat holds only chat) is done. The first free task is T32 (Opus 5.5 · xhigh), which starts the UI/UX sweep (the audit, the style guide and the shared pieces). T30 (the lines play one at a time), then T38 (every line in a speech bubble, and the chat opens on a click), T33 (the title, key entry and end screens) and T34 (the in-show screen) come after T32. T20 (audio) is free too, but every one of these tasks changes `BP_Show` or `WBP_Stage`, so they go one at a time in the editor. T39 (the art batch tool) is done, so T40 (the headpieces), T41 (the story props) and T42 (the opera-house pieces) are free; they need no editor and can run beside the editor lane, but all three write `Docs/PropArt/manifest.json`, so commit their manifest changes one at a time.
 
 ## Goal
 
@@ -24,7 +24,7 @@ When I say **"Next task"** or **"Next ask"**:
 2. Tell me the task and its recommended model and effort. If this session runs a different model, say so and ask whether to go on.
 3. Check its Needs. If something is missing (for example, Unreal MCP is not connected), tell me what to do and stop.
 4. Claim the task (see "Claiming a task"). Write a status file, `Agents/status/task-T07.md`, and lock assets as `Agents/README.md` says.
-5. Do the work, then run the Done-when check. If the check fails, do not mark the task done: write what blocks it under the task's entry in this file (a `Blocked:` line, never only in the task's file) and tell me. If the only part of the check left is mine (a playtest, my verdict, or a run that needs something from me), follow "When only my check is left" instead of step 6.
+5. Do the work, then run the Done-when check. If the check fails, do not mark the task done: write what blocks it under the task's entry in this file (a `Blocked:` line, never only in the task's file) and tell me. If the only part of the check left is mine (my verdict, my OK on a doc edit, or a run that needs something from me), follow "When only my check is left" instead of step 6.
 6. Make one commit that holds the work; the task's entry in this file with its box checked, moved to the end of "Done" and cut down to its title line and its **Details** line; the task's file with the lines cut from the entry (**Model and effort**, **Depends on**, **Needs**, **Touches**) moved to the top of its "## Task" section, the line under its title changed to say the task is done, a **Result:** line at the end of "## Task", and what the task found under "## Findings" at the end of the file; the updated "Next up" line; and one line in [DevLog.md](DevLog.md) (the jam's Glass Box category needs a dev log). Message: `T07: <title>`. Then push it with `git push`. You don't need to ask. If the push is rejected, don't pull or rebase while other sessions have uncommitted work in this folder; tell me.
 7. Delete the status file. Once the commit that checks the box is pushed, release the claim. Unlock the assets the task changed too, unless another running session still has uncommitted changes in them (`git status`, `Agents/status/`). End by naming the next task with its model and effort, so I can switch before I send "Next task".
 
@@ -34,7 +34,7 @@ A claim is an LFS lock on the task's claim file. Everyone sees it at once, on ev
 
 - **Claim:** `git lfs lock Docs/claims/T07`
 - **See all claims:** `git lfs locks`
-- **Release:** `git lfs unlock Docs/claims/T07`, after the commit that checks the task's box is pushed. Until the push, other machines see neither the work nor the checked box, so the lock is what tells them the task is taken. A task that waits for my playtest or verdict keeps its claim until its box is checked. Whoever pushes releases the claims of every checked task that went up.
+- **Release:** `git lfs unlock Docs/claims/T07`, after the commit that checks the task's box is pushed. Until the push, other machines see neither the work nor the checked box, so the lock is what tells them the task is taken. A task that waits for my verdict or OK keeps its claim until its box is checked. Whoever pushes releases the claims of every checked task that went up.
 - A task is free when its box is unchecked here, it has no `Waiting:` line, and `git lfs locks` shows no lock on its claim file.
 - If the lock fails because a teammate holds it, take the next free task.
 - If my own account holds the lock on an unchecked task and there is no status file for it in `Agents/status/`, an earlier session may have stopped halfway. Ask me before taking it.
@@ -44,22 +44,17 @@ Never edit the claim files. They exist only to be locked.
 
 ## When only my check is left
 
-Most tasks end with my playtest, my verdict, or a run that needs something from me. The next task doesn't wait for it:
+Some tasks end with my verdict, my OK on a doc edit, or a run that needs something from me. A playtest is never one of them: Claude plays the shows itself (see "Claude does the playing" under "Build notes for every task"). The next task doesn't wait for my check:
 
 1. **Push the work first.** When the work is built and the Done-when check passes except for the part only I can do, commit and push now. The commit holds the work, its `Graphs/` files, the task's file with what it found so far, a `Waiting:` line under the task's entry in this file (it ends `Left: <what I must do>`), the "Next up" line and one line in [DevLog.md](DevLog.md). Message: `Txx: <title> (waits for <what>)`. The box stays unchecked.
 2. **Free what you hold.** Unlock the assets the task changed, keep the claim, and set the `Editor:` line in your status file to `not using`. Keep the status file: it says what you wait for.
-3. **Playtest from a copy.** If I must play, make a playtest copy at your commit, and give me the game-window command for the copy's `.uproject`, not the repo folder's:
-   - `git worktree add --detach "<repo folder>-playtest/Txx" <your commit>`
-   - The copy holds the committed work and nothing else, so the next task can change the same assets in the repo folder while I play. Never change anything in the copy.
-   - It has no `Local/` folder, so every switch is off. If the playtest needs a switch, write `Local/switches.json` in the copy. Never copy the key file there, so key mode doesn't work in a copy. A key-mode playtest runs in the repo folder, as before, and no session saves the assets under test until I say I'm done.
-   - The game's log is in the copy's `Saved/Logs/`. The first launch from a new copy may take a few minutes while it builds its caches.
-4. **The next task can start.** A task may start when each task in its **Depends on** line is checked, or has its work pushed with a `Waiting:` line that leaves only my check. It builds on that work as pushed.
-5. **If my check passes,** make the closing commit as step 6 of "How to run a task" says: check the box, remove the `Waiting:` line, move the entry to "Done", and add the Result and the findings. It needs a DevLog line only if the check changed something. Message: `Txx: <title> (checked)`. Push it, release the claim, delete the status file, and remove the copy with `git worktree remove "<repo folder>-playtest/Txx"`.
-6. **If my check finds a problem,** the fix goes first in the editor lane, but only once no running session holds the task's assets (`git lfs locks`, `Agents/status/`). Until then, tell me, and wait. When they are free, lock them again, fix the problem, push with the `Waiting:` line kept, and give me a new copy at the new commit. That copy also holds the work of any task that started after yours, so one show checks both. Tell me what the fix changed, so that later tasks that built on your work can check it.
+3. **The next task can start.** A task may start when each task in its **Depends on** line is checked, or has its work pushed with a `Waiting:` line that leaves only my check. It builds on that work as pushed.
+4. **If my check passes,** make the closing commit as step 6 of "How to run a task" says: check the box, remove the `Waiting:` line, move the entry to "Done", and add the Result and the findings. It needs a DevLog line only if the check changed something. Message: `Txx: <title> (checked)`. Push it, release the claim and delete the status file.
+5. **If my check finds a problem,** the fix goes first in the editor lane, but only once no running session holds the task's assets (`git lfs locks`, `Agents/status/`). Until then, tell me, and wait. When they are free, lock them again, fix the problem, push with the `Waiting:` line kept. Tell me what the fix changed, so that later tasks that built on your work can check it.
 
 ## Changing the plan
 
-I add tasks as the game needs them, and a task can go anywhere in the list. Every change to the plan outside a task's own commit is a commit too, `Plan: <what changed>`, with a line in [DevLog.md](DevLog.md). One example is a playtest that changes the design.
+I add tasks as the game needs them, and a task can go anywhere in the list. Every change to the plan outside a task's own commit is a commit too, `Plan: <what changed>`, with a line in [DevLog.md](DevLog.md). One example is a verdict that changes the design.
 
 To add a task:
 
@@ -112,7 +107,7 @@ These hold for every task, and for editor work outside the task list too. If one
   - A worktree has no `Local/` folder, and nothing gets copied into it, the key file least of all. Run `Tools/check_prompts.py` there with `--offline`, `--free` or `--relay`. A run that calls the providers with direct keys waits until after the merge, in the repo folder.
   - When the work is committed, merge `noHumansOnSet` into your branch and fix any conflicts there. Then merge your branch into the repo folder with `git -C <repo folder> merge --no-ff <branch>`, and push. If that merge stops because it would overwrite uncommitted changes in the repo folder, leave it and tell me.
 - **New systems get their own Blueprint.** Put new logic in a new Blueprint or component, or in the actor it belongs to (such as `BP_Robot`), and have `BP_Show` call it from one node. Scripts that wrote `BP_Show` graphs took about 43 s each, and every editor task so far has needed the `BP_Show` lock.
-- **Playtests run in a game window, not PIE.** When a task needs me to play, it saves every asset it changed, checks that the saved game runs (a free autoplay show reaches `SHOW END`), sets `autoplay` to false in `Local/switches.json`, pushes its work, and gives me the game-window command from `CLAUDE.md` for a playtest copy at that commit (see "When only my check is left"). The copy plays only the committed work, so the editor stays free and the next task can start, even on the same assets, while I play. A key-mode playtest runs in the repo folder instead, because the key file never goes in a copy. Until I say I'm done with it, no session changes `Local/switches.json` or saves the assets under test. Its log is a second file in `Saved/Logs/`. T27 was the first task to use it; its findings in [Docs/tasks/T27.md](tasks/T27.md) have the Mac command, the Mac log paths and how to screenshot a game window.
+- **Claude does the playing; I don't playtest (since 2026-11-15).** No task waits for me to play, and no session asks me to. Where a check needs a show played, Claude plays it: one show by hand in PIE (Test for Free, a 1600 × 900 floating window, clicks and typing through the Slate inspector, autoplay off) with a screenshot of each phase the task changed, and a free autoplay show in a game window on the saved assets that reaches `SHOW END`. Claude judges what my playtest used to judge (can I read it, can I follow it, does the screen feel blocked, does it look finished) from those screenshots, as a critical first-time player would, and writes what it saw under "## Findings". What screenshots can't show (sound, for example) is written there as unchecked, and the task still closes. Set `autoplay` back to false and close each game window when done. T27's findings in [Docs/tasks/T27.md](tasks/T27.md) have the Mac command, the Mac log paths and how to screenshot a game window.
 - **Each task leaves the game runnable.** One task = one session = one commit (two when it waits for my check), about an hour of agent work at most.
 
 ## Tasks
@@ -124,9 +119,9 @@ These hold for every task, and for editor work outside the task list too. If one
 - [ ] **T28 Scene Prep shows the whole card, the scene shows only mine**
   - **Model and effort:** Opus 5.5, high. It adds a pause to the show loop and splits the info card by phase.
   - **Depends on:** T27 (the card's place and size), T19 (the lock on `BP_Show`)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ScenePrep`, the Start button's call, `ShowPrep` if the card's fill changes), `Graphs/` files for the graphs it writes, the design doc.
-  - **Waiting:** built and pushed; a free autoplay show reaches `SHOW END` with a `PREP start` line for each scene, and screenshots of Scene Prep and turn 1 are taken. Left: play one show and say whether the card shows what you need when you need it, and OK the Rules tab edit in `Docs/tasks/T28.md`.
+  - **Waiting:** built and pushed; a free autoplay show reaches `SHOW END` with a `PREP start` line for each scene, and screenshots of Scene Prep and turn 1 are taken. Claude played Scene Prep and turn 1 by hand in PIE. Left: OK the Rules tab edit in `Docs/tasks/T28.md`.
   - **Details:** [Docs/tasks/T28.md](tasks/T28.md)
 
 - [ ] **T40 Generate the 13 headpieces**
@@ -160,35 +155,35 @@ These hold for every task, and for editor work outside the task list too. If one
 - [ ] **T30 The lines play one at a time**
   - **Model and effort:** Opus 5.5, high. Timing across the show loop, the chat and the stage.
   - **Depends on:** T19 (the stage acts out each line), T29 (only actor lines and the banner are left to pace)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** new `Content/NHOS/Core/BPC_LinePlayer.uasset`, `Content/NHOS/Core/BP_Show.uasset` (`ShowLine`, `ActorLine`, the waits), `Content/NHOS/UI/WBP_Stage.uasset` (the typing line), a data file in `Content/NHOS/Data/`, `Docs/switches.example.json`, `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T30.md](tasks/T30.md)
 
 - [ ] **T38 Every line plays in a speech bubble, and the chat opens on a click (optional)**
   - **Model and effort:** Opus 5.5, high. A new widget placed over moving robots, timed by the line queue, and a new hidden state for the chat.
   - **Depends on:** T30 (the line queue: a bubble shows when its line plays, and the typing line becomes a bubble), T32 (the style Blueprint and the shared button style)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** new `Content/NHOS/UI/WBP_SpeechBubble.uasset`, `Content/NHOS/Stage/BP_Robot.uasset` (the bubble, `Say`, `Hush`), `Content/NHOS/Core/BPC_LinePlayer.uasset` (the call when a line plays, the typing bubble), `Content/NHOS/UI/WBP_Stage.uasset` (the chat button, the chat hidden at the start, the typing line), `Content/NHOS/Core/BP_Show.uasset` only if a call must change, `Graphs/` files for the graphs it writes, the design doc, `Docs/tasks/T38.md`.
   - **Details:** [Docs/tasks/T38.md](tasks/T38.md)
 
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
   - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line.
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, in a game window).
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_SpeechBubble.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
 
 - [ ] **T20 Audio**
   - **Model and effort:** Sonnet 5.5, medium. Finding sounds and playing them at points the show loop already has.
   - **Depends on:** T19 (the locks on `BP_Show` and `BP_Robot`). Finding and choosing the files needs no editor and can start any time.
-  - **Needs:** editor + Unreal MCP running, my ears for one show.
+  - **Needs:** editor + Unreal MCP running.
   - **Touches:** new `Content/NHOS/Audio/`, `Content/NHOS/Core/BP_Show.uasset`, `Content/NHOS/Stage/BP_Robot.uasset`, `Content/NHOS/UI/`, `Docs/Assets.md`.
   - **Details:** [Docs/tasks/T20.md](tasks/T20.md)
 
 - [ ] **T33 Fix the title, key entry and end screens**
   - **Model and effort:** Sonnet 5.5, medium. Well-specified UMG work from T32's table and style guide.
   - **Depends on:** T32, T21 (it changes `WBP_Keys` and adds a screen)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show, from the title to the end screen).
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/UI/WBP_Title.uasset`, `WBP_Keys.uasset`, `WBP_EndScreen.uasset`, `WBP_EndCard.uasset`, T21's unavailable-screen widget, `Graphs/` files for the graphs it writes, `Docs/tasks/T33.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T33.md](tasks/T33.md)
 
@@ -258,7 +253,7 @@ These hold for every task, and for editor work outside the task list too. If one
 - [ ] **T31 Tab completes names, places and props (optional)**
   - **Model and effort:** Sonnet 5.5, medium. Input-box work on a widget that is already laid out.
   - **Depends on:** T27 (the input row), T30 (the lock on `WBP_Stage`)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my playtest (one show).
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (the input box's keys and the suggestion row), maybe `Content/NHOS/Core/BP_Show.uasset` (to hand the names, places and props to the widget), `Graphs/` files for the graphs it writes, the design doc.
   - **Details:** [Docs/tasks/T31.md](tasks/T31.md)
 
