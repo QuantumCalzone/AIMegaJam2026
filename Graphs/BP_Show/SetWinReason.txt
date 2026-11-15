@@ -1,0 +1,18 @@
+; T54: how the show ended, for EndShow's game message and banner, the end screen's subtitle and the
+; SHOW END line. EndShow calls it first, with its Win input. The human wins at the final two, or by
+; still being on stage when the last scene ends (the Rules tab, The Cut). Two left after the last
+; scene counts as the final two. EndReactions sets LeftCount right before it calls EndShow.
+; Every if is top level with no return, so each one joins the next (T30).
+(fn SetWinReason (Win)
+  (set WinReason "caught")
+  (set WinTail "")
+  (set WinLine "")
+  (if (and Win (<= (V LeftCount) 2))
+    (set WinReason "final_two")
+    (set WinTail ", who made the final two. The human wins.")
+    (set WinLine "You made the final two."))
+  (if (and Win (> (V LeftCount) 2))
+    (set WinReason "last_scene")
+    (set WinTail ", still on stage when the last scene ended. The human wins.")
+    (set WinLine "You were still on stage when the last scene ended."))
+  (print (cat "NHOS: ENDING reason=" (V WinReason) " left=" (str (V LeftCount)) " line=" (V WinLine))))

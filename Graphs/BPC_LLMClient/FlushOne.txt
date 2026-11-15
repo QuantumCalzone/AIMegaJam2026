@@ -1,0 +1,12 @@
+; T37: one free-mode ask: the pre-written reply, or error_test's failure for the turn's picked actor ask.
+(fn FlushOne (Tag User)
+  (bind _fail (CallFunction|ErrorTestPick :Tag Tag))
+  (if (not _fail)
+    (CallFunction|FreeReply :User User)
+    (if (V BurnTest)
+      (CallFunction|Burn :Tag Tag))
+    (set UsageIn "0")
+    (set UsageOut "0")
+    (CallFunction|Deliver :Tag Tag :Ok true :Error "" :Seconds "0.3")
+    (return))
+  (CallFunction|ErrorTestFail :Tag Tag :Prov (V CurProv)))

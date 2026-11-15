@@ -92,6 +92,14 @@ tied 2 to 2), and the file check finds the design doc's tie line in
 prompts.json 'game', word for word (DOC_TIE_LINE). --log fails a scene whose
 vote ended in no NHOS: CUT or TIE line, or in more than one.
 
+Two ways to win (T54): the human wins at the final two, or by still being on
+stage when the last scene ends. The closing ask goes out after each ending:
+the human caught (OpenAI, Anthropic), the final two (Meta) and the last scene
+with three actors left (SpaceXAI). The file check fails a 'game' goal 1 that
+doesn't name both wins. --log fails a show whose NHOS: SHOW END reason= doesn't
+match how it ended: caught (the human was cut), final_two (two actors left)
+or last_scene (the last scene ended with more than two on stage).
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -454,6 +462,15 @@ def error_line_problems(data, plist) -> list[str]:
             for word, r in BANNED_RES:
                 if r.search(line):
                     out.append(f"{where}: a banned name ({word!r})")
+    # error_test's canned reply bodies (T37): each names a backstage case and holds a body to send.
+    tests = data.get("test_replies", {})
+    if not isinstance(tests, dict) or not tests:
+        out.append("errors.json: needs a 'test_replies' object (the error_test switch's reply bodies)")
+        tests = {}
+    for name, t in tests.items():
+        if not isinstance(t, dict) or t.get("kind") not in ERROR_CASES or not any(
+                isinstance(t.get(k), str) and t[k] for k in ("any", "transport", "anthropic", "openai_chat")):
+            out.append(f"errors.json: test_replies.{name} needs a 'kind' that is a case and a body ('any', 'transport' or one per format)")
     return out
 
 
@@ -658,6 +675,11 @@ def check_files(errors: list[str]):
         errors.append("prompts.json: 'game' lost the design doc's tie rule (DOC_TIE_LINE)")
     if any("Director breaks" in g for g in game):
         errors.append("prompts.json: 'game' still says the Director breaks ties; since T52 a tie cuts nobody")
+    # T54: goal 1 names both ways the human wins.
+    goal1 = next((g for g in game if g.startswith("1. ")), "")
+    if "final two" not in goal1 or "last scene ends" not in goal1:
+        errors.append("prompts.json: 'game' goal 1 must name both ways the human wins: the final two, "
+                      "or still on stage when the last scene ends (T54)")
     story_text = json.dumps([prompts, scenes], ensure_ascii=False)
     for w, r in STORY_RES:
         if r.search(story_text):
@@ -927,14 +949,17 @@ class Show:
             pid, "reaction_cut", "the cut, reactions", self.log(turns=3, talk=2, votes=votes),
             cut={pid: "cut, revealed AI"}, game_messages=[f"{self.name(pid)} is cut with 4 votes. Reveal: {self.upper(pid)}: AI."])
 
-        # Closing line after the show. Meta sees the human win; the others see the human caught.
-        if pid != "copycat":
+        # Closing line after the show (T54: each of the three endings). OpenAI and Anthropic see the human
+        # caught in scene 1; Meta sees the human make the final two after scene 3; SpaceXAI sees the last
+        # scene end with the human and two AIs on stage (cuts in scenes 1 and 3, ties in scenes 2 and 4).
+        if pid in ("visionary", "worrier"):
             votes = [(v, HUMAN, self.vote_reason(h)) for v in PERSONAS]
             votes.append((HUMAN, "overclocker", self.vote_reason(oc)))
             cut = {HUMAN: "cut, revealed HUMAN"}
             g = [f"{h} is cut with 4 votes. Reveal: {self.upper(HUMAN)}: HUMAN.",
                  f"The show is over. The human was {self.upper(HUMAN)}. The AIs win."]
-        else:
+            scene = 1
+        elif pid == "copycat":
             votes = [(v, "overclocker", self.vote_reason(oc)) for v in SAMPLE_CAST if v != "overclocker"]
             votes.append(("overclocker", HUMAN, self.vote_reason(h)))
             cut = {"overclocker": "cut, revealed AI", "visionary": "cut, revealed AI", "worrier": "cut, revealed AI"}
@@ -942,8 +967,21 @@ class Show:
                  f"Scene 2: {self.name('visionary')} is cut with 2 votes. Reveal: {self.upper('visionary')}: AI.",
                  f"Scene 3: {self.name('worrier')} is cut with 2 votes. Reveal: {self.upper('worrier')}: AI.",
                  f"The show is over. The human was {self.upper(HUMAN)}, who made the final two. The human wins."]
+            scene = 3
+        else:
+            cc = self.name("copycat")
+            votes = [("overclocker", HUMAN, self.vote_reason(h)), (HUMAN, "copycat", self.vote_reason(cc)),
+                     ("copycat", "overclocker", self.vote_reason(oc))]
+            cut = {"visionary": "cut, revealed AI", "worrier": "cut, revealed AI"}
+            g = [f"{self.name('visionary')} is cut with 3 votes. Reveal: {self.upper('visionary')}: AI.",
+                 f"The vote is tied between {h} and {oc}, with 2 votes each. Nobody is cut.",
+                 f"Scene 3: {self.name('worrier')} is cut with 2 votes. Reveal: {self.upper('worrier')}: AI.",
+                 f"The vote is tied between {h}, {oc} and {cc}, with 1 vote each. Nobody is cut.",
+                 f"The show is over. The human was {self.upper(HUMAN)}, still on stage when the last scene ended. The human wins."]
+            scene = SAMPLE_SCENES
         cases["closing"] = self.actor_state(pid, "closing", "show over", self.log(turns=3, talk=2, votes=votes),
                                             cut=cut, game_messages=g, options=self.others(pid))
+        cases["closing"]["show"]["scene"] = scene
         return cases
 
     def card_cases(self):
@@ -1269,7 +1307,7 @@ def check_reply(reply, ask, ctx):
 
 # ---------------------------------------------------------------- PIE log
 
-LOG_RE = re.compile(r"NHOS: (SHOW READY|RESTART|SEATS|SETUP|LOG|CLOSING|DIRECTOR|CUT|TIE|REACTIONS DONE)\b ?(.*)$")
+LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|DIRECTOR|CUT|TIE|REACTIONS DONE)\b ?(.*)$")
 
 
 def check_log(path: Path, personas, all_shows: bool) -> int:
@@ -1302,11 +1340,13 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
     res = provider_res(personas)
     n = bad = clock_bad = 0
     vote_bad = 0  # T52: scenes whose vote didn't end in exactly one CUT or TIE
+    end_bad = 0  # T54: shows whose SHOW END reason doesn't match how they ended
     for i, show in enumerate(shows, 1):
         human = None
         cards = []
         seats = total = None
         ends, scene, ties = [], 0, 0  # T52
+        cuts, end = 0, None  # T54
         for kind, rest in show:
             if kind in ("CUT", "TIE"):
                 ends.append(kind)
@@ -1315,10 +1355,15 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 # T52: each scene's vote ends in one cut or one tie (which cuts nobody), then the reactions.
                 scene += 1
                 ties += ends.count("TIE")
+                cuts += ends.count("CUT")  # T54
                 if len(ends) != 1:
                     vote_bad += 1
                     print(f"[FAIL] show {i} | scene {scene} | the vote ended in {' + '.join(ends) or 'no CUT or TIE line'}; one CUT or one TIE expected")
                 ends = []
+                continue
+            if kind == "SHOW END":
+                # T54: "result=<win|lose> reason=<final_two|last_scene|caught> scenes=<n> human=... show=<n>".
+                end = dict(re.findall(r"(\w+)=(\S+)", rest))
                 continue
             if kind == "SEATS":
                 # Since T26: "NHOS: SEATS human=<Player number> seats=5 cast=<ids in seat order>".
@@ -1372,12 +1417,29 @@ def check_log(path: Path, personas, all_shows: bool) -> int:
                 print(f"[FAIL] show {i} | {kind} | {who}: {text}")
                 for p in problems:
                     print("    FAIL:", p if p.startswith(("cut off", "a word", "a real")) else "hard to read: " + p)
+        # T54: the SHOW END reason matches how the show ended.
+        if end:
+            why, want = end.get("reason"), None
+            left = seats - cuts if seats else None
+            if end.get("result") == "lose":
+                want = "caught"
+            elif left is not None and left <= 2:
+                want = "final_two"
+            elif total and scene >= total:
+                want = "last_scene"
+            if why is None:
+                print(f"Show {i}: SHOW END has no reason= (a log from before T54).")
+            elif why != want:
+                end_bad += 1
+                print(f"[FAIL] show {i} | SHOW END | reason={why}, but {left if left is not None else '?'} actors were left "
+                      f"after scene {scene} of {total or '?'}; reason={want or '<none: no ending fits>'} expected")
         if seats and total and total != seats - 1:
             clock_bad += 1
             print(f"[FAIL] show {i} | SETUP | scenes={total}, but {seats} seats means {seats - 1} scenes")
-        print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}, ties = {ties}.")
+        print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}, ties = {ties}, "
+              f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad or vote_bad else 0
+    return 1 if bad or clock_bad or vote_bad or end_bad else 0
 
 
 # ---------------------------------------------------------------- main

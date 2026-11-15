@@ -1,0 +1,22 @@
+; T37: remembers each actor ask's scene and show.now (from its state JSON), for the backstage note's
+; one-note-per-lab-per-scene rule and for error_test's one failure per turn. A lower scene number than
+; the last one means a new show, which clears the notes shown.
+(fn TrackActorAsk (Tag User)
+  (set TScene 0)
+  (set TNow "")
+  (bind (_st _ok) (Json|LoadJsonfromString User))
+  (if _ok
+    (bind _hs (Json|HasField _st "show"))
+    (if _hs
+      (bind _sh (Json|GetField _st "show"))
+      (set TmpObj _sh)
+      (bind _sc (Json|GetField (V TmpObj) "scene"))
+      (set TScene _sc)
+      (bind _nw (Json|GetField (V TmpObj) "now"))
+      (set TNow _nw)))
+  (if (< (V TScene) (V NoteScene))
+    (clear (V NoteSeen)))
+  (set NoteScene (V TScene))
+  (add (V ActTags) Tag)
+  (add (V ActScenes) (V TScene))
+  (add (V ActNows) (V TNow)))

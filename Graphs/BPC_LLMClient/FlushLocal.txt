@@ -1,3 +1,4 @@
+; T37: each ask goes through FlushOne, which can fail it for error_test.
 (fn FlushLocal ()
   (set FlushTags (V LocalTags))
   (set FlushUsers (V LocalUsers))
@@ -8,9 +9,4 @@
   (for _i (range (len (V FlushTags)))
     (CallFunction|ClearReply)
     (set CurProv (get (V FlushProv) _i))
-    (CallFunction|FreeReply :User (get (V FlushUsers) _i))
-    (if (V BurnTest)
-      (CallFunction|Burn :Tag (get (V FlushTags) _i)))
-    (set UsageIn "0")
-    (set UsageOut "0")
-    (CallFunction|Deliver :Tag (get (V FlushTags) _i) :Ok true :Error "" :Seconds "0.3")))
+    (CallFunction|FlushOne :Tag (get (V FlushTags) _i) :User (get (V FlushUsers) _i))))
