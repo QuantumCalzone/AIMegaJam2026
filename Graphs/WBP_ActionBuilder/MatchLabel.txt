@@ -1,0 +1,7 @@
+; T65: the screen name a mention names, or "" (TryLabel for each seat).
+(fn MatchLabel (Rest)
+  (set Found "")
+  (for _k (range (len (V Labels)))
+    (set TmpK _k)
+    (CallFunction|TryLabel :Rest Rest :K (V TmpK)))
+  (return (V Found)))

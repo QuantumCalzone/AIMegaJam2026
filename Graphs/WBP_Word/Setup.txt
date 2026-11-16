@@ -1,0 +1,17 @@
+; WBP_Word.Setup(Text, Chip, Fill, Font), called by WBP_ActionBuilder.PutWord (T65). One piece of the preview line, in the
+; builder's mono font (its MonoFont, passed in as Font): a plain word white on nothing; a mention a chip filled with the
+; actor's seat color, ink text, round corners (ink on the four seat colors is 5.8:1 at the lowest, Meta's blue).
+(fn Setup (Text Chip Fill Font)
+  (bind cText (Class|UIStyle|UIColor :Role "Text"))
+  (bind cInk (Class|UIStyle|UIColor :Role "InkSolid"))
+  (bind rad (Class|UIStyle|UISize :Role "S1"))
+  (bind clear (Utilities|Struct|MakeLinearColor 0.0 0.0 0.0 0.0))
+  (bind fill (select Chip Fill clear))
+  (bind bChip (Class|UIStyle|Brush :Fill fill :Outline fill :Width 0.0 :Radius rad))
+  (bind pad (select Chip 4.0 0.0))
+  (Class|Border|SetBrushColor :self (Variables|WBP_Word|GetWordBox) :BrushColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (Appearance|SetBrush :self (Variables|WBP_Word|GetWordBox) :InBrush bChip)
+  (Class|Border|SetPadding :self (Variables|WBP_Word|GetWordBox) :Padding (Utilities|Struct|MakeMargin :Left pad :Top 0.0 :Right pad :Bottom 0.0))
+  (Class|Text|SetFont :self (Variables|WBP_Word|GetWordText) :Font Font)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Word|GetWordText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (select Chip cInk cText)))
+  (Class|Text|SetText :self (Variables|WBP_Word|GetWordText) :Text (Utilities|Text|ToText(String) Text)))

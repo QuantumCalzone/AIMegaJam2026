@@ -1,0 +1,10 @@
+; T65: the next word of the pool shows Text, as a chip in Name's seat color or plain, in MonoFont. Empty text adds nothing.
+(fn PutWord (Text Chip Name)
+  (if (or (Utilities|String|IsEmpty Text) (>= (V WordUsed) (len (V Words))))
+    (return))
+  (bind _w (get (V Words) (V WordUsed)))
+  (bind cQuiet (Class|UIStyle|UIColor :Role "Quiet"))
+  (bind cSeat (Class|UIStyle|SeatColor :Name Name :Fallback cQuiet))
+  (Class|WBPWord|Setup :self _w :Text Text :Chip Chip :Fill cSeat :Font (V MonoFont))
+  (Widget|SetVisibility :self _w :InVisibility "HitTestInvisible")
+  (set WordUsed (+ (V WordUsed) 1)))

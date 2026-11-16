@@ -1,0 +1,5 @@
+; T65: the words in a line as BP_Show.CapWords counts them (T59): split on spaces, "Player 3" one word, so a mention
+; ("@Meta," or, once resolved, "@Player 5") is one word. Keep it in step with CapWords.
+(fn CountWords (Text)
+  (set TmpWords (Utilities|String|ParseIntoArray (Utilities|String|Replace (Utilities|String|Trim (Utilities|String|TrimTrailing Text)) "Player " "Player~")))
+  (return (len (V TmpWords))))

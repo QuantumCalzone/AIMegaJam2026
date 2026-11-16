@@ -3,6 +3,8 @@
 ; the keyboard focus in it.
 ; T64: while a picked action still lacks a chip, it does nothing (step 7). While the builder is up, an empty line
 ; goes through too, so a No action turn with no words sends; with the builder down, an empty line still sends nothing.
+; T65: a SetText from the game fires no OnTextChanged, so the clear runs the speech field's change chain itself
+; (SpeechChanged): the counter goes back to 0/15 and the @ list closes.
 (fn SubmitInput ()
   (bind _blk (Class|WBPActionBuilder|Blocks :self (Variables|WBP_Stage|GetActionBuilder)))
   (if _blk
@@ -14,4 +16,5 @@
     (print (cat "NHOS: TYPED " _text))
     (Default|CallOnSend self _text))
   (Widget|SetText(TextBox) :self (Variables|WBP_Stage|GetInputBox) :InText (Utilities|Text|ToText(String) ""))
+  (CallFunction|SpeechChanged :Text "")
   (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox)))

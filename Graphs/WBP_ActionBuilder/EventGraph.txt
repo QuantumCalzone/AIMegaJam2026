@@ -2,10 +2,9 @@
 ; seven actions and the chips of the picked one. Every color, size and font comes from UIStyle (the mono font from
 ; MonoFont for now). No button or chip takes keyboard focus (IsFocusable off in the designer), so what I type stays
 ; in WBP_Stage's input box while I click.
+; T65: the preview line is drawn word by word (DrawPreview), so a mention is a chip; the designer shows an empty preview box.
 (event UserInterface|EventPreConstruct (IsDesignTime)
-  (CallFunction|StyleAll)
-  (if IsDesignTime
-    (Class|Text|SetText :self (Variables|WBP_ActionBuilder|GetPreviewText) :Text (Utilities|Text|ToText(String) "> throw rose at @Meta: \"Oops, my servo slipped.\""))))
+  (CallFunction|StyleAll))
 
 (event UserInterface|EventConstruct
   (CallFunction|FillLists)

@@ -1,0 +1,17 @@
+; T65: the counter right of the speech field: "12/15" in the mono font, quiet. At the cap, a red pill with white text:
+; UIStyle's Red is a fill ("fill, white text"), and red text on the ink panel would be only about 3:1.
+(fn SyncCount (N Max)
+  (bind _full (>= N Max))
+  (bind fMono (CallFunction|Mono))
+  (bind cRed (Class|UIStyle|UIColor :Role "Red"))
+  (bind cText (Class|UIStyle|UIColor :Role "Text"))
+  (bind cQuiet (Class|UIStyle|UIColor :Role "Quiet"))
+  (bind r (Class|UIStyle|UISize :Role "ButtonRadius"))
+  (bind clear (Utilities|Struct|MakeLinearColor 0.0 0.0 0.0 0.0))
+  (bind fill (select _full cRed clear))
+  (bind bPill (Class|UIStyle|Brush :Fill fill :Outline fill :Width 0.0 :Radius r))
+  (Class|Border|SetBrushColor :self (Variables|WBP_Stage|GetCountPill) :BrushColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
+  (Appearance|SetBrush :self (Variables|WBP_Stage|GetCountPill) :InBrush bPill)
+  (Class|Text|SetFont :self (Variables|WBP_Stage|GetWordCount) :Font fMono)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetWordCount) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (select _full cText cQuiet)))
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetWordCount) :Text (Utilities|Text|ToText(String) (cat (str N) "/" (str Max)))))

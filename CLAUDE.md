@@ -111,11 +111,17 @@ Package a Windows build. This only works on a Windows machine:
 - From Git Bash, this command fails with `'C:\Program' is not recognized` (or `'E:\Epic'`), because cmd strips the outer quotes from a line that has more than two. Put the command in a `.bat` file and run it with `cmd //c <file>.bat`.
 - The packaged game is in `Packaged/Windows/`. Its log is `Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`. It reads the API keys from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`, and the switches from `Local/switches.json` in the same folder. A packaged build sends real analytics events (T68), so before you test one, put `{"analytics": "off"}` (or `"test"`) in that `switches.json`, or add the package's player id (its log prints `NHOS: ANALYTICS player <id>`) to `ignore_players` in `Local/stats.json`. Delete both files before you zip a build.
 
-Package a macOS build. This needs a Mac with Xcode. It has not been tried yet, and it will also compile a game program:
+Package a macOS build. This needs a Mac with Xcode. It also compiles a game program. It was first done on 2026-11-15, with Xcode 27.2, in about five minutes:
 
 ```bash
-"<UE_ROOT>/Engine/Build/BatchFiles/RunUAT.sh" BuildCookRun -project="<PROJECT>" -platform=Mac -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="<repo root>/Packaged"
+"<UE_ROOT>/Engine/Build/BatchFiles/RunUAT.sh" BuildCookRun -project="<PROJECT>" -platform=Mac -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="<repo root>/Packaged" -nocompileeditor -unrealexe="<UE_ROOT>/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor" -unattended
 ```
+
+- **The archive step copies the wrong app.** `Packaged/Mac/AIMegaJam2026.app` is only the executable (about 411 MB), with no game content. The playable app is `Saved/StagedBuilds/Mac/AIMegaJam2026.app` (about 1.1 GB). Copy that one with `ditto`.
+- The app runs only on Apple silicon. It has an ad hoc signature and is not notarized, so players must open it once with System Settings > Privacy & Security > Open Anyway.
+- The app is **sandboxed**. It reads `Local/` from inside the bundle, at `AIMegaJam2026.app/Contents/UE/AIMegaJam2026/Local/`, and writes its log to `~/Library/Containers/com.YourCompany.AIMegaJam2026/Data/Library/Logs/AIMegaJam2026/`. Its network calls work: test analytics events reached the relay. The sandbox should block the game's writes into the bundle, such as the key screen's `Local/llm_key.json`; this is not tested. Delete the bundle's `Local/` before you zip.
+- Zip it with `ditto -c -k --norsrc --noextattr --keepParent`. A plain `ditto -c -k` adds `._` files, which some unzip tools put inside the app, and that breaks its signature.
+- When another session has uncommitted assets in the folder, build from a clean copy of the pushed commit instead. `cp -c -R` the `.uproject`, `Config/` and `Content/` (APFS clones take no extra space), then restore the changed files from git (`git show HEAD:<path> | git lfs smudge -- <path>`).
 
 Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.log`.
 

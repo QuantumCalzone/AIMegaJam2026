@@ -1,11 +1,13 @@
 ; T64: Scene Prep closes the builder and gives the lower panel back its size; the play side styles Action! as the one
 ; Primary button (gold, ink text: "act now").
+; T65: the word counter shows with Action! and Pass, and hides in Scene Prep.
 (fn SetPrepMode (Prep)
   (if Prep
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "SelfHitTestInvisible")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetStartButton) :InVisibility "Visible")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Collapsed")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Collapsed")
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetCountSize) :InVisibility "Collapsed")
     (Class|WBPActionBuilder|Close :self (Variables|WBP_Stage|GetActionBuilder))
     (CallFunction|FitBuilder)
     (else
@@ -13,4 +15,8 @@
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetStartButton) :InVisibility "Collapsed")
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Visible")
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Visible")
-      (Class|UIStyle|StyleButton :Button (Variables|WBP_Stage|GetSendButton) :Label (Variables|WBP_Stage|GetSendLabel) :Kind "Primary"))))
+      (Class|UIStyle|StyleButton :Button (Variables|WBP_Stage|GetSendButton) :Label (Variables|WBP_Stage|GetSendLabel) :Kind "Primary")
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetCountSize) :InVisibility "HitTestInvisible")
+      (bind _n0 (CallFunction|CountWords :Text (Utilities|String|ToString(Text) (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox)))))
+      (bind _m0 (CallFunction|MaxWords))
+      (CallFunction|SyncCount :N _n0 :Max _m0))))

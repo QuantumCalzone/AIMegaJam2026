@@ -1,0 +1,12 @@
+; T65: one word of the preview line (Tok). A word with a mention in it ("@Meta,", "\"@meta") becomes what's before the "@"
+; (plain), the chip ("@Meta", the screen name's own capitals), and what's after the name plus a space (plain). Any other
+; word is plain, with its space.
+(fn DrawToken ()
+  (bind (_l _r _found) (Utilities|String|Split :SourceString (V Tok) :InStr "@"))
+  (bind _lab (CallFunction|MatchLabel :Rest _r))
+  (if (or (not _found) (Utilities|String|IsEmpty _lab))
+    (CallFunction|PutWord :Text (cat (V Tok) " ") :Chip false :Name "")
+    (else
+      (CallFunction|PutWord :Text _l :Chip false :Name "")
+      (CallFunction|PutWord :Text (cat "@" _lab) :Chip true :Name _lab)
+      (CallFunction|PutWord :Text (cat (Utilities|String|RightChop :SourceString _r :Count (Utilities|String|Len _lab)) " ") :Chip false :Name ""))))

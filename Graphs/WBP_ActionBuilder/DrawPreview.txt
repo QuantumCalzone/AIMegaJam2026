@@ -1,0 +1,14 @@
+; T65: draws the preview line (T64's MakePreview string) word by word in PreviewWrap, so every mention is a chip (step 5).
+; The pool is made on first use; words past the line collapse.
+(fn DrawPreview (Text)
+  (if (== (len (V Words)) 0)
+    (CallFunction|MakeWords))
+  (set WordUsed 0)
+  (set Toks (Utilities|String|ParseIntoArray Text))
+  (for _t (V Toks)
+    (set Tok _t)
+    (CallFunction|DrawToken))
+  (for _k (range (len (V Words)))
+    (set TmpK _k)
+    (if (>= (V TmpK) (V WordUsed))
+      (Widget|SetVisibility :self (get (V Words) (V TmpK)) :InVisibility "Collapsed"))))

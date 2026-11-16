@@ -1,0 +1,6 @@
+; T65: BP_Show, found once and kept (the StartButton chain's GetActorOfClass; the builder's OpenTurn sets its own Show
+; the same way, with no cast).
+(fn ShowRef ()
+  (if (== (V Show) (V NullShow))
+    (set Show (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Core/BP_Show.BP_Show_C")))
+  (return (V Show)))

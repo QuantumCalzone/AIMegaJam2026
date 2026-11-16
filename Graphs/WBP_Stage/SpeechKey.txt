@@ -1,0 +1,22 @@
+; T65: the keys the speech field needs (step 4), by name. True means Handled: the key stops here. While the @ list is open,
+; Enter and Tab put the highlighted name in (Enter doesn't send), Escape closes it. Up and Down move in the list, and are
+; always Handled, like Tab, so no key moves the focus off the field (by default Tab moves it to the next widget, T31's note).
+; OnPreviewKeyDown calls this; a check may call it through MCP.
+(fn SpeechKey (Key)
+  (bind _focus (Widget|HasKeyboardFocus :self (Variables|WBP_Stage|GetInputBox)))
+  (if (not _focus)
+    (return false))
+  (if (and (V AtOpen) (or (streq Key "Enter") (streq Key "Tab")))
+    (CallFunction|AtPick :K (V AtSel))
+    (return true))
+  (if (and (V AtOpen) (streq Key "Escape"))
+    (set AtShutPos (V AtPos))
+    (CallFunction|AtDraw :Open false)
+    (return true))
+  (if (streq Key "Up")
+    (CallFunction|AtMove :Step -1)
+    (return true))
+  (if (streq Key "Down")
+    (CallFunction|AtMove :Step 1)
+    (return true))
+  (return (streq Key "Tab")))

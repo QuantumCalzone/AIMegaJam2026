@@ -1,0 +1,8 @@
+; T65: Up (-1) and Down (+1) move the highlight in the open list, round the ends.
+(fn AtMove (Step)
+  (if (not (V AtOpen))
+    (return))
+  (bind _n (len (V AtNames)))
+  (bind _s (+ (V AtSel) Step))
+  (set AtSel (select (< _s 0) (- _n 1) (select (>= _s _n) 0 _s)))
+  (CallFunction|AtShow :Fresh false))

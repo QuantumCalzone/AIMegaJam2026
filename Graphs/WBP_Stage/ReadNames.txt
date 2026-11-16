@@ -1,0 +1,18 @@
+; T65: the names on my screen (BP_Show.SeatLabel, "Meta") of every seat but mine: AllLabels for every seat, LiveLabels only
+; for the seats still on stage (OnStage), in seat order. Read on every change, so a cut shows at once.
+(fn ReadNames ()
+  (clear (V AllLabels))
+  (clear (V LiveLabels))
+  (bind _sh (CallFunction|ShowRef))
+  (if (== _sh (V NullShow))
+    (return))
+  (set TmpLabels (Class|BPShow|GetSeatLabel :self _sh))
+  (set TmpOn (Class|BPShow|GetOnStage :self _sh))
+  (set MySeat (Class|BPShow|GetHumanSeat :self _sh))
+  (for _i (range (len (V TmpLabels)))
+    (set TmpK _i)
+    (set TmpLab (get (V TmpLabels) (V TmpK)))
+    (if (and (!= (V TmpK) (V MySeat)) (not (Utilities|String|IsEmpty (V TmpLab))))
+      (add (V AllLabels) (V TmpLab))
+      (if (Utilities|Array|ContainsItem (V TmpOn) (V TmpK))
+        (add (V LiveLabels) (V TmpLab))))))

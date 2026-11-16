@@ -1,0 +1,15 @@
+; T65: a mention goes in as one unit, "@Meta " (step 5). One Backspace right after it, at the end of the line, removes the
+; whole mention: the space after it (the line now ends in "@Meta") or its last letter (the line now ends in "@Met").
+; Any other change is left alone.
+(fn UnitBackspace ()
+  (bind _one (and (== (Utilities|String|Len (V NewText)) (- (Utilities|String|Len (V PrevText)) 1)) (Utilities|String|StartsWith :SourceString (V PrevText) :InPrefix (V NewText) :SearchCase "CaseSensitive")))
+  (if (not _one)
+    (return))
+  (bind (_tok _pos) (CallFunction|LastToken :Text (V NewText)))
+  (bind (_ptok _ppos) (CallFunction|LastToken :Text (V PrevText)))
+  (bind _a (CallFunction|IsMention :Token _tok))
+  (bind _b (CallFunction|IsMention :Token _ptok))
+  (bind _sp (Utilities|String|EndsWith :SourceString (V PrevText) :InSuffix " "))
+  (if (or (and _sp _a) (and _b (not _sp)))
+    (print (cat "NHOS: MENTION removed " (select _a _tok _ptok)))
+    (set NewText (Utilities|String|Left :SourceString (V NewText) :Count _pos))))

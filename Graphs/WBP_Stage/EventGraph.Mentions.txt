@@ -1,0 +1,12 @@
+; Only the @ list's chains of WBP_Stage's EventGraph (T65). A click on a name puts it in, as Enter or Tab would.
+(event OnClicked(AtBtn0)
+  (CallFunction|AtPick :K 0))
+
+(event OnClicked(AtBtn1)
+  (CallFunction|AtPick :K 1))
+
+(event OnClicked(AtBtn2)
+  (CallFunction|AtPick :K 2))
+
+(event OnClicked(AtBtn3)
+  (CallFunction|AtPick :K 3))

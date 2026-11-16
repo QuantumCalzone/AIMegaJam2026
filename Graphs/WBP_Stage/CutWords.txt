@@ -1,0 +1,8 @@
+; T65: a line over the cap becomes its first Max words and one space (decision 7), so the next letter is refused too
+; instead of growing the last word. A line within the cap comes back as it is.
+(fn CutWords (Text Max)
+  (set TmpWords (Utilities|String|ParseIntoArray (Utilities|String|Replace (Utilities|String|Trim (Utilities|String|TrimTrailing Text)) "Player " "Player~")))
+  (if (<= (len (V TmpWords)) Max)
+    (return Text))
+  (Utilities|Array|Resize (V TmpWords) Max)
+  (return (cat (Utilities|String|Replace (Utilities|String|JoinStringArray (V TmpWords)) "Player~" "Player ") " ")))

@@ -1,0 +1,14 @@
+; T65: the speech field holds the keyboard focus for my whole turn (step 3). While my input is open, a click anywhere in the
+; game window (OnPreviewMouseButtonDown sets ClickAsked) that took the focus away gives it back the next frame. A click on a
+; widget that can't take focus hands it to the game viewport (T64), so this covers my card, the chat and the stage; the
+; builder's own KeepFocus already covers its clicks. It waits for a click so it never takes the keyboard from the editor's
+; own windows or the console (found in T65's check). NHOS: FOCUS back prints once each time.
+(fn HoldFocus (CanType)
+  (bind _has (Widget|HasKeyboardFocus :self (Variables|WBP_Stage|GetInputBox)))
+  (if _has
+    (set ClickAsked false)
+    (return))
+  (if (and CanType (V ClickAsked))
+    (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox))
+    (print "NHOS: FOCUS back")
+    (set ClickAsked false)))

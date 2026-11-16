@@ -1,0 +1,19 @@
+; T65: the @ list follows the word at the end of the line (decision 4). It is open while that word starts with "@", my
+; input is open, and an actor still on stage (never me) has a screen name that starts with the letters after the "@", in
+; any case. Escape keeps it shut until another "@" word (AtShutPos).
+(fn AtFollow ()
+  (bind (_tok _pos) (CallFunction|LastToken :Text (V NewText)))
+  (set AtToken _tok)
+  (set AtPos _pos)
+  (clear (V AtNames))
+  (bind _at (Utilities|String|StartsWith :SourceString _tok :InPrefix "@"))
+  (bind _key (Utilities|String|RightChop :SourceString _tok :Count 1))
+  (if (not _at)
+    (set AtShutPos -1))
+  (if _at
+    (for _l (V LiveLabels)
+      (set TmpLab _l)
+      (if (or (Utilities|String|IsEmpty _key) (Utilities|String|StartsWith :SourceString (V TmpLab) :InPrefix _key))
+        (add (V AtNames) (V TmpLab)))))
+  (bind _open (and (> (len (V AtNames)) 0) (and (V LastCanType) (!= _pos (V AtShutPos)))))
+  (CallFunction|AtDraw :Open _open))

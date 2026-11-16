@@ -1,6 +1,7 @@
 ; T64: draws the builder from its state: the picked action in paper, the rest plum; greyed actions disabled with
 ; their tips (step 4); the chips of the step I'm on; the preview line. Everything is off until my turn is live
 ; (SetLive) and after I send.
+; T65: the preview line is drawn word by word (DrawPreview), so a mention is a chip.
 (fn Refresh ()
   (bind _on (and (V Armed) (and (not (V Sent)) (V Live))))
   (for _k (range (len (V ActBtns)))
@@ -16,4 +17,4 @@
     (else
       (Widget|SetVisibility :self (Variables|WBP_ActionBuilder|GetChipsBox) :InVisibility "Collapsed")))
   (bind _p (CallFunction|MakePreview))
-  (Class|Text|SetText :self (Variables|WBP_ActionBuilder|GetPreviewText) :Text (Utilities|Text|ToText(String) _p)))
+  (CallFunction|DrawPreview :Text _p))

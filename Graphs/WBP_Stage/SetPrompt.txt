@@ -1,6 +1,7 @@
 ; T64: the builder hears when my input opens (SetLive), and Action! (SendButton) stays greyed while the builder holds
 ; an unfinished action (LastBlock, kept by SyncAction at the end of every call). FitBuilder follows the builder's
 ; height every frame.
+; T65: the speech field keeps the focus while I can type (HoldFocus); the @ list closes with my input.
 (fn SetPrompt (Turn Hint CanType)
   (Widget|SetRenderOpacity :self (Variables|WBP_Stage|GetHintLabel) :InOpacity (select (Utilities|Text|TextIsEmpty :InText (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox))) 1.0 0.0))
   (if (not (Utilities|String|EqualExactly(String) Turn (Variables|Default|GetLastTurn)))
@@ -17,6 +18,9 @@
     (Class|WBPActionBuilder|SetLive :self (Variables|WBP_Stage|GetActionBuilder) :On CanType)
     (Class|Text|SetColorandOpacity :ColorAndOpacity (Utilities|Struct|MakeSlateColor (select CanType (Utilities|Struct|MakeLinearColor 1.0 0.85 0.45 1.0) (Utilities|Struct|MakeLinearColor 0.8 0.83 0.9 1.0))) :self (Variables|WBP_Stage|GetTurnText))
     (if CanType
-      (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox))))
+      (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox))
+      (else
+        (CallFunction|AtDraw :Open false))))
   (CallFunction|SyncAction)
-  (CallFunction|FitBuilder))
+  (CallFunction|FitBuilder)
+  (CallFunction|HoldFocus :CanType CanType))

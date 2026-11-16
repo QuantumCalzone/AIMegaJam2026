@@ -1,0 +1,14 @@
+; T65: shows the list with the current matches. A fresh list highlights the first match.
+(fn AtShow (Fresh)
+  (if (== (len (V AtBtns)) 0)
+    (CallFunction|AtLists))
+  (if Fresh
+    (set AtSel 0))
+  (set AtSel (Math|Integer|Max(Integer) 0 (Math|Integer|Min(Integer) (V AtSel) (- (len (V AtNames)) 1))))
+  (for _k (range 4)
+    (set TmpK _k)
+    (CallFunction|AtEntry :K (V TmpK)))
+  (CallFunction|AtPlace)
+  (Widget|SetVisibility :self (Variables|WBP_Stage|GetAtPop) :InVisibility "SelfHitTestInvisible")
+  (if Fresh
+    (print (cat "NHOS: MENTION open " (Utilities|String|JoinStringArray (V AtNames) ",")))))
