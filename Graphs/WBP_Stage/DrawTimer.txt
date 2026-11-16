@@ -1,0 +1,13 @@
+; T66: the timer at the right end of the speech row (step 2): "0:21" in the mono font (T65's Mono, the builder's MonoFont),
+; quiet; the last 5 seconds in gold, the palette's "act now" (about 10:1 on the ink panel). Red stays for the vote, the cut,
+; errors and the full word counter.
+(fn DrawTimer (Secs)
+  (bind _r (Math|Integer|%(Integer) Secs 60))
+  (bind _m (Math|Float|Truncate (/ (Math|Conversions|ToFloat(Integer) Secs) 60.0)))
+  (bind _txt (cat (str _m) ":" (select (< _r 10) "0" "") (str _r)))
+  (bind fMono (CallFunction|Mono))
+  (bind cGold (Class|UIStyle|UIColor :Role "Gold"))
+  (bind cQuiet (Class|UIStyle|UIColor :Role "Quiet"))
+  (Class|Text|SetFont :self (Variables|WBP_Stage|GetTimerText) :Font fMono)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetTimerText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (select (<= Secs 5) cGold cQuiet)))
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetTimerText) :Text (Utilities|Text|ToText(String) _txt)))

@@ -4,12 +4,18 @@
 ; many rows of chips the picked action has (Look has three). SetPrompt runs this every frame, SetPhase and SetPrepMode
 ; right away. It touches a widget only when a value changes, so a builder that is never armed changes nothing, and
 ; the chat is scrolled to its newest line whenever its height changes.
+; T66: the panel is wide while a turn timer shows too (TimerWide: my last word and reactions, where Pass and the timer
+; would leave the field too little room at 640). The width has its own change check (FitWide), apart from the chat's.
 (fn FitBuilder ()
   (bind _on (Class|WBPActionBuilder|IsOn :self (Variables|WBP_Stage|GetActionBuilder)))
+  (bind _wide (or _on (V TimerWide)))
+  (if (xor _wide (V FitWide))
+    (set FitWide _wide)
+    (Layout|SizeBox|SetWidthOverride :self (Variables|WBP_Stage|GetLowerSize) :InWidthOverride (select _wide (V LowerWideBuild) (V LowerWide)))
+    (Widget|ScrolltoEnd :self (Variables|WBP_Stage|GetLogScroll)))
   (if (xor _on (V FitOn))
     (set FitOn _on)
     (set LastChat (V ChatTall))
-    (Layout|SizeBox|SetWidthOverride :self (Variables|WBP_Stage|GetLowerSize) :InWidthOverride (select _on (V LowerWideBuild) (V LowerWide)))
     (Layout|SizeBox|SetHeightOverride :self (Variables|WBP_Stage|GetChatSize) :InHeightOverride (V ChatTall))
     (Widget|ScrolltoEnd :self (Variables|WBP_Stage|GetLogScroll)))
   (if _on

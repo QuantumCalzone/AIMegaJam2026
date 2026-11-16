@@ -1,8 +1,10 @@
 ; WBP_Stage.SetPhase(Phase): the phase header's text (the "phase" cue, BP_Show.RunCue).
 ; T64: also opens or closes the action builder (PhaseShown: open right after BuilderTurn, closed at any other header)
 ; and fits the lower panel to it (FitBuilder).
+; T66: Pass hides in my scene turns, and the last turn's timer gives up its space (ShapeRow).
 (fn SetPhase (Phase)
   (Class|Text|SetText :Text (Utilities|Text|ToText(String) Phase) :self (Variables|WBP_Stage|GetPhaseHeader))
   (bind _typed (Utilities|String|ToString(Text) (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox))))
   (Class|WBPActionBuilder|PhaseShown :self (Variables|WBP_Stage|GetActionBuilder) :Text _typed)
+  (CallFunction|ShapeRow)
   (CallFunction|FitBuilder))

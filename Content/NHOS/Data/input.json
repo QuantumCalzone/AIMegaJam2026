@@ -1,8 +1,15 @@
 {
 	"_readme": [
-		"Settings for the player's turn input (T63). The game reads this file at each line the player sends (BP_Show.SpellWait), so a change takes effect at the next line, even mid-show.",
+		"Settings for the player's turn input (T63, T66). The game reads this file at each line the player sends (BP_Show.SpellWait) and each time the player's input opens (BP_Show.TimerSecs), so a change takes effect at the next line or turn, even mid-show.",
 		"spelling_wait: seconds the input LLM gets to fix the spelling of a typed line (BP_Show.SpellAsk). If it fails, is refused or takes longer, the line goes as typed, with provider names turned into Player names (ScrubLabels), and the log prints NHOS: SPELLING skipped <off|failed|empty|late>. A reply that comes late is dropped. 0 sends every line as typed, with no call. A missing file or field means 4.",
-		"Tools/check_prompts.py checks this file. T66 adds 'timers' here."
+		"timers: the seconds the player has for each kind of turn, counted from when their input opens on screen, after the lines before it have played (WBP_Stage.TickTimer). scene is a scene turn, free_talk a Free Talk line, last_word the reply after being named in the final round, reaction a reaction after the Cut. When one runs out the turn sends itself (NHOS: TIMEOUT): a scene turn sends the action as built, an unfinished one as a look around, with whatever is typed; the others send what is typed, or a pass if nothing is. 0 means no timer; the vote has none. A missing file or field gives scene 30, free_talk 0, last_word 15, reaction 15. Autoplay never waits for a timer, and no time ever reaches the AIs.",
+		"Tools/check_prompts.py checks this file."
 	],
-	"spelling_wait": 4
+	"spelling_wait": 4,
+	"timers": {
+		"scene": 30,
+		"free_talk": 0,
+		"last_word": 15,
+		"reaction": 15
+	}
 }

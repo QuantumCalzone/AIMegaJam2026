@@ -1,0 +1,19 @@
+; T66: my input just opened on screen (the lines before it have played, T30). BP_Show says which timer this turn has
+; (TimerFor: 0 for the vote, Free Talk and autoplay); a timer above 0 shows and starts counting, and the lower panel
+; widens as in a scene turn (TimerWide, FitBuilder), so the field keeps its room next to Pass and the timer at 640.
+(fn TimerStart ()
+  (bind _sh (CallFunction|ShowRef))
+  (if (== _sh (V NullShow))
+    (return))
+  (bind (_kind _secs) (Class|BPShow|TimerFor :self _sh))
+  (set TimerKind _kind)
+  (set TimerOn (> _secs 0.0))
+  (set TimerWide (> _secs 0.0))
+  (set TimerEnd (+ (Utilities|Time|GetRealTimeSeconds) _secs))
+  (set TimerShown -1)
+  (if (> _secs 0.0)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetTimerSize) :InVisibility "HitTestInvisible")
+    (print (cat "NHOS: TIMER start " _kind " " (str (Math|Float|Ceil _secs))))
+    (CallFunction|TimerTick)
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetTimerSize) :InVisibility "Collapsed"))))

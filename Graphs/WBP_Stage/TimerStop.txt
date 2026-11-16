@@ -1,0 +1,7 @@
+; T66: my input closed (I sent, or a timeout sent for me): the timer stops and hides, keeping its space (and the wide
+; panel) until the next header (ShapeRow), so the row doesn't jump at my send (decision 7). TimerWide, not TimerOn, says
+; a timer showed this turn: a timeout has already cleared TimerOn.
+(fn TimerStop ()
+  (if (V TimerWide)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetTimerSize) :InVisibility "Hidden"))
+  (set TimerOn false))

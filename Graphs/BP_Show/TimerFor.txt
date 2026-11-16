@@ -1,0 +1,16 @@
+; T66: the timer for my input as it opens on screen (WBP_Stage.TimerStart asks at that moment, when the logic is waiting
+; for me): its kind and its seconds from input.json. A scene turn, a Free Talk line, a last word (T58: LastWordOn, inside
+; Free Talk) and a reaction each have their own; the vote ("the cut") and Scene Prep have none. 0 seconds means no timer.
+; Autoplay never waits for a timer (step 8): it sends at once (AutoTurn, the canned lines).
+(fn TimerFor ()
+  (set TimerKind "")
+  (if (Utilities|String|EqualExactly(String) (V Phase) "scene")
+    (set TimerKind "scene"))
+  (if (Utilities|String|EqualExactly(String) (V Phase) "free talk")
+    (set TimerKind (select (V LastWordOn) "last_word" "free_talk")))
+  (if (Utilities|String|EqualExactly(String) (V Phase) "reactions")
+    (set TimerKind "reaction"))
+  (if (or (V Autoplay) (Utilities|String|IsEmpty (V TimerKind)))
+    (return (V TimerKind) 0.0))
+  (bind _s (CallFunction|TimerSecs :Kind (V TimerKind)))
+  (return (V TimerKind) _s))

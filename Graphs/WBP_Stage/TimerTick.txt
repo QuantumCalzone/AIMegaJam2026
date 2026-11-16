@@ -1,0 +1,9 @@
+; T66: one frame of the running timer: redraw when the shown second changes, and send the turn at 0.
+(fn TimerTick ()
+  (bind _left (- (V TimerEnd) (Utilities|Time|GetRealTimeSeconds)))
+  (bind _s (Math|Float|Ceil (select (< _left 0.0) 0.0 _left)))
+  (if (!= _s (V TimerShown))
+    (set TimerShown _s)
+    (CallFunction|DrawTimer :Secs _s))
+  (if (<= _left 0.0)
+    (CallFunction|TimeUp)))

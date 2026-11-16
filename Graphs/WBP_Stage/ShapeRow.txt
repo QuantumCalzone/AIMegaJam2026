@@ -1,0 +1,12 @@
+; T66: the input row per phase, at every header (SetPhase). In my scene turns the builder shows and Pass doesn't: No action
+; is how a scene turn says nothing (the spec's row: the field, the counter, Action! and the timer). Every other header shows
+; Pass, enabled only on my Free Talk line, last word or reaction (SetPassEnabled, as now). The last turn's timer gives up
+; its space and the wide panel here; the next turn's TimerStart decides again.
+(fn ShapeRow ()
+  (Widget|SetVisibility :self (Variables|WBP_Stage|GetTimerSize) :InVisibility "Collapsed")
+  (set TimerWide false)
+  (bind _on (Class|WBPActionBuilder|IsOn :self (Variables|WBP_Stage|GetActionBuilder)))
+  (if _on
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Collapsed")
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Visible"))))

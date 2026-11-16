@@ -1,0 +1,13 @@
+; T66: the turn timer, once a frame from SetPrompt. It starts when my input opens on screen (CanType rises), stops when it
+; closes (CanType falls), and ticks while it runs. TimerWasOpen is its own copy of CanType, apart from SetPrompt's
+; LastCanType, so the order inside SetPrompt doesn't matter. Each branch sets it itself: a bind of a variable is read
+; where it's used, so a bound "rise" would see the new value (T65).
+(fn TickTimer (CanType)
+  (if (and CanType (not (V TimerWasOpen)))
+    (set TimerWasOpen true)
+    (CallFunction|TimerStart))
+  (if (and (not CanType) (V TimerWasOpen))
+    (set TimerWasOpen false)
+    (CallFunction|TimerStop))
+  (if (and CanType (V TimerOn))
+    (CallFunction|TimerTick)))

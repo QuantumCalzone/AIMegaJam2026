@@ -144,7 +144,10 @@ input LLM only fixes the spelling of the typed line. Its state has no places or
 props, and every input case must come back as speech with no actions: a typo
 fixed and nothing else changed, provider names turned into Player names, @
 mentions kept, and "I throw the rose" left as words. input.json holds
-spelling_wait, the seconds the game waits for that fix (0 = no call).
+spelling_wait, the seconds the game waits for that fix (0 = no call). Since
+T66 it also holds 'timers', the seconds per kind of turn (scene, free_talk,
+last_word, reaction): each 0 (no timer) or 5 to 120, and never 0 for a scene
+turn, a last word or a reaction.
 autoplay.json's scene lines are speech only, because the autoplay action is
 picked from the rules. --log counts my scene turns (NHOS: HUMAN) and the lines
 sent as typed (NHOS: SPELLING skipped), and fails a HUMAN line with an unknown
@@ -250,6 +253,10 @@ HUMAN_VERBS = VERBS + ["around", "none"]
 INPUT_RULES = ['Never make an action: "actions" is always [].', "Fix misspelled words and change nothing else"]
 # T69: the input LLM names an action the player can't click in "attempt" (at most 6 words); prompts.json 'input' keeps this rule.
 INPUT_ATTEMPT_RULES = ['- "attempt": the player can click only five actions', '"attempt" never changes speech.']
+# T66: input.json 'timers', the seconds the player has per kind of turn (BP_Show.TimerFor). 0 = no timer.
+TIMER_KINDS = ("scene", "free_talk", "last_word", "reaction")
+# A turn the game must never wait on forever: a scene turn, a last word and a reaction always have a timer.
+TIMED_KINDS = ("scene", "last_word", "reaction")
 MAX_ATTEMPT_WORDS = 6
 ACTOR_ASKS = ["scene_turn", "free_talk", "last_word", "vote", "reaction", "reaction_cut", "closing"]
 ALL_ASKS = ACTOR_ASKS + ["input"]
@@ -1176,6 +1183,20 @@ def check_files(errors: list[str]):
             errors.append(f"input.json: spelling_wait must be a number of seconds from 0 to 10, not {w!r}")
         if not is_lines(inp.get("_readme")):
             errors.append("input.json: _readme must be an array of lines")
+        # T66: the turn timers, in seconds. Each kind is 0 (no timer) or 5 to 120 seconds; Free Talk may be 0 (the spec
+        # gives it none), the others never, so a turn can't hang on the player.
+        timers = inp.get("timers")
+        if not isinstance(timers, dict):
+            errors.append("input.json: timers must be an object of seconds per kind of turn (T66)")
+        else:
+            for k in TIMER_KINDS:
+                v = timers.get(k)
+                if isinstance(v, bool) or not isinstance(v, (int, float)) or not (v == 0 or 5 <= v <= 120):
+                    errors.append(f"input.json: timers.{k} must be 0 (no timer) or 5 to 120 seconds, not {v!r}")
+                elif k in TIMED_KINDS and v == 0:
+                    errors.append(f"input.json: timers.{k} can't be 0: the game would wait for the player forever")
+            for k in sorted(set(timers) - set(TIMER_KINDS)):
+                errors.append(f"input.json: timers.{k} is not a kind of turn the game times ({', '.join(TIMER_KINDS)})")
 
     # T63: the input LLM fixes spelling only and never makes an action.
     for rule in INPUT_RULES:

@@ -1,6 +1,7 @@
 ; T64: Scene Prep closes the builder and gives the lower panel back its size; the play side styles Action! as the one
 ; Primary button (gold, ink text: "act now").
 ; T65: the word counter shows with Action! and Pass, and hides in Scene Prep.
+; T66: Scene Prep hides the turn timer and gives up its wide panel.
 (fn SetPrepMode (Prep)
   (if Prep
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "SelfHitTestInvisible")
@@ -8,6 +9,9 @@
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Collapsed")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Collapsed")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetCountSize) :InVisibility "Collapsed")
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetTimerSize) :InVisibility "Collapsed")
+    (set TimerOn false)
+    (set TimerWide false)
     (Class|WBPActionBuilder|Close :self (Variables|WBP_Stage|GetActionBuilder))
     (CallFunction|FitBuilder)
     (else

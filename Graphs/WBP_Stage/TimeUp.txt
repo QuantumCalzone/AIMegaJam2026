@@ -1,0 +1,22 @@
+; T66: my time ran out. A scene turn (step 3) sends itself as Action! would, with T64's gate let through (ForceSend):
+; HandleSend takes the action with TakeAction, so a finished action goes as built, an unfinished one as a look around
+; (Ready false, the fallback a bot gets), and the typed words as they are; SubmitInput sends an empty line too while the
+; builder is up. A last word, a reaction or a timed Free Talk line (step 5) sends what's typed, or "pass" through OnSend
+; when the field is empty, exactly as the Pass button does (decision 3). GetAction reads the builder without sealing it,
+; only for the TIMEOUT line.
+(fn TimeUp ()
+  (set TimerOn false)
+  (CallFunction|AtDraw :Open false)
+  (bind _typed (Utilities|String|Trim (Utilities|String|ToString(Text) (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox)))))
+  (if (streq (V TimerKind) "scene")
+    (bind (_v _i _t _r) (Class|WBPActionBuilder|GetAction :self (Variables|WBP_Stage|GetActionBuilder)))
+    (print (cat "NHOS: TIMEOUT scene " (select (not _r) "unfinished" (select (streq _v "none") "none" "finished"))))
+    (set ForceSend true)
+    (CallFunction|SubmitInput)
+    (set ForceSend false)
+    (return))
+  (print (cat "NHOS: TIMEOUT " (V TimerKind)))
+  (if (Utilities|String|IsEmpty _typed)
+    (Default|CallOnSend self "pass")
+    (return))
+  (CallFunction|SubmitInput))

@@ -5,9 +5,10 @@
 ; goes through too, so a No action turn with no words sends; with the builder down, an empty line still sends nothing.
 ; T65: a SetText from the game fires no OnTextChanged, so the clear runs the speech field's change chain itself
 ; (SpeechChanged): the counter goes back to 0/15 and the @ list closes.
+; T66: a timeout (ForceSend) sends an unfinished action too; HandleSend gets it as a look around.
 (fn SubmitInput ()
   (bind _blk (Class|WBPActionBuilder|Blocks :self (Variables|WBP_Stage|GetActionBuilder)))
-  (if _blk
+  (if (and _blk (not (V ForceSend)))
     (print "NHOS: BUILDER blocked")
     (return))
   (bind _bon (Class|WBPActionBuilder|IsOn :self (Variables|WBP_Stage|GetActionBuilder)))
