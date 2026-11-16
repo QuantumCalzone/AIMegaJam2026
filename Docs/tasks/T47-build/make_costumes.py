@@ -66,6 +66,9 @@ FRONT_YAW = 270  # turns a Meshy model (face at raw +Y) to the robot's face at R
 # headpiece's own value on that robot. Empty until T80's findings or T47's close-ups say otherwise.
 ON = {
     # "dark_shades": {"copycat": {"z": -20.0}},
+    # T83: my Hyper3D box head is shallower (front at x 23.4, not 28) and its eye slots sit lower (z 134.7,
+    # not 138), so the shades come 4 cm back and 4.5 cm down on my box to cover the slots.
+    "dark_shades": {"human": {"x": -4.4, "z": -24.6}},
 }
 PERSONAS = {"visionary", "worrier", "overclocker", "copycat", "human"}
 

@@ -189,7 +189,13 @@
         72,
         80,
         28
-      ]
+      ],
+      "on": {
+        "human": {
+          "x": -4.4,
+          "z": -24.6
+        }
+      }
     },
     "ball_cap_back": {
       "mesh": "/Game/NHOS/Stage/Headpieces/SM_BallCap.SM_BallCap",
