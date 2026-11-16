@@ -1,7 +1,10 @@
 ; T65: opens, redraws or closes the @ list. AtOpen is read before it is set: a bind of a variable is a pure node, so
 ; reading it after the set would give the new value (found in T65's check).
+; T78: the @ list closes the face list.
 (fn AtDraw (Open)
   (if Open
+    (if (V FaceOpen)
+      (CallFunction|FaceShow :Open false))
     (CallFunction|AtShow :Fresh (not (V AtOpen)))
     (else
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetAtPop) :InVisibility "Collapsed")

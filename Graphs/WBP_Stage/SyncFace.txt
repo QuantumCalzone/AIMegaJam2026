@@ -1,0 +1,34 @@
+; T78: the face chip, once a frame from SetPrompt. When my input opens (CanType rises), the pick goes back to Auto
+; (step 4) and the chip turns on; when it closes, the chip turns off and its list closes. A pick closes the list. The
+; chip shows on the play side (FaceRowOn, set by SetPrepMode) but not in the vote (VoteRow), and reads the builder's
+; label, in paper after a pick. FaceWasOpen is its own copy of CanType, apart from LastCanType, so the order inside
+; SetPrompt doesn't matter. Each branch sets it itself: a bound "rise" would be read after the set and see the new
+; value (T65, T66's TickTimer).
+(fn SyncFace (CanType)
+  (CallFunction|FaceInit)
+  (if (and CanType (not (V FaceWasOpen)))
+    (set FaceWasOpen true)
+    (Class|WBPActionBuilder|ResetFace :self (Variables|WBP_Stage|GetActionBuilder))
+    (Class|WBPActionBuilder|SetFaceLive :self (Variables|WBP_Stage|GetActionBuilder) :On true)
+    (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetFaceBtn) :bInIsEnabled true))
+  (if (and (not CanType) (V FaceWasOpen))
+    (set FaceWasOpen false)
+    (Class|WBPActionBuilder|SetFaceLive :self (Variables|WBP_Stage|GetActionBuilder) :On false)
+    (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetFaceBtn) :bInIsEnabled false)
+    (CallFunction|FaceShow :Open false))
+  (bind _pk (Class|WBPActionBuilder|TakeFacePicked :self (Variables|WBP_Stage|GetActionBuilder)))
+  (if _pk
+    (CallFunction|FaceShow :Open false))
+  (bind _show (and (V FaceRowOn) (not (Widget|IsVisible :self (Variables|WBP_Stage|GetVoteRow)))))
+  (if (xor _show (V FaceShownV))
+    (set FaceShownV _show)
+    (if _show
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetFaceSize) :InVisibility "Visible")
+      (else
+        (Widget|SetVisibility :self (Variables|WBP_Stage|GetFaceSize) :InVisibility "Collapsed")
+        (CallFunction|FaceShow :Open false))))
+  (bind _lbl (Class|WBPActionBuilder|FaceLabel :self (Variables|WBP_Stage|GetActionBuilder)))
+  (if (not (streq _lbl (V LastFaceLbl)))
+    (set LastFaceLbl _lbl)
+    (Class|UIStyle|StyleButton :Button (Variables|WBP_Stage|GetFaceBtn) :Label (Variables|WBP_Stage|GetFaceLabel) :Kind (select (streq _lbl "Face: Auto") "Secondary" "Paper"))
+    (Class|Text|SetText :self (Variables|WBP_Stage|GetFaceLabel) :Text (Utilities|Text|ToText(String) _lbl))))

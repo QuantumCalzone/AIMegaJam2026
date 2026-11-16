@@ -1,6 +1,7 @@
 ; T77: the one place my emotion is settled, for every line of mine: HumanEmo (a line through SpellAsk) and TakeEmo
-; (a pass). It prints NHOS: HUMAN emotion=<id> from=<llm|keywords|none> and returns the id that goes on my line.
-; T78 adds its pick here (ApplyFace: from=pick).
+; (a pass). It prints NHOS: HUMAN emotion=<id> from=<llm|keywords|none|pick> and returns the id that goes on my line.
+; T78: a pick on the face chip overrides T77's pick (ApplyFace): from=pick.
 (fn HumanFeels (Id From)
-  (print (cat "NHOS: HUMAN emotion=" Id " from=" From))
-  (return Id))
+  (bind (_fid _ffrom) (CallFunction|ApplyFace :AutoId Id :AutoFrom From))
+  (print (cat "NHOS: HUMAN emotion=" _fid " from=" _ffrom))
+  (return _fid))

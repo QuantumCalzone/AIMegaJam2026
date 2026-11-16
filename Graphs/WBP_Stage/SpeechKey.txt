@@ -2,6 +2,7 @@
 ; Enter and Tab put the highlighted name in (Enter doesn't send), Escape closes it. Up and Down move in the list, and are
 ; always Handled, like Tab, so no key moves the focus off the field (by default Tab moves it to the next widget, T31's note).
 ; OnPreviewKeyDown calls this; a check may call it through MCP.
+; T78: Escape closes the face list too.
 (fn SpeechKey (Key)
   (bind _focus (Widget|HasKeyboardFocus :self (Variables|WBP_Stage|GetInputBox)))
   (if (not _focus)
@@ -12,6 +13,9 @@
   (if (and (V AtOpen) (streq Key "Escape"))
     (set AtShutPos (V AtPos))
     (CallFunction|AtDraw :Open false)
+    (return true))
+  (if (and (V FaceOpen) (streq Key "Escape"))
+    (CallFunction|FaceShow :Open false)
     (return true))
   (if (streq Key "Up")
     (CallFunction|AtMove :Step -1)

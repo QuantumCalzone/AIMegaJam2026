@@ -2,6 +2,7 @@
 ; Primary button (gold, ink text: "act now").
 ; T65: the word counter shows with Action! and Pass, and hides in Scene Prep.
 ; T66: Scene Prep hides the turn timer and gives up its wide panel.
+; T78: the face chip's row is the play side (FaceRowOn); Scene Prep hides the chip and its list and resets the pick.
 (fn SetPrepMode (Prep)
   (if Prep
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "SelfHitTestInvisible")
@@ -12,6 +13,11 @@
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetTimerSize) :InVisibility "Collapsed")
     (set TimerOn false)
     (set TimerWide false)
+    (set FaceRowOn false)
+    (set FaceShownV false)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetFaceSize) :InVisibility "Collapsed")
+    (CallFunction|FaceShow :Open false)
+    (Class|WBPActionBuilder|ResetFace :self (Variables|WBP_Stage|GetActionBuilder))
     (Class|WBPActionBuilder|Close :self (Variables|WBP_Stage|GetActionBuilder))
     (CallFunction|FitBuilder)
     (else
@@ -23,4 +29,5 @@
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetCountSize) :InVisibility "HitTestInvisible")
       (bind _n0 (CallFunction|CountWords :Text (Utilities|String|ToString(Text) (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox)))))
       (bind _m0 (CallFunction|MaxWords))
-      (CallFunction|SyncCount :N _n0 :Max _m0))))
+      (CallFunction|SyncCount :N _n0 :Max _m0)
+      (set FaceRowOn true))))

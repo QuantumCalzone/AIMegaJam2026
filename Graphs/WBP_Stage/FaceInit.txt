@@ -1,0 +1,8 @@
+; T78: once: the emotions from emotes.json, the face list's ink panel (as T65's AtPop), the chip's tooltip.
+(fn FaceInit ()
+  (if (V FaceReady)
+    (return))
+  (set FaceReady true)
+  (Class|WBPActionBuilder|LoadFaces :self (Variables|WBP_Stage|GetActionBuilder))
+  (Class|UIStyle|StylePanel :Panel (Variables|WBP_Stage|GetFacePop) :Look "Ink")
+  (Widget|SetToolTipText :self (Variables|WBP_Stage|GetFaceBtn) :InToolTipText (Utilities|Text|ToText(String) "The face your robot shows with this line. Auto: the game reads it from your words.")))

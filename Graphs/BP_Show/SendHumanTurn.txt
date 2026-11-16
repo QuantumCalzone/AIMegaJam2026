@@ -3,8 +3,10 @@
 ; T62's functions use them. HumanCheck pre-checks the action with the stage director's rules. No LLM sees the
 ; action: HumanSay hands it to HandleReply with the line from SpellAsk. HandleSend sends Verb "none" until T64's
 ; builder; AutoTurn picks an action for autoplay.
+; T78: the face chip goes with the turn (TakeFace).
 (fn SendHumanTurn (Verb Item Target Line)
   (set HumanSent true)
+  (CallFunction|TakeFace)
   (set HVerb (Utilities|String|ToLower (Utilities|String|Trim Verb)))
   (set HItem (Utilities|String|Trim Item))
   (set HTarget (Utilities|String|Trim Target))

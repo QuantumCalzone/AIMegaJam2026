@@ -1,0 +1,6 @@
+; T78: each of my sends starts here (SendHumanTurn, SendHumanTalk, SendHumanReact, SendHumanVote): the face chip as it
+; stands goes with the turn. A timeout sends the chip as it stands too (T66's TimeUp reaches the same sends). Autoplay's
+; sends read Auto, since my input never opens. ApplyFace uses it once and clears it.
+(fn TakeFace ()
+  (bind _f (Class|WBPStage|FaceTake :self (Variables|Default|GetStage)))
+  (set HFace _f))

@@ -1,0 +1,5 @@
+; T78: the chip toggles its list, only while I can type.
+(fn FaceClick ()
+  (if (not (Variables|Default|GetLastCanType))
+    (return))
+  (CallFunction|FaceShow :Open (not (V FaceOpen))))
