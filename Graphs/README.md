@@ -7,4 +7,4 @@ The DSL source last written to each Blueprint graph, one file per graph: `Graphs
 - Never push a read-back as it is. Writing a read-back to the editor drops data (see "T06" in `Docs/tasks/T06.md`).
 - If you change a graph some other way (a pin value, a hand edit in the editor), make the same change in its file, or delete the file.
 
-The editor's assets are the truth. These files save each task from reading every graph again: a full read of `BP_Show` takes 7 to 8 minutes.
+The editor's assets are the truth. These files save each task from reading every graph again.
