@@ -18,12 +18,14 @@
   ; T38: the line's bubble over its robot, with the speech as the chat line shows it, so StartType types the same letters
   ; in both. The bubble on another robot fades. In the vote, "Votes for X." leads the reason (P2). In the reactions a cut
   ; robot gets a bubble for its last words (P1). A robot that shows no bubble prints no BUBBLE.
+  ; The reactions test reads QPhase, the phase the queue is playing, not BP_Show.Phase: BP_Show logs REACTIONS DONE and
+  ; moves on before the queue plays those lines, so at normal pace the cut robot's last words showed no bubble.
   (if (and (V BubbleUp) (!= (V BubbleSeat) (V CurSeat)))
     (CallFunction|HushBubble))
   (bind _bot (CallFunction|BubbleBot :Seat (V CurSeat)))
   (bind _vote (Utilities|String|StartsWith :SourceString (V CurAction) :InPrefix "votes for"))
   (bind _lead (select _vote (cat "V" (Utilities|String|RightChop :SourceString (V CurAction) :Count 1) ".") ""))
-  (bind _rx (streq (Class|BPShow|GetPhase :self (V Show)) "reactions"))
+  (bind _rx (Utilities|String|StartsWith :SourceString (V QPhase) :InPrefix "REACTIONS"))
   (bind _bw (Class|BPRobot|Say :self _bot :Name (V CurName) :Color (V CurColor) :Action (V CurAction) :Speech _sp :Lead _lead :EvenCut _rx))
   (set BubW _bw)
   (set BubbleSeat (V CurSeat))

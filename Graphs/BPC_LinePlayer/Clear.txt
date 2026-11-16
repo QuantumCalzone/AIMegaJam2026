@@ -18,5 +18,6 @@
   (CallFunction|StopType)
   ; T38: the last bubble fades too.
   (CallFunction|HushBubble)
+  (set QPhase "")
   (set Busy false)
   (CallFunction|ClearTyping))
