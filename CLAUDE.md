@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Work on `noHumansOnSet`
 
-All work is done off the `noHumansOnSet` branch. Treat it as this repo's main branch: branch from it, merge into it, push to it, open pull requests against it, and diff against it when you check what changed. `main` is the GitHub default, but it holds only the setup from before the jam and has none of this game. Never push `main`.
+All work is done off the `noHumansOnSet` branch. Treat it as this repo's main branch: branch from it, merge into it, push to it, open pull requests against it, and diff against it when you check what changed. `main` is the GitHub default, but it holds only the project's first setup and has none of this game. Never push `main`.
 
 If your clone or worktree started from `main` (worktrees that the Claude desktop app makes do), move to `noHumansOnSet` before you do anything else:
 
@@ -13,7 +13,7 @@ If your clone or worktree started from `main` (worktrees that the Claude desktop
 
 ## Project
 
-Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the Blank Blueprint template (`TP_BlankBP`), so it is **Blueprint-only**: there is no `Source/` folder, no `.Target.cs` files and nothing to compile. Game logic lives in `.uasset`/`.umap` files under `Content/`, and the game reads its prompts and settings from JSON files.
+Unreal Engine 5.8 game project. It was created from the Blank Blueprint template (`TP_BlankBP`), so it is **Blueprint-only**: there is no `Source/` folder, no `.Target.cs` files and nothing to compile. Game logic lives in `.uasset`/`.umap` files under `Content/`, and the game reads its prompts and settings from JSON files.
 
 | Path | What it holds |
 |---|---|
@@ -23,7 +23,7 @@ Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the
 | `Graphs/` | The DSL source last written to each Blueprint graph. See "Working with assets". |
 | `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `check_build_secrets.py` checks that a build or its zip holds no key (see "Commands"). `dslpp.py` expands the DSL shorthand. `ClaudeMods/` holds a Claude Code mod that shows the plan's tasks in a pane; it reads `Docs/Plan.md`, so keep the task form that "Changing the plan" describes. |
 | `Docs/tasks/` | One file per task, `Txx.md`: its Why, Steps, Done-when check, Result and findings. `Background.md` holds the findings that belong to no one task. The plan lists each task and links its file. |
-| `Relay/` | The relay: a Cloudflare Worker that holds our provider keys, so judges can play without their own. Not part of the Unreal project. See `Relay/README.md`. |
+| `Relay/` | The relay: a Cloudflare Worker that holds our provider keys, so players can play without their own. Not part of the Unreal project. See `Relay/README.md`. |
 | `Docs/` | The plan, the link to the design doc (`GameDesign.md`), the dev log, the asset list (`Assets.md`), the dispatcher's instructions (`LaunchAgents.md`), how two machines work at once (`TwoMachines.md`) and example files for `Local/`. |
 | `Agents/` | Coordination notes. See "Coordinating with other agents". |
 | `Local/` | Per machine, and ignored by git: `llm_key.json` (API keys) and `switches.json` (autoplay, play mode and test switches). Copy each from its example in `Docs/`. A git worktree has no `Local/`. |
@@ -44,21 +44,6 @@ When you believe your task is done, tell your person in one line that it is done
 - A plan task's commit holds what "How to run a task" in the plan lists. Other work gets a message that says what changed, plus a line in [Docs/DevLog.md](Docs/DevLog.md) if it changes the game or the plan.
 - Push with `git push` on `noHumansOnSet`. Never push `main`, and never force-push. If the push is rejected, don't pull or rebase while another session in the folder has uncommitted work. Tell your person instead.
 - Don't commit work that is half done or fails its check. Say what is left instead.
-
-## Game jam rules (2026 Epic AI MegaJam)
-
-Source: the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). The Official Rules PDF linked there is the final authority.
-
-- **Theme: "Director's Cut".** Revealed at the kickoff livestream on Nov 11, 2026. Theme counts as one of the judging criteria, so the game should clearly be built around it.
-- **No game assets before Nov 12.** The organizers told the team that setting up the project and planning the design before the jam is fine, but making assets is not. Anything made before the jam (prompts, scripts, design notes) must still be declared in the submission. This includes this repo's setup files (CLAUDE.md, `.gitignore`, `.gitattributes`, `Agents/README.md`).
-- **AI:** Any AI tools are allowed, with no limit on agents.
-- **Outside assets** (Fab and others) are allowed if the license permits. Every one must be listed in the submission, so record each asset's source and license in [Docs/Assets.md](Docs/Assets.md) when you add it.
-- **Team:** solo, or up to 5 people.
-- **Eligibility:** each entrant must be 18 or older and have an active Epic Games account. The submission form asks for each member's name and the email linked to their Epic account.
-- **Partner codes:** partners email their codes to people who joined the jam on itch.io. Some codes have claim deadlines (the jam page lists Anthropic as Nov 12–27 and Meshy as by Nov 17). Check the jam page for the others.
-- **Build configuration:** the jam page lists the platforms as "Windows 10 or 11, macOS, Android, or iOS (development build)". It is not clear if that note is for all platforms or only for iOS. The package commands below use `-clientconfig=Development`. Read the Official Rules before you change to Shipping.
-- **Submission:** a packaged build (Windows 10 or 11, macOS, Android or iOS; this project targets Windows), zipped as `TeamName_GameName` and uploaded to itch.io. The 1 GB limit is for the zip, not the unzipped build; use butler to upload a zip over 1 GB. It needs a 30–60 second gameplay video. A dev log is optional but required for the Glass Box category. A "Tools you used" field is optional but required for some partner prizes. Web builds need the separate UE 5.9 MegaJam Preview, so this 5.8 project targets desktop.
-- **Judging:** each entry is scored 1–5 on all of: ambition and innovation, theme, fun, gameplay, visuals, level design and progression, and audio. Audio and progression count as much as visuals.
 
 ## Engine
 
@@ -143,6 +128,7 @@ Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.lo
   - Put new systems in their own Blueprint or component, and call them from one node in `BP_Show`.
   - The "Build notes for every task" in [Docs/Plan.md](Docs/Plan.md) have the rest. Follow them for editor work outside the task list too.
 - Project settings live in `Config/Default*.ini`. These are text and safe to edit, but the editor rewrites them when settings change in its UI. Make edits while the editor is closed, or the editor may overwrite them.
+- Use an outside asset (Fab and others) only if its license permits it, and record its source and license in [Docs/Assets.md](Docs/Assets.md) when you add it.
 
 ## Coordinating with other agents (`Agents/`)
 
@@ -198,7 +184,7 @@ These settings (in `Config/DefaultEngine.ini`) affect how content must be author
 ## Source control
 
 - Remote: `https://github.com/QuantumCalzone/AIMegaJam2026.git`.
-- **This game is on the `noHumansOnSet` branch, which is this repo's main branch.** See "Work on `noHumansOnSet`" at the top of this file. `main`, the GitHub default, holds only the setup from before the jam, which other branches (such as `Take37`) also start from. Commit and push on `noHumansOnSet`, and don't push `main`. Never force-push.
+- **This game is on the `noHumansOnSet` branch, which is this repo's main branch.** See "Work on `noHumansOnSet`" at the top of this file. `main`, the GitHub default, holds only the project's first setup, which other branches (such as `Take37`) also start from. Commit and push on `noHumansOnSet`, and don't push `main`. Never force-push.
 - `.gitignore` excludes the folders the engine generates (`DerivedDataCache/`, `Intermediate/`, `Saved/`, `Binaries/`) and packaged builds in `Packaged/`. Don't archive builds into `Build/`, because Unreal uses that folder for project build settings.
 - **Git LFS** stores binary files (see `.gitattributes`): `.uasset`, `.umap`, models, images, audio, fonts and archives. When you add a new kind of binary file, add an LFS rule for it before you commit it.
 - Binary assets can't be merged. Before changing a Blueprint, level or other asset, pull first, then lock it with `git lfs lock` (see `Agents/README.md`). If someone else holds the lock, or may be editing the asset, check with the user.
