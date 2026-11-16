@@ -1,0 +1,12 @@
+; T77: keeps the emotion of the reply HandleReply just matched to Seat, until ActorLine writes that seat's next log
+; entry (TakeEmo). My seat takes HumanEmo's pick (HEmo); an AI seat takes the reply's emotion from the client
+; (REmotion), read inside OnAnswer as StoreTell reads RTell (T60), so it is this reply's. A failed reply has none
+; (ClearReply), so its line is neutral. EmoTmp holds the value before HEmo is cleared (a bind is read where it is used).
+(fn KeepEmo (Seat)
+  (if (< (len (V SeatEmo)) 8)
+    (Utilities|Array|Resize (V SeatEmo) 8))
+  (bind _ai (Class|BPCLLMClient|GetREmotion :self (V LLMClient)))
+  (set EmoTmp (select (== Seat (V HumanSeat)) (V HEmo) _ai))
+  (Utilities|Array|SetArrayElem (V SeatEmo) Seat (V EmoTmp))
+  (if (== Seat (V HumanSeat))
+    (set HEmo "")))

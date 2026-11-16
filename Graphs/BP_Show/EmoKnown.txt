@@ -1,0 +1,4 @@
+; T77: whether Id is an emotion in emotes.json.
+(fn EmoKnown (Id)
+  (CallFunction|LoadEmos)
+  (return (and (not (Utilities|String|IsEmpty Id)) (>= (Utilities|Array|FindItem (V EmoIds) Id) 0))))

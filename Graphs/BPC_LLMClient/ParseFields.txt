@@ -2,6 +2,7 @@
 ; T60: also 'tell', the kind of evidence a vote names (tells.json), into RTell. A reply without 'tell' (the relay's
 ; free mode, which builds its replies without it) leaves RTell "" from ClearReply, and still parses.
 ; T69: also 'attempt', the input reply's few words naming an action the player can't click, into RAttempt (only input_schema has it).
+; T77: also 'emotion', the face the reply's robot shows (T76's field, both schemas), into REmotion.
 (fn ParseFields (Text)
   (bind (_o _ok) (Json|LoadJsonfromString Text))
   (if (not _ok)
@@ -23,6 +24,10 @@
       (if _hat
         (bind _at (Json|GetField _o "attempt"))
         (set RAttempt _at))
+      (bind _hem (Json|HasField _o "emotion"))
+      (if _hem
+        (bind _em (Json|GetField _o "emotion"))
+        (set REmotion _em))
       (bind _ac (Json|GetField _o "actions"))
       (set RActions _ac)
       (for _a (V RActions)

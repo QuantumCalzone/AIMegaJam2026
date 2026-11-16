@@ -1,5 +1,6 @@
 ; T63: the input LLM's reply to spell-<n>, in time (HandleReply's first branch sends it here). Its actions are
 ; ignored. A failed or refused ask, or an empty reply that isn't a pass, sends the line as typed.
+; T77: the input LLM's emotion pick goes with the line (HumanEmo checks it).
 (fn SpellIn (Ok Speech Pass)
   (set SpellTag "")
   (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "SpellTimeout")
@@ -9,4 +10,7 @@
   (if (and (Utilities|String|IsEmpty (Utilities|String|Trim Speech)) (not Pass))
     (CallFunction|SpellSkip :Why "empty")
     (return))
+  (bind _e (Class|BPCLLMClient|GetREmotion :self (V LLMClient)))
+  (set HEmo _e)
+  (set HEmoFrom "llm")
   (CallFunction|HumanSay :Line Speech :Pass Pass))

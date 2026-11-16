@@ -1,0 +1,6 @@
+; T77: the one place my emotion is settled, for every line of mine: HumanEmo (a line through SpellAsk) and TakeEmo
+; (a pass). It prints NHOS: HUMAN emotion=<id> from=<llm|keywords|none> and returns the id that goes on my line.
+; T78 adds its pick here (ApplyFace: from=pick).
+(fn HumanFeels (Id From)
+  (print (cat "NHOS: HUMAN emotion=" Id " from=" From))
+  (return Id))

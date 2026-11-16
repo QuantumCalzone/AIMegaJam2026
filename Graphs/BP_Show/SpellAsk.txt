@@ -3,7 +3,10 @@
 ; fixes the line's spelling under its own tag, spell-<n>, with spelling_wait seconds (SpellTimeout). SpellIn,
 ; SpellSkip and HumanSay finish it. The tag and the timer are set before Ask, because a reply can come inside Ask.
 ; An empty line makes no call: PlayTalk and PlayReact take empty speech as a pass.
+; T77: each line of mine starts with no emotion; SpellIn, SpellSkip and HumanEmo settle it.
 (fn SpellAsk (Line InPhase)
+  (set HEmo "")
+  (set HEmoFrom "none")
   (set HPhase InPhase)
   (set SpellLine Line)
   (set AskCount (+ (V AskCount) 1))

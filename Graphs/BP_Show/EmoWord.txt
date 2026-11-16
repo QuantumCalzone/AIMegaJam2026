@@ -1,0 +1,7 @@
+; T77: the word the log's "feels" holds for emotion Id (emotes.json); "" for neutral or an unknown id.
+(fn EmoWord (Id)
+  (CallFunction|LoadEmos)
+  (set EmoIdx (Utilities|Array|FindItem (V EmoIds) Id))
+  (if (< (V EmoIdx) 0)
+    (return ""))
+  (return (get (V EmoWords) (V EmoIdx))))

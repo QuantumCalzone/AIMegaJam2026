@@ -1,5 +1,21 @@
 ; T30: the stage director call that was in ActorLine. BPC_LinePlayer calls it when the line plays.
+; T77: first, the seat's robot shows the line's emotion (BP_Robot.Emote), read back from the entry's "feels" word
+; (FeelsId; neutral when it has none). PlayCur calls this as the bubble shows and the line starts to type (T38, T73),
+; so the face changes with them. Every line that plays gets it: scene turns, Free Talk, passes, last words, votes and
+; reactions. A cut robot doesn't emote (T75).
 (fn StageLine (Seat Entry)
+  (set EmoTmp "")
+  (bind _hf (Json|HasField Entry "feels"))
+  (if _hf
+    (bind _f (Json|GetField Entry "feels"))
+    (set EmoTmp _f))
+  (bind _id (CallFunction|FeelsId :Word (V EmoTmp)))
+  (if (and (>= Seat 0) (< Seat (len (V Robots))))
+    (set EmoBot (get (V Robots) Seat))
+    (Utilities|IsValid (V EmoBot)
+      (:"Is Valid"
+        (Class|BPRobot|Emote :self (V EmoBot) :Emotion _id))
+      (:"Is Not Valid")))
   (bind _hd (Json|HasField Entry "does"))
   (if (not _hd)
     (return))

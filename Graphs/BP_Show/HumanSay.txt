@@ -3,6 +3,7 @@
 ; BuildDoes writes my does with does_templates exactly as an AI's, and T62's CheckTurn accepts it in the log's
 ; order. "around" is a look with no target ("looks around"); "none" is no action ("stands still").
 ; HVerb goes back to "none" before HandleReply, which can start the next turn at once (StartTurn, AutoTurn).
+; T77: my emotion is settled (HumanEmo) just before my line goes to HandleReply, where KeepEmo keeps it.
 (fn HumanSay (Line Pass)
   (bind _c (CallFunction|CapWords :Text Line))
   (set HLine _c)
@@ -22,4 +23,5 @@
   (set HVerb "none")
   (set HItem "")
   (set HTarget "")
+  (CallFunction|HumanEmo :Line (V HLine) :Pass Pass)
   (CallFunction|HandleReply :Tag (V HTag) :Ok true :Speech (V HLine) :Pass Pass :Verbs (V HVerbs) :Targets (V HTargets) :Items (V HItems)))

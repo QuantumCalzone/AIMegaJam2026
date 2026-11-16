@@ -1,6 +1,7 @@
 ; T37: also loads errors.json (cases, test_replies) and the error_test switch.
 ; T68: also finds the analytics component (Stats, FindStats).
 ; T69: also input_schema (the input ask's reply shape) and the attempt_test switch.
+; T77: also free_mode.json emotion_keywords, the table that picks my emotion from my line.
 (fn LoadConfig ()
   (bind _dir (Utilities|Paths|GetProjectDirectory))
   (bind _cdir (Utilities|Paths|GetProjectContentDirectory))
@@ -53,12 +54,17 @@
     (bind _pnm (Json|GetField _p "name"))
     (set TmpStr _pnm)
     (add (V PNames) (V TmpStr)))
+  (clear (V EmoKeys))
   (bind (_fo _fok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _cdir "NHOS/Data/free_mode.json"))))
   (if _fok
     (bind _fph (Json|GetField _fo "phases"))
     (set FreePhases _fph)
     (bind _fac (Json|GetField _fo "scene_actions"))
-    (set FreeActions _fac))
+    (set FreeActions _fac)
+    (bind _hek (Json|HasField _fo "emotion_keywords"))
+    (if _hek
+      (bind _fek (Json|GetField _fo "emotion_keywords"))
+      (set EmoKeys _fek)))
   (bind (_eo _eok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _cdir "NHOS/Data/errors.json"))))
   (if _eok
     (bind _ec (Json|GetField _eo "cases"))
@@ -108,5 +114,5 @@
   (CallFunction|FindStats)
   (set Ready true)
   (bind _n (CallFunction|KeyCount))
-  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest)) " error_test=" (V ErrTest) " attempt_test=" (V AttemptTest)))
+  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest)) " error_test=" (V ErrTest) " attempt_test=" (V AttemptTest) " emotion_keywords=" (str (len (V EmoKeys)))))
   (return true ""))

@@ -1,0 +1,10 @@
+; T77: the emotion id behind a log entry's "feels" word (StageLine reads it from the entry), or neutral when the
+; entry has none (or an unknown word). It takes the word, not the entry: add_function_param can't make a JSON param.
+(fn FeelsId (Word)
+  (CallFunction|LoadEmos)
+  (if (Utilities|String|IsEmpty Word)
+    (return "neutral"))
+  (set EmoIdx (Utilities|Array|FindItem (V EmoWords) Word))
+  (if (< (V EmoIdx) 0)
+    (return "neutral"))
+  (return (get (V EmoIds) (V EmoIdx))))

@@ -1,8 +1,12 @@
 ; T63: my line goes as typed: @ mentions to Player names (ResolveMentions), then any provider name left to a
 ; Player name (ScrubLabels), so no provider name reaches the AIs. My turn never stalls on the input LLM.
+; T77: a line sent as typed takes its emotion from the keyword table, with no call.
 (fn SpellSkip (Why)
   (set SpellTag "")
   (print (cat "NHOS: SPELLING skipped " Why))
   (bind _m (CallFunction|ResolveMentions :Text (V SpellLine)))
   (bind _s (CallFunction|ScrubLabels :Text _m))
+  (bind _kw (Class|BPCLLMClient|KeywordEmotion :self (V LLMClient) :Line (V SpellLine)))
+  (set HEmo _kw)
+  (set HEmoFrom "keywords")
   (CallFunction|HumanSay :Line _s :Pass false))

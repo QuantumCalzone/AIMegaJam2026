@@ -1,0 +1,11 @@
+; T77: whether every part of Word (split on "+") is in KeyLine, the line with one space in front. Contains ignores
+; case. A part that starts with a space matches only at the start of a word. A word with no part never hits.
+(fn KeyHit (Word)
+  (bind _ps (Utilities|String|ParseIntoArray :SourceString Word :Delimiter "+" :CullEmptyStrings true))
+  (set KeyParts _ps)
+  (if (== (len (V KeyParts)) 0)
+    (return false))
+  (for _p (V KeyParts)
+    (if (not (Utilities|String|Contains :SearchIn (V KeyLine) :Substring _p))
+      (return false)))
+  (return true))

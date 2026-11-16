@@ -2,6 +2,7 @@
 ; T63: the input LLM's spelling reply (SpellTag) goes to SpellIn first; it was never a pending ask. A late one
 ; no longer matches SpellTag and is dropped as stale. Written from the editor's read-back in T63.
 ; T60: a reply in The Cut keeps its tell first (StoreTell reads the client's RTell, which the next reply overwrites).
+; T77: every reply that reaches a seat keeps its emotion for that seat's next log entry (KeepEmo).
 (fn HandleReply (Tag Ok Speech Pass Verbs Targets Items)
   (if (and (not (Utilities|String|IsEmpty (V SpellTag))) (streq Tag (V SpellTag)))
     (CallFunction|SpellIn :Ok Ok :Speech Speech :Pass Pass)
@@ -11,6 +12,7 @@
     (print (cat "NHOS: STALE reply " Tag))
     (return))
   (set RSeat (get (V PendingSeats) (V RIdx)))
+  (CallFunction|KeepEmo :Seat (V RSeat))
   (Utilities|Array|RemoveIndex (V PendingTags) (V RIdx))
   (Utilities|Array|RemoveIndex (V PendingSeats) (V RIdx))
   (set RVote (Utilities|String|Replace (V RVote) "@" ""))

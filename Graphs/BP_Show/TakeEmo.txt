@@ -1,0 +1,14 @@
+; T77: the emotion kept for Seat's line (KeepEmo), used once, so a line with none (or an unknown id) is neutral.
+; My seat's line with none kept is a pass (it never went through SpellAsk): HumanFeels settles it as neutral.
+(fn TakeEmo (Seat)
+  (set EmoTmp "")
+  (if (< Seat (len (V SeatEmo)))
+    (set EmoTmp (get (V SeatEmo) Seat))
+    (Utilities|Array|SetArrayElem (V SeatEmo) Seat ""))
+  (if (and (== Seat (V HumanSeat)) (Utilities|String|IsEmpty (V EmoTmp)))
+    (bind _f (CallFunction|HumanFeels :Id "neutral" :From "none"))
+    (set EmoTmp _f))
+  (bind _k (CallFunction|EmoKnown :Id (V EmoTmp)))
+  (if (not _k)
+    (set EmoTmp "neutral"))
+  (return (V EmoTmp)))

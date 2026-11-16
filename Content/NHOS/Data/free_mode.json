@@ -6,7 +6,8 @@
 		"Each phase says what to fill: 'lines' (speech), 'reasons' (reason), 'vote' (a random name from options), 'actions' (how many, from 'scene_actions': 0 or 1, and only in a scene turn since T62), 'pass_chance' (Free Talk only; the last word has none), 'echo_typed' (the input step: speech = the player's typed text, cut to 15 words). 'tells' (vote only, T60): the tell of each reason, at the same index, from tells.json.",
 		"Placeholders: {actor} = a random cast name other than you, {vote} = the chosen vote, {place} = a random place, {prop} = a random prop. Names come from the state the game sends (cast, set.places, set.props, options, you).",
 		"scene_actions: the actions a free actor may take, with weights. target and item use the same placeholders. The props are random, so some grabs, throws and gives break the action rules (BP_StageDirector.CanDo), and the game turns them into a look around, which is fine for a test.",
-		"emotions (T76): the emotion a free reply shows, picked at random by weight from its phase's list, in the same form as scene_actions ({id, weight}); each id is one in emotes.json. A phase with no list (the input step) shows neutral. The relay fills every free reply's emotion from these lists; the game's own FreeReply reads them from T77 on.",
+		"emotions (T76): the emotion a free reply shows, picked at random by weight from its phase's list, in the same form as scene_actions ({id, weight}); each id is one in emotes.json. The input step has no list: its emotion comes from emotion_keywords (T77). The relay and the game's own FreeReply (T77) fill every free reply's emotion this way.",
+		"emotion_keywords (T77): the emotion of the player's typed line, for the input step's free reply and whenever the input LLM gives none. The first entry with a word found in the line gives its id; no match gives neutral, so order matters. Each word is matched in lower case against the line with one space put in front: a word that starts with a space (' hate') matches only at the start of a word ('hated', not 'whatever'), '?' and '!' match anywhere, and parts joined with '+' (' you+ lying') must all be in the line. BPC_LLMClient.KeywordEmotion, the relay's keywordEmotion and Tools/check_prompts.py read it the same way.",
 		"Lines follow the game's legibility rules: plain sentences, 15 words at most, no brackets, emoji or all-caps words, no real names and no company names."
 	],
 	"phases": [
@@ -113,5 +114,18 @@
 		{ "verb": "grab", "target": "", "item": "{prop}", "weight": 2 },
 		{ "verb": "give", "target": "{actor}", "item": "{prop}", "weight": 1 },
 		{ "verb": "throw", "target": "{place}", "item": "{prop}", "weight": 1 }
+	],
+	"emotion_keywords": [
+		{ "id": "embarrassed", "words": [" sorry", " oops", " my bad", " apolog", " excuse me", " awkward"] },
+		{ "id": "suspicious", "words": [" you+ lying", " you+ liar", " you+ hiding", " is the human", " suspicious", " don't trust", " watching you", " dodging"] },
+		{ "id": "scared", "words": [" help!", " help me", " scared", " afraid", " terrified"] },
+		{ "id": "angry", "words": [" shut up", " how dare", " hate", " stop it", " furious", " enough!"] },
+		{ "id": "sad", "words": [" sad", " miss ", " unfair", " lonely", " heartbroken"] },
+		{ "id": "disgusted", "words": [" gross", " yuck", " ugh", " disgust", " ew "] },
+		{ "id": "worried", "words": [" uh oh", " nervous", " worried", " careful", " panic"] },
+		{ "id": "smug", "words": [" obviously", " of course", " told you", " too easy", " excellent", " behold"] },
+		{ "id": "happy", "words": [" haha", " yay", " hooray", " love", " great", " thank", " glad"] },
+		{ "id": "confused", "words": ["?", " huh", " confus", " wait what"] },
+		{ "id": "surprised", "words": ["!", " wow", " whoa"] }
 	]
 }

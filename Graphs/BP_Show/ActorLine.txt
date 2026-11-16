@@ -1,4 +1,16 @@
 ; T30: only the shared log, at once. The robot lights up and acts when BPC_LinePlayer plays the line (StageLine).
+; T77: the entry gets "feels", the word (emotes.json) of the emotion its actor's robot shows while the line plays,
+; left out for neutral, so every actor, human or AI, reads the face the audience sees. ActorLine works on a copy,
+; so the caller's object never changes. The seat's kept emotion (KeepEmo) is used once (TakeEmo). NHOS: ENTRY
+; prints the entry as every actor state's log holds it.
 (fn ActorLine (Seat Entry)
-  (Utilities|Array|Add (Variables|Default|GetSharedLog) Entry)
-  (Variables|Default|SetLineEntry Entry))
+  (bind _js (Json|GetJsonString Entry))
+  (bind (_c _cok) (Json|LoadJsonfromString _js))
+  (set FeelEntry _c)
+  (bind _id (CallFunction|TakeEmo :Seat Seat))
+  (bind _w (CallFunction|EmoWord :Id _id))
+  (if (not (Utilities|String|IsEmpty _w))
+    (Json|SetField (V FeelEntry) "feels" _w))
+  (print (cat "NHOS: ENTRY " (Json|GetJsonString (V FeelEntry))))
+  (Utilities|Array|Add (Variables|Default|GetSharedLog) (V FeelEntry))
+  (Variables|Default|SetLineEntry (V FeelEntry)))

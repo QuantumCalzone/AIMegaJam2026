@@ -1,0 +1,18 @@
+; T77: my line's emotion, settled once per line of mine that goes through SpellAsk (typed, empty or canned). Nothing
+; said (an empty line, or a pass the input LLM made) is neutral; else the input LLM's pick (SpellIn) when it is a
+; known id; else the keyword table on my line as typed (SpellSkip, or an input reply with no known emotion).
+; HumanFeels prints it; HandleReply's KeepEmo then keeps it for my seat.
+(fn HumanEmo (Line Pass)
+  (if (or Pass (Utilities|String|IsEmpty (Utilities|String|Trim Line)))
+    (set HEmo "neutral")
+    (set HEmoFrom "none"))
+  (bind _k (CallFunction|EmoKnown :Id (V HEmo)))
+  (if (and (streq (V HEmoFrom) "llm") (not _k))
+    (bind _kw (Class|BPCLLMClient|KeywordEmotion :self (V LLMClient) :Line (V SpellLine)))
+    (set HEmo _kw)
+    (set HEmoFrom "keywords"))
+  (bind _k2 (CallFunction|EmoKnown :Id (V HEmo)))
+  (if (not _k2)
+    (set HEmo "neutral"))
+  (bind _f (CallFunction|HumanFeels :Id (V HEmo) :From (V HEmoFrom)))
+  (set HEmo _f))

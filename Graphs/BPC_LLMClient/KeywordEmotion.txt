@@ -1,0 +1,16 @@
+; T77: the emotion of a line of mine from free_mode.json emotion_keywords: the first entry with a word found in the
+; line, else neutral. FreeReply uses it for my echoed line; BP_Show uses it when my line goes as typed (SpellSkip)
+; or the input reply has no known emotion. The relay's keywordEmotion and the checker's keyword_emotion do the same.
+(fn KeywordEmotion (Line)
+  (set KeyLine (cat " " Line))
+  (for _r (V EmoKeys)
+    (set KeyRule _r)
+    (bind _ws (Json|GetField (V KeyRule) "words"))
+    (set KeyWords _ws)
+    (for _w (V KeyWords)
+      (bind _hit (CallFunction|KeyHit :Word _w))
+      (if _hit
+        (bind _id (Json|GetField (V KeyRule) "id"))
+        (set KeyId _id)
+        (return (V KeyId)))))
+  (return "neutral"))

@@ -215,6 +215,23 @@ function freeEmotion(ph) {
 	return list.length ? weighted(list).id : "neutral";
 }
 
+// The emotion of the player's typed line (T77): the first entry in free_mode.json's "emotion_keywords" with a word
+// found in the line, or "neutral". The line gets one space in front and is matched in lower case, so a word that
+// starts with a space matches only at the start of a word; a word with "+" needs every part. BPC_LLMClient.KeywordEmotion
+// and Tools/check_prompts.py read the table the same way.
+function keywordEmotion(text) {
+	const line = " " + String(text).toLowerCase();
+	const table = Array.isArray(FREE.emotion_keywords) ? FREE.emotion_keywords : [];
+	for (const k of table) {
+		if (!isObject(k) || typeof k.id !== "string" || !Array.isArray(k.words)) continue;
+		for (const w of k.words) {
+			const parts = typeof w === "string" ? w.toLowerCase().split("+").filter((p) => p) : [];
+			if (parts.length && parts.every((p) => line.includes(p))) return k.id;
+		}
+	}
+	return "neutral";
+}
+
 // A reply in the game's one reply shape, made up from free_mode.json without a model.
 function freeReplyObject(p, body) {
 	let state = {};
@@ -237,6 +254,7 @@ function freeReplyObject(p, body) {
 	if (ph.echo_typed) {
 		const typed = typeof state.typed === "string" ? state.typed : "";
 		reply.speech = typed.split(/\s+/).filter(Boolean).slice(0, 15).join(" ");
+		reply.emotion = keywordEmotion(typed);
 		return reply;
 	}
 	if (ph.vote) {
