@@ -1,6 +1,7 @@
 ; T64: a scene turn opens: No action picked, nothing else picked, the choices read from the rules' state as the last
 ; turn left it (the same state the AIs read). Players show by their screen names, so the names come from BP_Show.
 ; T69: a new turn clears BlockSent, so each greyed action reports once per turn.
+; T78: a scene turn opens at Auto (ResetFace).
 (fn OpenTurn ()
   (set Show (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
   (set Dir (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Stage/BP_StageDirector.BP_StageDirector_C"))
@@ -12,6 +13,7 @@
   (set Target "")
   (set Armed true)
   (set Sent false)
+  (CallFunction|ResetFace)
   (clear (V BlockSent))
   (CallFunction|ReadOk)
   (CallFunction|Refresh)

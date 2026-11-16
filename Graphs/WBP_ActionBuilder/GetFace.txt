@@ -1,0 +1,3 @@
+; T78: the pick as it stands: an id from emotes.json, or "" for Auto. BP_Show reads it at each send (WBP_Stage.FaceTake).
+(fn GetFace ()
+  (return (V Face)))

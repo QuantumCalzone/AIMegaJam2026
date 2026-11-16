@@ -2,6 +2,7 @@
 ;   > throw rose at @Meta: "Oops, my servo slipped."
 ; An unfinished action shows what's missing ("> throw rose at ..."). No action reads "stand still", the log's
 ; "stands still"; Look around reads "look around". An empty line adds nothing.
+; T78: a picked face leads the preview line (FacePhrase).
 (fn MakePreview ()
   (bind _noi (Utilities|String|IsEmpty (V Item)))
   (bind _it (select _noi "..." (V Item)))
@@ -20,6 +21,10 @@
     (set TmpStr (select _noi "throw ..." (cat "throw " _it " at " _tg))))
   (if (streq (V Verb) "give")
     (set TmpStr (select _noi "give ..." (cat "give " _it " to " _tg))))
+  ; T78: a picked face comes first, in words: "> looks worried · throw rose at @Meta: \"Oops.\"". Auto adds nothing.
+  (bind _fp (CallFunction|FacePhrase))
+  (if (not (Utilities|String|IsEmpty _fp))
+    (set TmpStr (cat _fp " · " (V TmpStr))))
   (if (Utilities|String|IsEmpty (V Line))
     (return (cat "> " (V TmpStr))))
   (return (cat "> " (V TmpStr) ": \"" (V Line) "\"")))

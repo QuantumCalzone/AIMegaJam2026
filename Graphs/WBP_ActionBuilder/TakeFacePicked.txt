@@ -1,0 +1,6 @@
+; T78: true once after a pick, so WBP_Stage closes the list.
+(fn TakeFacePicked ()
+  (if (not (V FacePicked))
+    (return false))
+  (set FacePicked false)
+  (return true))

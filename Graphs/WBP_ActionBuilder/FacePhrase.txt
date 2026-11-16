@@ -1,0 +1,6 @@
+; T78: the pick in the preview line's words ("looks worried"); nothing for Auto (step 5).
+(fn FacePhrase ()
+  (if (Utilities|String|IsEmpty (V Face))
+    (return ""))
+  (bind _w (CallFunction|FaceWord :Id (V Face)))
+  (return (cat "looks " _w)))

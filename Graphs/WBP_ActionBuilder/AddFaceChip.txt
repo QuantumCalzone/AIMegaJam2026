@@ -1,0 +1,6 @@
+; T78: one entry of the face list, a T64 chip in the pop-up's WrapBox (WBP_Stage's FaceWrap). Its Index is 1000 for Auto
+; and 1001 + k for emotion k, so ChipClicked tells it from the action chips (their place in Choices). No seat bar.
+(fn AddFaceChip (Index Label Picked Wrap)
+  (bind _chip (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Chip.WBP_Chip_C" (Widget|GetOwningPlayer self)))
+  (Class|WBPChip|Setup :self _chip :Owner self :Index Index :Label Label :Actor false :Picked Picked)
+  (Panel|AddChildtoWrapBox :self Wrap :Content _chip))
