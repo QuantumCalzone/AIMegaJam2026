@@ -6,7 +6,7 @@ Back to [T88](T88.md). A PC prep session wrote this on 2026-11-15, without the e
 
 **Written against `noHumansOnSet` at `6ea1aec`** (T86: the design doc's audience sentences). The design doc was read, not changed: Rules tab rev 52, Bot Prompts rev 91, Overview rev 147.
 
-While this sheet was written, the session `t78-chain-chip` was building T78 in the repo folder and held the locks on `BP_Show.uasset` and `WBP_Stage.uasset`. T61's PC part still held `Docs/claims/T61` (so `stagehand.json` and `WBP_HowToPlay` are T61's). Before T88 writes anything:
+While this sheet was written, the session `t78-chain-chip` was building T78 in the repo folder and held the locks on `BP_Show.uasset` and `WBP_Stage.uasset`. **T78 landed as this sheet was pushed** (`b515048`, "checked"), and its locks are gone. Checked against it: T78 changed none of `ActorState.txt`, `PrepPrompt.txt`, the data files, `Tools/check_prompts.py`, `Docs/switches.example.json` or `Docs/ItchPage.md`; `SetPrepMode.txt` gained only the face chip's row (the input row, not my card). So the re-checks marked (T78) below hold at `b515048`; do check 1 again only for what lands after it. T61's PC part still held `Docs/claims/T61` (so `stagehand.json` and `WBP_HowToPlay` are T61's). Before T88 writes anything:
 
 1. **T78's push.** `git log --oneline 6ea1aec..HEAD -- Graphs/BP_Show Graphs/WBP_Stage Content/NHOS/Data Tools/check_prompts.py`. This sheet takes these from the graphs and files T78 may change; each one is marked **re-check (T78)** where it is used:
    - `Graphs/BP_Show/ActorState.txt` (part 5b edits it by its anchors, not by line numbers).
