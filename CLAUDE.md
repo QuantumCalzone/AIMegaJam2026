@@ -24,13 +24,13 @@ Unreal Engine 5.8 game project. It was created from the Blank Blueprint template
 | `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `check_build_secrets.py` checks that a build or its zip holds no key (see "Commands"). `dslpp.py` expands the DSL shorthand. `ClaudeMods/` holds a Claude Code mod that shows the plan's tasks in a pane; it reads `Docs/Plan.md`, so keep the task form that "Changing the plan" describes. |
 | `Docs/tasks/` | One file per task, `Txx.md`: its Why, Steps, Done-when check, Result and findings. `Background.md` holds the findings that belong to no one task. The plan lists each task and links its file. |
 | `Relay/` | The relay: a Cloudflare Worker that holds our provider keys, so players can play without their own. Not part of the Unreal project. See `Relay/README.md`. |
-| `Docs/` | The plan, the link to the design doc (`GameDesign.md`), the dev log, the asset list (`Assets.md`), the dispatcher's instructions (`LaunchAgents.md`), how two machines work at once (`TwoMachines.md`) and example files for `Local/`. |
+| `Docs/` | The plan, the link to the design doc (`GameDesign.md`), the asset list (`Assets.md`), the dispatcher's instructions (`LaunchAgents.md`), how two machines work at once (`TwoMachines.md`) and example files for `Local/`. |
 | `Agents/` | Coordination notes. See "Coordinating with other agents". |
 | `Local/` | Per machine, and ignored by git: `llm_key.json` (API keys) and `switches.json` (autoplay, play mode and test switches). Copy each from its example in `Docs/`. A git worktree has no `Local/`. |
 
 ## "Next task"
 
-The game is **No Humans On Set**. [Docs/Plan.md](Docs/Plan.md) is the living plan: the tasks in priority order, the model and effort for each task, how to claim one and how to add one. When the user says "Next task" or "Next ask", follow "How to run a task" in that file. When the user adds, moves or drops a task, follow "Changing the plan" there: a new task goes wherever it belongs in the list, whatever its number. The design is a private Claude Doc, the only source of truth: [Docs/GameDesign.md](Docs/GameDesign.md) links it and each of its tabs, and the repo keeps no copy. Read the design in the doc with the Claude Docs connector, and change it only there. Each task's details and findings are in its own file in `Docs/tasks/`, which its entry in the plan links; read only your task's file. Each task's commit adds one line to [Docs/DevLog.md](Docs/DevLog.md).
+The game is **No Humans On Set**. [Docs/Plan.md](Docs/Plan.md) is the living plan: the tasks in priority order, the model and effort for each task, how to claim one and how to add one. When the user says "Next task" or "Next ask", follow "How to run a task" in that file. When the user adds, moves or drops a task, follow "Changing the plan" there: a new task goes wherever it belongs in the list, whatever its number. The design is a private Claude Doc, the only source of truth: [Docs/GameDesign.md](Docs/GameDesign.md) links it and each of its tabs, and the repo keeps no copy. Read the design in the doc with the Claude Docs connector, and change it only there. Each task's details and findings are in its own file in `Docs/tasks/`, which its entry in the plan links; read only your task's file.
 
 ## Asking for input
 
@@ -41,7 +41,7 @@ When you need your person to decide something, ask with the multiple-choice ques
 When you believe your task is done, tell your person in one line that it is done, and name anything you couldn't check. Then commit and push without asking:
 
 - Commit only your own files, staged by path (never `git add -A` or `git add .`). Other sessions work in the same folder.
-- A plan task's commit holds what "How to run a task" in the plan lists. Other work gets a message that says what changed, plus a line in [Docs/DevLog.md](Docs/DevLog.md) if it changes the game or the plan.
+- A plan task's commit holds what "How to run a task" in the plan lists. Other work gets a message that says what changed.
 - Push with `git push` on `noHumansOnSet`. Never push `main`, and never force-push. If the push is rejected, don't pull or rebase while another session in the folder has uncommitted work. Tell your person instead.
 - Don't commit work that is half done or fails its check. Say what is left instead.
 

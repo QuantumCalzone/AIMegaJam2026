@@ -113,4 +113,4 @@ If a push is rejected because the remote has moved on, `git pull --rebase` follo
 
 ## Keep it small
 
-Delete handled messages, finished handoffs and old status files. Git history keeps the messages, handoffs and decisions, and it is also the raw material for the jam dev log. Status files are not in git, so a deleted one is gone.
+Delete handled messages, finished handoffs and old status files. Git history keeps the messages, handoffs and decisions. Status files are not in git, so a deleted one is gone.

@@ -1,6 +1,6 @@
 # Audio shortlist (T20 prep)
 
-Files picked for T20, chosen without the editor. The picks and their backups are committed in `SourceAssets/Audio/`, outside `Content/` so Unreal doesn't import them on its own, and every machine gets them with `git pull`. T20 imports them into `Content/NHOS/Audio/` and moves these entries into `Docs/Assets.md` and `Docs/DevLog.md`.
+Files picked for T20, chosen without the editor. The picks and their backups are committed in `SourceAssets/Audio/`, outside `Content/` so Unreal doesn't import them on its own, and every machine gets them with `git pull`. T20 imports them into `Content/NHOS/Audio/` and moves these entries into `Docs/Assets.md`.
 
 The picks were made by name, length and license, without listening. T20's listening pass makes the final choice; swap in the backup or a nearby file from the same pack if a pick sounds wrong.
 

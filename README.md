@@ -8,7 +8,6 @@ The game is **No Humans On Set**: you are the only human in an all-AI improv cas
 
 - [Docs/GameDesign.md](Docs/GameDesign.md): a link to the design, a private Claude Doc. Ask QuantumCalzone for access.
 - [Docs/Plan.md](Docs/Plan.md): the plan, with the tasks in priority order. With Claude Code, say "Next task" to build the next step. The file also explains how to claim a task so two people don't start the same one, and how to add a task at the place where it belongs. Each task's details and findings are in its own file in [Docs/tasks/](Docs/tasks/).
-- [Docs/DevLog.md](Docs/DevLog.md): the dev log, one line per change.
 
 ## What you need
 
