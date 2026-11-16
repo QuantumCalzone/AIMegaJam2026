@@ -6,6 +6,8 @@
 ; the chat is scrolled to its newest line whenever its height changes.
 ; T66: the panel is wide while a turn timer shows too (TimerWide: my last word and reactions, where Pass and the timer
 ; would leave the field too little room at 640). The width has its own change check (FitWide), apart from the chat's.
+; T38: LowerWide is 1080 on the class defaults now (it was 640), the same as LowerWideBuild, so the panel keeps one width
+; in every phase and the Show chat button leaves the speech field room. The width branch below no longer changes anything.
 (fn FitBuilder ()
   (bind _on (Class|WBPActionBuilder|IsOn :self (Variables|WBP_Stage|GetActionBuilder)))
   (bind _wide (or _on (V TimerWide)))

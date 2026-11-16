@@ -1,0 +1,18 @@
+; Only the ChatButton and Construct chains of WBP_Stage's EventGraph (T38). The rest of EventGraph has no source here.
+; write_graph_dsl keeps the event chains it doesn't name, so this writes only these two.
+; Construct: the Show chat button in T32's shared Secondary style, and the chat hidden for the first show.
+; The click: shows or hides the chat, prints NHOS: CHAT shown|hidden, and on my turn gives the keyboard back to the
+; speech field (ChatButton can't take focus; T65's HoldFocus would also hand it back a frame later). The print comes
+; first: a bind of ChatShown would be read again after ShowChat sets it (T65's rule).
+(event UserInterface|EventConstruct
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Stage|GetChatButton) :Label (Variables|WBP_Stage|GetChatButtonText) :Kind "Secondary")
+  (CallFunction|ShowChat :Show false))
+
+(event OnClicked(ChatButton)
+  (if (V ChatShown)
+    (print "NHOS: CHAT hidden")
+    (else
+      (print "NHOS: CHAT shown")))
+  (CallFunction|ShowChat :Show (not (V ChatShown)))
+  (if (V LastCanType)
+    (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox))))

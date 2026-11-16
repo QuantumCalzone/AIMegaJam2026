@@ -1,0 +1,3 @@
+; T38: a collapsed ScrollBox has no size, so ShowChat scrolls to the newest line after the chat has had a frame to lay out.
+(fn ChatToEnd ()
+  (Widget|ScrolltoEnd :self (Variables|WBP_Stage|GetLogScroll)))

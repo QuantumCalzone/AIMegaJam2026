@@ -1,6 +1,12 @@
 ; T30: "<name> is typing..." under the chat. An empty line hides it (Hidden, not Collapsed, so the chat doesn't jump).
+; T38: the line is kept in TypingLine, and while the chat is hidden it stays Collapsed, so nothing shows above the input
+; row (the typing dots show in the speaker's bubble instead). ShowChat calls this again when the chat opens or closes.
 (fn SetTyping (Line)
+  (set TypingLine Line)
   (Class|Text|SetText :Text (Utilities|Text|ToText(String) Line) :self (Variables|WBP_Stage|GetTypingText))
+  (if (not (V ChatShown))
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetTypingText) :InVisibility "Collapsed")
+    (return))
   (if (Utilities|String|IsEmpty Line)
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetTypingText) :InVisibility "Hidden")
     (return))

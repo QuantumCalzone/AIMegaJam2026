@@ -1,0 +1,5 @@
+; T10: empties the on-screen chat. BP_Show.RestartShow calls it at Play Again.
+; T38: so a new show starts with the chat hidden, as the first show does (EventConstruct).
+(fn ClearLog ()
+  (Widget|Panel|ClearChildren (Variables|WBP_Stage|GetLogScroll))
+  (CallFunction|ShowChat :Show false))

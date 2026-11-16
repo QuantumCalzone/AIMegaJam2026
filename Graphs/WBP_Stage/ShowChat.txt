@@ -1,0 +1,17 @@
+; T38 step 5: the chat (ChatSize and its log) shows or hides on the Show chat button. Hidden at every show's start
+; (EventConstruct for the first show, ClearLog for Play Again). AddChatLine still adds every line while it is hidden,
+; so the chat is complete when it opens. The button reads "Hide chat" while the chat shows, "Show chat" while it doesn't.
+; T30's typing line sits under the chat, so it hides with it (SetTyping keeps it Collapsed while the chat is hidden;
+; the bubbles show the typing dots instead). FitBuilder's sizes stay as they are: it sets ChatSize's height whether or
+; not it shows, so the panel's top is where it would be when the chat opens in my scene turn.
+(fn ShowChat (Show)
+  (set ChatShown Show)
+  (if Show
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetChatSize) :InVisibility "Visible")
+    (Class|Text|SetText :self (Variables|WBP_Stage|GetChatButtonText) :Text (Utilities|Text|ToText(String) "Hide chat"))
+    (CallFunction|SetTyping :Line (V TypingLine))
+    (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "ChatToEnd" :Time 0.05 :bLooping false)
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetChatSize) :InVisibility "Collapsed")
+      (Class|Text|SetText :self (Variables|WBP_Stage|GetChatButtonText) :Text (Utilities|Text|ToText(String) "Show chat"))
+      (CallFunction|SetTyping :Line (V TypingLine)))))
