@@ -168,6 +168,10 @@ empty. A --free reply may leave 'tell' out: the relay's free mode builds its
 replies without it. --log checks a lost show's NHOS: TOP REASON against its
 NHOS: TELL lines, and a won show's NHOS: RIVALS against personas.json 'rival'.
 
+Build (T68): llm.json's 'build' goes with every analytics event, and the relay
+refuses one over 20 characters. The file check fails a missing, empty or longer
+'build'.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -858,6 +862,10 @@ def check_files(errors: list[str]):
     for k in ["endpoint", "api_version"]:
         if not llm.get(k):
             errors.append(f"llm.json: {k} is missing")
+    # T68: build goes with every analytics event; the relay refuses one over 20 characters (T67).
+    build = llm.get("build")
+    if not isinstance(build, str) or not build or len(build) > 20:
+        errors.append("llm.json: build must be a string of 1 to 20 characters (T68: the relay refuses longer)")
     providers = {k: v for k, v in llm.get("providers", {}).items() if not k.startswith("_")}
     if not providers:
         errors.append("llm.json: providers is missing")

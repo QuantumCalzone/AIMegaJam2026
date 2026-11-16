@@ -1,2 +1,6 @@
+; T30: a header that waits for the lines in front of it.
+; T68: first queues the phase's analytics event (a "stat" cue; BPC_Analytics.CuePhase), so the event goes out
+; when this header shows. TurnNum, TalkRound and SceneNum are right here, at logic time.
 (fn CueHeader (Text)
+  (Class|BPCAnalytics|CuePhase :self (V Analytics) :Header Text :Turn (V TurnNum) :Round (V TalkRound) :Scene (V SceneNum))
   (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "phase" :Text Text :Num 0))

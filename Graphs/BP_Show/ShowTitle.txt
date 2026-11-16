@@ -1,5 +1,8 @@
+; T68: after the switches, BPC_Analytics.Launch loads the player's save and sends launch (once per level load,
+; the title and autoplay both pass here), before the title widget asks IsOn.
 (fn ShowTitle ()
   (CallFunction|LoadSwitches)
+  (Class|BPCAnalytics|Launch :self (V Analytics))
   (bind _rl (Class|BPCLLMClient|IsRelaunch :self (Variables|Default|GetLLMClient)))
   (if (or (Variables|Default|GetAutoplay) _rl)
     (if _rl

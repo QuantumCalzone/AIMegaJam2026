@@ -2,7 +2,12 @@
 ; T20: the cues also carry the sound: the show music under every header, the drum roll with the vote row,
 ; the stinger and the crowd at the cut, the applause or laughs at the end screen.
 ; T71: each header asks BPC_ShowAudio for its phase's music (PlayPhase); OpenPrep starts the card's loop.
+; T68: the "stat" cue (analytics phase events) and show_end at the end screen.
 (fn RunCue (Kind Text Num)
+  ; T68: a phase's analytics event, queued by CueHeader right before its header (BPC_Analytics.CuePhase).
+  (if (streq Kind "stat")
+    (Class|BPCAnalytics|SendPhase :self (V Analytics) :Key Text :Scene Num)
+    (return))
   (if (streq Kind "phase")
     (Class|BPCShowAudio|PlayPhase :self (V Audio) :Text Text :CardId (V CardId))
     (Class|WBPStage|SetPhase :self (Variables|Default|GetStage) :Phase Text)
@@ -44,5 +49,6 @@
   (if (streq Kind "end")
     (Class|BPCShowAudio|EndCheer :self (V Audio) :Win (V ShowWin))
     (CallFunction|ShowEndScreen)
+    (Class|BPCAnalytics|ShowEnd :self (V Analytics) :Win (V ShowWin) :Reason (V WinReason))
     (return))
   (print (cat "NHOS: CUE unknown " Kind)))

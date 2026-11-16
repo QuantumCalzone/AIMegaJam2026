@@ -33,4 +33,6 @@
   (if (< (len (V PersonaArr)) 3)
     (CallFunction|SetUnavailable :Reason "fewer than 3 AI players can take a seat.")
     (return false))
+  ; T68: the show starts (analytics show_start, after StartShowSession made the show's session id).
+  (Class|BPCAnalytics|ShowStart :self (V Analytics))
   (return true))

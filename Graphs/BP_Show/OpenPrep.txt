@@ -1,9 +1,11 @@
 ; T28: Scene Prep shows the whole card. T71: the card's music loop starts here, for every scene (scene 1 too, whose
 ; Scene Prep doesn't come through a "prep" cue). ScenePrep has set CardId before it calls OpenPrep.
+; T68: each Scene Prep sends its analytics phase (and the call counts so far).
 (fn OpenPrep ()
   (Class|WBPStage|SetPrepMode :self (Variables|Default|GetStage) :Prep true)
   (Class|BPCShowAudio|PlayMusic :self (V Audio) :Key (V CardId))
   (Development|PrintString (Utilities|String|Append "NHOS: PREP shown scene=" (Utilities|String|ToString(Integer) (Variables|Default|GetSceneNum))) false)
+  (Class|BPCAnalytics|SendPhase :self (V Analytics) :Key "scene_prep" :Scene (Variables|Default|GetSceneNum))
   (CallFunction|LoadSwitches)
   (if (Variables|Default|GetAutoplay)
     (CallFunction|StartFromPrep)))
