@@ -31,4 +31,7 @@
   (Rendering|Components|TextRender|SetText :self (Variables|Default|GetLabel) :Value (Utilities|Text|ToText(String) (Variables|Default|GetDisplayName)))
   (Rendering|Components|TextRender|SetTextRenderColor :self (Variables|Default|GetLabel) :Value (Math|Conversions|ToColor(LinearColor) :InLinearColor (Utilities|Struct|MakeLinearColor :R 1.0 :G 1.0 :B 1.0 :A 1.0) :InUseSRGB true))
   (CallFunction|SetLit :On false)
+  ; T38: no bubble, and no "(passed)" line under it.
+  (CallFunction|HideBubble)
+  (set PassedOn false)
   (CallFunction|FaceCamera))

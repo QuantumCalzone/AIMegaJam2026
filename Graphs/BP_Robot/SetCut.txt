@@ -11,6 +11,9 @@
   (Variables|Default|SetIsCut true)
   (Variables|Default|SetCutClock (Variables|Default|GetClock))
   (CallFunction|SetLit :On false)
+  ; T38: its bubble goes at once; its last words in the reactions bring it back (Say's EvenCut, P1).
+  (CallFunction|HideBubble)
+  (set PassedOn false)
   (bind _gray (Math|Vector|MakeVector :X 0.16 :Y 0.16 :Z 0.16))
   (bind _dark (Math|Vector|MakeVector :X 0.03 :Y 0.03 :Z 0.03))
   ; T79: every seat-colored part goes gray; OpenAI's floor ring goes out.

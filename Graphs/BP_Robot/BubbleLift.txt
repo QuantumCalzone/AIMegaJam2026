@@ -1,0 +1,7 @@
+; T38: the bubble's anchor rides on the name label, 26 cm over the label's location (the bottom of its text, WorldSize 24):
+; in PIE at 1600 x 900, 14 cm (Part 1's canvas number) put the tail's tip into the letters, and a tall bubble's box
+; over them. T57's "(passed)" line sits above the name, so the anchor goes up one more line (24 cm) while it shows.
+(fn BubbleLift ()
+  (if (not (V HasBubble))
+    (return))
+  (Transformation|SetRelativeLocation :self (V Bubble) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z (select (V PassedOn) 50.0 26.0))))

@@ -1,0 +1,5 @@
+; T38: the bubble goes at once, with no fade (a cut, ResetLook).
+(fn HideBubble ()
+  (if (not (V HasBubble))
+    (return))
+  (Class|WBPSpeechBubble|HideNow :self (V BubbleW)))

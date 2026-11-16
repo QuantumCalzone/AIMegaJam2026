@@ -1,0 +1,7 @@
+; T38: the robot in Seat (BP_Show's Robots, the same index LightSeat takes), with its bubble made and told what to keep
+; clear of.
+(fn BubbleBot (Seat)
+  (CallFunction|BubbleKeep)
+  (bind _b (get (Class|BPShow|GetRobots :self (V Show)) Seat))
+  (Class|BPRobot|InitBubble :self _b :View (V KeepRoot) :Panels (V KeepArr))
+  (return _b))
