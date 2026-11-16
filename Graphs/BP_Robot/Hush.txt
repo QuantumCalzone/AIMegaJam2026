@@ -1,0 +1,5 @@
+; T38: this robot's line is no longer the newest: its bubble fades out (BPC_LinePlayer.HushBubble).
+(fn Hush ()
+  (if (not (V HasBubble))
+    (return))
+  (Class|WBPSpeechBubble|FadeOut :self (V BubbleW)))
