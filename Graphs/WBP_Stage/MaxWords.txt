@@ -1,0 +1,7 @@
+; T65: the cap on a line, from BP_Show (T59's MaxWords, 15, which CapWords reads), so the counter and CapWords never
+; differ. 15 with no show.
+(fn MaxWords ()
+  (bind _sh (CallFunction|ShowRef))
+  (if (== _sh (V NullShow))
+    (return 15))
+  (return (Class|BPShow|GetMaxWords :self _sh)))

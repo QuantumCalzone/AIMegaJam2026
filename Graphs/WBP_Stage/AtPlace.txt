@@ -1,0 +1,15 @@
+; T65: puts the @ list right over the speech field, in RootBox's space (the full-screen Overlay, T27): its left edge on the
+; field's, its bottom 8 px (S2) above the field's top. AtPop's slot is HAlign Left, VAlign Bottom, so its height can change.
+; The field moves when the panel widens for the builder (T64's FitBuilder), so this runs at each opening and redraw.
+; The point transforms are the (Coordinates) nodes: the (Vector) ones transform a direction and drop the position (T65).
+(fn AtPlace ()
+  (bind _g (Widget|GetCachedGeometry :self (Variables|WBP_Stage|GetInputBox)))
+  (bind _rg (Widget|GetCachedGeometry :self (Variables|WBP_Stage|GetRootBox)))
+  (bind _abs (UserInterface|Geometry|LocaltoAbsolute(Coordinates) _g (Math|Vector2D|MakeVector2D :X 0.0 :Y 0.0)))
+  (bind _tl (UserInterface|Geometry|AbsolutetoLocal(Coordinates) _rg _abs))
+  (bind _view (UserInterface|Geometry|GetLocalSize _rg))
+  (bind _gap (Class|UIStyle|UISize :Role "S2"))
+  (bind (_x _y) (Math|Vector2D|BreakVector2D _tl))
+  (bind (_vx _vy) (Math|Vector2D|BreakVector2D _view))
+  (bind _slot (Slot|SlotasOverlaySlot (Variables|WBP_Stage|GetAtPop)))
+  (Layout|OverlaySlot|SetPadding :self _slot :InPadding (Utilities|Struct|MakeMargin :Left _x :Top 0.0 :Right 0.0 :Bottom (+ (- _vy _y) _gap))))

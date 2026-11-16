@@ -1,0 +1,7 @@
+; T65: the word at the end of the line, where the caret is while I type, and the index it starts at. "" when the line
+; ends in a space.
+(fn LastToken (Text)
+  (bind (_l _r _found) (Utilities|String|Split :SourceString Text :InStr " " :SearchDir "FromEnd"))
+  (if _found
+    (return _r (+ (Utilities|String|Len _l) 1)))
+  (return Text 0))

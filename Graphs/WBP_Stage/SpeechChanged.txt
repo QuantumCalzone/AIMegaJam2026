@@ -1,0 +1,6 @@
+; T65: every change to the speech field (OnTextChanged on InputBox, T64's chain). PrevText is set before any SetText the
+; game makes, so the change that SetText fires itself comes back here equal to PrevText and does nothing.
+(fn SpeechChanged (Text)
+  (if (streq Text (V PrevText))
+    (return))
+  (CallFunction|SpeechApply :Text Text))

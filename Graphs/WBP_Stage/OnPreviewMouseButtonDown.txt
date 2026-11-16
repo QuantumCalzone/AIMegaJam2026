@@ -1,0 +1,6 @@
+; T65: any click in the game window passes here first (a preview event tunnels from WBP_Stage down to the widget under the
+; cursor). It only notes the click, so HoldFocus gives the keyboard back to the speech field if the click took it; the
+; click itself goes on as before. An override of UserWidget's OnPreviewMouseButtonDown (add_function_graph).
+(fn OnPreviewMouseButtonDown (MyGeometry MouseEvent)
+  (set ClickAsked true)
+  (return (Widget|EventReply|Unhandled)))

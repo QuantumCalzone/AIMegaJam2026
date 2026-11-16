@@ -2,8 +2,8 @@
 ; outline, in the mono font, white on near-black like a terminal; the seven actions as Secondary buttons. UIStyle's
 ; functions are impure, so every value is bound before use. The mono font is this widget's MonoFont variable (the
 ; engine's Droid Sans Mono at 18) until UIStyle has a "Mono" role; then this line reads UIFont "Mono" instead.
+; T65: the preview line is drawn word by word (DrawPreview, WBP_Word.Setup styles each word in MonoFont).
 (fn StyleAll ()
-  (bind cText (Class|UIStyle|UIColor :Role "Text"))
   (bind cInset (Class|UIStyle|UIColor :Role "Inset"))
   (bind cQuiet (Class|UIStyle|UIColor :Role "Quiet"))
   (bind w (Class|UIStyle|UISize :Role "InputOutline"))
@@ -11,8 +11,6 @@
   (bind bPrev (Class|UIStyle|Brush :Fill cInset :Outline cQuiet :Width w :Radius r))
   (Class|Border|SetBrushColor :self (Variables|WBP_ActionBuilder|GetPreviewBox) :BrushColor (Utilities|Struct|MakeLinearColor 1.0 1.0 1.0 1.0))
   (Appearance|SetBrush :self (Variables|WBP_ActionBuilder|GetPreviewBox) :InBrush bPrev)
-  (Class|Text|SetFont :self (Variables|WBP_ActionBuilder|GetPreviewText) :Font (V MonoFont))
-  (Class|Text|SetColorandOpacity :self (Variables|WBP_ActionBuilder|GetPreviewText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor cText))
   (Class|UIStyle|StyleButton :Button (Variables|WBP_ActionBuilder|GetMoveBtn) :Label (Variables|WBP_ActionBuilder|GetMoveLabel) :Kind "Secondary")
   (Class|UIStyle|StyleButton :Button (Variables|WBP_ActionBuilder|GetLookBtn) :Label (Variables|WBP_ActionBuilder|GetLookLabel) :Kind "Secondary")
   (Class|UIStyle|StyleButton :Button (Variables|WBP_ActionBuilder|GetGrabBtn) :Label (Variables|WBP_ActionBuilder|GetGrabLabel) :Kind "Secondary")

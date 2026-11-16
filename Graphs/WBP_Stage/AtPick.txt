@@ -1,0 +1,15 @@
+; T65: puts the K-th name in: the "@me" at the end of the line becomes "@Meta " (one unit, step 5), with the caret at the
+; end. A SetText from the game fires no OnTextChanged (found in T65's check), so this runs the change chain itself:
+; it closes the list (the line now ends in a space), counts the words and redraws the preview.
+(fn AtPick (K)
+  (if (or (not (V AtOpen)) (>= K (len (V AtNames))))
+    (return))
+  (bind _name (get (V AtNames) K))
+  (bind _head (Utilities|String|Left :SourceString (V PrevText) :Count (V AtPos)))
+  (bind _max (CallFunction|MaxWords))
+  (bind _new (CallFunction|CutWords :Text (cat _head "@" _name " ") :Max _max))
+  (print (cat "NHOS: MENTION pick " _name))
+  (set AtShutPos -1)
+  (Widget|SetText(TextBox) :self (Variables|WBP_Stage|GetInputBox) :InText (Utilities|Text|ToText(String) _new))
+  (CallFunction|SpeechChanged :Text _new)
+  (CallFunction|CaretEnd))

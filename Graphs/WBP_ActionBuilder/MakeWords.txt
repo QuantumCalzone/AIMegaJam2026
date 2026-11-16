@@ -1,0 +1,5 @@
+; T65: the pool of 40 words for the preview line, made once: the longest preview is about 7 words of action and 15 of
+; line, each mention split in up to three pieces.
+(fn MakeWords ()
+  (for _k (range 40)
+    (CallFunction|MakeWord)))

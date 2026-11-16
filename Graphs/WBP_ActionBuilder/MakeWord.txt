@@ -1,0 +1,6 @@
+; T65: one more word for the preview line's pool.
+(fn MakeWord ()
+  (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Word.WBP_Word_C" (Widget|GetOwningPlayer self)))
+  (Widget|SetVisibility :self _w :InVisibility "Collapsed")
+  (Panel|AddChildtoWrapBox :self (Variables|WBP_ActionBuilder|GetPreviewWrap) :Content _w)
+  (add (V Words) _w))

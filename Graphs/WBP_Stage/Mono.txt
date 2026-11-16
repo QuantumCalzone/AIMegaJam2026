@@ -1,0 +1,4 @@
+; T65: the mono font of the speech row (the counter; T66's timer), the builder's own MonoFont (T64: UIStyle has no
+; "Mono" role yet). If T34 adds one to UIStyle, this one line reads UIFont "Mono" instead.
+(fn Mono ()
+  (return (Class|WBPActionBuilder|GetMonoFont :self (Variables|WBP_Stage|GetActionBuilder))))

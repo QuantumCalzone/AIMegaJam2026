@@ -1,0 +1,8 @@
+; T65: after the game sets the field's text (a cut or a picked name), the caret goes to the end of the line. Slate keeps
+; the caret where it was on SetText; on a keyboard focus it moves it to the end. CaretRefocus is set from the caret test
+; (T65.md, Findings): false if the caret is already at the end after SetText, true if it needs the re-focus.
+(fn CaretEnd ()
+  (if (not (V CaretRefocus))
+    (return))
+  (Focus|SetFocustoGameViewport)
+  (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox)))

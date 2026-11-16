@@ -1,0 +1,10 @@
+; T65: sets Found when Rest (what follows an "@") starts with seat K's screen name, in any case, at a word end: the next
+; character is a space, , . ! ? ' : ; ) or " or nothing, the ends BP_Show.ResolveMentions accepts (T26). Never my seat.
+(fn TryLabel (Rest K)
+  (if (== K (V Seat))
+    (return))
+  (bind _lab (get (V Labels) K))
+  (bind _nx (Utilities|String|GetSubstring :SourceString Rest :StartIndex (Utilities|String|Len _lab) :Length 1))
+  (bind _end (or (Utilities|String|IsEmpty _nx) (Utilities|String|Contains :SearchIn " ,.!?':;)\"" :Substring _nx)))
+  (if (and (not (Utilities|String|IsEmpty _lab)) (and _end (Utilities|String|StartsWith :SourceString Rest :InPrefix _lab)))
+    (set Found _lab)))

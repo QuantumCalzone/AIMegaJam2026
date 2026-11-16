@@ -1,0 +1,8 @@
+; T65: true when Token is a whole mention: "@" and the screen name of a seat other than mine, in any case ("@meta").
+(fn IsMention (Token)
+  (set TmpFound "")
+  (for _l (V AllLabels)
+    (set TmpLab _l)
+    (if (Utilities|String|Equal,CaseInsensitive(String) :A Token :B (cat "@" (V TmpLab)))
+      (set TmpFound (V TmpLab))))
+  (return (not (Utilities|String|IsEmpty (V TmpFound)))))
