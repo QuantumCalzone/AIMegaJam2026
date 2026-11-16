@@ -1,6 +1,6 @@
 # AIMegaJam2026
 
-Our entry for the [2026 Epic AI MegaJam](https://itch.io/jam/2026-epic-ai-megajam). It's an Unreal Engine 5.8 project with Blueprints only, so there's no C++ to compile.
+An Unreal Engine 5.8 project with Blueprints only, so there's no C++ to compile.
 
 ## What we're building
 
@@ -8,7 +8,7 @@ The game is **No Humans On Set**: you are the only human in an all-AI improv cas
 
 - [Docs/GameDesign.md](Docs/GameDesign.md): a link to the design, a private Claude Doc. Ask QuantumCalzone for access.
 - [Docs/Plan.md](Docs/Plan.md): the plan, with the tasks in priority order. With Claude Code, say "Next task" to build the next step. The file also explains how to claim a task so two people don't start the same one, and how to add a task at the place where it belongs. Each task's details and findings are in its own file in [Docs/tasks/](Docs/tasks/).
-- [Docs/DevLog.md](Docs/DevLog.md): the dev log for the jam's Glass Box category.
+- [Docs/DevLog.md](Docs/DevLog.md): the dev log, one line per change.
 
 ## What you need
 
@@ -27,7 +27,7 @@ git lfs install
 git clone https://github.com/QuantumCalzone/AIMegaJam2026.git
 ```
 
-The game is on the `noHumansOnSet` branch. `main` holds only the setup from before the jam. Switch to the game's branch in the repo folder:
+The game is on the `noHumansOnSet` branch. `main` holds only the project's first setup. Switch to the game's branch in the repo folder:
 
 ```bash
 cd AIMegaJam2026
@@ -59,7 +59,7 @@ The project turns on Unreal MCP. While the editor is open, it runs a local MCP s
 
 If something else on your machine already uses port 8000, change the port in **Edit > Editor Preferences > Agentic Workflows > Model Context Protocol**. Then update the URL in your local `.mcp.json`, and don't commit that change.
 
-[CLAUDE.md](CLAUDE.md) has the project details Claude Code reads: engine paths, commands, rendering settings and the jam rules.
+[CLAUDE.md](CLAUDE.md) has the project details Claude Code reads: engine paths, commands and rendering settings.
 
 ## Working together
 
@@ -71,7 +71,7 @@ If something else on your machine already uses port 8000, change the port in **E
 
   After you push your change, release it with `git lfs unlock <path>`. `git lfs locks` shows who holds what. Git refuses to push changes to a file someone else has locked. Unreal's editor doesn't take these locks for you, so run the commands yourself or ask your agent to.
 - **Agent notes:** [Agents/](Agents/README.md) holds notes that Claude Code agents and people use to coordinate: messages, handoffs and decisions. To see who is working on what, run `git lfs locks`. Agents read it at the start of each session. Put your GitHub username in your own `CLAUDE.local.md` so your agents know which notes are yours.
-- **Outside assets** (Fab and others) must be listed in the jam submission. Add the source and license to [Docs/Assets.md](Docs/Assets.md) when you add one.
+- **Outside assets** (Fab and others) are fine if the license permits. Add the source and license to [Docs/Assets.md](Docs/Assets.md) when you add one.
 - **Git LFS storage and bandwidth** count against the GitHub account's limits. Avoid committing large source files you don't need.
 
 ## Build the game
@@ -80,13 +80,3 @@ If something else on your machine already uses port 8000, change the port in **E
 - **Packaging compiles a small game program**, because the game's HTTP and JSON plugins have no prebuilt game binaries in the launcher engine. To package on Windows, install Visual Studio 2022 with the "Desktop development with C++" workload and the **Windows 11 SDK (10.0.22621.0)**. You don't need them to work on the game. The command in CLAUDE.md is tested. The editor's Package Project menu is not tested yet; if it stops and asks for the .NET Framework SDK, use the command instead.
 - A Mac can package a macOS build (this needs Xcode), but not a Windows one.
 - **Before you zip or upload a build**, run `python Tools/check_build_secrets.py <build folder or zip>` on a machine that has our keys in `Local/`. It fails if the build holds one of our API keys, anything shaped like a key, or a `Local/` or `Saved/` folder.
-
-## Jam rules in short
-
-- The theme is **"Director's Cut"**.
-- Building runs Nov 12–15, 2026. The **deadline is Nov 15, 5:59 PM PST**, and late entries are disqualified.
-- No game assets before Nov 12. The organizers said setting up the project and planning the design before then is fine. Anything made before the jam (prompts, scripts, design notes) must still be declared, including this repo's setup files.
-- Teams can have up to 5 people. Any AI tools are allowed.
-- Each team member must be 18 or older and have an active Epic Games account. The submission form asks for the email linked to that account.
-- Partners email their codes to people who joined the jam on itch.io. Some codes have claim deadlines, so check the jam page.
-- Full rules: the [itch.io jam page](https://itch.io/jam/2026-epic-ai-megajam) and the Official Rules linked there.
