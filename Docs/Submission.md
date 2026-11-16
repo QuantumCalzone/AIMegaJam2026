@@ -45,7 +45,7 @@ The jam page asks for the packaged build as a zip named `TeamName_GameName`, und
 
 - **Zip name:** `[YOU: team name]_NoHumansOnSet.zip`
 - **Platform:** Windows 10 or 11, a Development build (`Packaged/Windows/`, made in T22).
-- **Before zipping:** delete every `.pdb` file and the build's `Local/` folder (it can hold `llm_key.json` with our keys, and `switches.json`). Then search the unzipped build for anything that looks like a key: `sk-`, `xai-`, `api_key` with a value, or any long random string in a `.json` or `.ini`. Our only key placeholders are in `Docs/llm_key.example.json`, which isn't part of the build.
+- **Before zipping:** delete every `.pdb` file and the build's `Local/` folder (it can hold `llm_key.json` with our keys, and `switches.json`). Then run `python Tools/check_build_secrets.py <build folder>`, and after zipping run it again on the zip. Run it on a machine whose `Local/` holds our keys. It opens the build's paks and looks for each of our keys by its value, for anything shaped like an API key, and for a `Local/` or `Saved/` folder. Upload only when it ends with `RESULT: clean`.
 - **Size:** T02's spike build was 968 MB, and 387 MB zipped without the `.pdb`. **[YOU]** write the real size here (T22 was dropped; I package the build myself).
 - **On itch.io:** upload the zip as a Windows download, set "Kind of project" to Downloadable, then submit the project to the jam before **Nov 15, 5:59 PM PST (8:59 PM EST)**. Late entries are disqualified.
 
