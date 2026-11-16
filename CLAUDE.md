@@ -96,7 +96,7 @@ Package a Windows build. This only works on a Windows machine:
 - From Git Bash, this command fails with `'C:\Program' is not recognized` (or `'E:\Epic'`), because cmd strips the outer quotes from a line that has more than two. Put the command in a `.bat` file and run it with `cmd //c <file>.bat`.
 - The packaged game is in `Packaged/Windows/`. Its log is `Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`. It reads the API keys from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`, and the switches from `Local/switches.json` in the same folder. A packaged build sends real analytics events (T68), so before you test one, put `{"analytics": "off"}` (or `"test"`) in that `switches.json`, or add the package's player id (its log prints `NHOS: ANALYTICS player <id>`) to `ignore_players` in `Local/stats.json`. Delete both files before you zip a build, then run the secrets check (below).
 
-Package a macOS build. This needs a Mac with Xcode. It also compiles a game program. It was first done on 2026-11-15, with Xcode 27.2, in about five minutes:
+Package a macOS build. This needs a Mac with Xcode. It also compiles a game program. It was first done on 2026-11-15, with Xcode 27.2:
 
 ```bash
 "<UE_ROOT>/Engine/Build/BatchFiles/RunUAT.sh" BuildCookRun -project="<PROJECT>" -platform=Mac -clientconfig=Development -build -cook -stage -pak -archive -archivedirectory="<repo root>/Packaged" -nocompileeditor -unrealexe="<UE_ROOT>/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor" -unattended
@@ -114,7 +114,7 @@ Before you zip or upload any build, Windows or Mac, check it for secrets. The ch
 python Tools/check_build_secrets.py <build folder or zip>
 ```
 
-- Run it on a machine whose `Local/` holds our keys, so it knows which values to look for. Run it on the zip too, because the zip is what you upload. With no argument, it checks the sources and every build and zip in `Packaged/` and `Saved/StagedBuilds/`. That takes about a minute for one Mac build and two zips.
+- Run it on a machine whose `Local/` holds our keys, so it knows which values to look for. Run it on the zip too, because the zip is what you upload. With no argument, it checks the sources and every build and zip in `Packaged/` and `Saved/StagedBuilds/`.
 - The game saves the keys a player pastes on the key screen inside the build, in `Local/llm_key.json`. So a build that anyone tested with their own keys holds those keys until you delete that file. The check catches it.
 
 Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.log`.
@@ -124,7 +124,7 @@ Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.lo
 - `.uasset` and `.umap` files are binary. Do not edit them as text. To change Blueprints, levels or other assets, use Unreal MCP (see below) when the editor is running. Otherwise, write an editor Python script that uses the `unreal` module (the Python Script Plugin is on and uses Python 3.11), or tell the user what to change in the editor.
 - **Blueprint graphs: read only what you need, and keep `Graphs/` in step.** This holds for all editor work, in a plan task or not.
   - `Graphs/<Blueprint>/<Graph>.txt` holds the DSL source last written to each graph with `BlueprintTools.write_graph_dsl`. To change a graph, start from its file, then commit the updated file with your change. If you change a graph some other way (a pin value, a hand edit in the editor), make the same change in its file, or delete the file. Never write a read-back to the editor as it is, because that drops data. [Graphs/README.md](Graphs/README.md) has the details.
-  - List a Blueprint's graphs, then read only the ones you change or call. Never dump every graph of `BP_Show`: that takes 7 to 8 minutes.
+  - List a Blueprint's graphs, then read only the ones you change or call. Never dump every graph of `BP_Show`: one dump was too big for a tool result.
   - Put new systems in their own Blueprint or component, and call them from one node in `BP_Show`.
   - The "Build notes for every task" in [Docs/Plan.md](Docs/Plan.md) have the rest. Follow them for editor work outside the task list too.
 - Project settings live in `Config/Default*.ini`. These are text and safe to edit, but the editor rewrites them when settings change in its UI. Make edits while the editor is closed, or the editor may overwrite them.
@@ -164,7 +164,7 @@ UE 5.8 includes **Unreal MCP**, the experimental `ModelContextProtocol` plugin. 
 - **Connecting:** open the editor first, then start Claude Code from the project root. A session that started before the editor won't see the server until it reconnects. Each person approves `unreal-mcp` once, or adds `"enabledMcpjsonServers": ["unreal-mcp"]` to their own `.claude/settings.local.json` (git ignores that file).
 - The server uses tool search. In 5.8.4 it lists three meta-tools, not the four in the docs: `list_toolsets`, `describe_toolset` and `call_tool`. In Claude Code they appear as `mcp__unreal-mcp__<name>`. Start with `list_toolsets`, then `describe_toolset` to get a toolset's tools, then `call_tool` to run one. Every editor action, read or write, goes through `call_tool`.
 - If the editor restarts during a session, the connection drops. Reconnect `unreal-mcp` from `/mcp`.
-- Tool calls run one at a time on the game thread. Don't send several calls in parallel. Claude Code stops waiting after about 120 seconds, so split long work (big scripts, asset scans, automation runs) into shorter calls.
+- Tool calls run one at a time on the game thread. Don't send several calls in parallel. Claude Code stops waiting on a call that runs long, so split long work (big scripts, asset scans, automation runs) into shorter calls.
 - The server only exists while the editor runs. Commandlets don't start it unless you pass `-ModelContextProtocolStartServer`.
 - Instructions for every connecting agent can be set in Project Settings > Agentic Workflows > Model Context Protocol > Instructions. They are stored in `DefaultGame.ini`.
 - Server logs use the `LogModelContextProtocol` category in the editor log.
