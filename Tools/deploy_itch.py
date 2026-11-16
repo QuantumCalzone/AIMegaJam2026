@@ -26,7 +26,8 @@ What it does, in order:
    has no Local/, and nothing is ever copied out of it). Anything but exit code 0 stops the run,
    and so does a check that found no key files to look for.
 5. Reads the page's channels back with butler status, checks the channel is windows-postjam (never
-   the jam's file, which went up through the web form and has no channel), and pushes:
+   the jam's file, which went up through the web form and has no channel), stops if that channel
+   is not on the page yet and --hidden is not given (only the hidden first push makes it), and pushes:
    butler push <build> quantumcalzone/no-humans-on-set:windows-postjam
        --userversion postjam-<commit date>-<short sha> --if-changed
 
@@ -341,6 +342,10 @@ def main() -> int:
         say(f"channels on the page: {', '.join(found) or 'none'} (the jam's file has no channel)")
         if args.hidden and CHANNEL in found:
             return fail(f"--hidden works only on a new channel, and {CHANNEL} exists")
+        # A push to a channel that doesn't exist yet makes a new file on the page, visible at once.
+        # Only the hidden first push by hand may do that; a workflow run never does.
+        if not args.hidden and CHANNEL not in found:
+            return fail(f"{CHANNEL} is not on the page yet: make the first push by hand with --hidden")
     if args.hidden:
         cmd.append("--hidden")
     if args.dry_run:
