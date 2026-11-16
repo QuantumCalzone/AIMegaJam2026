@@ -1,0 +1,11 @@
+; T69: the input LLM's attempt field: a few words naming a physical action the player typed that the game can't do.
+; Deliver calls this for every reply to a spelling ask (spell-<n>, T63's SpellAsk), in time or late. It never changes
+; the line or the turn: BP_Show never sees it. BPC_Analytics.Unsupported cleans it and decides whether it goes out;
+; HaveStats is false while BP_Show has no analytics component (T68's FindStats).
+(fn NoteAttempt (Tag)
+  (bind _a (Utilities|String|Trim (V RAttempt)))
+  (if (Utilities|String|IsEmpty _a)
+    (return))
+  (print (cat "NHOS: ATTEMPT " Tag " " _a))
+  (if (V HaveStats)
+    (Class|BPCAnalytics|Unsupported :self (V Stats) :Words _a :Source "typed")))

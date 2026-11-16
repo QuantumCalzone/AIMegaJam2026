@@ -1,6 +1,7 @@
 ; Reads the reply's fields (llm.json reply_schema) into the R* variables. Written from the editor's read-back in T60.
 ; T60: also 'tell', the kind of evidence a vote names (tells.json), into RTell. A reply without 'tell' (the relay's
 ; free mode, which builds its replies without it) leaves RTell "" from ClearReply, and still parses.
+; T69: also 'attempt', the input reply's few words naming an action the player can't click, into RAttempt (only input_schema has it).
 (fn ParseFields (Text)
   (bind (_o _ok) (Json|LoadJsonfromString Text))
   (if (not _ok)
@@ -18,6 +19,10 @@
       (if _ht
         (bind _te (Json|GetField _o "tell"))
         (set RTell _te))
+      (bind _hat (Json|HasField _o "attempt"))
+      (if _hat
+        (bind _at (Json|GetField _o "attempt"))
+        (set RAttempt _at))
       (bind _ac (Json|GetField _o "actions"))
       (set RActions _ac)
       (for _a (V RActions)

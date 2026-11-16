@@ -1,3 +1,4 @@
+; T69: free mode leaves attempt empty; the attempt_test switch fills it on every input reply (the echo), for the PIE check.
 (fn FreeReply (User)
   (bind (_st _ok) (Json|LoadJsonfromString User))
   (set FreeState _st)
@@ -18,6 +19,7 @@
     (for _wi (range (Math|Integer|Min(Integer) (len (V TmpArr)) 15))
       (add (V TmpArr2) (get (V TmpArr) _wi)))
     (set RSpeech (Utilities|String|JoinStringArray (V TmpArr2) " "))
+    (set RAttempt (V AttemptTest))
     (return))
   (bind _hy (Json|HasField (V FreeState) "you"))
   (if _hy

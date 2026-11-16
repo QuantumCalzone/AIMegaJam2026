@@ -1,5 +1,5 @@
 {
-	"_readme": "Settings for every LLM call. Each persona runs on its own provider ('providers' below, T16); since T18 the game sends each actor ask to its persona's provider and the input ask to its role's provider, with the body shape in providers._readme. This paragraph describes the Anthropic shape. The API keys are not here; they are in Local/llm_key.json (see Docs/llm_key.example.json). Request body: model, max_tokens, system (the joined system text), messages [{role: user, content: <state JSON as text>}], output_config {effort, format {type: json_schema, schema: reply_schema}}, plus fallbacks when it is not empty. Headers: x-api-key, anthropic-version (api_version), content-type: application/json, plus anthropic-beta when beta is not empty. Read the first content block whose type is text; stop_reason 'refusal' or 'max_tokens', or a top-level type 'error', is a failed ask. reply_schema is the one reply shape for every ask (scene turn, Free Talk line, vote, reaction, closing line, input conversion); unused fields come back empty. A vote also fills 'tell', one id from tells.json: the kind of evidence its reason gives (T60). Every other ask leaves it \"\". The schema can't cap words or list lengths, so the game cuts speech and reason to 15 words and uses at most 2 actions. relay: the relay address (Relay/README.md). The title screen has three modes (or \"mode\" in Local/switches.json): Test for Free makes no LLM call (the game builds replies from free_mode.json), Play via Relay sends every ask to the relay as {provider, session, body}, and Play with my own API keys calls each provider directly with the keys in Local/llm_key.json (at least 3 of the 4 providers). build: the game's version (the build day, YYYY-MM-DD), sent with every analytics event; at most 20 characters. In a packaged build, every mode, Test for Free included, sends a few anonymous analytics events to the relay's /event (BPC_Analytics, T68): an id made on the first launch, the mode, how far each show gets, call counts and tokens per provider and model, and error kinds. Nothing goes when the player turns Play stats off on the title, or when Local/switches.json has \"analytics\": \"off\". The editor sends none unless that switch is \"test\".",
+	"_readme": "Settings for every LLM call. Each persona runs on its own provider ('providers' below, T16); since T18 the game sends each actor ask to its persona's provider and the input ask to its role's provider, with the body shape in providers._readme. This paragraph describes the Anthropic shape. The API keys are not here; they are in Local/llm_key.json (see Docs/llm_key.example.json). Request body: model, max_tokens, system (the joined system text), messages [{role: user, content: <state JSON as text>}], output_config {effort, format {type: json_schema, schema: reply_schema (input_schema for the input ask)}}, plus fallbacks when it is not empty. Headers: x-api-key, anthropic-version (api_version), content-type: application/json, plus anthropic-beta when beta is not empty. Read the first content block whose type is text; stop_reason 'refusal' or 'max_tokens', or a top-level type 'error', is a failed ask. reply_schema is the reply shape for every actor ask (scene turn, Free Talk line, vote, reaction, closing line); input_schema is the same shape plus attempt, for the input ask alone (T69: a few words naming an action the player typed that the game can't do, for analytics); unused fields come back empty. A vote also fills 'tell', one id from tells.json: the kind of evidence its reason gives (T60). Every other ask leaves it \"\". The schema can't cap words or list lengths, so the game cuts speech and reason to 15 words and uses at most 2 actions. relay: the relay address (Relay/README.md). The title screen has three modes (or \"mode\" in Local/switches.json): Test for Free makes no LLM call (the game builds replies from free_mode.json), Play via Relay sends every ask to the relay as {provider, session, body}, and Play with my own API keys calls each provider directly with the keys in Local/llm_key.json (at least 3 of the 4 providers). build: the game's version (the build day, YYYY-MM-DD), sent with every analytics event; at most 20 characters. In a packaged build, every mode, Test for Free included, sends a few anonymous analytics events to the relay's /event (BPC_Analytics, T68): an id made on the first launch, the mode, how far each show gets, call counts and tokens per provider and model, error kinds, and a few words naming an action the player tried that the game can't do (T69, never the typed line). Nothing goes when the player turns Play stats off on the title, or when Local/switches.json has \"analytics\": \"off\". The editor sends none unless that switch is \"test\".",
 	"endpoint": "https://api.anthropic.com/v1/messages",
 	"relay": "https://nhos-relay.georgetkatsaros.workers.dev",
 	"build": "2026-11-15",
@@ -49,6 +49,52 @@
 		"required": ["actions", "speech", "vote", "reason", "pass", "tell"],
 		"additionalProperties": false
 	},
+	"input_schema": {
+		"type": "object",
+		"properties": {
+			"actions": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"verb": {
+							"type": "string",
+							"enum": ["move", "look", "grab", "throw", "give"]
+						},
+						"target": {
+							"type": "string"
+						},
+						"item": {
+							"type": "string"
+						}
+					},
+					"required": ["verb", "target", "item"],
+					"additionalProperties": false
+				}
+			},
+			"speech": {
+				"type": "string"
+			},
+			"vote": {
+				"type": "string"
+			},
+			"reason": {
+				"type": "string"
+			},
+			"pass": {
+				"type": "boolean"
+			},
+			"tell": {
+				"type": "string",
+				"enum": ["", "late_copy", "note", "silence", "polish", "human_slip", "no_persona", "role", "other"]
+			},
+			"attempt": {
+				"type": "string"
+			}
+		},
+		"required": ["actions", "speech", "vote", "reason", "pass", "tell", "attempt"],
+		"additionalProperties": false
+	},
 	"roles": {
 		"actor": {
 			"provider": "persona",
@@ -64,7 +110,7 @@
 		}
 	},
 	"providers": {
-		"_readme": "One entry per AI provider (T16). Each actor's ask goes to its persona's 'provider' (personas.json); roles.actor.provider 'persona' means that. The input LLM uses the provider in its role, with the role's own model, effort and max_tokens. The game reads this block (T18); the top-level endpoint is no longer used. The ids are the relay's provider ids (Relay/relay.config.json), so a relay request is {provider: <id>, session, body}, and the model must be on the relay's allow-list. key_field is the field in Local/llm_key.json that holds this provider's key; an empty key means its personas can't take a seat in Play with my own API keys. format 'anthropic' is the Messages API: headers x-api-key (the key) and anthropic-version (api_version); body {model, max_tokens, system, messages [{role: user, content: <state JSON>}], output_config {effort, format {type: json_schema, schema: reply_schema}}}; read the first content block whose type is text; stop_reason 'refusal' or 'max_tokens', or a top-level type 'error', is a failed ask. format 'openai_chat' is the Chat Completions shape these providers share: header Authorization: Bearer <key>; body {model, <max_tokens_field>: max_tokens, messages [{role: system, content: <system text>}, {role: user, content: <state JSON>}], response_format {type: json_schema, json_schema {name: reply, schema: reply_schema, strict: true}}, <effort_field>: effort}; read choices[0].message.content; finish_reason 'length' or 'content_filter', a non-empty choices[0].message.refusal, or a top-level 'error' object (error.message) is a failed ask (a relay error still has top-level type 'error'). Each effort is the cheapest the provider accepts, the same one the relay forces: meta rejects 'none', and its 'minimal' still spends about 70 reasoning tokens. No temperature: the reasoning models reject it or ignore it.",
+		"_readme": "One entry per AI provider (T16). Each actor's ask goes to its persona's 'provider' (personas.json); roles.actor.provider 'persona' means that. The input LLM uses the provider in its role, with the role's own model, effort and max_tokens. The game reads this block (T18); the top-level endpoint is no longer used. The ids are the relay's provider ids (Relay/relay.config.json), so a relay request is {provider: <id>, session, body}, and the model must be on the relay's allow-list. key_field is the field in Local/llm_key.json that holds this provider's key; an empty key means its personas can't take a seat in Play with my own API keys. format 'anthropic' is the Messages API: headers x-api-key (the key) and anthropic-version (api_version); body {model, max_tokens, system, messages [{role: user, content: <state JSON>}], output_config {effort, format {type: json_schema, schema: reply_schema (input_schema for the input ask)}}}; read the first content block whose type is text; stop_reason 'refusal' or 'max_tokens', or a top-level type 'error', is a failed ask. format 'openai_chat' is the Chat Completions shape these providers share: header Authorization: Bearer <key>; body {model, <max_tokens_field>: max_tokens, messages [{role: system, content: <system text>}, {role: user, content: <state JSON>}], response_format {type: json_schema, json_schema {name: reply, schema: reply_schema (input_schema for the input ask), strict: true}}, <effort_field>: effort}; read choices[0].message.content; finish_reason 'length' or 'content_filter', a non-empty choices[0].message.refusal, or a top-level 'error' object (error.message) is a failed ask (a relay error still has top-level type 'error'). Each effort is the cheapest the provider accepts, the same one the relay forces: meta rejects 'none', and its 'minimal' still spends about 70 reasoning tokens. No temperature: the reasoning models reject it or ignore it.",
 		"anthropic": {
 			"format": "anthropic",
 			"endpoint": "https://api.anthropic.com/v1/messages",

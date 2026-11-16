@@ -1,5 +1,6 @@
 ; T37: also loads errors.json (cases, test_replies) and the error_test switch.
 ; T68: also finds the analytics component (Stats, FindStats).
+; T69: also input_schema (the input ask's reply shape) and the attempt_test switch.
 (fn LoadConfig ()
   (bind _dir (Utilities|Paths|GetProjectDirectory))
   (bind _cdir (Utilities|Paths|GetProjectContentDirectory))
@@ -17,6 +18,11 @@
   (set Fallbacks _f3)
   (bind _f4 (Json|GetField _o "reply_schema"))
   (set ReplySchema _f4)
+  (set InputSchema (V ReplySchema))
+  (bind _his (Json|HasField _o "input_schema"))
+  (if _his
+    (bind _fis (Json|GetField _o "input_schema"))
+    (set InputSchema _fis))
   (bind _f5 (Json|GetField _o "roles"))
   (set Roles _f5)
   (bind _hp (Json|HasField _o "providers"))
@@ -67,6 +73,7 @@
       (set KeyObj _ke)))
   (set BurnTest false)
   (set ErrTest "")
+  (set AttemptTest "")
   (bind (_so _sok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _dir "Local/switches.json"))))
   (if _sok
     (bind _hm (Json|HasField _so "mode"))
@@ -80,7 +87,11 @@
     (bind _het (Json|HasField _so "error_test"))
     (if _het
       (bind _set (Json|GetField _so "error_test"))
-      (set ErrTest _set)))
+      (set ErrTest _set))
+    (bind _hat (Json|HasField _so "attempt_test"))
+    (if _hat
+      (bind _sat (Json|GetField _so "attempt_test"))
+      (set AttemptTest _sat)))
   (set Relaunched false)
   (bind _gm (Game|GetGameMode))
   (bind _opt (GameOptions|ParseOption :Options (Class|GameModeBase|GetOptionsString :self _gm) :Key "nhosmode"))
@@ -97,5 +108,5 @@
   (CallFunction|FindStats)
   (set Ready true)
   (bind _n (CallFunction|KeyCount))
-  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest)) " error_test=" (V ErrTest)))
+  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest)) " error_test=" (V ErrTest) " attempt_test=" (V AttemptTest)))
   (return true ""))

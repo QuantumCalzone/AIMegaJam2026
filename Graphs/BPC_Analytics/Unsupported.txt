@@ -1,0 +1,28 @@
+; T69: an action the player tried that the game can't do (T67's unsupported event). Source "typed" is the input LLM's
+; attempt field (BPC_LLMClient.NoteAttempt); "builder" is a click on a greyed action (WBP_ActionBuilder.BlockedClick).
+; Only these few words go out, never the typed line: lower case, at most 6 words and 80 characters (the relay's cap),
+; and never a name. The same words from the same source go out once per phase (CurPhase, set by SendPhase).
+; Send decides whether anything goes out (Active: builds only, the switch, autoplay, Play stats).
+(fn Unsupported (Words Source)
+  (if (not (streq (V UPhase) (V CurPhase)))
+    (set UPhase (V CurPhase))
+    (clear (V USent)))
+  (set UWords (Utilities|String|ParseIntoArray :SourceString (Utilities|String|ToLower (Utilities|String|Trim Words)) :Delimiter " " :CullEmptyStrings true))
+  (clear (V UKeep))
+  (for _i (range (Math|Integer|Min(Integer) (len (V UWords)) 6))
+    (add (V UKeep) (get (V UWords) _i)))
+  (set TmpStr (Utilities|String|GetSubstring :SourceString (Utilities|String|JoinStringArray (V UKeep) " ") :StartIndex 0 :Length 80))
+  (bind _key (cat Source "|" (V TmpStr)))
+  (if (Utilities|String|IsEmpty (V TmpStr))
+    (return))
+  (if (or (Utilities|String|Contains :SearchIn (V TmpStr) :Substring "@") (Utilities|String|Contains :SearchIn (V TmpStr) :Substring "player"))
+    (print (cat "NHOS: ANALYTICS unsupported dropped (a name) source=" Source))
+    (return))
+  (if (>= (Utilities|Array|FindItem (V USent) _key) 0)
+    (return))
+  (add (V USent) _key)
+  (bind _f (Json|LoadJsonfromString "{}"))
+  (Json|SetField _f "words" (V TmpStr))
+  (Json|SetField _f "source" Source)
+  (Json|SetField _f "phase" (V CurPhase))
+  (CallFunction|Send :Event "unsupported" :Fields _f))

@@ -1,5 +1,6 @@
 ; T37: a failed actor ask also gets its backstage note (BackstageNote) before BP_Show hears of it.
 ; T68: counts the ask for the analytics call counts (CountCall).
+; T69: a spelling reply's attempt goes to NoteAttempt (analytics) before BP_Show hears of it.
 (fn Deliver (Tag Ok Error Seconds)
   (CallFunction|CountCall :Tag Tag :Ok Ok)
   (set TmpStr2 (cat " provider=" (V CurProv) " mode=" (V Mode)))
@@ -8,5 +9,7 @@
     (else
       (print (cat "NHOS: LLM " Tag " fail " Error (V TmpStr2)))
       (CallFunction|ClearReply)))
+  (if (and Ok (Utilities|String|StartsWith :SourceString Tag :InPrefix "spell-"))
+    (CallFunction|NoteAttempt :Tag Tag))
   (CallFunction|BackstageNote :Tag Tag :Ok Ok :Error Error)
   (Default|CallOnAnswer self Tag Ok (V RSpeech) (V RVote) (V RReason) (V RPass) (V RVerbs) (V RTargets) (V RItems) Error))

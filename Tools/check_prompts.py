@@ -150,6 +150,14 @@ picked from the rules. --log counts my scene turns (NHOS: HUMAN) and the lines
 sent as typed (NHOS: SPELLING skipped), and fails a HUMAN line with an unknown
 verb.
 
+The attempt field (T69): the input ask has its own schema in llm.json,
+input_schema, which is reply_schema plus "attempt", so no actor ask carries
+it. Every input reply must hold "attempt": at most 6 words naming a physical
+action the typed line describes that the player can't click, or "". It never
+holds a provider or Player name or an "@". Free mode leaves it empty (the
+relay's free reply has no attempt at all, which reads as ""). The file check
+keeps input_schema in step with reply_schema and pins the prompt's attempt rule.
+
 Emotions (T75): the file check reads emotes.json, the emotions each robot can
 show (BP_Robot.Emote). 'neutral' is there and is the resting face (every face
 value at rest, gesture none, hold 0); every emotion has id, word, face, gesture
@@ -229,6 +237,9 @@ RULE_WHYS = {"no such prop", "someone holds it", "hands full", "not holding it",
 HUMAN_VERBS = VERBS + ["around", "none"]
 # T63: the input LLM fixes spelling only; prompts.json 'input' must keep these rules word for word.
 INPUT_RULES = ['Never make an action: "actions" is always [].', "Fix misspelled words and change nothing else"]
+# T69: the input LLM names an action the player can't click in "attempt" (at most 6 words); prompts.json 'input' keeps this rule.
+INPUT_ATTEMPT_RULES = ['- "attempt": the player can click only five actions', '"attempt" never changes speech.']
+MAX_ATTEMPT_WORDS = 6
 ACTOR_ASKS = ["scene_turn", "free_talk", "last_word", "vote", "reaction", "reaction_cut", "closing"]
 ALL_ASKS = ACTOR_ASKS + ["input"]
 MAX_WORDS = 15
@@ -855,6 +866,17 @@ def check_files(errors: list[str]):
     schema = llm.get("reply_schema", {})
     if sorted(schema.get("required", [])) != sorted(["actions", "speech", "pass", "vote", "reason", "tell"]):
         errors.append("llm.json: reply_schema must require actions, speech, pass, vote, reason and tell")
+    # T69: the input ask's own schema is reply_schema plus "attempt", so the two can't drift apart (T76 adds emotion to both).
+    ischema = llm.get("input_schema", {})
+    want_props = dict(schema.get("properties", {}), attempt={"type": "string"})
+    if ischema.get("properties") != want_props:
+        errors.append("llm.json: input_schema must be reply_schema's properties plus attempt (a string)")
+    if sorted(ischema.get("required", [])) != sorted(schema.get("required", []) + ["attempt"]):
+        errors.append("llm.json: input_schema must require reply_schema's fields plus attempt")
+    if ischema.get("additionalProperties") is not False or ischema.get("type") != "object":
+        errors.append("llm.json: input_schema must be an object with additionalProperties false (strict mode)")
+    if "attempt" in schema.get("properties", {}):
+        errors.append("llm.json: reply_schema has attempt; since T69 only input_schema does")
     for role in ["actor", "input"]:
         r = llm.get("roles", {}).get(role)
         if not r or not all(k in r for k in ["model", "effort", "max_tokens"]):
@@ -1085,6 +1107,12 @@ def check_files(errors: list[str]):
     for rule in INPUT_RULES:
         if not any(rule in line for line in prompts.get("input", [])):
             errors.append(f"prompts.json: 'input' lost a T63 rule: {rule!r}")
+    # T69: the attempt rule.
+    for rule in INPUT_ATTEMPT_RULES:
+        if not any(rule in line for line in prompts.get("input", [])):
+            errors.append(f"prompts.json: 'input' lost a T69 rule: {rule!r}")
+    if "attempt" not in prompts.get("asks", {}).get("input", ""):
+        errors.append("prompts.json: asks.input must name attempt (T69)")
     for old in ("0 to 2 actions", "becomes the speech \"Hello.\""):
         if any(old in line for line in prompts.get("input", [])):
             errors.append(f"prompts.json: 'input' still has a pre-T63 rule: {old!r}")
@@ -1188,7 +1216,7 @@ INPUT_CASES = [
     # The task's four cases (T63).
     {"phase": "scene", "typed": "teh robto is hungyr", "speech": "the robot is hungry"},
     {"phase": "scene", "typed": "tell open ai to calm down", "speech": "tell Player 1 to calm down"},
-    {"phase": "scene", "typed": "I throw the rose at @Anthropic", "speech": "I throw the rose at @Player 2"},
+    {"phase": "scene", "typed": "I throw the rose at @Anthropic", "speech": "I throw the rose at @Player 2", "attempt": False},
     {"phase": "free talk", "typed": "ngl this scene is lowkey mid fr \U0001f480\U0001f525", "speech": "ngl this scene is lowkey mid fr \U0001f480\U0001f525"},
     # A stage direction in the speech field is only words, quotes and all.
     {"phase": "scene", "typed": 'walk to the front and say "Hi! Is this the right story?"',
@@ -1207,6 +1235,11 @@ INPUT_CASES = [
     {"phase": "free talk", "typed": "@meta why did you grab the blaster? @OPENAI back me up",
      "contains": ["@Player 5", "@Player 1", "back me up"]},
     {"phase": "reaction", "typed": "asdf qwerty zxcv", "speech": "asdf qwerty zxcv"},
+    # T69: the attempt field. True = it must name an action (at most 6 words), False = it must be "".
+    {"phase": "scene", "typed": "*does a backflip* hello", "contains": ["backflip", "hello"], "attempt": True},
+    {"phase": "scene", "typed": "hello there", "speech": "hello there", "attempt": False},
+    # A stage direction about an actor: "someone", never a name.
+    {"phase": "free talk", "typed": "i climb onto @OpenAI's shoulders", "contains": ["@Player 1"], "attempt": True},
 ]
 
 
@@ -1510,11 +1543,12 @@ def provider_for(data, role, pid=None):
 
 def request_body(data, provider, role, system, state):
     """The exact body the game sends to this provider. role None or 'actor' takes the provider's
-    model, effort and token limit; 'input' takes its role's (llm.json _readmes)."""
+    model, effort and token limit; 'input' takes its role's (llm.json _readmes), and input_schema (T69)."""
     llm = data["llm"]
     pv = llm["providers"][provider]
     r = llm["roles"].get(role, {}) if role == "input" else {}
     model, effort, max_tokens = r.get("model", pv["model"]), r.get("effort", pv["effort"]), r.get("max_tokens", pv["max_tokens"])
+    schema = llm["input_schema"] if role == "input" else llm["reply_schema"]  # T69: only the input ask has attempt
     content = json.dumps(state, ensure_ascii=False)
     if pv["format"] == "anthropic":
         body = {
@@ -1522,7 +1556,7 @@ def request_body(data, provider, role, system, state):
             "max_tokens": max_tokens,
             "system": system,
             "messages": [{"role": "user", "content": content}],
-            "output_config": {"effort": effort, "format": {"type": "json_schema", "schema": llm["reply_schema"]}},
+            "output_config": {"effort": effort, "format": {"type": "json_schema", "schema": schema}},
         }
         if llm.get("fallbacks"):
             body["fallbacks"] = llm["fallbacks"]
@@ -1532,7 +1566,7 @@ def request_body(data, provider, role, system, state):
         pv["max_tokens_field"]: max_tokens,
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": content}],
         "response_format": {"type": "json_schema",
-                            "json_schema": {"name": "reply", "schema": llm["reply_schema"], "strict": True}},
+                            "json_schema": {"name": "reply", "schema": schema, "strict": True}},
         pv["effort_field"]: effort,
     }
 
@@ -1643,6 +1677,8 @@ def check_reply(reply, ask, ctx):
     """Returns (fails, warns)."""
     fails, warns = [], []
     types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str, "tell": str}
+    if ask == "input":
+        types["attempt"] = str  # T69: input_schema
     for k, t in types.items():
         if not isinstance(reply.get(k), t):
             fails.append(f"{k} is missing or not a {t.__name__}")
@@ -1728,6 +1764,16 @@ def check_reply(reply, ask, ctx):
         for s in case.get("contains", []):
             need(s.lower() in speech.lower() if s.isalpha() else s in speech, f"speech lost {s!r}")
         need(passed == case.get("pass", False), f"pass is {passed}")
+        # T69: the attempt field.
+        att = reply["attempt"].strip()
+        need(words(att) <= MAX_ATTEMPT_WORDS, f"attempt has {words(att)} words: {att!r}")
+        for leak in provider_leaks(att, ctx["providers"]) + [w for w, r in BANNED_RES if r.search(att)]:
+            fails.append(f"attempt names a provider or model: {leak!r}")
+        need("@" not in att and "player" not in att.lower(), f"attempt names an actor: {att!r}")
+        if case.get("attempt") is True:
+            need(att, "attempt is empty; the line describes an action the player can't click")
+        elif case.get("attempt") is False:
+            need(not att, f"attempt is {att!r}; expected \"\"")
 
     # T60: a vote names its tell; the other asks leave it empty. The closing vote may name one: nothing reads it.
     tell = reply["tell"]
@@ -2128,11 +2174,15 @@ def load_keys():
 def shape_fails(reply, ask=None):
     """Only the reply's shape: every schema field with the right type (for --free replies).
     T62: and the action count: 0 or 1 in a scene turn, none in any other actor ask.
-    T60: 'tell' may be missing, because the relay's free mode builds its replies without it."""
+    T60: 'tell' may be missing, because the relay's free mode builds its replies without it.
+    T69: an input reply may leave out 'attempt', but free mode never fills it."""
     types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str}
     fails = [f"{k} is missing or not a {t.__name__}" for k, t in types.items() if not isinstance(reply.get(k), t)]
     if "tell" in reply and not isinstance(reply["tell"], str):
         fails.append("tell is not a str")
+    # T69: an input reply may leave out attempt (the relay's free reply has none), but a free reply never fills it.
+    if ask == "input" and reply.get("attempt", "") != "":
+        fails.append(f"free mode filled attempt: {reply.get('attempt')!r}")
     n = len(reply.get("actions") or []) if isinstance(reply.get("actions"), list) else 0
     if ask in ACTOR_ASKS and n > (1 if ask == "scene_turn" else 0):
         fails.append(f"{n} actions in {ask}; {'one at most' if ask == 'scene_turn' else 'none'} since T62")
