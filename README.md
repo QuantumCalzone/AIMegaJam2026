@@ -79,6 +79,7 @@ If something else on your machine already uses port 8000, change the port in **E
 - **Windows builds must be packaged on Windows.** In the editor, use **Platforms > Windows > Package Project**. For the command-line version, see [CLAUDE.md](CLAUDE.md).
 - **Packaging compiles a small game program**, because the game's HTTP and JSON plugins have no prebuilt game binaries in the launcher engine. To package on Windows, install Visual Studio 2022 with the "Desktop development with C++" workload and the **Windows 11 SDK (10.0.22621.0)**. You don't need them to work on the game. The command in CLAUDE.md is tested. The editor's Package Project menu is not tested yet; if it stops and asks for the .NET Framework SDK, use the command instead.
 - A Mac can package a macOS build (this needs Xcode), but not a Windows one.
+- **Before you zip or upload a build**, run `python Tools/check_build_secrets.py <build folder or zip>` on a machine that has our keys in `Local/`. It fails if the build holds one of our API keys, anything shaped like a key, or a `Local/` or `Saved/` folder.
 
 ## Jam rules in short
 

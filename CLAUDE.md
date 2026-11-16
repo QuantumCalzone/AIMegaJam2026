@@ -21,7 +21,7 @@ Unreal Engine 5.8 game project for the AI Mega Jam 2026. It was created from the
 | `Content/NHOS/Data/*.json` | Data the game reads at run time: prompts, personas, scenes, LLM settings, autoplay and free-mode lines. A build stages them as loose files, so they can change without a new package. |
 | `SourceAssets/` | Source files for assets that get imported in the editor, kept outside `Content/` so Unreal doesn't import them on its own. `Audio/` holds T20's picks; `Docs/AudioShortlist.md` lists them with their licenses. |
 | `Graphs/` | The DSL source last written to each Blueprint graph. See "Working with assets". |
-| `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `dslpp.py` expands the DSL shorthand. `ClaudeMods/` holds a Claude Code mod that shows the plan's tasks in a pane; it reads `Docs/Plan.md`, so keep the task form that "Changing the plan" describes. |
+| `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `check_build_secrets.py` checks that a build or its zip holds no key (see "Commands"). `dslpp.py` expands the DSL shorthand. `ClaudeMods/` holds a Claude Code mod that shows the plan's tasks in a pane; it reads `Docs/Plan.md`, so keep the task form that "Changing the plan" describes. |
 | `Docs/tasks/` | One file per task, `Txx.md`: its Why, Steps, Done-when check, Result and findings. `Background.md` holds the findings that belong to no one task. The plan lists each task and links its file. |
 | `Relay/` | The relay: a Cloudflare Worker that holds our provider keys, so judges can play without their own. Not part of the Unreal project. See `Relay/README.md`. |
 | `Docs/` | The plan, the link to the design doc (`GameDesign.md`), the dev log, the asset list (`Assets.md`), the dispatcher's instructions (`LaunchAgents.md`), how two machines work at once (`TwoMachines.md`) and example files for `Local/`. |
@@ -109,7 +109,7 @@ Package a Windows build. This only works on a Windows machine:
 - **Packaging compiles a small game program**, even though the project has no C++. The `HttpBlueprint` and `JsonBlueprintUtilities` plugins have no prebuilt game binaries in the launcher engine, so the packager makes temporary target files and compiles them. On Windows this needs Visual Studio 2022 (17.14) with the C++ desktop workload and the **Windows 11 SDK 10.0.22621.0**. You need neither to edit the project, only to package it.
 - `-nocompileeditor -unrealexe=...` make the launcher editor do the cook. Without them, the packager also builds a project editor, which needs the .NET Framework SDK and adds nothing.
 - From Git Bash, this command fails with `'C:\Program' is not recognized` (or `'E:\Epic'`), because cmd strips the outer quotes from a line that has more than two. Put the command in a `.bat` file and run it with `cmd //c <file>.bat`.
-- The packaged game is in `Packaged/Windows/`. Its log is `Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`. It reads the API keys from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`, and the switches from `Local/switches.json` in the same folder. A packaged build sends real analytics events (T68), so before you test one, put `{"analytics": "off"}` (or `"test"`) in that `switches.json`, or add the package's player id (its log prints `NHOS: ANALYTICS player <id>`) to `ignore_players` in `Local/stats.json`. Delete both files before you zip a build.
+- The packaged game is in `Packaged/Windows/`. Its log is `Packaged/Windows/AIMegaJam2026/Saved/Logs/AIMegaJam2026.log`. It reads the API keys from `Packaged/Windows/AIMegaJam2026/Local/llm_key.json`, and the switches from `Local/switches.json` in the same folder. A packaged build sends real analytics events (T68), so before you test one, put `{"analytics": "off"}` (or `"test"`) in that `switches.json`, or add the package's player id (its log prints `NHOS: ANALYTICS player <id>`) to `ignore_players` in `Local/stats.json`. Delete both files before you zip a build, then run the secrets check (below).
 
 Package a macOS build. This needs a Mac with Xcode. It also compiles a game program. It was first done on 2026-11-15, with Xcode 27.2, in about five minutes:
 
@@ -122,6 +122,15 @@ Package a macOS build. This needs a Mac with Xcode. It also compiles a game prog
 - The app is **sandboxed**. It reads `Local/` from inside the bundle, at `AIMegaJam2026.app/Contents/UE/AIMegaJam2026/Local/`, and writes its log to `~/Library/Containers/com.YourCompany.AIMegaJam2026/Data/Library/Logs/AIMegaJam2026/`. Its network calls work: test analytics events reached the relay. The sandbox should block the game's writes into the bundle, such as the key screen's `Local/llm_key.json`; this is not tested. Delete the bundle's `Local/` before you zip.
 - Zip it with `ditto -c -k --norsrc --noextattr --keepParent`. A plain `ditto -c -k` adds `._` files, which some unzip tools put inside the app, and that breaks its signature.
 - When another session has uncommitted assets in the folder, build from a clean copy of the pushed commit instead. `cp -c -R` the `.uproject`, `Config/` and `Content/` (APFS clones take no extra space), then restore the changed files from git (`git show HEAD:<path> | git lfs smudge -- <path>`).
+
+Before you zip or upload any build, Windows or Mac, check it for secrets. The check opens the build's `.pak` and IoStore containers with the engine's UnrealPak. It looks for each key in this machine's `Local/*.json` by its value, for anything shaped like an API key, and for a `Local/` or `Saved/` folder. It never prints a key. Exit code 0 means clean, 1 means don't ship the build, and 2 means part of it couldn't be checked:
+
+```bash
+python Tools/check_build_secrets.py <build folder or zip>
+```
+
+- Run it on a machine whose `Local/` holds our keys, so it knows which values to look for. Run it on the zip too, because the zip is what you upload. With no argument, it checks the sources and every build and zip in `Packaged/` and `Saved/StagedBuilds/`. That takes about a minute for one Mac build and two zips.
+- The game saves the keys a player pastes on the key screen inside the build, in `Local/llm_key.json`. So a build that anyone tested with their own keys holds those keys until you delete that file. The check catches it.
 
 Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.log`.
 
