@@ -1,0 +1,11 @@
+; T38: this robot's line in its bubble (BPC_LinePlayer.PlayCur): the speech, or the action when there is no speech, and
+; the vote's lead. Returns the bubble, so the line player can type the speech out in it, or NullBubble when none shows.
+; A cut robot shows none, except its own last words in the reactions (EvenCut: my person's answer to P1).
+(fn Say (Name Color Action Speech Lead EvenCut)
+  (if (and (Variables|Default|GetIsCut) (not EvenCut))
+    (return (V NullBubble)))
+  (if (not (V HasBubble))
+    (return (V NullBubble)))
+  (CallFunction|BubbleLift)
+  (Class|WBPSpeechBubble|ShowLine :self (V BubbleW) :Name Name :Color Color :Action Action :Speech Speech :Lead Lead)
+  (return (V BubbleW)))

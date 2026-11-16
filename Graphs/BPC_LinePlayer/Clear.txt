@@ -16,5 +16,7 @@
   (clear (V CText))
   (clear (V CNum))
   (CallFunction|StopType)
+  ; T38: the last bubble fades too.
+  (CallFunction|HushBubble)
   (set Busy false)
   (CallFunction|ClearTyping))

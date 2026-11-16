@@ -1,0 +1,21 @@
+; T38: the speech bubble over this robot, made on first use (BPC_LinePlayer.BubbleBot, before a line or the dots), not
+; at BeginPlay, so the player controller exists and the editor never makes a widget. The WidgetComponent is added at run
+; time (it attaches to the root, then moves to the label), so the five robots placed in L_Stage need no change (the T17
+; and T46 rule), and it rides on the name label, so
+; it follows T47's hat lift but not the bob. Screen space at its desired size with its pivot at the bottom center: the
+; tail's tip sits on the anchor and the text keeps one size. View and Panels go to the bubble's SetKeepOut on every call.
+(fn InitBubble (View Panels)
+  (if (not (V HasBubble))
+    (set HasBubble true)
+    (bind _c (Game|AddComponentbyClass :Class "/Script/UMG.WidgetComponent"))
+    (set Bubble _c)
+    (Transformation|AttachComponentToComponent :self (V Bubble) :Parent (Variables|Default|GetLabel) :LocationRule "SnapToTarget" :RotationRule "SnapToTarget" :ScaleRule "KeepWorld")
+    (UserInterface|SetWidgetSpace :self (V Bubble) :NewSpace "Screen")
+    (UserInterface|SetDrawAtDesiredSize :self (V Bubble) :bInDrawAtDesiredSize true)
+    (UserInterface|SetPivot :self (V Bubble) :InPivot (Math|Vector2D|MakeVector2D :X 0.5 :Y 1.0))
+    (bind _w (UserInterface|CreateWidget :Class "/Game/NHOS/UI/WBP_SpeechBubble.WBP_SpeechBubble_C" :OwningPlayer (Game|GetPlayerController 0)))
+    (set BubbleW _w)
+    (UserInterface|SetWidget :self (V Bubble) :Widget (V BubbleW))
+    (Class|WBPSpeechBubble|HideNow :self (V BubbleW))
+    (CallFunction|BubbleLift))
+  (Class|WBPSpeechBubble|SetKeepOut :self (V BubbleW) :View View :Panels Panels))

@@ -1,0 +1,26 @@
+; T38: what the bubbles keep clear of, from the stage widget the lines go to: View is RootBox (the overlay that fills the
+; window, LowerSize's parent), and the panels are the header (HeaderSize: TurnText's third parent), the clapperboard,
+; my card (InfoSize: MeText's fourth parent), the lower panel, the banner and the reveal stamp. HeaderSize, InfoSize and
+; RootBox aren't variables in WBP_Stage, so they are found by walking up from ones that are. Built again only when the
+; stage widget changes.
+(fn BubbleKeep ()
+  (if (== (V KeepStage) (V Stage))
+    (return))
+  (set KeepStage (V Stage))
+  (bind _low (Class|WBPStage|GetLowerSize :self (V Stage)))
+  (bind _root (Widget|GetParent :self _low))
+  (set KeepRoot _root)
+  (bind _h1 (Widget|GetParent :self (Class|WBPStage|GetTurnText :self (V Stage))))
+  (bind _h2 (Widget|GetParent :self _h1))
+  (bind _h3 (Widget|GetParent :self _h2))
+  (bind _i1 (Widget|GetParent :self (Class|WBPStage|GetMeText :self (V Stage))))
+  (bind _i2 (Widget|GetParent :self _i1))
+  (bind _i3 (Widget|GetParent :self _i2))
+  (bind _i4 (Widget|GetParent :self _i3))
+  (clear (V KeepArr))
+  (add (V KeepArr) _h3)
+  (add (V KeepArr) (Class|WBPStage|GetClapperBox :self (V Stage)))
+  (add (V KeepArr) _i4)
+  (add (V KeepArr) _low)
+  (add (V KeepArr) (Class|WBPStage|GetEventBanner :self (V Stage)))
+  (add (V KeepArr) (Class|WBPStage|GetStampText :self (V Stage))))

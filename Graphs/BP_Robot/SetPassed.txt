@@ -5,5 +5,8 @@
 (fn SetPassed (On)
   (if (Variables|Default|GetIsCut)
     (return))
+  ; T38: the bubble's anchor goes over the "(passed)" line while it shows.
+  (set PassedOn On)
+  (CallFunction|BubbleLift)
   (Rendering|Components|TextRender|SetText :self (Variables|Default|GetLabel) :Value (Utilities|Text|ToText(String) (select On (Utilities|String|Append "(passed)<br>" (Variables|Default|GetDisplayName)) (Variables|Default|GetDisplayName))))
   (Rendering|Components|TextRender|SetTextRenderColor :self (Variables|Default|GetLabel) :Value (Math|Conversions|ToColor(LinearColor) :InLinearColor (select On (Class|UIStyle|UIColor :Role "Quiet") (Utilities|Struct|MakeLinearColor :R 1.0 :G 1.0 :B 1.0 :A 1.0)) :InUseSRGB true)))

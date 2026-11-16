@@ -1,0 +1,10 @@
+; T38 step 4: "<name> is typing..." as a small bubble with three dots over this robot (BPC_LinePlayer.Pump). The line's
+; own bubble replaces it. The same rule for a cut robot as Say.
+(fn Typing (Name Color EvenCut)
+  (if (and (Variables|Default|GetIsCut) (not EvenCut))
+    (return (V NullBubble)))
+  (if (not (V HasBubble))
+    (return (V NullBubble)))
+  (CallFunction|BubbleLift)
+  (Class|WBPSpeechBubble|ShowTyping :self (V BubbleW) :Name Name :Color Color)
+  (return (V BubbleW)))

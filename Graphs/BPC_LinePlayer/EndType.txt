@@ -3,4 +3,6 @@
   (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "TypeTick")
   (set TypeOn false)
   (Class|WBPChatLine|TypeEnd :self (V TypeW))
+  (if (!= (V BubW) (V NullBub))
+    (Class|WBPSpeechBubble|TypeEnd :self (V BubW)))
   (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "Pump" :Time (V CurHold) :bLooping false))
