@@ -1,0 +1,11 @@
+; T69: which greyed action button, if any, is under the pointer (Pos, in absolute/screen space). Only while my turn is
+; live and before I send (Refresh's own test): at any other time every button is off, and a click on one says nothing
+; about a missing action.
+(fn GreyClickAt (Pos)
+  (bind _on (and (V Armed) (and (not (V Sent)) (V Live))))
+  (if _on
+    (for _k (range (len (V ActBtns)))
+      (if (not (get (V ActOk) _k))
+        (bind _g (Widget|GetCachedGeometry :self (get (V ActBtns) _k)))
+        (if (UserInterface|Geometry|IsUnderLocation _g Pos)
+          (CallFunction|BlockedClick :K _k))))))

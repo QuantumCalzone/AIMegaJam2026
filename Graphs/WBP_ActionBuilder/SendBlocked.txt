@@ -1,0 +1,9 @@
+; T69: hands a greyed click's words to BP_Show's analytics component (T68's BPC_Analytics), found by class as
+; WBP_Title.ShowStats does it. Its own function because IsValid ends the flow in the DSL (T45).
+(fn SendBlocked (Words)
+  (bind _an (Actor|GetComponentbyClass :self (V Show) :ComponentClass "/Game/NHOS/Core/BPC_Analytics.BPC_Analytics_C"))
+  (Utilities|IsValid _an
+    (:"Is Valid"
+      (Class|BPCAnalytics|Unsupported :self _an :Words Words :Source "builder"))
+    (:"Is Not Valid"
+      (print "NHOS: BUILDER no analytics component"))))
