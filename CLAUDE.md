@@ -21,7 +21,7 @@ Unreal Engine 5.8 game project. It was created from the Blank Blueprint template
 | `Content/NHOS/Data/*.json` | Data the game reads at run time: prompts, personas, scenes, LLM settings, autoplay and free-mode lines. A build stages them as loose files, so they can change without a new package. |
 | `SourceAssets/` | Source files for assets that get imported in the editor, kept outside `Content/` so Unreal doesn't import them on its own. `Audio/` holds T20's picks; `Docs/AudioShortlist.md` lists them with their licenses. |
 | `Graphs/` | The DSL source last written to each Blueprint graph. See "Working with assets". |
-| `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `check_build_secrets.py` checks that a build or its zip holds no key (see "Commands"). `dslpp.py` expands the DSL shorthand. `ClaudeMods/` holds a Claude Code mod that shows the plan's tasks in a pane; it reads `Docs/Plan.md`, so keep the task form that "Changing the plan" describes. |
+| `Tools/` | `check_prompts.py` checks the data files and tries every ask on its provider. `check_build_secrets.py` checks that a build or its zip holds no key (see "Commands"). `deploy_itch.py` packages a commit and pushes it to itch.io as the post-jam file (see "Deploys to itch.io"). `dslpp.py` expands the DSL shorthand. `ClaudeMods/` holds a Claude Code mod that shows the plan's tasks in a pane; it reads `Docs/Plan.md`, so keep the task form that "Changing the plan" describes. |
 | `Docs/tasks/` | One file per task, `Txx.md`: its Why, Steps, Done-when check, Result and findings. `Background.md` holds the findings that belong to no one task. The plan lists each task and links its file. |
 | `Relay/` | The relay: a Cloudflare Worker that holds our provider keys, so players can play without their own. Not part of the Unreal project. See `Relay/README.md`. |
 | `Docs/` | The plan, the link to the design doc (`GameDesign.md`), the asset list (`Assets.md`), the dispatcher's instructions (`LaunchAgents.md`), how two machines work at once (`TwoMachines.md`) and example files for `Local/`. |
@@ -116,6 +116,23 @@ python Tools/check_build_secrets.py <build folder or zip>
 
 - Run it on a machine whose `Local/` holds our keys, so it knows which values to look for. Run it on the zip too, because the zip is what you upload. With no argument, it checks the sources and every build and zip in `Packaged/` and `Saved/StagedBuilds/`.
 - The game saves the keys a player pastes on the key screen inside the build, in `Local/llm_key.json`. So a build that anyone tested with their own keys holds those keys until you delete that file. The check catches it.
+- In a checkout with no `Local/` (a git worktree, the deploy worktree), add `--local <repo folder>/Local`. The check reads the keys from there and copies nothing.
+
+### Deploys to itch.io (post-jam builds)
+
+The jam's file on https://quantumcalzone.itch.io/no-humans-on-set (`QuantumCalzone_NoHumansOnSet_Windows.zip`, uploaded through the web form) never changes: never replace, rename, hide or delete it. Every build made after the jam goes up as a second file, and it says "PostJam" in its label on the page, in the downloaded file's name and in the folder inside the download.
+
+- **Each push to `noHumansOnSet` that changes the game deploys it.** `.github/workflows/itch-windows.yml` runs on the PC's self-hosted GitHub Actions runner (labels `self-hosted, Windows, nhos-build`) when a push changes `Content/`, `Config/`, the `.uproject`, the workflow or `Tools/deploy_itch.py`. It runs `Tools/check_prompts.py --offline`, then `Tools/deploy_itch.py`. A docs-only push starts no run. A newer push cancels the run in progress, so a burst of pushes builds only the newest commit. A packaged build takes about 6 minutes after the first one.
+- **To push without a deploy**, put `[skip ci]` in the commit message.
+- **`Tools/deploy_itch.py`** packages the commit in the deploy worktree (`C:/Users/Personal/Projects/NHOS_deploy`, a detached worktree of the repo folder, never the repo folder itself), names the build's folder `NoHumansOnSet_PostJam_Windows`, deletes `.pdb` files and any `Local/` or `Saved/`, runs the secrets check with `--local` on the repo folder's `Local/`, and pushes nothing unless the check exits 0. Then it pushes with butler to the channel `windows-postjam`, with `--userversion postjam-<commit date>-<short sha>`. Run it by hand on the PC (it needs the engine, so pass `--ue-root` or set `UE_ROOT`):
+
+```bash
+python Tools/deploy_itch.py --dry-run
+```
+
+  `--dry-run` does everything but the push. `--commit <sha>` builds a given commit (default `origin/noHumansOnSet`). `--build <folder>` checks and pushes a build that is already made (the folder must hold only `NoHumansOnSet_PostJam_Windows/`).
+- **butler** is the copy the itch app keeps in `%APPDATA%/itch/broth/butler/` (the script finds it, or pass `--butler`). In the workflow it signs in with the `BUTLER_API_KEY` Actions secret; by hand, with the `butler_creds` that `butler login` saved in `%USERPROFILE%/.config/itch/`. Neither key goes in git or in chat.
+- **A zip made by hand after the jam** is named `QuantumCalzone_NoHumansOnSet_PostJam_<Windows|Mac>_<YYYY-MM-DD>.zip`, its top folder says `PostJam` too, and it goes up as a new file, never over the jam's.
 
 Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.log`.
 

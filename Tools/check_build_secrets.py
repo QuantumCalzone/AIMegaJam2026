@@ -8,12 +8,17 @@ Usage (from anywhere; Python 3.10+, no packages needed):
     python Tools/check_build_secrets.py Packaged/Windows       # one build folder
     python Tools/check_build_secrets.py TeamName_NoHumansOnSet.zip   # the zip you will upload
     python Tools/check_build_secrets.py --sources              # only the sources
+    python Tools/check_build_secrets.py --local C:/path/to/repo/Local <build>
+                                                               # take the keys from another Local/
 
 What it looks for:
 
 - Our real secrets, by value: every string field named "...key" (16 characters or more) in this
   machine's Local/*.json (llm_key.json, stats.json, meshy_key.json and the rest) and every value in
   Relay/.dev.vars. It searches for each one as UTF-8 and as UTF-16, whole or in part.
+  --local <folder> reads the keys from that Local/ folder instead (and Relay/.dev.vars from the
+  Relay/ folder next to it), for a checkout with no Local/ of its own, such as a git worktree or
+  the deploy worktree that Tools/deploy_itch.py builds in. Nothing is copied out of it.
 - Anything shaped like a key: Anthropic, OpenAI, xAI, Meta, Meshy, Google, GitHub and AWS keys,
   and private keys. The masked example key in errors.json does not match.
 - Files that must never ship: a Local/ folder (llm_key.json holds the keys a tester pasted on the
@@ -130,9 +135,8 @@ def walk_json(obj, path, out):
             walk_json(v, f"{path}[{i}]", out)
 
 
-def load_secrets() -> list[tuple[str, str]]:
+def load_secrets(local: Path) -> list[tuple[str, str]]:
     found: list[tuple[str, str]] = []
-    local = REPO / "Local"
     if local.is_dir():
         for f in sorted(local.glob("*.json")):
             try:
@@ -143,7 +147,7 @@ def load_secrets() -> list[tuple[str, str]]:
             walk_json(data, "", items)
             for field, value in items:
                 found.append((f"Local/{f.name}:{field.strip()}", value))
-    for f in sorted((REPO / "Relay").glob(".dev.vars*")):
+    for f in sorted((local.parent / "Relay").glob(".dev.vars*")):
         if f.name.endswith(".example"):
             continue
         try:
@@ -393,15 +397,22 @@ def main() -> int:
     ap.add_argument("targets", nargs="*", help="build folders or zips (default: every one in Packaged/ and Saved/StagedBuilds/)")
     ap.add_argument("--sources", action="store_true", help="check only the sources, no build")
     ap.add_argument("--ue-root", help="the engine folder that holds Engine/Binaries/.../UnrealPak")
+    ap.add_argument("--local", help="the Local/ folder to read our keys from (default: Local/ in this "
+                                    "repo); Relay/.dev.vars is read from the Relay/ folder next to it")
     args = ap.parse_args()
 
-    secrets = load_secrets()
+    local = Path(args.local).resolve() if args.local else REPO / "Local"
+    if args.local and not local.is_dir():
+        print(f"--local {args.local}: no such folder")
+        return 2
+    secrets = load_secrets(local)
     needles = needles_for(secrets)
     if secrets:
         names = ", ".join(label for label, _ in secrets)
         print(f"Looking for {len(secrets)} secrets by value ({names}) and {len(SHAPE_NAMES)} kinds of key.")
     else:
         print(f"No Local/*.json key files on this machine: looking for {len(SHAPE_NAMES)} kinds of key only.")
+        # Tools/deploy_itch.py stops on this line: a build checked without our keys is not checked.
 
     report = Report()
     unrealpak = None if args.sources else find_unrealpak(args.ue_root)
