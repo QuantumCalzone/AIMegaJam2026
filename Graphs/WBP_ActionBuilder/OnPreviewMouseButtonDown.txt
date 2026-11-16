@@ -1,0 +1,8 @@
+; T69: every mouse-down inside the builder passes here first, a greyed (disabled) action button's too: a preview event
+; tunnels from the root down to the widget under the cursor (T65's WBP_Stage override sees every click the same way).
+; GreyClickAt finds whether it was on a greyed action. Always Unhandled, so every click works as before.
+; An override of UserWidget's OnPreviewMouseButtonDown (add_function_graph).
+(fn OnPreviewMouseButtonDown (MyGeometry MouseEvent)
+  (bind _pos (Input|PointerEvent|GetScreenSpacePosition MouseEvent))
+  (CallFunction|GreyClickAt :Pos _pos)
+  (return (Widget|EventReply|Unhandled)))

@@ -1,0 +1,15 @@
+; T69: the few words a click on a greyed action sends: the verb and why it's greyed, from T64's tip (WhyNot).
+; "" for a tip that is about the game, not the player ("The stage isn't ready."), which sends nothing.
+; If a later task changes a tip's words in WhyNot, change them here too: an unknown tip sends nothing.
+(fn BlockWords (Act Tip)
+  (if (streq Tip "Grab something first.")
+    (return (cat Act ", holding nothing")))
+  (if (streq Tip "Nothing free to grab.")
+    (return (cat Act ", nothing free")))
+  (if (streq Tip "Your hands are full.")
+    (return (cat Act ", hands full")))
+  (if (streq Tip "Nobody has a free hand.")
+    (return (cat Act ", no free hand")))
+  (if (streq Tip "Nothing to pick.")
+    (return (cat Act ", no target")))
+  (return ""))

@@ -1,0 +1,12 @@
+; T69: a click on the greyed action K: one unsupported event per verb per turn (OpenTurn clears BlockSent).
+; BPC_Analytics.Unsupported adds the phase and decides whether it goes out (T68's Send).
+(fn BlockedClick (K)
+  (bind _v (get (V ActVerbs) K))
+  (bind _w (CallFunction|BlockWords :Act _v :Tip (get (V ActTip) K)))
+  (if (Utilities|String|IsEmpty _w)
+    (return))
+  (if (>= (Utilities|Array|FindItem (V BlockSent) _v) 0)
+    (return))
+  (add (V BlockSent) _v)
+  (print (cat "NHOS: BUILDER greyed click " _v))
+  (CallFunction|SendBlocked :Words _w))
