@@ -1,6 +1,6 @@
 # itch.io media
 
-What the itch.io page uploads. T70 adds the screenshots, the video and `description.html` here (see `Docs/tasks/T70.md`).
+What the itch.io page uploads. Only the cover is here: T70, which was to add the screenshots, the video and `description.html`, was dropped on 2026-11-15, after the jam ended.
 
 ## The cover
 
@@ -23,6 +23,6 @@ It is key art, not a frame from the game: the five robots from the concept art i
 
 ### Before it ships
 
-- **T70 checks it against the game.** The cover shows the concept art. T81 to T83 build the game's cast from the same images, so it should match; if the cast on stage ends up looking different, T70 makes the cover the old way instead, as a crop of the theater mid-scene (`Docs/tasks/T70-build.md`, 4b).
+- **Check it against the game.** The cover shows the concept art. T81 to T83 build the game's cast from the same images, so it should match; if the cast on stage ends up looking different, make the cover the old way instead, as a crop of the theater mid-scene.
 - **The AI disclosure and the credits name it.** itch.io's Graphics answer and the page's Art credit must say that the cover was made with Leonardo.ai's edit model from our concept images, which were themselves made with Leonardo.ai.
 - **The parody nods are front and centre here.** The provider bots carry light nods to their companies' leaders (`Docs/BotArt.md`, "Rules the build keeps"). Read the jam's Official Rules for anything on real people's likeness before the cover goes up.
