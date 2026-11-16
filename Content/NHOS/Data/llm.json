@@ -1,5 +1,5 @@
 {
-	"_readme": "Settings for every LLM call. Each persona runs on its own provider ('providers' below, T16); since T18 the game sends each actor ask to its persona's provider and the input ask to its role's provider, with the body shape in providers._readme. This paragraph describes the Anthropic shape. The API keys are not here; they are in Local/llm_key.json (see Docs/llm_key.example.json). Request body: model, max_tokens, system (the joined system text), messages [{role: user, content: <state JSON as text>}], output_config {effort, format {type: json_schema, schema: reply_schema (input_schema for the input ask)}}, plus fallbacks when it is not empty. Headers: x-api-key, anthropic-version (api_version), content-type: application/json, plus anthropic-beta when beta is not empty. Read the first content block whose type is text; stop_reason 'refusal' or 'max_tokens', or a top-level type 'error', is a failed ask. reply_schema is the reply shape for every actor ask (scene turn, Free Talk line, vote, reaction, closing line); input_schema is the same shape plus attempt, for the input ask alone (T69: a few words naming an action the player typed that the game can't do, for analytics); unused fields come back empty. A vote also fills 'tell', one id from tells.json: the kind of evidence its reason gives (T60). Every other ask leaves it \"\". The schema can't cap words or list lengths, so the game cuts speech and reason to 15 words and uses at most 2 actions. relay: the relay address (Relay/README.md). The title screen has three modes (or \"mode\" in Local/switches.json): Test for Free makes no LLM call (the game builds replies from free_mode.json), Play via Relay sends every ask to the relay as {provider, session, body}, and Play with my own API keys calls each provider directly with the keys in Local/llm_key.json (at least 3 of the 4 providers). build: the game's version (the build day, YYYY-MM-DD), sent with every analytics event; at most 20 characters. In a packaged build, every mode, Test for Free included, sends a few anonymous analytics events to the relay's /event (BPC_Analytics, T68): an id made on the first launch, the mode, how far each show gets, call counts and tokens per provider and model, error kinds, and a few words naming an action the player tried that the game can't do (T69, never the typed line). Nothing goes when the player turns Play stats off on the title, or when Local/switches.json has \"analytics\": \"off\". The editor sends none unless that switch is \"test\".",
+	"_readme": "Settings for every LLM call. Each persona runs on its own provider ('providers' below, T16); since T18 the game sends each actor ask to its persona's provider and the input ask to its role's provider, with the body shape in providers._readme. This paragraph describes the Anthropic shape. The API keys are not here; they are in Local/llm_key.json (see Docs/llm_key.example.json). Request body: model, max_tokens, system (the joined system text), messages [{role: user, content: <state JSON as text>}], output_config {effort, format {type: json_schema, schema: reply_schema (input_schema for the input ask)}}, plus fallbacks when it is not empty. Headers: x-api-key, anthropic-version (api_version), content-type: application/json, plus anthropic-beta when beta is not empty. Read the first content block whose type is text; stop_reason 'refusal' or 'max_tokens', or a top-level type 'error', is a failed ask. reply_schema is the reply shape for every actor ask (scene turn, Free Talk line, last word, vote, reaction, closing line); input_schema is the same shape plus attempt, for the input ask alone (T69: a few words naming an action the player typed that the game can't do, for analytics); unused fields come back empty, except 'emotion' (T76), which every reply in both shapes fills with one id from emotes.json: the face the robot shows while its line plays. Both enums list every id in emotes.json, so a new emotion goes in all three places. A vote also fills 'tell', one id from tells.json: the kind of evidence its reason gives (T60). Every other ask leaves it \"\". The schema can't cap words or list lengths, so the game cuts speech and reason to 15 words and uses at most 1 action (none in a reaction). relay: the relay address (Relay/README.md). The title screen has three modes (or \"mode\" in Local/switches.json): Test for Free makes no LLM call (the game builds replies from free_mode.json), Play via Relay sends every ask to the relay as {provider, session, body}, and Play with my own API keys calls each provider directly with the keys in Local/llm_key.json (at least 3 of the 4 providers). build: the game's version (the build day, YYYY-MM-DD), sent with every analytics event; at most 20 characters. In a packaged build, every mode, Test for Free included, sends a few anonymous analytics events to the relay's /event (BPC_Analytics, T68): an id made on the first launch, the mode, how far each show gets, call counts and tokens per provider and model, error kinds, and a few words naming an action the player tried that the game can't do (T69, never the typed line). Nothing goes when the player turns Play stats off on the title, or when Local/switches.json has \"analytics\": \"off\". The editor sends none unless that switch is \"test\".",
 	"endpoint": "https://api.anthropic.com/v1/messages",
 	"relay": "https://nhos-relay.georgetkatsaros.workers.dev",
 	"build": "2026-11-15",
@@ -44,9 +44,13 @@
 			"tell": {
 				"type": "string",
 				"enum": ["", "late_copy", "note", "silence", "polish", "human_slip", "no_persona", "role", "other"]
+			},
+			"emotion": {
+				"type": "string",
+				"enum": ["neutral", "happy", "sad", "angry", "worried", "scared", "surprised", "confused", "disgusted", "suspicious", "smug", "embarrassed"]
 			}
 		},
-		"required": ["actions", "speech", "vote", "reason", "pass", "tell"],
+		"required": ["actions", "speech", "vote", "reason", "pass", "tell", "emotion"],
 		"additionalProperties": false
 	},
 	"input_schema": {
@@ -88,11 +92,15 @@
 				"type": "string",
 				"enum": ["", "late_copy", "note", "silence", "polish", "human_slip", "no_persona", "role", "other"]
 			},
+			"emotion": {
+				"type": "string",
+				"enum": ["neutral", "happy", "sad", "angry", "worried", "scared", "surprised", "confused", "disgusted", "suspicious", "smug", "embarrassed"]
+			},
 			"attempt": {
 				"type": "string"
 			}
 		},
-		"required": ["actions", "speech", "vote", "reason", "pass", "tell", "attempt"],
+		"required": ["actions", "speech", "vote", "reason", "pass", "tell", "emotion", "attempt"],
 		"additionalProperties": false
 	},
 	"roles": {

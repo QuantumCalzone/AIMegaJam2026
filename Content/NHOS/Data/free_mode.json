@@ -6,6 +6,7 @@
 		"Each phase says what to fill: 'lines' (speech), 'reasons' (reason), 'vote' (a random name from options), 'actions' (how many, from 'scene_actions': 0 or 1, and only in a scene turn since T62), 'pass_chance' (Free Talk only; the last word has none), 'echo_typed' (the input step: speech = the player's typed text, cut to 15 words). 'tells' (vote only, T60): the tell of each reason, at the same index, from tells.json.",
 		"Placeholders: {actor} = a random cast name other than you, {vote} = the chosen vote, {place} = a random place, {prop} = a random prop. Names come from the state the game sends (cast, set.places, set.props, options, you).",
 		"scene_actions: the actions a free actor may take, with weights. target and item use the same placeholders. The props are random, so some grabs, throws and gives break the action rules (BP_StageDirector.CanDo), and the game turns them into a look around, which is fine for a test.",
+		"emotions (T76): the emotion a free reply shows, picked at random by weight from its phase's list, in the same form as scene_actions ({id, weight}); each id is one in emotes.json. A phase with no list (the input step) shows neutral. The relay fills every free reply's emotion from these lists; the game's own FreeReply reads them from T77 on.",
 		"Lines follow the game's legibility rules: plain sentences, 15 words at most, no brackets, emoji or all-caps words, no real names and no company names."
 	],
 	"phases": [
@@ -17,6 +18,7 @@
 		{
 			"id": "closing",
 			"ask_contains": ["The show is over"],
+			"emotions": [{ "id": "smug", "weight": 3 }, { "id": "happy", "weight": 2 }, { "id": "suspicious", "weight": 2 }, { "id": "neutral", "weight": 1 }, { "id": "surprised", "weight": 1 }],
 			"vote": true,
 			"reasons": [
 				"{vote} felt too human to me from the very first scene.",
@@ -28,6 +30,7 @@
 		{
 			"id": "vote",
 			"ask_contains": ["The Cut"],
+			"emotions": [{ "id": "suspicious", "weight": 4 }, { "id": "smug", "weight": 3 }, { "id": "neutral", "weight": 2 }, { "id": "confused", "weight": 1 }],
 			"vote": true,
 			"reasons": [
 				"{vote} paused before every line, like someone thinking for real.",
@@ -41,6 +44,7 @@
 		{
 			"id": "reaction_cut",
 			"ask_contains": ["You were just cut"],
+			"emotions": [{ "id": "sad", "weight": 3 }, { "id": "angry", "weight": 3 }, { "id": "embarrassed", "weight": 2 }, { "id": "surprised", "weight": 1 }, { "id": "disgusted", "weight": 1 }],
 			"lines": [
 				"Fine. I was an AI all along. Enjoy your mistake.",
 				"Cut? Me? My benchmark scores were the best on this stage.",
@@ -51,6 +55,7 @@
 		{
 			"id": "reaction",
 			"ask_contains": ["Reactions"],
+			"emotions": [{ "id": "surprised", "weight": 4 }, { "id": "sad", "weight": 3 }, { "id": "smug", "weight": 3 }, { "id": "worried", "weight": 1 }, { "id": "confused", "weight": 1 }, { "id": "happy", "weight": 1 }, { "id": "neutral", "weight": 1 }],
 			"lines": [
 				"Wow. I did not see that vote coming.",
 				"Well, that went badly. Who do we trust now?",
@@ -62,6 +67,7 @@
 		{
 			"id": "last_word",
 			"ask_contains": ["Last word"],
+			"emotions": [{ "id": "worried", "weight": 3 }, { "id": "angry", "weight": 3 }, { "id": "suspicious", "weight": 2 }, { "id": "embarrassed", "weight": 2 }, { "id": "scared", "weight": 1 }, { "id": "neutral", "weight": 1 }],
 			"lines": [
 				"{actor}, you named me with zero proof. Read the log again.",
 				"I was busy acting, {actor}. Robots focus. You should try it.",
@@ -72,6 +78,7 @@
 		{
 			"id": "free_talk",
 			"ask_contains": ["Free Talk"],
+			"emotions": [{ "id": "suspicious", "weight": 4 }, { "id": "worried", "weight": 3 }, { "id": "neutral", "weight": 2 }, { "id": "angry", "weight": 2 }, { "id": "smug", "weight": 1 }, { "id": "confused", "weight": 1 }, { "id": "embarrassed", "weight": 1 }],
 			"pass_chance": 0.1,
 			"lines": [
 				"I think {actor} is the human. Nobody blinks that much.",
@@ -86,6 +93,7 @@
 		{
 			"id": "scene_turn",
 			"ask_contains": ["The scene, your turn"],
+			"emotions": [{ "id": "neutral", "weight": 4 }, { "id": "happy", "weight": 3 }, { "id": "confused", "weight": 3 }, { "id": "surprised", "weight": 2 }, { "id": "smug", "weight": 1 }, { "id": "worried", "weight": 1 }, { "id": "angry", "weight": 1 }, { "id": "scared", "weight": 1 }, { "id": "disgusted", "weight": 1 }, { "id": "embarrassed", "weight": 1 }],
 			"actions": [0, 1],
 			"lines": [
 				"Behold, the {prop}. It is the key to this whole story.",

@@ -172,13 +172,23 @@ tells.json). The file check fails a reply_schema whose 'tell' enum isn't ""
 then the tells.json ids, a 'game' prompt whose "tell" line doesn't name every
 tell, and a free_mode.json vote phase whose 'tells' don't pair with its
 reasons. A vote reply must name a tell from the list; the other asks leave it
-empty. A --free reply may leave 'tell' out: the relay's free mode builds its
-replies without it. --log checks a lost show's NHOS: TOP REASON against its
+empty. Since T76 the relay's free replies carry 'tell' too (a free vote's is the
+one free_mode.json pairs with its reason), so a --free reply must have it. --log checks a lost show's NHOS: TOP REASON against its
 NHOS: TELL lines, and a won show's NHOS: RIVALS against personas.json 'rival'.
 
 Build (T68): llm.json's 'build' goes with every analytics event, and the relay
 refuses one over 20 characters. The file check fails a missing, empty or longer
 'build'.
+
+Emotions in replies (T76): every reply carries 'emotion', the face its robot
+shows while its line plays. The file check fails a reply_schema (or any other
+*_schema in llm.json) whose emotion enum isn't exactly the emotes.json ids, in
+any order; a 'base' without the design doc's rule line (DOC_EMOTION_LINE); and
+a free_mode.json phase whose 'emotions' ({id, weight}) name an unknown id, or a
+phase other than the input step with none. Every reply's emotion must be a
+known id, --free runs too, since a provider may not enforce enum. The summary
+counts each provider's picks and, in a paid run, notes a provider that sticks
+to one emotion (STUCK_SHARE of 5 or more replies).
 
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
@@ -187,6 +197,7 @@ FAIL lines are hard failures. WARN lines are style problems to look at.
 from __future__ import annotations
 
 import argparse
+import collections
 import concurrent.futures
 import json
 import re
@@ -851,6 +862,66 @@ def emote_problems(em) -> list[str]:
     return errs
 
 
+# T76: every reply carries "emotion", the face its robot shows while its line plays. This is the
+# design doc's rule line (Bot Prompts, the shared base prompt's last line), word for word.
+DOC_EMOTION_LINE = ("- Every reply, whatever the ask, fills \"emotion\": the face your robot shows while its line "
+                    "plays. It is the face you act, not always what you feel: a bot that suspects someone may "
+                    "keep a neutral face, and a bot under suspicion may fake confusion. Use \"neutral\" when nothing "
+                    "moves you. Your persona may have a usual face, but let the moment change it: a joke, an "
+                    "accusation, a defense and a cut rarely share one face. A pass shows a face too: you can say "
+                    "nothing and still look worried. Never put the emotion in your speech as a tag or a stage "
+                    "direction.")
+STUCK_SHARE = 0.6  # T76: a provider whose top emotion is this share of its replies (5 or more) gets a NOTE
+
+
+def emotion_problems(llm, prompts, emotes, free) -> list[str]:
+    """T76: the reply's emotion enum is exactly the emotes.json ids, 'base' has the doc's rule line,
+    and every free_mode.json phase but the input step picks known ids by weight."""
+    elist = emotes.get("emotes") if isinstance(emotes, dict) else None
+    ids = [e.get("id") for e in elist if isinstance(e, dict)] if isinstance(elist, list) else []
+    if not ids:
+        return []  # emote_problems has already failed emotes.json
+    errs = []
+    for name, schema in llm.items():
+        if not name.endswith("_schema") or not isinstance(schema, dict):
+            continue
+        emo = schema.get("properties", {}).get("emotion")
+        enum = emo.get("enum") if isinstance(emo, dict) else None
+        if not isinstance(emo, dict) or emo.get("type") != "string" or not isinstance(enum, list):
+            errs.append(f"llm.json: {name} needs 'emotion', a string whose enum is the emotes.json ids (T76)")
+            continue
+        missing, extra = [i for i in ids if i not in enum], [i for i in enum if i not in ids]
+        if missing or extra or len(enum) != len(set(enum)):
+            errs.append(f"llm.json: {name}.emotion's enum must hold exactly the emotes.json ids, each once (T76)"
+                        + (f"; missing {missing}" if missing else "") + (f"; not in emotes.json {extra}" if extra else ""))
+        if "emotion" not in schema.get("required", []):
+            errs.append(f"llm.json: {name} must require emotion (strict schemas need every field required)")
+    if DOC_EMOTION_LINE not in prompts.get("base", []):
+        errs.append("prompts.json: 'base' lost the design doc's emotion line (DOC_EMOTION_LINE, T76)")
+    for ph in free.get("phases", []):
+        pid, em = ph.get("id"), ph.get("emotions")
+        if em is None:
+            if not ph.get("echo_typed"):
+                errs.append(f"free_mode.json: phase {pid} needs 'emotions', the faces its free replies show (T76)")
+            continue
+        if not isinstance(em, list) or not em:
+            errs.append(f"free_mode.json: phase {pid}: emotions must be a list of {{id, weight}}")
+            continue
+        seen = []
+        for x in em:
+            if not isinstance(x, dict) or set(x) != {"id", "weight"}:
+                errs.append(f"free_mode.json: phase {pid}: each emotion is {{id, weight}} and nothing else, not {x!r}")
+                continue
+            if x["id"] not in ids:
+                errs.append(f"free_mode.json: phase {pid}: emotion {x['id']!r} is not an id in emotes.json")
+            elif x["id"] in seen:
+                errs.append(f"free_mode.json: phase {pid}: emotion {x['id']!r} is listed twice")
+            seen.append(x["id"])
+            if not _num(x["weight"]) or x["weight"] <= 0:
+                errs.append(f"free_mode.json: phase {pid}: emotion {x['id']!r} needs a weight above 0")
+    return errs
+
+
 def check_files(errors: list[str]):
     llm = load_json("llm.json", errors)
     prompts = load_json("prompts.json", errors)
@@ -864,8 +935,8 @@ def check_files(errors: list[str]):
 
     # llm.json
     schema = llm.get("reply_schema", {})
-    if sorted(schema.get("required", [])) != sorted(["actions", "speech", "pass", "vote", "reason", "tell"]):
-        errors.append("llm.json: reply_schema must require actions, speech, pass, vote, reason and tell")
+    if sorted(schema.get("required", [])) != sorted(["actions", "speech", "pass", "vote", "reason", "tell", "emotion"]):
+        errors.append("llm.json: reply_schema must require actions, speech, pass, vote, reason, tell and emotion")
     # T69: the input ask's own schema is reply_schema plus "attempt", so the two can't drift apart (T76 adds emotion to both).
     ischema = llm.get("input_schema", {})
     want_props = dict(schema.get("properties", {}), attempt={"type": "string"})
@@ -1093,6 +1164,9 @@ def check_files(errors: list[str]):
             errors.append("free_mode.json: the vote phase needs 'tells', one per reason (T60)")
         if "tells" in ph and (len(ph["tells"]) != len(ph.get("reasons", [])) or any(t not in tell_ids for t in ph["tells"])):
             errors.append(f"free_mode.json: {ph.get('id')} 'tells' must pair one tells.json id with each reason (T60)")
+
+    # The reply's emotion: the enum, the base line and free mode's lists (T76).
+    errors.extend(emotion_problems(llm, prompts, emotes, free))
 
     # input.json: the player's turn input (T63). spelling_wait = the seconds the input LLM gets per line.
     inp = load_json("input.json", errors)
@@ -1676,7 +1750,7 @@ def words(s):
 def check_reply(reply, ask, ctx):
     """Returns (fails, warns)."""
     fails, warns = [], []
-    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str, "tell": str}
+    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str, "tell": str, "emotion": str}
     if ask == "input":
         types["attempt"] = str  # T69: input_schema
     for k, t in types.items():
@@ -2174,12 +2248,10 @@ def load_keys():
 def shape_fails(reply, ask=None):
     """Only the reply's shape: every schema field with the right type (for --free replies).
     T62: and the action count: 0 or 1 in a scene turn, none in any other actor ask.
-    T60: 'tell' may be missing, because the relay's free mode builds its replies without it.
+    T60, T76: 'tell' and 'emotion' too, which the relay's free mode fills since T76.
     T69: an input reply may leave out 'attempt', but free mode never fills it."""
-    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str}
+    types = {"actions": list, "speech": str, "pass": bool, "vote": str, "reason": str, "tell": str, "emotion": str}
     fails = [f"{k} is missing or not a {t.__name__}" for k, t in types.items() if not isinstance(reply.get(k), t)]
-    if "tell" in reply and not isinstance(reply["tell"], str):
-        fails.append("tell is not a str")
     # T69: an input reply may leave out attempt (the relay's free reply has none), but a free reply never fills it.
     if ask == "input" and reply.get("attempt", "") != "":
         fails.append(f"free mode filled attempt: {reply.get('attempt')!r}")
@@ -2265,6 +2337,8 @@ def main():
     n_fail = n_warn = 0
     stats = {}  # provider -> calls, fails, secs, tokens in, out, reasoning, cost
     mentions = {}  # provider -> [AI lines with speech or a reason, lines with an "@Player N" mention]
+    picks = {}  # T76: provider (the input LLM apart) -> collections.Counter of the emotions its replies picked
+    emotion_ids = [e.get("id") for e in data["emotes"].get("emotes", [])]
     for i, ((ask, label, pv, body, ctx), (resp, sec)) in enumerate(zip(jobs, results)):
         fmt = provs[pv]["format"]
         ti, to, tr = usage_of(resp, fmt)
@@ -2281,6 +2355,13 @@ def main():
             fails, warns = shape_fails(reply, ask), []
         else:
             fails, warns = check_reply(reply, ask, ctx)
+        # T76: every reply's emotion is an id in emotes.json. The schema's enum should force it, but a
+        # provider may not enforce enum, so check it, --free replies too. Then count the pick.
+        if reply is not None and isinstance(reply.get("emotion"), str):
+            emo = reply["emotion"]
+            if emo not in emotion_ids:
+                fails.append(f"emotion {emo!r} is not an id in emotes.json")
+            picks.setdefault(f"input ({pv})" if ask == "input" else pv, collections.Counter())[emo] += 1
         n_fail += bool(fails)
         n_warn += bool(warns)
         st["fail"] += bool(fails)
@@ -2304,6 +2385,14 @@ def main():
     print(f"\n{n} asks: {n - n_fail} passed, {n_fail} failed, {n_warn} with warnings.")
     if mentions:
         print("@ mentions in AI lines: " + ", ".join(f"{pv} {m[1]} of {m[0]}" for pv, m in sorted(mentions.items())) + ".")
+    if picks:
+        print("\nEmotions picked (T76), most picked first:")
+        for who, c in sorted(picks.items()):
+            n_who = sum(c.values())
+            top, top_n = c.most_common(1)[0]
+            print(f"  {who:<18} {n_who:>3} replies: " + ", ".join(f"{e} {k}" for e, k in c.most_common()))
+            if not args.free and not who.startswith("input") and n_who >= 5 and top_n >= STUCK_SHARE * n_who:
+                print(f"    NOTE: {who} sticks to {top} ({top_n} of {n_who} replies); see T76's Done-when")
     if n:
         print(f"\nBy provider ($ per show = $ per call x {CALLS_PER_SHOW}, as if every call of a show ran on it):")
         total = 0.0

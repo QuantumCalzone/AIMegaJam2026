@@ -98,6 +98,10 @@ absent() { # name, reply, pattern: passes when the pattern is NOT in the reply
 	fi
 }
 
+emotion_of() { # a relay reply on stdin -> "known <id>" (an id in emotes.json, T76) or "unknown <what>"
+	"$PY" -c "import json,sys;r=json.load(sys.stdin);t=r['content'][0]['text'] if 'content' in r else r['choices'][0]['message']['content'];e=json.loads(t).get('emotion');ids=[x['id'] for x in json.load(open('../Content/NHOS/Data/emotes.json',encoding='utf-8'))['emotes']];print('known '+e if e in ids else 'unknown '+repr(e))"
+}
+
 ev() { # data -> prints body
 	curl -s -X POST "$URL/event" -H "content-type: application/json" --data-binary "$1"
 }
@@ -234,6 +238,13 @@ if [ "$MODE" = "free" ]; then
 	VOTE_REQ=$("$PY" -c "import json,sys;c=json.load(open('relay.config.json'))['providers'][sys.argv[1]];b={'model':c['models'][0],c['max_tokens_field']:16,'messages':[{'role':'user','content':json.dumps({'options':['Robot A','Robot B'],'ask':'The Cut: vote.'})}]};print(json.dumps({'provider':sys.argv[1],'session':sys.argv[2],'body':b,'free':True}))" "$FIRST" "${RUN}-vote")
 	free_reply=$(post "$VOTE_REQ")
 	expect "free vote picks a name from options" "$free_reply" 'vote\\":\\"Robot [AB]'
+	# T76: every free reply carries an emotion, an id in emotes.json; the input step has no list, so it shows neutral.
+	expect "free reply carries an emotion" "$free_reply" 'emotion\\":\\"[a-z]'
+	expect "free vote's emotion is an id in emotes.json" "$(printf '%s' "$free_reply" | emotion_of)" '^known '
+	INPUT_REQ=$("$PY" -c "import json,sys;c=json.load(open('relay.config.json'))['providers'][sys.argv[1]];b={'model':c['models'][0],c['max_tokens_field']:16,'messages':[{'role':'user','content':json.dumps({'actor':'Robot A','phase':'scene','typed':'hello there'})}]};print(json.dumps({'provider':sys.argv[1],'session':sys.argv[2],'body':b,'free':True}))" "$FIRST" "${RUN}-input")
+	expect "free input reply's emotion is neutral" "$(post "$INPUT_REQ" | emotion_of)" '^known neutral$'
+	# T60: a free vote's reason comes with the tell free_mode.json pairs with it.
+	expect "free vote names a tell" "$free_reply" 'tell\\":\\"[a-z_]'
 	echo
 	echo "$PASS passed, $FAIL failed, $SKIP skipped"
 	[ "$FAIL" -eq 0 ]

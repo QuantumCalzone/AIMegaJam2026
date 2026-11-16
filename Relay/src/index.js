@@ -208,6 +208,13 @@ function weighted(list) {
 	return list[list.length - 1];
 }
 
+// The emotion a free reply shows (T76): a weighted pick from the phase's "emotions"
+// in free_mode.json, or "neutral" when the phase has none (the input step).
+function freeEmotion(ph) {
+	const list = Array.isArray(ph.emotions) ? ph.emotions.filter((x) => isObject(x) && typeof x.id === "string") : [];
+	return list.length ? weighted(list).id : "neutral";
+}
+
 // A reply in the game's one reply shape, made up from free_mode.json without a model.
 function freeReplyObject(p, body) {
 	let state = {};
@@ -225,7 +232,7 @@ function freeReplyObject(p, body) {
 		vote: "",
 	};
 	const ph = freePhase(state);
-	const reply = { actions: [], speech: "", vote: "", reason: "", pass: false };
+	const reply = { actions: [], speech: "", vote: "", reason: "", pass: false, emotion: freeEmotion(ph), tell: "" };
 
 	if (ph.echo_typed) {
 		const typed = typeof state.typed === "string" ? state.typed : "";
@@ -236,7 +243,11 @@ function freeReplyObject(p, body) {
 		const options = names(state.options).filter((n) => n !== me);
 		ctx.vote = pick(options.length ? options : names(state.options));
 		reply.vote = ctx.vote;
-		reply.reason = fill(pick(ph.reasons ?? []), ctx);
+		// A vote's reason comes with its tell (T60): the one at the same index in the phase's "tells", or "".
+		const reasons = ph.reasons ?? [];
+		const i = Math.floor(Math.random() * reasons.length);
+		reply.reason = reasons.length ? fill(reasons[i], ctx) : "";
+		reply.tell = Array.isArray(ph.tells) && typeof ph.tells[i] === "string" ? ph.tells[i] : "";
 		return reply;
 	}
 	if (ph.pass_chance && Math.random() < ph.pass_chance) {
