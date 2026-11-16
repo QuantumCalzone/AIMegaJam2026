@@ -1,0 +1,8 @@
+; T38: the bubble that is up fades out: the next line is on another robot, or the phase changes (a phase, prep or end
+; cue), or the queue is cleared. So at most one bubble is full and one is fading.
+(fn HushBubble ()
+  (if (not (V BubbleUp))
+    (return))
+  (set BubbleUp false)
+  (bind _b (get (Class|BPShow|GetRobots :self (V Show)) (V BubbleSeat)))
+  (Class|BPRobot|Hush :self _b))

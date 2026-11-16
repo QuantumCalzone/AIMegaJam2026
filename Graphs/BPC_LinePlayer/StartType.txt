@@ -9,6 +9,9 @@
     (print "NHOS: TYPE no chat line")
     (return))
   (Class|WBPChatLine|TypeBegin :self (V TypeW) :Speech (V TypeText))
+  ; T38: the bubble types the same text from the same timer, with no voice sounds of its own.
+  (if (!= (V BubW) (V NullBub))
+    (Class|WBPSpeechBubble|TypeBegin :self (V BubW) :Speech (V TypeText)))
   (set TypePos 0)
   (set TypeT0 (Utilities|Time|GetRealTimeSeconds))
   (set LastSyl -100.0)

@@ -15,6 +15,21 @@
   (bind _ty (select (> (V TypeSecs) 0.0) _ty0 0.0))
   (print (cat "NHOS: LINE " (V CurId) " hold=" (Utilities|String|ToString(Float) _hold) " syl=" (str (V TypeSylN)) " type=" (Utilities|String|ToString(Float) _ty)))
   (Class|WBPStage|AddChatLine :self (V Stage) :Name (V CurName) :Color (V CurColor) :Action (V CurAction) :Speech (V CurSpeech) :IsMe (V CurIsMe))
+  ; T38: the line's bubble over its robot, with the speech as the chat line shows it, so StartType types the same letters
+  ; in both. The bubble on another robot fades. In the vote, "Votes for X." leads the reason (P2). In the reactions a cut
+  ; robot gets a bubble for its last words (P1). A robot that shows no bubble prints no BUBBLE.
+  (if (and (V BubbleUp) (!= (V BubbleSeat) (V CurSeat)))
+    (CallFunction|HushBubble))
+  (bind _bot (CallFunction|BubbleBot :Seat (V CurSeat)))
+  (bind _vote (Utilities|String|StartsWith :SourceString (V CurAction) :InPrefix "votes for"))
+  (bind _lead (select _vote (cat "V" (Utilities|String|RightChop :SourceString (V CurAction) :Count 1) ".") ""))
+  (bind _rx (streq (Class|BPShow|GetPhase :self (V Show)) "reactions"))
+  (bind _bw (Class|BPRobot|Say :self _bot :Name (V CurName) :Color (V CurColor) :Action (V CurAction) :Speech _sp :Lead _lead :EvenCut _rx))
+  (set BubW _bw)
+  (set BubbleSeat (V CurSeat))
+  (set BubbleUp true)
+  (if (!= (V BubW) (V NullBub))
+    (print (cat "NHOS: BUBBLE " (V CurId))))
   (CallFunction|StartType)
   (Class|BPShow|LightSeat :self (V Show) :Seat (V CurSeat))
   (Class|BPShow|StageLine :self (V Show) :Seat (V CurSeat) :Entry (V CurEntry))

@@ -14,6 +14,9 @@
     (Utilities|Array|RemoveIndex (V CNum) 0)
     (bind _h (CallFunction|CueHoldFor :Kind (V CurKind) :Text (V CurText)))
     (print (cat "NHOS: CUE " (V CurKind) " " (V CurText)))
+    ; T38: a new phase, a Scene Prep or the end screen hushes the last line's bubble, before RunCue (which may queue more).
+    (if (or (streq (V CurKind) "phase") (or (streq (V CurKind) "prep") (streq (V CurKind) "end")))
+      (CallFunction|HushBubble))
     (Class|BPShow|RunCue :self (V Show) :Kind (V CurKind) :Text (V CurText) :Num (V CurNum))
     (if (> _h 0.0)
       (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "Pump" :Time _h :bLooping false)
@@ -40,6 +43,13 @@
   (Utilities|Array|RemoveIndex (V LTyping) 0)
   (if (V CurTyping)
     (Class|WBPStage|SetTyping :self (V Stage) :Line (cat (V CurName) " is typing..."))
+    ; T38 step 4: the same as a small bubble with three dots over that robot; the line's bubble replaces it.
+    (if (and (V BubbleUp) (!= (V BubbleSeat) (V CurSeat)))
+      (CallFunction|HushBubble))
+    (bind _tb (CallFunction|BubbleBot :Seat (V CurSeat)))
+    (Class|BPRobot|Typing :self _tb :Name (V CurName) :Color (V CurColor) :EvenCut (streq (Class|BPShow|GetPhase :self (V Show)) "reactions"))
+    (set BubbleSeat (V CurSeat))
+    (set BubbleUp true)
     (bind _r (Math|Random|RandomFloatinRange :Min (V TypeMin) :Max (V TypeMax)))
     (bind _t (CallFunction|Scaled :T _r))
     (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "PlayCur" :Time _t :bLooping false)
