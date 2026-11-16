@@ -33,7 +33,9 @@ There are no keys in this folder, and none may ever go in git. Players who enter
 
 **On success** the reply is the provider's reply, unchanged, so the game parses it the same way as a direct call.
 
-**Free mode** costs nothing, for local testing. Add `"free": true` to the request. The relay runs every check (the request shape, the model allow-list, `max_tokens`, the limits) but calls no provider and needs no key. It answers with a canned reply in that provider's exact response shape (a Messages reply or a Chat Completions reply), with `"relay_free": true` at the top and zero usage. The reply text is a valid game reply: `actions` empty, `speech` a short canned line (or, for the input step, the player's `typed` text cut to 15 words), `vote` a random name from the ask's `options` when it has any, `reason` "Free mode reply.", `pass` false. Free calls are counted apart from real ones (`limits.free`), so they never use up the real budget. `GET /health` says `"free_mode": true`. The reply text comes from `Content/NHOS/Data/free_mode.json` (lines, vote reasons and stage actions per phase; the relay bundles it at build time). **In the game** (since T18), **Test for Free** no longer calls the relay: `BPC_LLMClient` builds the same kind of reply from `free_mode.json` itself, with no network. **Play via Relay** sends every ask here for real, as `{provider, session, body}` with one session id per show. **Play with my own API keys** calls the providers directly with the player's keys. The relay's free mode stays for `Tools/check_prompts.py --relay --free` and `test/curl-tests.sh`.
+**Free mode** costs nothing, for local testing. Add `"free": true` to the request. The relay runs every check (the request shape, the model allow-list, `max_tokens`, the limits) but calls no provider and needs no key. It answers with a canned reply in that provider's exact response shape (a Messages reply or a Chat Completions reply), with `"relay_free": true` at the top and zero usage. The reply text is a valid game reply: `actions` empty, `speech` a short canned line (or, for the input step, the player's `typed` text cut to 15 words), `vote` a random name from the ask's `options` when it has any, `reason` "Free mode reply.", `pass` false. Free calls are counted apart from real ones (`limits.free`), so they never use up the real budget. `GET /health` says `"free_mode": true`. The reply text comes from `Content/NHOS/Data/free_mode.json` (lines, vote reasons and stage actions per phase; the relay bundles it at build time). **In the game** (since T18), **Test for Free** no longer calls the relay: `BPC_LLMClient` builds the same kind of reply from `free_mode.json` itself, with no LLM call. **Play via Relay** sends every ask here for real, as `{provider, session, body}` with one session id per show. **Play with my own API keys** calls the providers directly with the player's keys. The relay's free mode stays for `Tools/check_prompts.py --relay --free` and `test/curl-tests.sh`.
+
+The game's own **Test for Free** doesn't use this flag: it builds its replies itself and makes no LLM call. A packaged build still sends analytics events to `/event` in Test for Free, as in every mode, unless the player turns Play stats off or `Local/switches.json` has `"analytics": "off"` (T68).
 
 **On failure** the reply is always this shape (which matches Anthropic's error shape, so the existing `type: "error"` check in `BPC_LLMClient` already catches it):
 
@@ -69,10 +71,10 @@ Since T67 the relay also collects the game's play stats, because it is the one s
 {
 	"player": "9f1c2a7e4b3d4e6fa0b1c2d3e4f5a6b7",
 	"session": "3f2a9c0e8b7d4e1fa6c5b2d9e0f1a2b3",
-	"build": "0.9",
+	"build": "2026-11-15",
 	"mode": "free",
 	"event": "phase",
-	"fields": { "phase": "free_talk", "scene": 2 },
+	"fields": { "phase": "free_talk_1", "scene": 2 },
 	"test": false
 }
 ```
@@ -93,6 +95,8 @@ Since T67 the relay also collects the game's play stats, because it is the one s
 | `unsupported` | `words` (80), `source` (10), `phase` (40) |
 
 The answer is `{"ok": true}`. An event never calls a provider and never counts against the call limits. A show's drop-off point is the last `phase` it sent, so there is no quit event (the game can't send anything when its window closes).
+
+**What the game sends (T68).** A show's events are `mode` (when no mode was picked on the title), `show_start`, a `phase` as each phase shows on screen, `calls` and `show_end`. The phases, in show order, are `scene_prep`, `turn_1` to `turn_3`, `free_talk_1` and `free_talk_2`, `last_word` (only when someone was named in Free Talk's final round), `vote` and `reactions` for each scene, then `closing`, each with its `scene`. A show with a `show_start` and no `show_end` stopped at its last `phase`. `calls` events come at each Scene Prep and at the end screen, one per provider and model, so a show that stops mid-scene still has the counts of every scene before it. `launch` uses the session id the game made at launch; every other event uses the show's.
 
 **What is stored:** the UTC time, the anonymous player id, the session id, the build, the mode, the event and its fields (phases, call counts and tokens per provider and model, error kinds, a few words naming an unsupported action), the `test` flag, and the relay's day-salted hash of the address (`hashIp`, the same one the call limits use), which never leaves the store. Never the address, typed text, keys, names or anything from the player's accounts or machine.
 
