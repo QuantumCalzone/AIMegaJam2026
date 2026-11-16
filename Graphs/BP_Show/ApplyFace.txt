@@ -1,0 +1,10 @@
+; T78: T77's HumanFeels calls this with the emotion T77 picked (the input LLM's, the keyword table's, or neutral for a
+; pass or no words) and where it came from. A pick on the chip overrides it, for a pass and a silent turn too (the
+; reason to pick one). Used once: HFace is cleared, so a pick never reaches a later line. FaceOut is set before HFace
+; is cleared: a bind of HFace would be read after the clear (T65).
+(fn ApplyFace (AutoId AutoFrom)
+  (set FaceOut (V HFace))
+  (set HFace "")
+  (if (Utilities|String|IsEmpty (V FaceOut))
+    (return AutoId AutoFrom))
+  (return (V FaceOut) "pick"))

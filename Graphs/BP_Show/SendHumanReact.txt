@@ -1,7 +1,9 @@
 ; T10: my reaction after a cut. "pass" passes at once.
 ; T63: any other line takes the spelling path (SpellAsk), speech only. Written from the editor's read-back in T63.
+; T78: the face chip goes with the turn (TakeFace).
 (fn SendHumanReact (Line)
   (set HumanSent true)
+  (CallFunction|TakeFace)
   (Class|WBPStage|SetPassEnabled :self (Variables|Default|GetStage) :Enabled false)
   (if (streq (Utilities|String|ToLower (Utilities|String|Trim (Utilities|String|TrimTrailing Line))) "pass")
     (CallFunction|PlayReact :Seat (V HumanSeat) :Ok true :Speech "" :Pass true :Verbs (V EmptyStrs) :Targets (V EmptyStrs) :Items (V EmptyStrs))

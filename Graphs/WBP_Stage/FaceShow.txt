@@ -1,0 +1,14 @@
+; T78: opens or closes the face list. Opening closes T65's @ list, so the two pop-ups never overlap. FaceOpen is read
+; before it is set, as AtDraw reads AtOpen (a bind of a variable is read where it is used, T65).
+(fn FaceShow (Open)
+  (if Open
+    (CallFunction|AtDraw :Open false)
+    (bind _n (Class|WBPActionBuilder|BuildFaces :self (Variables|WBP_Stage|GetActionBuilder) :Wrap (Variables|WBP_Stage|GetFaceWrap)))
+    (CallFunction|FacePlace)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetFacePop) :InVisibility "SelfHitTestInvisible")
+    (print (cat "NHOS: FACE list " (str _n)))
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetFacePop) :InVisibility "Collapsed")
+      (if (V FaceOpen)
+        (print "NHOS: FACE close"))))
+  (set FaceOpen Open))

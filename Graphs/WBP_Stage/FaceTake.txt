@@ -1,0 +1,4 @@
+; T78: the chip as it stands, for BP_Show.TakeFace at each of my sends: an emotion id, or "" for Auto.
+(fn FaceTake ()
+  (bind _f (Class|WBPActionBuilder|GetFace :self (Variables|WBP_Stage|GetActionBuilder)))
+  (return _f))

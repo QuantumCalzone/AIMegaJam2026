@@ -1,0 +1,13 @@
+; T78: puts the face list right over the chip, in RootBox's space: its left edge on the chip's, its bottom 8 px (S2) above
+; the chip's top. The point transforms are the (Coordinates) nodes (T65's AtPlace).
+(fn FacePlace ()
+  (bind _g (Widget|GetCachedGeometry :self (Variables|WBP_Stage|GetFaceBtn)))
+  (bind _rg (Widget|GetCachedGeometry :self (Variables|WBP_Stage|GetRootBox)))
+  (bind _abs (UserInterface|Geometry|LocaltoAbsolute(Coordinates) _g (Math|Vector2D|MakeVector2D :X 0.0 :Y 0.0)))
+  (bind _tl (UserInterface|Geometry|AbsolutetoLocal(Coordinates) _rg _abs))
+  (bind _view (UserInterface|Geometry|GetLocalSize _rg))
+  (bind _gap (Class|UIStyle|UISize :Role "S2"))
+  (bind (_x _y) (Math|Vector2D|BreakVector2D _tl))
+  (bind (_vx _vy) (Math|Vector2D|BreakVector2D _view))
+  (bind _slot (Slot|SlotasOverlaySlot (Variables|WBP_Stage|GetFacePop)))
+  (Layout|OverlaySlot|SetPadding :self _slot :InPadding (Utilities|Struct|MakeMargin :Left _x :Top 0.0 :Right 0.0 :Bottom (+ (- _vy _y) _gap))))
