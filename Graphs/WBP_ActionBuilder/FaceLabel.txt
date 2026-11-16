@@ -1,0 +1,6 @@
+; T78: the chip's text (step 1): "Face: Auto", or "Face: <word>" once I pick. WBP_Stage's chip reads it.
+(fn FaceLabel ()
+  (if (Utilities|String|IsEmpty (V Face))
+    (return "Face: Auto"))
+  (bind _w (CallFunction|FaceWord :Id (V Face)))
+  (return (cat "Face: " _w)))

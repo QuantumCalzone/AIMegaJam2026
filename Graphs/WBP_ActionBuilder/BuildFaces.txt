@@ -1,0 +1,10 @@
+; T78: the face list, made again each time it opens (13 chips): Auto, then each emotion by its word. The current pick is
+; paper. Returns how many entries it made. The caller passes its own WrapBox (WBP_Stage's FaceWrap).
+(fn BuildFaces (Wrap)
+  (CallFunction|LoadFaces)
+  (Widget|Panel|ClearChildren :self Wrap)
+  (CallFunction|AddFaceChip :Index 1000 :Label "Auto" :Picked (Utilities|String|IsEmpty (V Face)) :Wrap Wrap)
+  (for _k (range (len (V FaceIds)))
+    (set TmpK _k)
+    (CallFunction|AddFaceChip :Index (+ 1001 (V TmpK)) :Label (get (V FaceWords) (V TmpK)) :Picked (streq (get (V FaceIds) (V TmpK)) (V Face)) :Wrap Wrap))
+  (return (+ 1 (len (V FaceIds)))))

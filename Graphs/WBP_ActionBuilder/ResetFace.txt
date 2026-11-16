@@ -1,0 +1,9 @@
+; T78: back to Auto at the start of each of my turns (step 4), so a pick never sticks by accident. Prints only when it
+; clears a pick.
+(fn ResetFace ()
+  (if (Utilities|String|IsEmpty (V Face))
+    (return))
+  (set Face "")
+  (print "NHOS: FACE reset")
+  (if (and (V Armed) (not (V Sent)))
+    (CallFunction|Refresh)))

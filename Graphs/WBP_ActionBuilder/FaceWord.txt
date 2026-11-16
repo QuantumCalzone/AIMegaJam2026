@@ -1,0 +1,7 @@
+; T78: the word for an emotion id (calm for neutral); the id itself if the list doesn't have it. FaceK holds the
+; index, so the pure FindItem is read once.
+(fn FaceWord (Id)
+  (set FaceK (Utilities|Array|FindItem (V FaceIds) Id))
+  (if (< (V FaceK) 0)
+    (return Id))
+  (return (get (V FaceWords) (V FaceK))))

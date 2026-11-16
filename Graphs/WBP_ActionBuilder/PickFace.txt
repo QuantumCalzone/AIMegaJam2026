@@ -1,0 +1,15 @@
+; T78: an entry of the face list was clicked: K is -1 for Auto, else the emotion's place in FaceIds. Only while my input
+; is open (SetFaceLive). WBP_Stage closes the list (TakeFacePicked). In my scene turn the preview line follows at once.
+; The keyboard focus goes back to the speech field (T64's KeepFocus; ChipClicked's face branch returns before its own).
+(fn PickFace (K)
+  (if (not (V FaceLive))
+    (return))
+  (set Face "")
+  (if (and (>= K 0) (< K (len (V FaceIds))))
+    (set Face (get (V FaceIds) K)))
+  (set FacePicked true)
+  (bind _p (CallFunction|MakePreview))
+  (print (cat "NHOS: FACE pick " (select (Utilities|String|IsEmpty (V Face)) "auto" (V Face)) (select (V Armed) (cat " | " _p) "")))
+  (if (and (V Armed) (not (V Sent)))
+    (CallFunction|Refresh))
+  (CallFunction|KeepFocus))
