@@ -11,7 +11,7 @@ on Windows, a Mac build on a Mac.
     python Tools/deploy_itch.py --build <folder> --dry-run   # check (and push) a build already made
 
 In the editor, Tools > itch.io runs it (Content/Python/nhos_itch_deploy.py). See "Deploys to
-itch.io" in CLAUDE.md.
+itch.io" in Docs/Builds.md.
 
 | Platform | Channel | Folder inside the download   | Built with                         |
 |----------|---------|------------------------------|------------------------------------|
@@ -26,7 +26,7 @@ What it does, in order:
    where sessions have uncommitted work. The worktree shares the repo folder's .git/lfs, so a run
    downloads only new LFS objects.
 2. Packages it with the "Package a Windows build" or "Package a macOS build" command from
-   CLAUDE.md, into <deploy worktree>/Packaged/deploy/<short sha>/. On Windows the command goes in
+   Docs/Builds.md, into <deploy worktree>/Packaged/deploy/<short sha>/. On Windows the command goes in
    a .bat run with cmd /c. On a Mac it takes the staged app from Saved/StagedBuilds/Mac/ (the
    archive step copies only the executable) and copies it with ditto.
 3. Puts the build in NoHumansOnSet_<Windows|Mac>/ and deletes every .pdb and any Local/ or Saved/
