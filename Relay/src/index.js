@@ -8,7 +8,11 @@
 // canned one in the provider's exact response shape, with "relay_free": true. No tokens.
 // Reply on success:  the provider's reply, unchanged.
 // Reply on failure:  { "type": "error", "error": { "type": <code>, "message": <text the game can show>, "source": "relay" } }
-// GET /health:       { "ok": true, "providers": [<ids that can serve calls>], "budget_left": true|false, "free_mode": true }
+// GET /health:       { "ok": true, "providers": [<ids that work>], "budget_left": true|false, "free_mode": true,
+//                      "down": [{ "provider": <id>, "why": <text>, "at": <ISO time or null> }] }
+//                    A provider works when its last outcome (a real call, or a check of at most a few tokens
+//                    when the last outcome is old) succeeded and its daily tokens aren't used up (T93).
+//                    "down" is for logs only: the game never shows it.
 // POST /event:       an analytics event, checked against "events" in relay.config.json and stored in the
 //                    Stats Durable Object. Answers { "ok": true }. Never calls a provider or counts as a call.
 // GET /stats:        the stored events, for Tools/analytics_report.py. Needs "Authorization: Bearer <STATS_KEY>";
@@ -88,6 +92,18 @@ function limitsFor(env, provider) {
 
 function providerReady(env, p) {
 	return Boolean(env[p.secret]) && Array.isArray(p.models) && p.models.length > 0;
+}
+
+// T93: how GET /health decides that a provider works (see "health" in relay.config.json).
+function healthSettings(env) {
+	const h = CONFIG.health ?? {};
+	return {
+		staleMs: intVar(env.HEALTH_STALE_SECONDS, h.stale_seconds ?? 300) * 1000,
+		claimMs: (h.claim_seconds ?? 30) * 1000,
+		timeoutMs: h.check_timeout_ms ?? 15000,
+		prompt: h.check_prompt ?? "Hi",
+		maxTokens: h.check_max_tokens ?? 1,
+	};
 }
 
 function isObject(v) {
@@ -422,11 +438,20 @@ async function handleRelay(request, env, ctx) {
 		replyText = await upstream.text();
 	} catch (e) {
 		console.log(`relay: ${id} fetch failed: ${e}`);
+		// T93: a call that got no reply is this provider's last outcome.
+		ctx.waitUntil(limiter(env).record({ day, provider: id, tokens: 0, ok: false, why: "no reply", at: Date.now() }));
 		return fail("provider_error", "no reply", { upstream_status: 0 });
 	}
 
 	ctx.waitUntil(
-		limiter(env).record({ day, provider: id, tokens: tokensUsed(p, replyText, body, bodyText) }),
+		limiter(env).record({
+			day,
+			provider: id,
+			tokens: tokensUsed(p, replyText, body, bodyText),
+			ok: upstream.ok,
+			why: upstream.ok ? "" : `upstream status ${upstream.status}`,
+			at: Date.now(),
+		}),
 	);
 
 	if (!upstream.ok) {
@@ -563,12 +588,70 @@ async function handleStats(request, env, url) {
 	return json({ ok: true, ...page });
 }
 
+// T93: the smallest call a provider's API takes, to see whether it answers. Never counted as a call.
+async function checkProvider(env, id, hs) {
+	const p = CONFIG.providers[id];
+	const body = {
+		model: p.models[0],
+		[p.max_tokens_field]: p.check_max_tokens ?? hs.maxTokens,
+		messages: [{ role: "user", content: hs.prompt }],
+	};
+	applyForce(p, body);
+	const bodyText = JSON.stringify(body);
+	const at = Date.now();
+	try {
+		const r = await fetch(p.endpoint, {
+			method: "POST",
+			headers: providerHeaders(env, p),
+			body: bodyText,
+			signal: AbortSignal.timeout(hs.timeoutMs),
+		});
+		const text = await r.text();
+		const tokens = r.ok ? tokensUsed(p, text, body, bodyText) : 0;
+		console.log(`relay: check ${id} status ${r.status} tokens ${tokens} in ${Date.now() - at} ms`);
+		if (!r.ok) console.log(`relay: check ${id} reply: ${text.slice(0, 300)}`);
+		return { provider: id, ok: r.ok, why: r.ok ? "" : `check: upstream status ${r.status}`, at, tokens };
+	} catch (e) {
+		console.log(`relay: check ${id} failed: ${e}`);
+		return { provider: id, ok: false, why: "check: no reply", at, tokens: 0 };
+	}
+}
+
+// T93: a provider is listed when it has a key and models, its last outcome succeeded and its daily
+// tokens aren't used up. Providers whose last outcome is stale are checked first (status() hands
+// each stale provider to one caller only, so all players together check it once per stale period).
 async function handleHealth(env) {
-	const providers = Object.entries(CONFIG.providers)
+	const day = utcDay();
+	const hs = healthSettings(env);
+	const ready = Object.entries(CONFIG.providers)
 		.filter(([, p]) => providerReady(env, p))
 		.map(([id]) => id);
-	const status = await limiter(env).status({ day: utcDay(), limits: limitsFor(env, null) });
-	return json({ ok: true, providers, budget_left: status.budget_left, free_mode: true });
+	const st = await limiter(env).status({
+		day,
+		limits: limitsFor(env, null),
+		ready,
+		now: Date.now(),
+		staleMs: hs.staleMs,
+		claimMs: hs.claimMs,
+	});
+	if (st.due.length) {
+		const results = await Promise.all(st.due.map((id) => checkProvider(env, id, hs)));
+		await limiter(env).recordChecks({ day, results });
+		for (const r of results) st.health[r.provider] = { ok: r.ok, why: r.why, at: r.at };
+	}
+	const providers = [];
+	const down = [];
+	for (const [id, p] of Object.entries(CONFIG.providers)) {
+		const h = st.health[id];
+		const at = h ? new Date(h.at).toISOString() : null;
+		if (!ready.includes(id)) down.push({ provider: id, why: "no key or no models", at: null });
+		else if (!h) down.push({ provider: id, why: "not checked yet", at });
+		else if (!h.ok) down.push({ provider: id, why: h.why, at });
+		else if ((st.tokens[id] ?? 0) >= limitsFor(env, p).daily_tokens) {
+			down.push({ provider: id, why: "daily tokens used up", at });
+		} else providers.push(id);
+	}
+	return json({ ok: true, providers, budget_left: st.budget_left, free_mode: true, down });
 }
 
 export default {
@@ -587,14 +670,24 @@ export default {
 	},
 };
 
-// One global counter object. All state is for one UTC day; a new day clears it.
+// One global counter object. All state is for one UTC day; a new day clears it,
+// except each provider's last outcome ("health:<id>", T93), which carries over.
 export class Limiter extends DurableObject {
 	async rollDay(day) {
 		const s = this.ctx.storage;
 		if ((await s.get("day")) !== day) {
+			const health = await s.list({ prefix: "health:" });
 			await s.deleteAll();
 			await s.put("day", day);
+			if (health.size) await s.put(Object.fromEntries(health));
 		}
+	}
+
+	// T93: keep a provider's newest outcome only (calls can finish out of order).
+	async setHealth(provider, ok, why, at) {
+		const key = `health:${provider}`;
+		const old = await this.ctx.storage.get(key);
+		if (!old || old.at <= at) await this.ctx.storage.put(key, { ok, why, at });
 	}
 
 	// Free-mode calls use their own counters ("free:" keys), so tests never use up the real budget.
@@ -624,16 +717,47 @@ export class Limiter extends DurableObject {
 		return { ok: true };
 	}
 
-	async record({ day, provider, tokens }) {
+	async record({ day, provider, tokens, ok, why = "", at }) {
 		await this.rollDay(day);
 		const key = `tokens:${provider}`;
 		await this.ctx.storage.put(key, ((await this.ctx.storage.get(key)) ?? 0) + tokens);
+		if (typeof ok === "boolean") await this.setHealth(provider, ok, why, at);
 	}
 
-	async status({ day, limits }) {
+	// T93: the outcomes of the checks a GET /health made. Their tokens go in their own
+	// count ("check_tokens:<id>"), never in the daily token budget.
+	async recordChecks({ day, results }) {
 		await this.rollDay(day);
-		const calls = (await this.ctx.storage.get("calls")) ?? 0;
-		return { budget_left: calls < limits.daily_calls };
+		const s = this.ctx.storage;
+		for (const r of results) {
+			await this.setHealth(r.provider, r.ok, r.why, r.at);
+			const key = `check_tokens:${r.provider}`;
+			await s.put(key, ((await s.get(key)) ?? 0) + r.tokens);
+			await s.delete(`checking:${r.provider}`);
+		}
+	}
+
+	// T93: also each provider's last outcome and tokens today, and "due": the ready providers
+	// whose last outcome is older than staleMs, claimed for this caller to check. A claim lasts
+	// claimMs, so a provider is checked by one caller at a time, for every player together.
+	async status({ day, limits, ready = [], now = 0, staleMs = 0, claimMs = 0 }) {
+		await this.rollDay(day);
+		const s = this.ctx.storage;
+		const calls = (await s.get("calls")) ?? 0;
+		const health = {};
+		const tokens = {};
+		const due = [];
+		for (const id of ready) {
+			const h = await s.get(`health:${id}`);
+			if (h) health[id] = h;
+			tokens[id] = (await s.get(`tokens:${id}`)) ?? 0;
+			if (h && now - h.at < staleMs) continue;
+			const claimed = await s.get(`checking:${id}`);
+			if (claimed && now - claimed < claimMs) continue;
+			await s.put(`checking:${id}`, now);
+			due.push(id);
+		}
+		return { budget_left: calls < limits.daily_calls, health, tokens, due };
 	}
 }
 

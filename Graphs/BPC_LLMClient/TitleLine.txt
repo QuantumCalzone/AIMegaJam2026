@@ -1,0 +1,9 @@
+; T93: the line under the title's greyed-out Play button, from errors.json's title_ cases: title_too_few_labs,
+; title_budget_used_up or title_no_reply. A reply the game can't read counts as "the relay doesn't answer".
+; It never names a provider.
+(fn TitleLine ()
+  (set TmpStr (V HealthKind))
+  (if (streq (V TmpStr) "unreadable")
+    (set TmpStr "no_reply"))
+  (bind _l (CallFunction|ErrorLine :Kind (cat "title_" (V TmpStr)) :Lab "" :N 0 :Type ""))
+  (return _l))

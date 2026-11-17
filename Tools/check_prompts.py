@@ -801,6 +801,8 @@ ERROR_CASES = {
     # the key screen
     "keytest_no_keys": set(), "keytest_too_few_keys": set(), "keytest_key_rejected": {"lab", "type"},
     "keytest_out_of_credits": {"lab"}, "keytest_no_reply": {"lab"}, "keytest_all_pass": {"n"},
+    # the title's greyed-out Play button (T93): never a provider's name, so no {lab}
+    "title_too_few_labs": set(), "title_budget_used_up": set(), "title_no_reply": set(),
 }
 ERROR_PLACEHOLDERS = {"lab", "n", "type"}
 # Persona names the bots once had or could be called by. The persona ids in personas.json are

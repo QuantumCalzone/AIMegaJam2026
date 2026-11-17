@@ -4,7 +4,7 @@
   (set Mode InMode)
   (if (streq InMode "relay")
     (if (Utilities|String|IsEmpty (V RelayUrl))
-      (return false "Play via Relay needs the relay address in llm.json.")))
+      (return false "Play needs the relay address in llm.json.")))
   (if (streq InMode "keys")
     (bind _n (CallFunction|KeyCount))
     (if (< _n 3)

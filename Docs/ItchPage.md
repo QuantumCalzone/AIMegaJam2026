@@ -81,7 +81,7 @@ Mouse and keyboard.
 
 Pick one on the title screen.
 
-| | Test for Free | Play via Relay | Play with my own API keys |
+| | Test for Free | Play | Play with my own API keys |
 |---|---|---|---|
 | What you need | Nothing | An internet connection | API keys for at least 3 of the 4 labs |
 | What it costs you | Nothing | Nothing (we pay) | About $0.11 a show, on your own accounts |
@@ -91,12 +91,13 @@ Pick one on the title screen.
 
 No keys, and no internet needed. The AIs answer with pre-written lines and vote at random, so they don't really read what you type and can't really catch you. Use it to learn the controls and see how a show runs. For the real game, pick one of the other two.
 
-#### Play via Relay
+#### Play
 
 The real game, with nothing to set up. Your game talks to our relay, a small server that holds our API keys and passes each request on to the four labs. Your keys aren't needed, and the calls are on us.
 
 - A show is about 90 AI calls. To keep the bill sane, the relay has daily limits: up to 150 calls per show, 600 calls per player per day (about 6 shows), and 5,000 calls a day for all players together. The limits reset at midnight UTC.
-- When you click **Play via Relay**, the game first checks that the relay is up and has budget left. If it doesn't, an **AI service unavailable** screen says why and offers **Use my own API keys**, **Test for Free** or **Back to title**.
+- **Play** works when at least 3 of the 4 AIs answer and today's budget isn't used up. The title checks the relay when it opens and every minute after. Until the first answer, Play is greyed out with "Checking the AI actors...". If too few AIs answer, the budget is used up or the relay doesn't answer, Play stays greyed out with a short line on why, and **Test for Free** or **Play with my own API keys** still work.
+- When you click **Play**, the game checks once more. If the answer changed since the last check, an **AI service unavailable** screen says why and offers **Use my own API keys**, **Test for Free** or **Back to title**.
 - If the relay goes down or hits a limit in the middle of a show, the show stops and the same screen shows the relay's message. Picking another way to play starts a new show.
 - We keep the relay running while our budget lasts **[YOU: say until when. Each show via the relay costs us about $0.11; the limits are in `Relay/README.md`]**.
 
@@ -122,7 +123,7 @@ The real game, on your own accounts. Click **Play with my own API keys** and pas
 ### What gets sent where
 
 - **Test for Free** makes no AI call. It sends only the play stats below.
-- **Play via Relay** sends the game's prompts, the scene, the chat log and your typed lines to our relay, which passes them on to the four labs. The relay doesn't store your lines. To count calls for the daily limits, it keeps your address only as a hash salted with the day. Each lab's own data policy applies to what it receives.
+- **Play** sends the game's prompts, the scene, the chat log and your typed lines to our relay, which passes them on to the four labs. The relay doesn't store your lines. To count calls for the daily limits, it keeps your address only as a hash salted with the day. Each lab's own data policy applies to what it receives.
 - **Play with my own API keys** sends the same requests straight to each lab, under your own account and that lab's policy.
 - The AI actors never see your keys, your raw typing (only the line the helper made from it) or which robot is you.
 - **Play stats.** Every way to play sends our relay a few anonymous events: a random player id the game makes on your first launch (nothing from your Epic account, your computer or your keys), which way you play, how far each show gets, how many AI calls went to each lab with their token counts, the kind of any error, and a few words naming an action you tried that the game can't do yet (never your typed line). Never your typed lines, your keys or your address (the relay keeps only a hash of it, salted with the day, as it does for the call limits). Turn them off on the title screen with **Play stats**.

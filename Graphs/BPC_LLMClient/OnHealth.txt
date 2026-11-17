@@ -1,4 +1,5 @@
 ; T37: each failed health check takes its line from errors.json (HealthFail).
+; T93: the title calls it when it opens and every 60 s. The health_test switch drops the providers it names.
 (fn OnHealth (TransportOk Response)
   (set Health "fail")
   (if (not TransportOk)
@@ -22,13 +23,19 @@
   (if _hp
     (bind _p (Json|GetField _o "providers"))
     (set HProvs _p))
+  (if (> (len (V HealthTest)) 0)
+    (for _t (V HealthTest)
+      (Utilities|Array|RemoveItem (V HProvs) _t))
+    (print (cat "NHOS: HEALTH test down=" (Utilities|String|JoinStringArray (V HealthTest) ","))))
   (if (not (V HBudget))
     (CallFunction|HealthFail :Kind "budget_used_up" :N 0)
     (print "NHOS: HEALTH fail budget_left=false")
     (return))
+  ; T93: 3 is the same floor as BP_Show.DrawCast's "fewer than 3 AI players can take a seat". Change both together.
   (if (< (len (V HProvs)) 3)
     (CallFunction|HealthFail :Kind "too_few_labs" :N (len (V HProvs)))
     (print (cat "NHOS: HEALTH fail providers=" (str (len (V HProvs)))))
     (return))
   (set Health "ok")
-  (print (cat "NHOS: HEALTH ok providers=" (str (len (V HProvs))))))
+  (set HealthSent "")
+  (print (cat "NHOS: HEALTH ok providers=" (str (len (V HProvs))) " list=" (Utilities|String|JoinStringArray (V HProvs) ","))))

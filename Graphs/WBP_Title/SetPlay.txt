@@ -1,0 +1,21 @@
+; T93: Play's three states. On: enabled, with its normal caption under it. Off: greyed out (UIStyle's disabled look)
+; with Line under it: "Checking the AI actors..." (Quiet, in the caption color) while the first check runs, or
+; BPC_LLMClient.TitleLine (in red) when fewer than 3 AIs work, the budget is used up or the relay doesn't answer.
+; A greyed-out button can't be clicked or focused, so keyboard play skips it: focus moves to Test for Free, and
+; back to Play the first time Play turns on, if it is still on Test for Free.
+(fn SetPlay (On Line Quiet)
+  (Widget|SetIsEnabled :self (Variables|WBP_Title|GetPlayButton) :bInIsEnabled On)
+  (if On
+    (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetPlayCap) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "PaperQuiet")))
+    (Widget|SetText(Text) :self (Variables|WBP_Title|GetPlayCap) :InText (Utilities|Text|ToText(String) "The real AI cast, on our keys. Free for you."))
+    (if (and (not (V PlayWasOn)) (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetFreeButton)))
+      (Widget|SetKeyboardFocus :self (Variables|WBP_Title|GetPlayButton)))
+    (set PlayWasOn true)
+    (else
+      (if Quiet
+        (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetPlayCap) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "PaperQuiet")))
+        (else
+          (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetPlayCap) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Red")))))
+      (Widget|SetText(Text) :self (Variables|WBP_Title|GetPlayCap) :InText (Utilities|Text|ToText(String) Line))
+      (if (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetPlayButton))
+        (Widget|SetKeyboardFocus :self (Variables|WBP_Title|GetFreeButton))))))

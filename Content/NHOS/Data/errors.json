@@ -1,11 +1,12 @@
 {
 	"_readme": [
 		"Error lines (T37): what the player reads when an AI call fails. Each line says what went wrong in its first sentence, then makes a joke in the show's playful, petty voice. The first line of each case is the one approved on 2026-11-15; the second is in the same voice. The game picks one of a case's lines at random.",
-		"Read by BPC_LLMClient.ErrorLine(Kind, Lab, N, Type). Every place that writes error text uses it: OnHealth, the two GoDown calls in HandleHttp, OnKeyTest, KeyTestResult and SetMode, and the backstage note when an actor's reply fails after its retry.",
+		"Read by BPC_LLMClient.ErrorLine(Kind, Lab, N, Type). Every place that writes error text uses it: OnHealth, TitleLine, the two GoDown calls in HandleHttp, OnKeyTest, KeyTestResult and SetMode, and the backstage note when an actor's reply fails after its retry.",
 		"Case keys. A plain key is a kind that BPC_LLMClient.ErrorKind returns, so the game can use it as it is. A key that starts with a screen name (health_, down_, keytest_) is that screen's own line for a kind: the caller tries '<screen>_<kind>' first, then '<kind>'. The screens match the 'where' in the log line NHOS: ERROR <kind> provider=<id> where=<health|down|keytest|turn>.",
 		"The unavailable screen, before a relay show (OnHealth, where=health): health_no_reply (the relay doesn't answer), health_unreadable (its reply can't be read), health_too_few_labs (fewer than 3 labs can serve calls), and the relay's own error types budget_used_up, session_limit, player_limit and provider_unavailable.",
 		"The unavailable screen, during a relay show (GoDown in HandleHttp, where=down): down_no_reply (the relay stopped answering), or the relay's type (budget_used_up, session_limit, player_limit, provider_unavailable). For a relay type with no case here, the relay's own error.message stays the fallback.",
 		"Backstage notes during a show (where=turn), one per kind: out_of_credits, rate_limited, overloaded, key_rejected, no_reply, cut_off, refused, unreadable, relay_429 (the lab said 429 through the relay, which can't tell a rate limit from our spending cap), relay_provider (any other relay provider_error) and unknown.",
+		"The title's greyed-out Play button (T93, BPC_LLMClient.TitleLine, read by WBP_Title): title_too_few_labs (fewer than 3 AI labs work), title_budget_used_up (today's budget is used up) and title_no_reply (the relay doesn't answer, or its reply can't be read). They never name a provider (no {lab}), and each points at Test for Free and the player's own keys. Approved on 2026-11-17.",
 		"The key screen (OnKeyTest, KeyTestResult and SetMode, where=keytest): keytest_no_keys (Test keys with nothing pasted), keytest_too_few_keys (Save and Play with keys for fewer than 3 labs), keytest_key_rejected, keytest_out_of_credits and keytest_no_reply (one lab's test result), keytest_all_pass (every pasted key works). A key-test failure of any other kind falls back to its plain kind.",
 		"Placeholders, and only these: {lab} = the provider's display name, its 'name' in personas.json (OpenAI, Anthropic, SpaceXAI or Meta). {n} = a count: how many labs the relay can reach (health_too_few_labs) or how many keys passed (keytest_all_pass). {type} = the error's 'type' field as the provider or the relay sent it, such as authentication_error. Both lines of a case use the same placeholders.",
 		"Never put the provider's own error message in a line: some providers echo part of the key (T21). ErrorKind reads it only for keywords. No persona names (the bots go by their provider, and that comes from {lab}), no lab name written out, no real people's names.",
@@ -112,6 +113,18 @@
 		"keytest_all_pass": [
 			"All {n} keys work. The cast is hired.",
 			"All {n} keys passed the test. Places, everyone!"
+		],
+		"title_too_few_labs": [
+			"Too many of our AI actors called in sick. Try Test for Free, or play with your own API keys.",
+			"Not enough of our AI actors showed up today. Try Test for Free, or play with your own API keys."
+		],
+		"title_budget_used_up": [
+			"Today's AI budget is spent, and the producers went home. Try Test for Free, or play with your own API keys.",
+			"Our producers burned today's AI budget by lunch. Try Test for Free, or play with your own API keys."
+		],
+		"title_no_reply": [
+			"Our AI relay isn't answering, so the cast is locked out. Try Test for Free, or play with your own API keys.",
+			"The game can't reach our AI relay. Someone tripped over the cable. Try Test for Free, or play with your own API keys."
 		]
 	},
 	"test_replies": {

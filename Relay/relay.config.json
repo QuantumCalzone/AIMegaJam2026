@@ -15,6 +15,14 @@
 			"daily_calls": 50000
 		}
 	},
+	"health": {
+		"_readme": "T93: GET /health lists a provider only when its last outcome succeeded and its daily_tokens aren't used up. An outcome is a real call through the relay (success = the provider answered 2xx) or a check. When a provider's last outcome is older than stale_seconds, the next GET /health claims a check for it (one claim per provider for everyone together, held for claim_seconds) and makes the smallest call its API takes: the first model in its models list (the cheapest), check_max_tokens tokens (a provider's own check_max_tokens wins: openai answers a 1-token cap with a 400, so it gets 16) and the one-word check_prompt, with the provider's force fields. Checks never count as calls or against any limit, and their tokens are logged (relay: check ...) but not added to daily_tokens. Override stale_seconds per deploy or in wrangler dev with the var HEALTH_STALE_SECONDS.",
+		"stale_seconds": 300,
+		"claim_seconds": 30,
+		"check_timeout_ms": 15000,
+		"check_prompt": "Hi",
+		"check_max_tokens": 1
+	},
 	"events": {
 		"_readme": "Analytics events (POST /event, see Relay/README.md). Each event lists the only fields it may carry; a field is optional, and an unknown event, an extra field, a wrong type, a number out of range or a string over its max length is a bad_request. Types: string (max = length), int (min, max), bool. Never add a field that holds typed text, keys or an address.",
 		"max_body_bytes": 2048,
@@ -145,6 +153,7 @@
 			],
 			"max_tokens_field": "max_completion_tokens",
 			"max_tokens_cap": 2000,
+			"check_max_tokens": 16,
 			"daily_tokens": 8000000,
 			"body_keys": [
 				"model",

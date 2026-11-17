@@ -1,6 +1,12 @@
+; T93: in a relay show, only the providers that the last good health check listed (after the health_test
+; switch) can take a seat, so DrawCast follows the same answer as the title's Play button. With no good
+; check yet (an autoplay relay run skips the title), every provider in llm.json can, as before.
 (fn CanSeat (Prov)
   (if (streq (V Mode) "keys")
     (bind _k (CallFunction|ProvKey :Prov Prov))
     (return (not (Utilities|String|IsEmpty _k))))
+  (if (and (streq (V Mode) "relay") (streq (V Health) "ok"))
+    (bind _i (Utilities|Array|FindItem (V HProvs) Prov))
+    (return (>= _i 0)))
   (bind _h (Json|HasField (V Providers) Prov))
   (return _h))

@@ -3,6 +3,12 @@
 ; While the title is up, the stage's own widgets (header, card, input row) are hidden, and they come back when it closes.
 ; T68: the Play stats toggle (StatsButton) under the three ways to play. It finds BP_Show's analytics component by
 ; class (ShowStats), so while BP_Show has none the row stays collapsed and the button does nothing.
+; T93: Play via Relay became Play. The title checks the relay when it opens (Play greyed out, "Checking the AI
+; actors..."), every 60 s of real time while it is up (CheckAt;
+; the widget's InDeltaTime is capped per frame, so a slow frame rate would stretch a sum of it) and on the click. Play turns on when the answer lists at least
+; 3 working providers with budget left (BPC_LLMClient.OnHealth, the same floor as BP_Show.DrawCast); otherwise it
+; stays greyed out with BPC_LLMClient.TitleLine under it (SetPlay). A click waits for a fresh answer (Checking):
+; if the answer changed since the last check, the unavailable screen opens as before.
 (event UserInterface|EventPreConstruct (IsDesignTime)
   (bind fCap (Class|UIStyle|UIFont :Role "Caption"))
   (bind fBody (Class|UIStyle|UIFont :Role "Body"))
@@ -49,7 +55,11 @@
 (event UserInterface|EventConstruct
   (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
   (Widget|SetRenderOpacity :self (Class|BPShow|GetStage :self _show) :InOpacity 0.0)
-  (Widget|SetKeyboardFocus :self (Variables|WBP_Title|GetPlayButton))
+  (Widget|SetKeyboardFocus :self (Variables|WBP_Title|GetFreeButton))
+  (set PlayWasOn false)
+  (CallFunction|SetPlay :On false :Line "Checking the AI actors..." :Quiet true)
+  (set TitleCheck true)
+  (Class|BPCLLMClient|CheckRelay :self (Class|BPShow|GetLLMClient :self _show))
   (CallFunction|ShowStats))
 
 (event UserInterface|EventDestruct
@@ -61,17 +71,30 @@
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetFreeRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetFreeButton)))
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetKeysRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetKeysButton)))
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetStatsRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetStatsButton)))
-  (if (V Checking)
+  (if (V TitleCheck)
     (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
     (bind _cl (Class|BPShow|GetLLMClient :self _show))
     (bind (_done _ok _msg) (Class|BPCLLMClient|HealthResult :self _cl))
     (if _done
-      (set Checking false)
-      (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) ""))
+      (set TitleCheck false)
+      (set CheckAt (+ (Utilities|Time|GetRealTimeSeconds) 60.0))
+      (print (cat "NHOS: TITLE play " (select _ok "on" "off")))
       (if _ok
-        (Class|BPShow|StartfromTitle :self _show)
+        (CallFunction|SetPlay :On true :Line "" :Quiet true)
         (else
-          (Class|BPCLLMClient|ShowUnavailable :self _cl :Msg _msg))))))
+          (CallFunction|SetPlay :On false :Line (Class|BPCLLMClient|TitleLine :self _cl) :Quiet false)))
+      (if (V Checking)
+        (set Checking false)
+        (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) ""))
+        (if _ok
+          (Class|BPShow|StartfromTitle :self _show)
+          (else
+            (Class|BPCLLMClient|ShowUnavailable :self _cl :Msg _msg)))))
+    (else
+      (if (>= (Utilities|Time|GetRealTimeSeconds) (V CheckAt))
+        (set TitleCheck true)
+        (bind _show2 (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+        (Class|BPCLLMClient|CheckRelay :self (Class|BPShow|GetLLMClient :self _show2))))))
 
 (event OnClicked(PlayButton)
   (print "NHOS: TITLE click relay")
@@ -82,8 +105,10 @@
     (if _ok
       (set Checking true)
       (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetModeNote) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "PaperText")))
-      (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) "Checking the AI relay..."))
-      (Class|BPCLLMClient|CheckRelay :self _cl)
+      (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) "Checking the AI actors..."))
+      (if (not (V TitleCheck))
+        (set TitleCheck true)
+        (Class|BPCLLMClient|CheckRelay :self _cl))
       (else
         (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetModeNote) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Red")))
         (Widget|SetText(Text) :self (Variables|WBP_Title|GetModeNote) :InText (Utilities|Text|ToText(String) _err))))))

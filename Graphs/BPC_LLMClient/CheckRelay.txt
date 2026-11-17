@@ -1,9 +1,11 @@
+; T93: the title calls it when it opens, every 60 s while it is up, and on the Play click.
 (fn CheckRelay ()
   (set Health "wait")
   (set HealthMsg "")
   (if (Utilities|String|IsEmpty (V RelayUrl))
     (set Health "fail")
-    (set HealthMsg "Play via Relay needs the relay address in llm.json.")
+    (set HealthKind "no_reply")
+    (set HealthMsg "Play needs the relay address in llm.json.")
     (return))
   (print "NHOS: HEALTH check")
   (bind _req (Game|AddComponentbyClass (Components|GetOwner) "/Game/NHOS/Core/BPC_HttpGet.BPC_HttpGet_C"))

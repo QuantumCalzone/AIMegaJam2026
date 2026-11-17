@@ -2,6 +2,7 @@
 ; T68: also finds the analytics component (Stats, FindStats).
 ; T69: also input_schema (the input ask's reply shape) and the attempt_test switch.
 ; T77: also free_mode.json emotion_keywords, the table that picks my emotion from my line.
+; T93: also the health_test switch (HealthTest), the providers that OnHealth treats as down.
 (fn LoadConfig ()
   (bind _dir (Utilities|Paths|GetProjectDirectory))
   (bind _cdir (Utilities|Paths|GetProjectContentDirectory))
@@ -80,6 +81,7 @@
   (set BurnTest false)
   (set ErrTest "")
   (set AttemptTest "")
+  (clear (V HealthTest))
   (bind (_so _sok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _dir "Local/switches.json"))))
   (if _sok
     (bind _hm (Json|HasField _so "mode"))
@@ -97,7 +99,11 @@
     (bind _hat (Json|HasField _so "attempt_test"))
     (if _hat
       (bind _sat (Json|GetField _so "attempt_test"))
-      (set AttemptTest _sat)))
+      (set AttemptTest _sat))
+    (bind _hht (Json|HasField _so "health_test"))
+    (if _hht
+      (bind _sht (Json|GetField _so "health_test"))
+      (set HealthTest _sht)))
   (set Relaunched false)
   (bind _gm (Game|GetGameMode))
   (bind _opt (GameOptions|ParseOption :Options (Class|GameModeBase|GetOptionsString :self _gm) :Key "nhosmode"))
@@ -114,5 +120,5 @@
   (CallFunction|FindStats)
   (set Ready true)
   (bind _n (CallFunction|KeyCount))
-  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest)) " error_test=" (V ErrTest) " attempt_test=" (V AttemptTest) " emotion_keywords=" (str (len (V EmoKeys)))))
+  (print (cat "NHOS: CLIENT ready mode=" (V Mode) " keys=" (str _n) " burn_test=" (Utilities|String|ToString(Boolean) (V BurnTest)) " error_test=" (V ErrTest) " attempt_test=" (V AttemptTest) " emotion_keywords=" (str (len (V EmoKeys))) " health_test=" (Utilities|String|JoinStringArray (V HealthTest) ",")))
   (return true ""))
