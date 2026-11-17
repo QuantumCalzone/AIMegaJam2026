@@ -1,11 +1,11 @@
-# T89: each push to noHumansOnSet that changes the game packages a Windows build on the PC's
-# self-hosted runner and pushes it to the itch.io page as the post-jam file (channel
-# windows-postjam). The jam's file is never touched. See "Deploys to itch.io" in CLAUDE.md.
+# T89: each push to noHumansOnSet that changes the game packages it on our own machines
+# (self-hosted runners) and pushes it to the itch.io page with butler: the PC pushes the
+# channel "windows", the Mac the channel "mac". See "Deploys to itch.io" in CLAUDE.md.
 #
-# It never runs on pull_request: a fork's pull request could run code on the PC.
+# It never runs on pull_request: a fork's pull request could run code on our machines.
 # A commit with [skip ci] in its message starts no run.
 
-name: itch.io post-jam Windows build
+name: itch.io builds
 
 on:
   push:
@@ -14,21 +14,21 @@ on:
       - "Content/**"
       - "Config/**"
       - "AIMegaJam2026.uproject"
-      - ".github/workflows/itch-windows.yml"
+      - ".github/workflows/itch-deploy.yml"
       - "Tools/deploy_itch.py"
   workflow_dispatch:
 
 # Many sessions push. A newer push cancels the run in progress, so a burst builds only its newest
 # commit. Tools/deploy_itch.py stops what a cancelled run leaves in the deploy worktree.
 concurrency:
-  group: itch-windows
+  group: itch-deploy
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  deploy:
+  windows:
     runs-on: [self-hosted, Windows, nhos-build]
     timeout-minutes: 120
     env:
@@ -52,3 +52,27 @@ jobs:
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: python -u Tools/deploy_itch.py --commit "${{ github.sha }}"
+
+  # Off until the Mac is a runner: set the repository variable MAC_DEPLOY to true, and
+  # MAC_NHOS_REPO and MAC_NHOS_DEPLOY to the Mac's repo folder and deploy worktree
+  # (Settings > Secrets and variables > Actions > Variables). Without it, no Mac job waits.
+  mac:
+    if: ${{ vars.MAC_DEPLOY == 'true' }}
+    runs-on: [self-hosted, macOS, nhos-build]
+    timeout-minutes: 150
+    env:
+      NHOS_REPO: ${{ vars.MAC_NHOS_REPO }}
+      NHOS_DEPLOY: ${{ vars.MAC_NHOS_DEPLOY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+          fetch-depth: 1
+
+      - name: Check the data files
+        run: python3 Tools/check_prompts.py --offline
+
+      - name: Package, check for secrets and push to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: python3 -u Tools/deploy_itch.py --commit "${{ github.sha }}"
