@@ -94,7 +94,7 @@ The app wakes you when every session you started is idle, or when I send you a m
 
 ### 4. When I stop or move to another machine
 
-When I say that I'm stopping, or that the work moves to another machine: start nothing new. Tell me which sessions are in the middle of work. Once each one has pushed its commit or stopped, write a handoff in `Agents/handoffs/` as `Agents/README.md` says. Say what is done, what is still held (claims and asset locks) and what comes next. Commit only that file, with the message `Agents: handoff <slug>`, and push it.
+When I say that I'm stopping, or that the work moves to another machine: start nothing new. Tell me which sessions are in the middle of work. Once each one has pushed its commit or stopped, write a handoff in `Agents/handoffs/` as `Agents/README.md` says. Say what is done, what is still held (claims and asset locks) and what comes next. Commit only that file, with the message `Agents: handoff <slug>`, and push it. Then delete your ledger, `Agents/status/dispatcher.md`: while it exists, sessions on this machine take the two-machine setup as active (see "Two machines at once" in `CLAUDE.md`).
 
 ### 5. When another machine runs its own dispatcher
 

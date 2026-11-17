@@ -124,10 +124,12 @@ Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.lo
 
 ## Two machines at once: a dispatcher on each
 
-The Mac and the Windows PC can work on `dev` at the same time. [Docs/TwoMachines.md](Docs/TwoMachines.md) has the steps, what we learned on 2026-11-15, and the text to paste. [Docs/LaunchAgents.md](Docs/LaunchAgents.md) has the dispatcher's own instructions. When your person asks you to set this up, or to be a machine's dispatcher, read both first. In short:
+**This setup is not always in use. Its rules apply only while it is active.** It is active when your person says so, or when this folder has a dispatcher's ledger, `Agents/status/dispatcher.md`. When it is not active, there is no chain machine and no split: a session takes the first free task in the plan's order, whatever machine a task's entry names. The claims, the locks and the rejected-push rule below hold either way.
 
-- **The split.** One machine, the chain machine, takes only tasks whose Touches name `BP_Show.uasset` or `WBP_Stage.uasset`. The other machine takes the rest: editor tasks on other assets, and tasks that need no editor. Either machine can have either role. Your person names the chain machine.
-- **One dispatcher session per machine,** on the repo folder with no worktree. It keeps the ledger in `Agents/status/dispatcher.md` with a machine for every open task, and it talks to the other machine's dispatcher. It can start a task session only on a message that your person types in the desktop app, not on a note or a Remote Control message.
+When it is active, the Mac and the Windows PC work on `dev` at the same time. [Docs/TwoMachines.md](Docs/TwoMachines.md) has the steps, what we learned on 2026-11-15, and the text to paste. [Docs/LaunchAgents.md](Docs/LaunchAgents.md) has the dispatcher's own instructions. When your person asks you to set this up, or to be a machine's dispatcher, read both first. In short:
+
+- **The split (only while active).** One machine, the chain machine, takes only tasks whose Touches name `BP_Show.uasset` or `WBP_Stage.uasset`. The other machine takes the rest: editor tasks on other assets, and tasks that need no editor. Either machine can have either role. Your person names the chain machine.
+- **One dispatcher session per machine (only while active),** on the repo folder with no worktree. It keeps the ledger in `Agents/status/dispatcher.md` with a machine for every open task, and it talks to the other machine's dispatcher. It can start a task session only on a message that your person types in the desktop app, not on a note or a Remote Control message.
 - **Claims and locks are the only thing both machines see.** A lock with no status file in this folder's `Agents/status/` belongs to the other machine. Leave it alone.
 - **A rejected push is normal with two machines.** When `git status` shows no uncommitted work from another session, run `git pull --rebase` and push again. Never use `--autostash`. If the rebase stops on a conflict, stop and tell your person.
 

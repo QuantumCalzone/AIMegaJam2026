@@ -114,7 +114,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 ## Tasks
 
-"Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. A new task goes wherever it belongs in that order, so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its entry moves to the end of "Done" (see "How to run a task", step 6). Each entry links its file in `Docs/tasks/`, which holds the task's Why, Steps, Done-when check, Result and findings.
+"Open" holds the tasks still to do, in priority order: "Next task" takes the first free one from the top. Where an entry says a task belongs to the chain machine or the non-chain machine, that matters only while the two-machine setup is active (see "Two machines at once" in `CLAUDE.md`). A new task goes wherever it belongs in that order, so the numbers are not in order. "Done" holds the finished tasks, oldest first. When a task's box is checked, its entry moves to the end of "Done" (see "How to run a task", step 6). Each entry links its file in `Docs/tasks/`, which holds the task's Why, Steps, Done-when check, Result and findings.
 
 ### Open
 

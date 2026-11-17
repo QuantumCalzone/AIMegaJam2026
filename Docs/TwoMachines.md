@@ -4,6 +4,12 @@ How to work on the jam from two machines at the same time, for example the Mac a
 
 [LaunchAgents.md](LaunchAgents.md) holds the dispatcher's own instructions. This file says how the two machines fit together, what we learned, and the text to paste.
 
+## When this applies
+
+This setup is not always in use. It is active when you say so, or when a machine's repo folder has a dispatcher's ledger, `Agents/status/dispatcher.md`. Only then do the split and the dispatcher rules apply. When it is not active, a session takes the first free task in the plan's order, whatever machine a task's entry names; the claims and locks work as always.
+
+A dispatcher deletes its ledger when you stop (see "Set it up"), so that later sessions on that machine don't take the setup as active.
+
 ## The parts
 
 | Part | What it does | Where it lives |
@@ -32,7 +38,7 @@ Do this on each machine:
 3. Before you leave: keep the machine plugged in and awake with the lid open, and leave the Claude app and the editor open.
 4. Write down your answer for every open task that needs one before it can work (its Needs line says "my answer" or "my OK"), in the task's file.
 
-To stop: tell each dispatcher that you are stopping ([LaunchAgents.md](LaunchAgents.md), step 4).
+To stop: tell each dispatcher that you are stopping ([LaunchAgents.md](LaunchAgents.md), step 4). Once its sessions are done, the dispatcher deletes its ledger, `Agents/status/dispatcher.md`. Without a ledger, the setup is not active on that machine (see "When this applies").
 
 ## What we learned
 
