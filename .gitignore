@@ -42,3 +42,7 @@ Relay/.dev.vars*
 !Relay/.dev.vars.example
 Relay/node_modules/
 Relay/.wrangler/
+
+# Python bytecode (the editor makes it when it runs Content/Python/init_unreal.py)
+__pycache__/
+*.pyc
