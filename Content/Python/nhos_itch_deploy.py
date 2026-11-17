@@ -114,8 +114,10 @@ def _entry(menu, name, label, tooltip, command):
 
 def register():
     menus = unreal.ToolMenus.get()
-    tools = menus.find_menu("LevelEditor.MainMenu.Tools")
+    # extend_menu works even when the Level Editor hasn't built its Tools menu yet at startup.
+    tools = menus.extend_menu("LevelEditor.MainMenu.Tools")
     if tools is None:
+        unreal.log_warning("NHOS: ITCH MENU not added (no LevelEditor.MainMenu.Tools)")
         return
     sub = tools.add_sub_menu(MENU_OWNER, "", "NHOS_Itch", "itch.io", "Build the game and upload it to itch.io")
     sub.add_section(SECTION, "No Humans On Set")
@@ -128,4 +130,5 @@ def register():
     _entry(sub, "NHOS_ItchLog", "Open the last deploy log",
            "Saved/Logs/DeployItch.log", "import nhos_itch_deploy; nhos_itch_deploy.open_log()")
     menus.refresh_all_widgets()
+    unreal.log("NHOS: ITCH MENU added (Tools > itch.io, 3 entries)")
 
