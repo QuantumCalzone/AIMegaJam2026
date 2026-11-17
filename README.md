@@ -1,6 +1,6 @@
-# AIMegaJam2026
+# No Humans On Set
 
-An Unreal Engine 5.8 project with Blueprints only, so there's no C++ to compile.
+An Unreal Engine 5.8 project with Blueprints only, so there's no C++ to compile. It began as an entry for the 2026 Epic AI MegaJam, which is why the repo and the Unreal project are still named `AIMegaJam2026`. The jam is over, and work on the game goes on.
 
 ## What we're building
 
@@ -76,7 +76,7 @@ If something else on your machine already uses port 8000, change the port in **E
 ## Build the game
 
 - **Windows builds must be packaged on Windows.** In the editor, use **Platforms > Windows > Package Project**. For the command-line version, see [Docs/Builds.md](Docs/Builds.md).
-- **Packaging compiles a small game program**, because the game's HTTP and JSON plugins have no prebuilt game binaries in the launcher engine. To package on Windows, install Visual Studio 2022 with the "Desktop development with C++" workload and the **Windows 11 SDK (10.0.22621.0)**. You don't need them to work on the game. The command in CLAUDE.md is tested. The editor's Package Project menu is not tested yet; if it stops and asks for the .NET Framework SDK, use the command instead.
+- **Packaging compiles a small game program**, because the game's HTTP and JSON plugins have no prebuilt game binaries in the launcher engine. To package on Windows, install Visual Studio 2022 with the "Desktop development with C++" workload and the **Windows 11 SDK (10.0.22621.0)**. You don't need them to work on the game. The command in [Docs/Builds.md](Docs/Builds.md) is tested. The editor's Package Project menu is not tested yet; if it stops and asks for the .NET Framework SDK, use the command instead.
 - A Mac can package a macOS build (this needs Xcode), but not a Windows one.
 - **Before you zip or upload a build**, run `python Tools/check_build_secrets.py <build folder or zip>` on a machine that has our keys in `Local/`. It fails if the build holds one of our API keys, anything shaped like a key, or a `Local/` or `Saved/` folder.
 - **Upload a build from the editor.** Push your work first, then use **Tools > itch.io > Build and upload to itch.io**. It packages the pushed tip of `dev` in a separate folder, checks it for secrets and uploads it to the itch.io page with butler (run `butler login` once on your machine first), in its own window while you keep working. A zip you make by hand is named `QuantumCalzone_NoHumansOnSet_<Windows|Mac>_<YYYY-MM-DD>.zip` and goes up as a new file; never replace the jam's file. See "Deploys to itch.io" in [CLAUDE.md](CLAUDE.md).
