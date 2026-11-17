@@ -1,5 +1,7 @@
 # T44 build sheet: the seven film-parody cards
 
+**Note, 2026-11-17:** the `T44-build/` folder this sheet links was deleted in the post-jam cleanup, because T44 is done and its files were used once. Git history has it (`git show 465cf9f:Docs/tasks/T44-build/<file>`).
+
 Back to [T44](T44.md) and [the plan](../Plan.md). This is prep for T44. It was written without the editor on 2026-11-15 at commit `9b4cd8b`, and **refreshed on 2026-11-15 against commit `6ada2ab`** (T51: no decoy note, and every note gets a category; T56's rivals and T30 were already in). It is a plan, not a record. Nothing in `Content/NHOS/Data/`, `Tools/` or the design doc changed. The drafts are in [T44-build/](T44-build/):
 
 **What the refresh changed:** the draft notes have no decoy and each has a `category` in T51's form (`{ "id", "category", "note" }`), with the new `favorite_prop` note in Speech; the `notes` line of the draft `_readme` is T51's; `make_scenes.py` reads and writes notes in that form; `check_prompts.patch` was made again with `git diff` against `6ada2ab`, and `patch_check_prompts.py` matches T51's checker and still runs after T50's planned checker edits; the sample show has no decoy (SpaceXAI forgets to grab a prop, as in T51), every new sample line is 15 words or fewer (T59), and the overclocker's rival line names Player 5, Meta, its rival since T56. "What T44 must check again" and "The 15-word cap and the rivals" are new, and so is "Decisions made for my person" at the end.

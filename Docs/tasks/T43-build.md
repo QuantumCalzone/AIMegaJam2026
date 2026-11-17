@@ -1,5 +1,7 @@
 # T43 build sheet: import the generated models and make the clay material
 
+**Note, 2026-11-17:** the `T43-build/` folder this sheet links was deleted in the post-jam cleanup, because T43 is done and its files were used once. Git history has it (`git show 465cf9f:Docs/tasks/T43-build/<file>`).
+
 Back to [T43](T43.md) and [the plan](../Plan.md). This is prep for T43. It was written without the editor on 2026-11-15 at commit `6172856` (T40's headpieces are in; T41 and T42 haven't started). It is a plan, not a record: nothing here was written to the editor, and no asset was changed. The tool names and arguments below were read from this Mac's running editor with `describe_toolset` (a read of the tool list, no editor action), so they are the real 5.8.4 signatures. The material node and pin names are the ones T43 must confirm (E2 to E4).
 
 Sources read: [T43.md](T43.md), T43's plan entry, [PropArt.md](../PropArt.md) (the style test and its result), `Docs/PropArt/manifest.json`, the findings of T39 and T40, the Unreal MCP rules in T01, T11, T17, T19, T27 and T35, `M_Robot` and `M_Set` as T11 and T17 describe them, `Docs/Submission.md`, `Docs/ItchPage.md`, T46 and T47 (who use `M_Clay` and the headpieces next), and `Tools/art_gen.py`'s manifest writer.

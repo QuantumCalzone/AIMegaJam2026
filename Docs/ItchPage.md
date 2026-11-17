@@ -1,9 +1,9 @@
 # itch.io page draft
 
-The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used for the submission. It was drafted on 2026-11-14, before T19 to T22 were done. The form fields and the open questions for the submission are in [Submission.md](Submission.md).
+The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used for the submission. It was drafted on 2026-11-14, before T19 to T22 were done. The jam's submission drafts were in `Docs/Submission.md` until 2026-11-17; git history has them (`git show 465cf9f:Docs/Submission.md`).
 
 - **Markers:** **[T19]** (robots act out their actions), **[T20]** (audio), **[T22]** (the packaged build) and **[T24]** (timers, if done) mark text those tasks may change. **[YOU]** marks a blank only you can fill in. Settle every marker, then delete the markers before you paste.
-- Each AI player goes by its provider here, as in the game: OpenAI, Anthropic, SpaceXAI and Meta. If open question 8 in `Submission.md` changes "SpaceXAI", change it here too.
+- Each AI player goes by its provider here, as in the game: OpenAI, Anthropic, SpaceXAI and Meta. The jam page spelled that provider "SpaceXSI". If the game's name for it changes (`name` in `Content/NHOS/Data/personas.json`), change it here too.
 - Everything between the two rules under "Page text" goes into the page's description. The sections before it are the page's settings.
 
 ## Page settings
@@ -15,13 +15,13 @@ The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used f
 | Classification | Games |
 | Kind of project | Downloadable |
 | Release status | Prototype |
-| Pricing | No payments (free). See open question 10 in `Submission.md`. |
+| Pricing | No payments (free). Change it if you want donations on. |
 | Uploads | `no-humans-on-set-windows.zip`, from butler's channel `windows`, marked Windows: each push that changes the game replaces it (T89; see "Deploys to itch.io" in `Docs/Builds.md`). A Mac file, channel `mac`, comes when the Mac is a runner. Since 2026-11-17 the page holds no jam zip (`QuantumCalzone_NoHumansOnSet_Windows.zip`); never replace one that goes up through the web form. |
 | Genre | Other |
 | Tags | social-deduction, ai, llm, improv, comedy, robots, text-based, unreal-engine |
 | Cover image | 630 × 500, a crop of the theater mid-scene |
 | Screenshots | The theater mid-scene, Scene Prep, Free Talk, the reveal stamp, the end screen, and the title screen with the three ways to play |
-| Gameplay video | The video from the shot list in `Submission.md` |
+| Gameplay video | The gameplay video made for the jam |
 
 **AI generation disclosure.** itch.io asks whether a project has content made with generative AI. Suggested answers (match them to the wording on the edit page, and confirm them: open question 11):
 
@@ -98,7 +98,7 @@ The real game, with nothing to set up. Your game talks to our relay, a small ser
 - A show is about 90 AI calls. To keep the bill sane, the relay has daily limits: up to 150 calls per show, 600 calls per player per day (about 6 shows), and 5,000 calls a day for all players together. The limits reset at midnight UTC.
 - When you click **Play via Relay**, the game first checks that the relay is up and has budget left. If it doesn't, an **AI service unavailable** screen says why and offers **Use my own API keys**, **Test for Free** or **Back to title**.
 - If the relay goes down or hits a limit in the middle of a show, the show stops and the same screen shows the relay's message. Picking another way to play starts a new show.
-- We keep the relay running while our budget lasts **[YOU: say until when; see open question 9 in `Submission.md`]**.
+- We keep the relay running while our budget lasts **[YOU: say until when. Each show via the relay costs us about $0.11; the limits are in `Relay/README.md`]**.
 
 #### Play with my own API keys
 

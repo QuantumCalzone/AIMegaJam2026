@@ -1,7 +1,7 @@
 """Build Docs/tasks/T45-build/props.json (the draft of Content/NHOS/Data/props.json).
 
-Reads the cards' props from a scenes.json (default: the T44 draft; pass the real
-Content/NHOS/Data/scenes.json once T44 has landed) and each model's fit from
+Reads the cards' props from a scenes.json (default: the game's own
+Content/NHOS/Data/scenes.json) and each model's fit from
 Docs/PropArt/manifest.json. Run from the repo root:
 
     python Docs/tasks/T45-build/make_props.py [path/to/scenes.json] [out.json]
@@ -13,7 +13,7 @@ import pathlib
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[3]
-scenes_path = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "Docs/tasks/T44-build/scenes.json"
+scenes_path = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "Content/NHOS/Data/scenes.json"
 out_path = pathlib.Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "Docs/tasks/T45-build/props.json"
 
 # Longest side in cm on stage, per prop (T43's finding: 30 cm for every prop read wrong for
