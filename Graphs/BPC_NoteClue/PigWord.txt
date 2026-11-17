@@ -1,0 +1,18 @@
+; BPC_NoteClue.PigWord(W) -> String (T88): leading consonants (y counts as one) move to the end plus "ay"; a word that
+; starts with a vowel adds "yay". A capital stays on the first letter, and punctuation stays at the end.
+(fn PigWord (W)
+  (CallFunction|SplitWord :W W)
+  (set TmpStr (Utilities|String|ToLower (V WCore)))
+  (set TmpB (not (Utilities|String|EqualExactly(String) (Utilities|String|Left :SourceString (V WCore) :Count 1) (Utilities|String|Left :SourceString (V TmpStr) :Count 1))))
+  (set PK 0)
+  (set PStop false)
+  (for _i (range (Utilities|String|Len (V TmpStr)))
+    (bind _c (Utilities|String|GetSubstring :SourceString (V TmpStr) :StartIndex _i :Length 1))
+    (if (or (V PStop) (Utilities|String|Contains :SearchIn "aeiou" :Substring _c))
+      (set PStop true)
+      (else
+        (set PK (+ _i 1)))))
+  (set SOut (select (== (V PK) 0) (cat (V TmpStr) "yay") (cat (Utilities|String|RightChop :SourceString (V TmpStr) :Count (V PK)) (Utilities|String|Left :SourceString (V TmpStr) :Count (V PK)) "ay")))
+  (if (V TmpB)
+    (set SOut (cat (Utilities|String|ToUpper (Utilities|String|Left :SourceString (V SOut) :Count 1)) (Utilities|String|RightChop :SourceString (V SOut) :Count 1))))
+  (return (cat (V SOut) (V WPunct))))

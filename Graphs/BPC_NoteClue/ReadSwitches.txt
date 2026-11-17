@@ -1,0 +1,17 @@
+; BPC_NoteClue.ReadSwitches (T88): ForceKind (clue) and ClueTest (clue_test) from Local/switches.json; "" and false
+; if the file or the field is missing. Deal calls it at each Scene Prep, so clue can change between scenes.
+(fn ReadSwitches ()
+  (set ForceKind "")
+  (set ClueTest false)
+  (bind (_sw _swok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectDirectory) "Local/switches.json"))))
+  (if (not _swok)
+    (return))
+  (set Sw _sw)
+  (if (Json|HasField (V Sw) "clue")
+    (bind _f (Json|GetField (V Sw) "clue"))
+    (set TmpStr _f)
+    (set ForceKind (V TmpStr)))
+  (if (Json|HasField (V Sw) "clue_test")
+    (bind _t (Json|GetField (V Sw) "clue_test"))
+    (set TmpB _t)
+    (set ClueTest (V TmpB))))

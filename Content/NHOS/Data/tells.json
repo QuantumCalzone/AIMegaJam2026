@@ -6,7 +6,7 @@
 	],
 	"tells": [
 		{"id": "late_copy", "means": "copied the others a turn late", "line": "They caught you copying late."},
-		{"id": "note", "means": "only matched the note's category, or missed the note", "line": "They caught you guessing at the director's note."},
+		{"id": "note", "means": "only matched the note's clue, or missed the note", "line": "They caught you guessing at the director's note."},
 		{"id": "silence", "means": "passed or went quiet", "line": "They caught you going quiet."},
 		{"id": "polish", "means": "lines too smooth or polished for a bot", "line": "They caught you sounding too polished."},
 		{"id": "human_slip", "means": "hunger, sleep, feelings or family as their own, or a dodged question", "line": "They caught you sounding a little too human."},

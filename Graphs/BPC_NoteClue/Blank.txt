@@ -1,0 +1,10 @@
+; BPC_NoteClue.Blank(Src, Vowels) -> String (T88): Vowels true blanks a, e, i, o and u (the consonants kind); false
+; blanks every other letter (the vowels kind). Spaces and punctuation stay. Contains ignores case.
+(fn Blank (Src Vowels)
+  (set BOut "")
+  (for _i (range (Utilities|String|Len Src))
+    (bind _c (Utilities|String|GetSubstring :SourceString Src :StartIndex _i :Length 1))
+    (bind _l (Utilities|String|Contains :SearchIn "abcdefghijklmnopqrstuvwxyz" :Substring _c))
+    (bind _v (Utilities|String|Contains :SearchIn "aeiou" :Substring _c))
+    (set BOut (cat (V BOut) (select (and _l (xor _v (not Vowels))) "_" _c))))
+  (return (V BOut)))

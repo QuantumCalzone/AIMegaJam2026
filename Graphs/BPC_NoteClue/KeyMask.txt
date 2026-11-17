@@ -1,0 +1,14 @@
+; BPC_NoteClue.KeyMask(Src, Key, Hide) -> String (T88): Hide true blacks out the key word (key_blank); false blacks
+; out every other word (key_only). Each word keeps its punctuation. Key is matched exactly, as written in the note.
+(fn KeyMask (Src Key Hide)
+  (set Words (Utilities|String|ParseIntoArray :SourceString Src :Delimiter " " :CullEmptyStrings true))
+  (clear (V Outs))
+  (for _w (V Words)
+    (CallFunction|SplitWord :W _w)
+    (set TmpB (Utilities|String|EqualExactly(String) (V WCore) Key))
+    (if (xor (V TmpB) (not Hide))
+      (bind _bars (CallFunction|Bars :N (Utilities|String|Len (V WCore))))
+      (add (V Outs) (cat _bars (V WPunct)))
+      (else
+        (add (V Outs) _w))))
+  (return (Utilities|String|JoinStringArray (V Outs) " ")))

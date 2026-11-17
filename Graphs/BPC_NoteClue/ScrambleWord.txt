@@ -1,0 +1,19 @@
+; BPC_NoteClue.ScrambleWord(W) -> String (T88): the word's letters shuffled in place, its punctuation kept. A word with
+; two or more different letters never comes out unchanged (at most 20 shuffles; the chance of 20 misses is nil).
+; SChars is filled letter by letter with GetSubstring.
+(fn ScrambleWord (W)
+  (CallFunction|SplitWord :W W)
+  (clear (V SChars))
+  (for _i (range (Utilities|String|Len (V WCore)))
+    (add (V SChars) (Utilities|String|GetSubstring :SourceString (V WCore) :StartIndex _i :Length 1)))
+  (set SDiff false)
+  (for _c (V SChars)
+    (if (not (Utilities|String|EqualExactly(String) _c (get (V SChars) 0)))
+      (set SDiff true)))
+  (set SOut (V WCore))
+  (if (V SDiff)
+    (for _t (range 20)
+      (if (Utilities|String|EqualExactly(String) (V SOut) (V WCore))
+        (Utilities|Array|Shuffle (V SChars))
+        (set SOut (Utilities|String|JoinStringArray (V SChars) "")))))
+  (return (cat (V SOut) (V WPunct))))

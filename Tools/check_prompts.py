@@ -73,12 +73,21 @@ pairs are mutual. Its prompt ends with its rival line ('Your rival: ...'), which
 describes the rival by its traits and holds no persona id, provider name, pun
 name from the design doc (PUN_NAMES) or Player name.
 
-Director's note (T50): only the AI seats get the note. Every actor state's
-scene_card carries note_category, the note's 'category' from scenes.json, and
-'you' carries the note. The human's sample seat (Player 3) has no note, and the
-input converter's state has neither. The file check also finds the design
-doc's four note lines in prompts.json 'game', word for word (DOC_NOTE_LINES).
-A scene turn whose speech holds the note word for word is a WARN.
+Director's note (T50, T88): only the AI seats get the note. Every actor
+state's scene_card carries note_clue {kind, how, text}, the clue the human's
+card shows this scene (clues.json), and 'you' carries the note. The human's
+sample seat (Player 3) has no note, and the input converter's state has neither
+the note nor the clue. The file check also finds the design doc's four note
+lines in prompts.json 'game', word for word (DOC_NOTE_LINES). A scene turn whose
+speech holds the note word for word is a WARN.
+
+Clues (T88): clues.json holds the twelve kinds (CLUE_KINDS), only category may
+come in scene 1, every 'from' that isn't 'built' is a field of every note, and
+each note's key is a whole word of it and its four written fields are filled and
+within their limits. --log checks every NHOS: CLUETEST line of a built kind
+against the reference builders below, and that a show's NHOS: CLUE lines name a
+different kind in each scene, the category in scene 1 (unless the clue switch
+forced one).
 
 Word cap (T59): every line is capped at MAX_WORDS (15) words. The file check
 fails a free_mode.json line (placeholders filled with their longest value) or an
@@ -215,8 +224,10 @@ import collections
 import concurrent.futures
 import json
 import re
+import struct
 import sys
 import time
+import unicodedata
 import urllib.error
 import urllib.request
 import uuid
@@ -275,11 +286,19 @@ MAX_WORDS = 15
 
 # T50: the design doc's note rules (Bot Prompts, "Opening prompt: game rules"), word for word.
 DOC_NOTE_LINES = [
-    "Every actor sees the director's note category. Only the AI actors see the note itself. The human does not have the note and knows it, so they will watch you and copy.",
+    "Only the AI actors see the director's note. The human sees only a clue to it, a different kind each scene, and you see exactly which clue they got. The human knows they lack the note, so they will watch you and copy.",
     "Follow the note in every scene, but subtly. Never say it aloud during the scene, and don't act it out so plainly that anyone could copy it after one turn.",
-    "Fitting the category is not proof. An actor who only matches the category, or copies the others a turn late, probably lacks the note.",
+    "Fitting the clue is not proof. An actor who only matches what the clue could tell them, or copies the others a turn late, probably lacks the note.",
     "In Free Talk the scene is over, so you may name the note when you accuse someone.",
 ]
+# T88: the kinds of clue to the director's note (clues.json), in file order; BUILT_KINDS are made by BPC_NoteClue.Build.
+CLUE_KINDS = ["category", "vowels", "first_letters", "consonants", "scrambled", "pig_latin",
+              "key_blank", "key_only", "emoji", "opposite", "riddle", "autocorrect"]
+BUILT_KINDS = ["vowels", "first_letters", "consonants", "scrambled", "pig_latin", "key_blank", "key_only"]
+NOTE_FIELDS = ["id", "category", "note", "key", "emoji", "opposite", "riddle", "autocorrect"]
+MAX_RIDDLE_WORDS = 10
+# T88 answer 3: the emoji font's source file; when it exists, every note emoji must be in its character map.
+EMOJI_FONT = ROOT / "SourceAssets" / "Fonts" / "NotoColorEmoji.ttf"
 # T52: the design doc's tie rule (Bot Prompts, "Opening prompt: game rules"), word for word.
 DOC_TIE_LINE = "A tied vote cuts nobody and still uses up a scene. If the human is still on stage when the last scene ends, the human wins."
 # T57: the design doc's silence rule (Bot Prompts, "Opening prompt: game rules"), word for word.
@@ -482,6 +501,242 @@ def legibility(text: str) -> list[str]:
 
 
 # ---------------------------------------------------------------- file checks
+
+# ---------------------------------------------------------------- T88: clues to the director's note
+
+LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+BAR = "\u2588"
+
+
+def split_word(w):
+    """T88: (letters up to the last letter, the punctuation after), as BPC_NoteClue.SplitWord."""
+    i = len(w)
+    while i > 0 and w[i - 1] not in LETTERS:
+        i -= 1
+    return w[:i], w[i:]
+
+
+def build_clue(kind, note):
+    """T88: the reference for BPC_NoteClue.Build's built kinds (not scrambled, which is random). note is the scenes.json entry."""
+    text, key = note["note"], note.get("key", "")
+    words = text.split(" ")
+    if kind == "vowels":
+        return "".join("_" if c in LETTERS and c.lower() not in "aeiou" else c for c in text)
+    if kind == "consonants":
+        return "".join("_" if c.lower() in "aeiou" else c for c in text)
+    if kind == "first_letters":
+        return " ".join(c[:1] + "\u2026" + p for c, p in map(split_word, words))
+    if kind == "pig_latin":
+        out = []
+        for c, p in map(split_word, words):
+            lw = c.lower()
+            k = next((i for i, ch in enumerate(lw) if ch in "aeiou"), len(lw))
+            r = lw + "yay" if k == 0 else lw[k:] + lw[:k] + "ay"
+            out.append((r[:1].upper() + r[1:] if c[:1].isupper() else r) + p)
+        return " ".join(out)
+    if kind in ("key_blank", "key_only"):
+        hide = kind == "key_blank"
+        return " ".join((BAR * len(c) + p) if (c == key) == hide else w
+                        for w, (c, p) in zip(words, map(split_word, words)))
+    raise ValueError(kind)
+
+
+def fixed_scramble(text):
+    """T88: a stand-in for scrambled in the sample states: each word's letters reversed (scramble_ok accepts it,
+    except for a palindrome word, which the notes don't have)."""
+    return " ".join(c[::-1] + p for c, p in map(split_word, text.split(" ")))
+
+
+def scramble_ok(note_text, got):
+    """T88: each word of got is its note word's letters shuffled, punctuation kept, and changed if it can change."""
+    a, b = note_text.split(" "), got.split(" ")
+    if len(a) != len(b):
+        return False
+    for w, g in zip(a, b):
+        (c, p), (gc, gp) = split_word(w), split_word(g)
+        if p != gp or sorted(c) != sorted(gc) or (len(set(c)) >= 2 and gc == c):
+            return False
+    return True
+
+
+def clue_text(kind, note, kinds_by_id, scramble=fixed_scramble):
+    """T88: the clue's text as the card shows it, the prefix included."""
+    k = kinds_by_id[kind]
+    if kind == "scrambled":
+        body = scramble(note["note"])
+    elif kind in BUILT_KINDS:
+        body = build_clue(kind, note)
+    else:
+        body = note.get(k.get("from", ""), "")
+    return k.get("prefix", "") + body
+
+
+def emoji_list(s):
+    """T88: the emoji in a string, one per code point; joiners and variation selectors are not emoji."""
+    return [ch for ch in s if ch not in "\u200d\ufe0f" and not unicodedata.category(ch).startswith("M")]
+
+
+def font_cmap(path):
+    """T88: the code points a TrueType font maps (format 4 and 12 subtables), or None if the file is missing."""
+    try:
+        f = path.read_bytes()
+    except FileNotFoundError:
+        return None
+    n = struct.unpack(">H", f[4:6])[0]
+    tabs = {f[12 + 16 * i:16 + 16 * i].decode("latin-1"): struct.unpack(">II", f[20 + 16 * i:28 + 16 * i]) for i in range(n)}
+    off = tabs["cmap"][0]
+    cps = set()
+    for i in range(struct.unpack(">H", f[off + 2:off + 4])[0]):
+        so = struct.unpack(">I", f[off + 8 + 8 * i:off + 12 + 8 * i])[0]
+        t = off + so
+        fmt = struct.unpack(">H", f[t:t + 2])[0]
+        if fmt == 4:
+            sc = struct.unpack(">H", f[t + 6:t + 8])[0] // 2
+            ends = struct.unpack(f">{sc}H", f[t + 14:t + 14 + 2 * sc])
+            starts = struct.unpack(f">{sc}H", f[t + 16 + 2 * sc:t + 16 + 4 * sc])
+            for s, e in zip(starts, ends):
+                cps.update(range(s, e + 1))
+        elif fmt == 12:
+            for g in range(struct.unpack(">I", f[t + 12:t + 16])[0]):
+                s, e, _ = struct.unpack(">III", f[t + 16 + 12 * g:t + 28 + 12 * g])
+                cps.update(range(s, e + 1))
+    return cps
+
+
+def clue_problems(clues, notes):
+    """T88: clues.json against CLUE_KINDS, and each note's five clue fields against their limits."""
+    errs = []
+    kinds = clues.get("kinds", [])
+    ids = [k.get("id") for k in kinds]
+    if ids != CLUE_KINDS:
+        errs.append(f"clues.json: kinds must be {CLUE_KINDS} in that order, not {ids}")
+    for k in kinds:
+        for f in ("id", "label", "how", "from"):
+            if not isinstance(k.get(f), str) or not k.get(f):
+                errs.append(f"clues.json: kind {k.get('id')} needs a non-empty '{f}'")
+        if not isinstance(k.get("scene_1"), bool) or not isinstance(k.get("mono"), bool) or not isinstance(k.get("prefix"), str):
+            errs.append(f"clues.json: kind {k.get('id')} needs scene_1 and mono (true or false) and prefix (a string)")
+        if (k.get("from") == "built") != (k.get("id") in BUILT_KINDS):
+            errs.append(f"clues.json: kind {k.get('id')}'s from must be 'built' exactly for {BUILT_KINDS}")
+        if k.get("from") not in ("built", None) and k.get("from") not in NOTE_FIELDS:
+            errs.append(f"clues.json: kind {k.get('id')}'s from '{k.get('from')}' is not a note field")
+    if [k.get("id") for k in kinds if k.get("scene_1")] != ["category"]:
+        errs.append("clues.json: only category may come in scene 1 (scene_1 true), my person's answer 1 in T88")
+    cmap = font_cmap(EMOJI_FONT)
+    for n in notes:
+        nid, text = n.get("id"), n.get("note", "")
+        words = text.split(" ")
+        cores = [split_word(w)[0] for w in words]
+        for f in ("key", "emoji", "opposite", "riddle", "autocorrect"):
+            if not isinstance(n.get(f), str) or not n.get(f).strip():
+                errs.append(f"scenes.json: note {nid} needs '{f}' (T88)")
+        key = n.get("key", "")
+        if key and key not in cores:
+            errs.append(f"scenes.json: note {nid}'s key '{key}' is not a whole word of its note, as written there")
+        emo = emoji_list(n.get("emoji", ""))
+        if not 2 <= len(emo) <= 4:
+            errs.append(f"scenes.json: note {nid} needs 2 to 4 emoji, has {len(emo)}")
+        if any(ord(ch) < 0x2190 for ch in emo):
+            errs.append(f"scenes.json: note {nid}'s emoji holds a letter or symbol below U+2190")
+        if cmap is not None and any(ord(ch) not in cmap for ch in emo):
+            errs.append(f"scenes.json: note {nid} has an emoji the emoji font can't draw: "
+                        f"{[f'U+{ord(ch):04X}' for ch in emo if ord(ch) not in cmap]}")
+        if len(n.get("opposite", "").split()) > len(text.split()):
+            errs.append(f"scenes.json: note {nid}'s opposite is longer than the note")
+        rid = n.get("riddle", "")
+        if len(rid.split()) > MAX_RIDDLE_WORDS:
+            errs.append(f"scenes.json: note {nid}'s riddle is over {MAX_RIDDLE_WORDS} words")
+        if key and key.lower() in [split_word(w)[0].lower() for w in rid.split()]:
+            errs.append(f"scenes.json: note {nid}'s riddle says its key word '{key}'")
+        auto = n.get("autocorrect", "").split(" ")
+        if len(auto) != len(words):
+            errs.append(f"scenes.json: note {nid}'s autocorrect must keep the note's {len(words)} words")
+        elif not 2 <= sum(a != b for a, b in zip(words, auto)) <= 3:
+            errs.append(f"scenes.json: note {nid}'s autocorrect must change two or three words")
+    return errs
+
+
+CLUE_LOG_RE = re.compile(r"NHOS: (SHOW READY|RESTART|CLUETEST|CLUE)\b ?(.*)$")
+
+
+def check_clue_log(raw, scenes, clues):
+    """T88: the NHOS: CLUETEST lines against the reference builders, and each show's NHOS: CLUE lines
+    (a kind once per show unless forced, the category in scene 1 unless forced, SETUP's clue= the same kind).
+    Returns (number of problems, number of CLUETEST lines, number of CLUE lines)."""
+    notes = {n["id"]: n for n in (scenes or {}).get("notes", [])}
+    kinds = {k["id"]: k for k in (clues or {}).get("kinds", [])}
+    bad = tests = deals = 0
+    shows = []
+    setup_clue = re.compile(r"NHOS: SETUP .*\bclue=(\S+)")
+    for line in raw:
+        m = setup_clue.search(line)
+        if m and shows:
+            shows[-1].append(("SETUP", m.group(1)))
+            continue
+        m = CLUE_LOG_RE.search(line)
+        if not m:
+            continue
+        kind, rest = m.group(1), m.group(2)
+        if kind in ("SHOW READY", "RESTART"):
+            shows.append([])
+            continue
+        if kind == "CLUETEST":
+            if rest.startswith("done"):
+                continue
+            tests += 1
+            parts = rest.split(" ", 2)
+            nid, kid, got = (parts + ["", "", ""])[:3]
+            note = notes.get(nid)
+            if not note or kid not in kinds:
+                bad += 1
+                print(f"[FAIL] CLUETEST {nid} {kid} | unknown note or kind")
+                continue
+            if kid == "scrambled":
+                ok, want = scramble_ok(note["note"], got), "(the note's words, each shuffled)"
+            else:
+                want = clue_text(kid, note, kinds)
+                ok = got == want
+            if not ok:
+                bad += 1
+                print(f"[FAIL] CLUETEST {nid} {kid} | got {got} | want {want}")
+            continue
+        if not shows:
+            shows.append([])
+        shows[-1].append(("CLUE", rest))
+    if tests:
+        want_n = len(notes) * len(kinds)
+        print(f"CLUETEST: {tests} lines, {bad} wrong" + (f", {want_n - tests} missing" if tests < want_n else ""))
+        if tests < want_n:
+            bad += 1
+    for i, show in enumerate(shows, 1):
+        forced, used, order, last_kind = False, [], [], None
+        for kind, rest in show:
+            if kind == "SETUP":
+                if last_kind is not None and rest != last_kind:
+                    bad += 1
+                    print(f"[FAIL] show {i} | CLUE | SETUP says clue={rest}, the scene's CLUE kind is {last_kind}")
+                continue
+            if rest.startswith("forced"):
+                forced = True
+                continue
+            m = re.match(r"scene=(\d+) kind=(\S+)", rest)
+            if not m:
+                continue
+            deals += 1
+            sc, kid = int(m.group(1)), m.group(2)
+            last_kind = kid
+            order.append(kid)
+            if not forced and sc == 1 and kid != "category":
+                bad += 1
+                print(f"[FAIL] show {i} | CLUE | scene 1's clue is {kid}, not category")
+            if not forced and kid in used:
+                bad += 1
+                print(f"[FAIL] show {i} | CLUE | {kid} came twice in one show")
+            used.append(kid)
+        if order:
+            print(f"Show {i}: clues = {', '.join(order)}{' (forced)' if forced else ''}.")
+    return bad, tests, deals
+
 
 def load_json(name: str, errors: list[str]):
     path = DATA / name
@@ -1163,8 +1418,10 @@ def check_files(errors: list[str]):
     for n in notes:
         if not n.get("note") or not n.get("category"):
             errors.append(f"scenes.json: note {n.get('id')} needs a note and a category")
-        if set(n) - {"id", "category", "note"}:
-            errors.append(f"scenes.json: note {n.get('id')} may hold only id, category and note; every AI actor gets the same note")
+        if set(n) - set(NOTE_FIELDS):
+            errors.append(f"scenes.json: note {n.get('id')} may hold only {', '.join(NOTE_FIELDS)}; every AI actor gets the same note")
+    clues = load_json("clues.json", errors)  # T88
+    errors.extend(clue_problems(clues or {}, notes))
     game = prompts.get("game", [])
     for line in DOC_NOTE_LINES:
         if not any(line in g for g in game):
@@ -1327,7 +1584,8 @@ def check_files(errors: list[str]):
 
     if errors:
         return None
-    return {"llm": llm, "prompts": prompts, "personas": plist, "scenes": scenes, "emotes": emotes, "tells": tell_ids}
+    return {"llm": llm, "prompts": prompts, "personas": plist, "scenes": scenes, "emotes": emotes, "tells": tell_ids,
+            "clues": clues}
 
 
 # ---------------------------------------------------------------- sample show
@@ -1464,6 +1722,13 @@ class Show:
         self.note = next(n for n in sc["notes"] if n["id"] == SAMPLE_NOTE)
         self.seat = {pid: self.card["seats"][i] for pid, i in SAMPLE_SEATS.items()}
         self.problems = []  # T62: rule breaks in the sample log; check_rules prints them
+        self.clues = {k["id"]: k for k in data["clues"]["kinds"]}  # T88
+        self.clue_i = 0  # T88: each actor state takes the next kind, so the asks send every kind
+
+    def clue_for(self, note, i):
+        """T88: scene_card.note_clue for kind CLUE_KINDS[i % 12] on this note."""
+        kind = CLUE_KINDS[i % len(CLUE_KINDS)]
+        return {"kind": kind, "how": self.clues[kind]["how"], "text": clue_text(kind, note, self.clues)}
 
     @staticmethod
     def name(pid):
@@ -1556,13 +1821,19 @@ class Show:
             "holding": (held or {}).get(self.name(pid), []),
         }
 
+    def next_clue(self):
+        """T88: the next actor state's clue, cycling through the kinds."""
+        c = self.clue_for(self.note, self.clue_i)
+        self.clue_i += 1
+        return c
+
     def actor_state(self, pid, ask, now, log, cut=None, game_messages=None, options=None):
         held = self.holding(log, cut)
         return {
             "show": {"scene": 1, "scenes": SAMPLE_SCENES, "now": now},
             "set": {"name": self.set["name"], "places": self.set["places"], "props": self.props},
             "scene_card": {"title": self.card["title"], "premise": self.card["premise"],
-                           "note_category": self.note["category"]},
+                           "note_clue": self.next_clue()},
             "cast": self.cast(cut, held),
             "you": self.you(pid, held),
             "log": log,
@@ -1697,7 +1968,7 @@ class Show:
                     "show": {"scene": scene, "scenes": SAMPLE_SCENES, "now": "the scene, turn 1 of 3"},
                     "set": {"name": self.set["name"], "places": self.set["places"], "props": card["props"]},
                     "scene_card": {"title": card["title"], "premise": card["premise"],
-                                   "note_category": note["category"]},
+                                   "note_clue": self.clue_for(note, i)},
                     "cast": cast,
                     "you": {"name": self.name(pid), "role": seat[pid]["role"], "want": seat[pid]["want"],
                             "note": note["note"], "holding": []},
@@ -2017,7 +2288,7 @@ def check_reply(reply, ask, ctx):
 LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS|ACT|EXTRA|HUMAN|SPELLING|TOP REASON|TELL|RIVALS)\b ?(.*)$")
 
 
-def check_log(path: Path, personas, all_shows: bool, tell_ids=()) -> int:
+def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, clues=None) -> int:
     """Legibility check on the AI lines of PIE shows in an editor log. Returns the exit code."""
     names = {p["id"]: p["name"] for p in personas}
     rival_of = {p["id"]: p.get("rival") for p in personas}  # T60
@@ -2039,7 +2310,11 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=()) -> int:
         if kind not in ("SHOW READY", "RESTART"):
             shows[-1].append((kind, rest))
     shows = [s for s in shows if any(k == "LOG" for k, _ in s)]
+    # T88: the clue lines. A clue_test run (no show) has CLUETEST lines and no LOG line.
+    clue_bad, clue_tests, _ = check_clue_log(raw if all_shows or not shows else raw[_last_show_start(raw):], scenes, clues)
     if not shows:
+        if clue_tests:
+            return 1 if clue_bad else 0
         print(f"FAIL no NHOS: LOG lines in {path}")
         return 1
     if not all_shows:
@@ -2284,7 +2559,18 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=()) -> int:
               f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}, last words = {sum(len(v) for v in lastw.values())}, "
               f"rule fallbacks = {falls}, extras dropped = {extras}, my turns = {humans}, spelling skipped = {skipped}, my emotions = {dict(emo_lines) or 'none'}, top reason = {top_reason or 'none'}, rivals = {'shown' if rivals else 'none'}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad or human_bad or top_bad else 0
+    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad or human_bad or top_bad or clue_bad else 0
+
+
+def _last_show_start(raw):
+    """T88: the index of the last show's first line (its SHOW READY or RESTART) that has a LOG line after it."""
+    start, best = 0, 0
+    for i, line in enumerate(raw):
+        if re.search(r"NHOS: (SHOW READY|RESTART)\b", line):
+            start = i
+        elif "NHOS: LOG " in line:
+            best = start
+    return best
 
 
 # ---------------------------------------------------------------- main
@@ -2369,8 +2655,8 @@ def check_rules(show, jobs) -> int:
 
 
 def check_note_deal(show, jobs) -> int:
-    """T50: only the AI seats get the director's note; every actor state carries its category;
-    the input converter gets neither. Returns the number of problems."""
+    """T50, T88: only the AI seats get the director's note; every actor state carries the human's clue
+    (scene_card.note_clue); the input converter gets neither. Returns the number of problems."""
     bad = 0
     if show.you(HUMAN)["note"]:
         bad += 1
@@ -2381,10 +2667,13 @@ def check_note_deal(show, jobs) -> int:
         if ask == "input":
             if note in text or '"note' in text:
                 bad += 1
-                print(f"FAIL note: the input converter got the note or its category | {label}")
-        elif '"note_category"' not in text:
+                print(f"FAIL note: the input converter got the note or its clue | {label}")
+        elif '"note_clue"' not in text:
             bad += 1
-            print(f"FAIL note: no scene_card.note_category in {ask} | {label}")
+            print(f"FAIL note: no scene_card.note_clue in {ask} | {label}")
+        elif '"note_category"' in text:
+            bad += 1
+            print(f"FAIL note: scene_card still has note_category in {ask} | {label}")
     return bad
 
 
@@ -2440,9 +2729,9 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, errors.json, tells.json, free_mode.json, autoplay.json, input.json, props.json, costumes.json, emotes.json and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, clues.json, errors.json, tells.json, free_mode.json, autoplay.json, input.json, props.json, costumes.json, emotes.json and the relay's allow-list")
     if args.log:
-        return check_log(Path(args.log), data["personas"], args.all_shows, data["tells"])
+        return check_log(Path(args.log), data["personas"], args.all_shows, data["tells"], data["scenes"], data["clues"])
 
     show = Show(data)
     jobs = build_jobs(data, show, set(args.ask or ALL_ASKS), args.persona or PERSONAS, args.repeat)
@@ -2452,7 +2741,7 @@ def main():
     print("No provider name in what the actors read.")
     if check_note_deal(show, jobs):
         return 1
-    print("Only the AI seats get the note, and every actor state carries its category.")
+    print("Only the AI seats get the note, and every actor state carries the human's clue.")
     if check_rules(show, jobs):
         return 1
     print("The sample show follows the action rules, and every actor state says who holds what.")

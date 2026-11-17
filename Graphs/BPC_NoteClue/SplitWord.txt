@@ -1,0 +1,10 @@
+; BPC_NoteClue.SplitWord(W) (T88): WCore = W up to its last letter, WPunct = what follows ("Back." -> "Back", ".").
+; The notes have no leading punctuation. A word with no letter is all WPunct.
+(fn SplitWord (W)
+  (set WCore "")
+  (set WPunct W)
+  (for _i (range (Utilities|String|Len W))
+    (bind _c (Utilities|String|GetSubstring :SourceString W :StartIndex _i :Length 1))
+    (if (Utilities|String|Contains :SearchIn "abcdefghijklmnopqrstuvwxyz" :Substring _c)
+      (set WCore (Utilities|String|Left :SourceString W :Count (+ _i 1)))
+      (set WPunct (Utilities|String|RightChop :SourceString W :Count (+ _i 1))))))

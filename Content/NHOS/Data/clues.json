@@ -1,0 +1,21 @@
+{
+	"_readme": [
+		"The kinds of clue to the director's note that the human's card shows (T88). BPC_NoteClue on BP_Show reads this file once per run. At each Scene Prep it draws one kind this show hasn't used: scene 1 draws only among kinds with scene_1 true (today only category), and every later scene among all unused kinds, so no kind repeats in a show. Local/switches.json's clue forces one kind by its id, in every scene.",
+		"id: the kind's id, which the log and the state use. label: the card's name for it ('Clue: <label>'). how: one line, sent to the AI actors as scene_card.note_clue.how, that says how the clue was made from the note. from: 'built' when BPC_NoteClue.Build makes the text from the note's words (and its key), or the name of the note's field in scenes.json that holds the text. prefix: text the clue starts with, on the card and in the state. mono: the card shows the text in the mono font, so a run of blanks can be counted.",
+		"The clue's text reaches the AI actors word for word as scene_card.note_clue.text, with kind and how. The input LLM never gets the note or the clue. Tools/check_prompts.py checks that this file holds the twelve kinds, that every 'from' that isn't 'built' is a field every note has, and that only category has scene_1 true."
+	],
+	"kinds": [
+		{"id": "category", "label": "Category", "from": "category", "prefix": "", "scene_1": true, "mono": false, "how": "the note's category, one word that says what kind of thing the note is about"},
+		{"id": "vowels", "label": "Vowels only", "from": "built", "prefix": "", "scene_1": false, "mono": true, "how": "the note with every letter except a, e, i, o and u turned into _; spaces and punctuation kept"},
+		{"id": "first_letters", "label": "First letters", "from": "built", "prefix": "", "scene_1": false, "mono": false, "how": "the first letter of each word of the note, then …, with each word's punctuation kept"},
+		{"id": "consonants", "label": "Consonants only", "from": "built", "prefix": "", "scene_1": false, "mono": true, "how": "the note with a, e, i, o and u turned into _"},
+		{"id": "scrambled", "label": "Scrambled words", "from": "built", "prefix": "", "scene_1": false, "mono": false, "how": "the note with the letters of each word shuffled in place; word order and punctuation kept"},
+		{"id": "pig_latin", "label": "Pig Latin", "from": "built", "prefix": "", "scene_1": false, "mono": false, "how": "the note in Pig Latin: each word's leading consonants moved to its end plus ay, or yay after a word that starts with a vowel"},
+		{"id": "key_blank", "label": "Key word hidden", "from": "built", "prefix": "", "scene_1": false, "mono": false, "how": "the whole note with its one key word blacked out, one block per letter"},
+		{"id": "key_only", "label": "Only the key word", "from": "built", "prefix": "", "scene_1": false, "mono": false, "how": "the note with every word blacked out except its one key word, one block per letter"},
+		{"id": "emoji", "label": "Emoji", "from": "emoji", "prefix": "", "scene_1": false, "mono": false, "how": "two to four emoji written to stand for the note"},
+		{"id": "opposite", "label": "Opposite day", "from": "opposite", "prefix": "Opposite of: ", "scene_1": false, "mono": false, "how": "the reverse of the note's rule; the human must do the opposite of it"},
+		{"id": "riddle", "label": "Director's riddle", "from": "riddle", "prefix": "", "scene_1": false, "mono": false, "how": "a riddle of at most 10 words in the director's voice that hints at the note without its key word"},
+		{"id": "autocorrect", "label": "Autocorrect", "from": "autocorrect", "prefix": "", "scene_1": false, "mono": false, "how": "the note with two or three words swapped for words spelled almost the same"}
+	]
+}

@@ -1,0 +1,6 @@
+; BPC_NoteClue.Bars(N) -> String (T88): N blocks (U+2588), one per letter.
+(fn Bars (N)
+  (set BOut "")
+  (for _i (range N)
+    (set BOut (cat (V BOut) "█")))
+  (return (V BOut)))

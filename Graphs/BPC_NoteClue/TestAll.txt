@@ -1,0 +1,8 @@
+; BPC_NoteClue.TestAll (T88): with clue_test on, Load logs every kind for every note, so the builders can be checked
+; from the log with no show: NHOS: CLUETEST <note id> <kind> <text>. 10 notes x 12 kinds = 120 lines.
+(fn TestAll ()
+  (for _nid (V NoteIds)
+    (for _k (V KindIds)
+      (bind _t (CallFunction|Build :InKind _k :NoteId _nid))
+      (print (cat "NHOS: CLUETEST " _nid " " _k " " _t))))
+  (print (cat "NHOS: CLUETEST done " (str (* (len (V NoteIds)) (len (V KindIds)))))))

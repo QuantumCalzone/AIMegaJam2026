@@ -1,7 +1,8 @@
 ; T28: the turn line during Scene Prep. UpdatePrompt calls it after ComputePrompt and before LinePrompt.
 ; T58: then LastWordPrompt sets the turn line during the last words.
+; T88: "the note's clue".
 (fn PrepPrompt ()
   (if (and (Variables|Default|GetReady) (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "scene prep"))
-    (Variables|Default|SetPTurn "Read the card on the right: the scene, your role, the note's category, the cast and the stage. Press Start the scene when you are ready.")
+    (Variables|Default|SetPTurn "Read the card on the right: the scene, your role, the note's clue, the cast and the stage. Press Start the scene when you are ready.")
     (Variables|Default|SetPHint "Read your card first."))
   (CallFunction|LastWordPrompt))

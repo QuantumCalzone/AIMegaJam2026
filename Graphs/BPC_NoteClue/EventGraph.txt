@@ -1,0 +1,3 @@
+; BPC_NoteClue's EventGraph (T88): BeginPlay loads the files, so clue_test logs its 120 lines as the show loads.
+(event EventBeginPlay
+  (CallFunction|Load))

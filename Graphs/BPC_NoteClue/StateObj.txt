@@ -1,0 +1,7 @@
+; BPC_NoteClue.StateObj() -> JsonObject (T88): scene_card.note_clue for every actor state: kind, how, text.
+(fn StateObj ()
+  (bind _o (Json|LoadJsonfromString "{}"))
+  (Json|SetField _o "kind" (V Kind))
+  (Json|SetField _o "how" (V How))
+  (Json|SetField _o "text" (V Text))
+  (return _o))

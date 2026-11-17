@@ -1,0 +1,8 @@
+; BPC_NoteClue.Scramble(Src) -> String (T88): ScrambleWord on each word.
+(fn Scramble (Src)
+  (set Words (Utilities|String|ParseIntoArray :SourceString Src :Delimiter " " :CullEmptyStrings true))
+  (clear (V Outs))
+  (for _w (V Words)
+    (bind _s (CallFunction|ScrambleWord :W _w))
+    (add (V Outs) _s))
+  (return (Utilities|String|JoinStringArray (V Outs) " ")))

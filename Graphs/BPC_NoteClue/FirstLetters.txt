@@ -1,0 +1,8 @@
+; BPC_NoteClue.FirstLetters(Src) -> String (T88): each word's first letter, then "…", then its own punctuation.
+(fn FirstLetters (Src)
+  (set Words (Utilities|String|ParseIntoArray :SourceString Src :Delimiter " " :CullEmptyStrings true))
+  (clear (V Outs))
+  (for _w (V Words)
+    (CallFunction|SplitWord :W _w)
+    (add (V Outs) (cat (Utilities|String|Left :SourceString (V WCore) :Count 1) "…" (V WPunct))))
+  (return (Utilities|String|JoinStringArray (V Outs) " ")))

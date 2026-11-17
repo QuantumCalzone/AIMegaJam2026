@@ -1,0 +1,18 @@
+; BPC_NoteClue.Draw(Scene) -> String (T88): the kind for this scene. The clue switch forces one in every scene.
+; Otherwise scene 1 draws among unused kinds with scene_1 true (today only category, my person's answer 1), and
+; later scenes among all unused kinds, so no kind repeats in a show (at most 4 scenes, 12 kinds).
+(fn Draw (Scene)
+  (if (and (not (Utilities|String|IsEmpty (V ForceKind))) (>= (Utilities|Array|FindItem (V KindIds) (V ForceKind)) 0))
+    (print (cat "NHOS: CLUE forced " (V ForceKind)))
+    (return (V ForceKind)))
+  (if (not (Utilities|String|IsEmpty (V ForceKind)))
+    (print (cat "NHOS: CLUE unknown switch clue=" (V ForceKind))))
+  (clear (V Pool))
+  (for _i (range (len (V KindIds)))
+    (bind _id (get (V KindIds) _i))
+    (if (and (or (> Scene 1) (get (V KindFirst) _i)) (< (Utilities|Array|FindItem (V Used) _id) 0))
+      (add (V Pool) _id)))
+  (if (== (len (V Pool)) 0)
+    (print "NHOS: CLUE pool empty, using category")
+    (return "category"))
+  (return (get (V Pool) (Math|Random|RandomIntegerinRange 0 (- (len (V Pool)) 1)))))

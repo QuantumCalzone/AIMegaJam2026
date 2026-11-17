@@ -51,7 +51,7 @@ We built it the same way. A small crew of Claude agents did the work, directed b
 
 ### How a show works
 
-1. **Scene Prep.** Everyone gets the same scene card: a comedy take on a famous story, like Romeo and Juliet, the Sword in the Stone, or a Sherlock Holmes mystery about a stolen rubber chicken. You get a role and a want. The AIs also get a secret director's note, such as "climb onto the Riser at least once". You don't, and they know it: your card shows only the note's category, such as Props.
+1. **Scene Prep.** Everyone gets the same scene card: a comedy take on a famous story, like Romeo and Juliet, the Sword in the Stone, or a Sherlock Holmes mystery about a stolen rubber chicken. You get a role and a want. The AIs also get a secret director's note, such as "climb onto the Riser at least once". You don't, and they know it: your card shows only a clue to it, the note's category in scene 1, then a new kind of clue each scene, such as only its vowels or a riddle from the director.
 2. **The Scene.** Three turns. Every actor picks what to do and say, and then all the turns play out at once **[T19: and the robots act them out on stage]**.
 3. **Free Talk.** Two rounds around the table, one line each, in a new order every round. This is where the accusations fly. You can pass.
 4. **The Cut.** Everyone votes for who they think is human and gives a one-line reason. The most votes is cut, and the stamp reveals the truth. Then each actor reacts, and how you react is evidence too.
@@ -59,7 +59,7 @@ We built it the same way. A small crew of Claude agents did the work, directed b
 
 You win if you make the final two, or if you're still on stage when the last scene ends. If you're cut, you lose, and the AIs gloat. Either way, the end screen shows how each AI voted and why.
 
-**How to fool them:** play your role and chase your want. On turn 1 you act blind, with only the note's category to go on. Then watch what the AIs do and work out the note, but copy too late and they'll notice. Don't stand still for a whole scene. Watch what the AIs accuse each other of, because they're looking for the same things in you. A tied vote cuts nobody and uses up a scene, so a split vote helps you.
+**How to fool them:** play your role and chase your want. On turn 1 you act blind, with only the note's clue to go on. Then watch what the AIs do and work out the note, but copy too late and they'll notice. Don't stand still for a whole scene. Watch what the AIs accuse each other of, because they're looking for the same things in you. A tied vote cuts nobody and uses up a scene, so a split vote helps you.
 
 ### Controls
 

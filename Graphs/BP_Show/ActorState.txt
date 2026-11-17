@@ -2,6 +2,7 @@
 ; Written from the editor's read-back in T62 (traced from the function entry; T50's two old copies of the chain
 ; stay in the graph, cut off). T62 adds "holding": CastHolding fills it in each cast entry, HeldBy in "you",
 ; and HoldLine prints the state on turn 2 for the check.
+; T88: scene_card carries note_clue {kind, how, text} (BPC_NoteClue.StateObj) in place of note_category.
 (fn ActorState (Seat AskKey Now)
   (bind _show (Json|LoadJsonfromString "{}"))
   (Json|SetField _show "scene" (V SceneNum))
@@ -13,7 +14,8 @@
   (bind _card (Json|LoadJsonfromString "{}"))
   (Json|SetField _card "title" (V CardTitle))
   (Json|SetField _card "premise" (V CardPremise))
-  (Json|SetField _card "note_category" (V NoteCategory))
+  (bind _clue (Class|BPCNoteClue|StateObj :self (V NoteClue)))
+  (Json|SetField _card "note_clue" _clue)
   (Json|SetField _st "scene_card" _card)
   (CallFunction|CastHolding)
   (Json|SetField _st "cast" (V Cast))

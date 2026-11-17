@@ -1,0 +1,8 @@
+; BPC_NoteClue.PigLatin(Src) -> String (T88): PigWord on each word.
+(fn PigLatin (Src)
+  (set Words (Utilities|String|ParseIntoArray :SourceString Src :Delimiter " " :CullEmptyStrings true))
+  (clear (V Outs))
+  (for _w (V Words)
+    (bind _p (CallFunction|PigWord :W _w))
+    (add (V Outs) _p))
+  (return (Utilities|String|JoinStringArray (V Outs) " ")))

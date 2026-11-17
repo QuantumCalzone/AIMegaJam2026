@@ -9,7 +9,7 @@
 		"scene_prep": {
 			"when": "Scene Prep opens (OpenPrep)",
 			"spot": "stage",
-			"line": "I could only get you the category. They have the full note, and they know you don't. Watch turn 1."
+			"line": "I could only get you the category this time. They have the full note, and they know you don't. Watch turn 1."
 		},
 		"scene_turn_1": {
 			"when": "Turn 1 of a scene starts, when the line queue reaches it (StartTurn, through the tip cue)",
