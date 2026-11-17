@@ -1,35 +1,45 @@
 #!/usr/bin/env python3
-"""Package a commit of noHumansOnSet and push it to the itch.io page as the post-jam Windows file.
+"""Package a commit of noHumansOnSet and push it to the game's itch.io page with butler.
 
-Usage (Python 3.10+, no packages needed; Windows only, since it packages a Windows build):
+Usage (Python 3.10+, no packages needed). It packages for the machine it runs on: a Windows build
+on Windows, a Mac build on a Mac.
 
     python Tools/deploy_itch.py --dry-run                 # package origin/noHumansOnSet, check it, push nothing
     python Tools/deploy_itch.py                           # the same, then push it
     python Tools/deploy_itch.py --commit <sha>            # a given commit (the workflow passes its own)
-    python Tools/deploy_itch.py --hidden                  # the first push only: a new channel, hidden
+    python Tools/deploy_itch.py --hidden                  # the first push to a channel: makes it, hidden
     python Tools/deploy_itch.py --build <folder> --dry-run   # check (and push) a build already made
 
-The GitHub Actions workflow .github/workflows/itch-windows.yml runs this on each push that changes
+The GitHub Actions workflow .github/workflows/itch-deploy.yml runs this on each push that changes
 the game. See "Deploys to itch.io" in CLAUDE.md.
+
+| Platform | Channel | Folder inside the download   | Built with                         |
+|----------|---------|------------------------------|------------------------------------|
+| Windows  | windows | NoHumansOnSet_Windows/       | RunUAT.bat (VS 2022, Win 11 SDK)   |
+| Mac      | mac     | NoHumansOnSet_Mac/ (the .app)| RunUAT.sh (Xcode)                  |
 
 What it does, in order:
 
-1. Moves the deploy worktree (default C:/Users/Personal/Projects/NHOS_deploy, a detached git
-   worktree of the repo folder) to the commit: git fetch, git checkout --detach, git lfs pull.
-   It never builds in the repo folder, where sessions have uncommitted work. The worktree shares
-   the repo folder's .git/lfs, so a run downloads only new LFS objects.
-2. Packages it with the "Package a Windows build" command from CLAUDE.md, written to a .bat and
-   run with cmd /c, into <deploy worktree>/Packaged/deploy/<short sha>/.
-3. Renames the build's Windows/ folder to NoHumansOnSet_PostJam_Windows, so the folder inside the
-   download says post-jam too, and deletes every .pdb and any Local/ or Saved/ folder in it.
+1. Moves the deploy worktree (--deploy or NHOS_DEPLOY; on the PC by default
+   C:/Users/Personal/Projects/NHOS_deploy), a detached git worktree of the repo folder, to the
+   commit: git fetch, git checkout --detach, git lfs pull. It never builds in the repo folder,
+   where sessions have uncommitted work. The worktree shares the repo folder's .git/lfs, so a run
+   downloads only new LFS objects.
+2. Packages it with the "Package a Windows build" or "Package a macOS build" command from
+   CLAUDE.md, into <deploy worktree>/Packaged/deploy/<short sha>/. On Windows the command goes in
+   a .bat run with cmd /c. On a Mac it takes the staged app from Saved/StagedBuilds/Mac/ (the
+   archive step copies only the executable) and copies it with ditto.
+3. Puts the build in NoHumansOnSet_<Windows|Mac>/ and deletes every .pdb and any Local/ or Saved/
+   folder in it (in the Mac app, Contents/UE/AIMegaJam2026/Local/).
 4. Runs Tools/check_build_secrets.py on it with --local <repo folder>/Local (the deploy worktree
    has no Local/, and nothing is ever copied out of it). Anything but exit code 0 stops the run,
    and so does a check that found no key files to look for.
-5. Reads the page's channels back with butler status, checks the channel is windows-postjam (never
-   the jam's file, which went up through the web form and has no channel), stops if that channel
-   is not on the page yet and --hidden is not given (only the hidden first push makes it), and pushes:
-   butler push <build> quantumcalzone/no-humans-on-set:windows-postjam
-       --userversion postjam-<commit date>-<short sha> --if-changed
+5. Reads the page's channels back with butler status. A channel that isn't on the page yet would
+   become a new file, visible at once, so only a push with --hidden may make one; a workflow run
+   never does. butler pushes only to its own channels, so it can't touch a file that went up
+   through the web form (the jam's file). Then it pushes:
+   butler push <build> quantumcalzone/no-humans-on-set:<channel>
+       --userversion <commit date>-<short sha> --if-changed
 
 butler signs in with BUTLER_API_KEY when that variable is set (the workflow's Actions secret), or
 else with the butler_creds file that `butler login` saved. This script never reads or prints a key.
@@ -41,6 +51,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import platform
 import re
 import shutil
 import subprocess
@@ -52,13 +63,18 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 PROJECT = "AIMegaJam2026"
 BRANCH = "noHumansOnSet"
-
 GAME = "quantumcalzone/no-humans-on-set"
-CHANNEL = "windows-postjam"
-TOP_FOLDER = "NoHumansOnSet_PostJam_Windows"
 
-DEFAULT_DEPLOY = Path("C:/Users/Personal/Projects/NHOS_deploy")
-UE_ROOTS = [Path("C:/Program Files/Epic Games/UE_5.8")]
+PLATFORMS = {
+    "windows": {"channel": "windows", "folder": "NoHumansOnSet_Windows", "main": f"{PROJECT}.exe"},
+    "mac": {"channel": "mac", "folder": "NoHumansOnSet_Mac", "main": f"{PROJECT}.app"},
+}
+
+DEFAULT_DEPLOY = {"windows": Path("C:/Users/Personal/Projects/NHOS_deploy")}
+UE_ROOTS = {
+    "windows": [Path("C:/Program Files/Epic Games/UE_5.8")],
+    "mac": [Path("/Users/Shared/Epic Games/UE_5.8")],
+}
 
 # Processes a cancelled run can leave behind in the deploy worktree. They hold files open there,
 # so the next run's checkout would fail. Only ones whose command line names the worktree are
@@ -66,6 +82,7 @@ UE_ROOTS = [Path("C:/Program Files/Epic Games/UE_5.8")]
 LEFTOVER_NAMES = ["UnrealEditor-Cmd.exe", "UnrealEditor.exe", "UnrealPak.exe", "UnrealBuildTool.exe",
                   "AutomationTool.exe", "ShaderCompileWorker.exe", "dotnet.exe", "cmd.exe",
                   "cl.exe", "link.exe"]
+LEFTOVER_NAMES_MAC = ["UnrealEditor", "UnrealPak", "dotnet", "ShaderCompileWorker", "xcodebuild", "clang"]
 
 
 def say(text: str) -> None:
@@ -93,6 +110,11 @@ def git(*args: str, cwd: Path, capture: bool = True) -> str:
     return proc.stdout.strip() if capture else ""
 
 
+def this_platform() -> str | None:
+    system = platform.system()
+    return {"Windows": "windows", "Darwin": "mac"}.get(system)
+
+
 # ---------------------------------------------------------------- finding things
 
 def find_repo(arg: str | None) -> Path:
@@ -106,21 +128,22 @@ def find_repo(arg: str | None) -> Path:
     return Path(common).parent.resolve()
 
 
-def find_ue_root(arg: str | None) -> Path | None:
+def find_ue_root(arg: str | None, plat: str) -> Path | None:
     roots = []
     if arg:
         roots.append(Path(arg))
     if os.environ.get("UE_ROOT"):
         roots.append(Path(os.environ["UE_ROOT"]))
-    roots += UE_ROOTS
+    roots += UE_ROOTS[plat]
+    script = "RunUAT.bat" if plat == "windows" else "RunUAT.sh"
     for r in roots:
-        if (r / "Engine/Build/BatchFiles/RunUAT.bat").is_file():
+        if (r / "Engine/Build/BatchFiles" / script).is_file():
             return r
     return None
 
 
 def find_butler(arg: str | None) -> Path | None:
-    """--butler, BUTLER, butler on PATH, or the copy the itch app keeps in %APPDATA%/itch/broth."""
+    """--butler, BUTLER, butler on PATH, or the copy the itch app keeps in its broth folder."""
     if arg:
         return Path(arg) if Path(arg).is_file() else None
     if os.environ.get("BUTLER") and Path(os.environ["BUTLER"]).is_file():
@@ -128,10 +151,13 @@ def find_butler(arg: str | None) -> Path | None:
     on_path = shutil.which("butler")
     if on_path:
         return Path(on_path)
-    broth = Path(os.environ.get("APPDATA", "")) / "itch/broth/butler"
+    if os.name == "nt":
+        broth, exe_name = Path(os.environ.get("APPDATA", "")) / "itch/broth/butler", "butler.exe"
+    else:
+        broth, exe_name = Path.home() / "Library/Application Support/itch/broth/butler", "butler"
     chosen = broth / ".chosen-version"
     if chosen.is_file():
-        exe = broth / "versions" / chosen.read_text().strip() / "butler.exe"
+        exe = broth / "versions" / chosen.read_text().strip() / exe_name
         if exe.is_file():
             return exe
     return None
@@ -140,18 +166,28 @@ def find_butler(arg: str | None) -> Path | None:
 # ---------------------------------------------------------------- the deploy worktree
 
 def stop_leftovers(deploy: Path) -> None:
-    if os.name != "nt":
-        return
-    names = ",".join(f"'{n}'" for n in LEFTOVER_NAMES)
-    path = str(deploy).replace("/", "\\").replace("'", "''")
-    ps = ("$p = '" + path + "'; $me = " + str(os.getpid()) + "; "
-          "Get-CimInstance Win32_Process | Where-Object { @(" + names + ") -contains $_.Name -and "
-          "$_.ProcessId -ne $me -and $_.CommandLine -and "
-          "($_.CommandLine.Replace('/', '\\')).IndexOf($p, [StringComparison]::OrdinalIgnoreCase) -ge 0 } | "
-          "ForEach-Object { Write-Output (\"stopping leftover \" + $_.Name + \" \" + $_.ProcessId); "
-          "Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }")
-    out = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", ps],
-                         capture_output=True, text=True).stdout.strip()
+    if os.name == "nt":
+        names = ",".join(f"'{n}'" for n in LEFTOVER_NAMES)
+        path = str(deploy).replace("/", "\\").replace("'", "''")
+        ps = ("$p = '" + path + "'; $me = " + str(os.getpid()) + "; "
+              "Get-CimInstance Win32_Process | Where-Object { @(" + names + ") -contains $_.Name -and "
+              "$_.ProcessId -ne $me -and $_.CommandLine -and "
+              "($_.CommandLine.Replace('/', '\\')).IndexOf($p, [StringComparison]::OrdinalIgnoreCase) -ge 0 } | "
+              "ForEach-Object { Write-Output (\"stopping leftover \" + $_.Name + \" \" + $_.ProcessId); "
+              "Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }")
+        out = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", ps],
+                             capture_output=True, text=True).stdout.strip()
+    else:
+        out_lines = []
+        ps = subprocess.run(["ps", "-axo", "pid=,comm=,args="], capture_output=True, text=True).stdout
+        for line in ps.splitlines():
+            parts = line.split(None, 2)
+            if len(parts) < 3 or int(parts[0]) == os.getpid():
+                continue
+            if Path(parts[1]).name in LEFTOVER_NAMES_MAC and str(deploy) in parts[2]:
+                out_lines.append(f"stopping leftover {Path(parts[1]).name} {parts[0]}")
+                subprocess.run(["kill", "-9", parts[0]], capture_output=True)
+        out = "\n".join(out_lines)
     for line in out.splitlines():
         say(line)
     if out:
@@ -185,24 +221,41 @@ def prepare_worktree(repo: Path, deploy: Path, commit: str) -> str:
     return sha
 
 
-def package(deploy: Path, ue_root: Path, run_dir: Path) -> Path:
-    """Packages the deploy worktree into run_dir and returns the build's Windows/ folder."""
+def package_windows(deploy: Path, ue_root: Path, run_dir: Path, top: Path) -> None:
     uproject = deploy / f"{PROJECT}.uproject"
     runuat = ue_root / "Engine/Build/BatchFiles/RunUAT.bat"
     cmdexe = ue_root / "Engine/Binaries/Win64/UnrealEditor-Cmd.exe"
     win = lambda p: str(p).replace("/", "\\")
-    bat = run_dir.with_suffix(".bat")
+    archive = run_dir / "archive"
+    bat = run_dir / "package.bat"
     bat.write_text(
         "@echo off\r\n"
         f'call "{win(runuat)}" BuildCookRun -project="{win(uproject)}" -platform=Win64 '
         f"-clientconfig=Development -build -cook -stage -pak -archive "
-        f'-archivedirectory="{win(run_dir)}" -nocompileeditor -unrealexe="{win(cmdexe)}" -unattended\r\n'
+        f'-archivedirectory="{win(archive)}" -nocompileeditor -unrealexe="{win(cmdexe)}" -unattended\r\n'
         "exit /b %ERRORLEVEL%\r\n", encoding="ascii")
     run(["cmd", "/c", win(bat)], cwd=deploy)
-    built = run_dir / "Windows"
+    built = archive / "Windows"
     if not (built / f"{PROJECT}.exe").is_file():
         raise RuntimeError(f"the package step ended but {built / (PROJECT + '.exe')} is missing")
-    return built
+    built.rename(top)
+
+
+def package_mac(deploy: Path, ue_root: Path, run_dir: Path, top: Path) -> None:
+    uproject = deploy / f"{PROJECT}.uproject"
+    runuat = ue_root / "Engine/Build/BatchFiles/RunUAT.sh"
+    editor = ue_root / "Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor"
+    staged = deploy / "Saved/StagedBuilds/Mac" / f"{PROJECT}.app"
+    if staged.exists():
+        shutil.rmtree(staged)
+    run([str(runuat), "BuildCookRun", f"-project={uproject}", "-platform=Mac", "-clientconfig=Development",
+         "-build", "-cook", "-stage", "-pak", "-archive", f"-archivedirectory={run_dir / 'archive'}",
+         "-nocompileeditor", f"-unrealexe={editor}", "-unattended"], cwd=deploy)
+    # The archive step copies only the executable; the playable app is the staged one.
+    if not (staged / "Contents").is_dir():
+        raise RuntimeError(f"the package step ended but {staged} is missing")
+    top.mkdir()
+    run(["ditto", str(staged), str(top / f"{PROJECT}.app")])
 
 
 def strip_build(top: Path) -> None:
@@ -220,18 +273,19 @@ def strip_build(top: Path) -> None:
     say(f"deleted {removed} .pdb file(s)")
 
 
-def check_layout(push_root: Path) -> Path:
+def check_layout(push_root: Path, plat: str) -> Path:
+    folder, main = PLATFORMS[plat]["folder"], PLATFORMS[plat]["main"]
     entries = sorted(p.name for p in push_root.iterdir())
-    if entries != [TOP_FOLDER]:
-        raise RuntimeError(f"{push_root} must hold only {TOP_FOLDER}/, but holds: {', '.join(entries) or 'nothing'}")
-    top = push_root / TOP_FOLDER
-    if not (top / f"{PROJECT}.exe").is_file():
-        raise RuntimeError(f"{top} has no {PROJECT}.exe")
+    if entries != [folder]:
+        raise RuntimeError(f"{push_root} must hold only {folder}/, but holds: {', '.join(entries) or 'nothing'}")
+    top = push_root / folder
+    if not (top / main).exists():
+        raise RuntimeError(f"{top} has no {main}")
     return top
 
 
-def secrets_check(repo_tools: Path, push_root: Path, local: Path, ue_root: Path | None) -> int:
-    cmd = [sys.executable, str(repo_tools / "check_build_secrets.py"), str(push_root), "--local", str(local)]
+def secrets_check(push_root: Path, local: Path, ue_root: Path | None) -> int:
+    cmd = [sys.executable, str(HERE / "check_build_secrets.py"), str(push_root), "--local", str(local)]
     if ue_root:
         cmd += ["--ue-root", str(ue_root)]
     say("$ " + " ".join(cmd))
@@ -268,33 +322,39 @@ def channels(butler: Path) -> dict[str, str] | None:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--commit", default=f"origin/{BRANCH}", help=f"the commit to build (default: origin/{BRANCH})")
-    ap.add_argument("--build", help="a push root that already holds a NoHumansOnSet_PostJam_Windows/ build: "
+    ap.add_argument("--build", help="a push root that already holds a NoHumansOnSet_<Windows|Mac>/ build: "
                                     "skip the checkout and the packaging")
+    ap.add_argument("--platform", choices=sorted(PLATFORMS),
+                    help="windows or mac (default: this machine's; another one works only with --build)")
     ap.add_argument("--dry-run", action="store_true", help="do everything but the push")
     ap.add_argument("--hidden", action="store_true", help="push to a new channel as hidden (the first push only)")
     ap.add_argument("--repo", help="the repo folder (default: NHOS_REPO, or the main worktree of this checkout)")
-    ap.add_argument("--deploy", default=os.environ.get("NHOS_DEPLOY", str(DEFAULT_DEPLOY)),
-                    help=f"the deploy worktree (default: NHOS_DEPLOY or {DEFAULT_DEPLOY})")
+    ap.add_argument("--deploy", help="the deploy worktree (default: NHOS_DEPLOY, or on Windows "
+                                     f"{DEFAULT_DEPLOY['windows']})")
     ap.add_argument("--ue-root", help="the engine folder (default: UE_ROOT, or the launcher's UE_5.8)")
-    ap.add_argument("--butler", help="butler.exe (default: BUTLER, PATH, or the itch app's copy)")
+    ap.add_argument("--butler", help="butler (default: BUTLER, PATH, or the itch app's copy)")
     args = ap.parse_args()
 
-    assert "postjam" in CHANNEL and "PostJam" in TOP_FOLDER
-    if os.name != "nt" and not args.build:
-        return fail("packaging a Windows build needs Windows")
+    here = this_platform()
+    plat = args.platform or here
+    if plat is None:
+        return fail("this machine is neither Windows nor a Mac; pass --platform with --build")
+    if plat != here and not args.build:
+        return fail(f"a {plat} build is packaged only on that platform (this machine: {here})")
+    channel, folder = PLATFORMS[plat]["channel"], PLATFORMS[plat]["folder"]
 
     repo = find_repo(args.repo)
     local = repo / "Local"
     if not local.is_dir():
         return fail(f"{local} is missing: the secrets check needs our keys from the repo folder's Local/")
-    deploy = Path(args.deploy).resolve()
-    if deploy == repo or repo in deploy.parents:
-        return fail(f"the deploy worktree {deploy} must be outside the repo folder {repo}")
-    ue_root = find_ue_root(args.ue_root)
+    deploy_arg = args.deploy or os.environ.get("NHOS_DEPLOY") or DEFAULT_DEPLOY.get(plat)
+    if not deploy_arg and not args.build:
+        return fail("no deploy worktree: pass --deploy or set NHOS_DEPLOY")
+    ue_root = find_ue_root(args.ue_root, here or plat)
     butler = find_butler(args.butler)
     if butler is None and not args.dry_run:
         return fail("butler not found (pass --butler or put it on PATH)")
-    say(f"repo folder {repo}")
+    say(f"repo folder {repo}, platform {plat}, channel {channel}")
 
     try:
         if args.build:
@@ -303,6 +363,9 @@ def main() -> int:
             if args.commit != f"origin/{BRANCH}":
                 sha = git("rev-parse", "--verify", f"{args.commit}^{{commit}}", cwd=repo)
         else:
+            deploy = Path(deploy_arg).resolve()
+            if deploy == repo or repo in deploy.parents:
+                return fail(f"the deploy worktree {deploy} must be outside the repo folder {repo}")
             if ue_root is None:
                 return fail("the engine was not found (pass --ue-root or set UE_ROOT)")
             sha = prepare_worktree(repo, deploy, args.commit)
@@ -312,16 +375,19 @@ def main() -> int:
             if deploy_dir.is_dir():
                 for old in deploy_dir.iterdir():
                     shutil.rmtree(old) if old.is_dir() else old.unlink()
-            push_root = deploy_dir / sha[:7]
+            run_dir = deploy_dir / sha[:7]
+            push_root = run_dir / "push"
             push_root.mkdir(parents=True)
-            built = package(deploy, ue_root, push_root)
-            built.rename(push_root / TOP_FOLDER)
-        top = check_layout(push_root)
+            if plat == "windows":
+                package_windows(deploy, ue_root, run_dir, push_root / folder)
+            else:
+                package_mac(deploy, ue_root, run_dir, push_root / folder)
+        top = check_layout(push_root, plat)
         strip_build(top)
     except (RuntimeError, OSError, subprocess.SubprocessError) as e:
         return fail(str(e))
 
-    code = secrets_check(HERE, push_root, local, ue_root)
+    code = secrets_check(push_root, local, ue_root)
     if code != 0:
         return fail(f"the secrets check ended with exit code {code}; nothing was pushed")
     say("the secrets check is clean")
@@ -329,23 +395,27 @@ def main() -> int:
     if sha:
         when = git("show", "-s", "--format=%cI", sha, cwd=repo)
         day = datetime.fromisoformat(when).astimezone(timezone.utc).strftime("%Y-%m-%d")
-        version = f"postjam-{day}-{sha[:7]}"
+        version = f"{day}-{sha[:7]}"
     else:
-        version = f"postjam-{datetime.now(timezone.utc):%Y-%m-%d}-manual"
+        version = f"{datetime.now(timezone.utc):%Y-%m-%d}-manual"
 
-    cmd = [str(butler) if butler else "butler", "push", str(push_root), f"{GAME}:{CHANNEL}",
+    cmd = [str(butler) if butler else "butler", "push", str(push_root), f"{GAME}:{channel}",
            "--userversion", version, "--if-changed"]
+    if plat == "mac":
+        cmd.append("--fix-permissions")
     if butler:
         found = channels(butler)
         if found is None:
             return fail("butler could not read the page's channels back")
-        say(f"channels on the page: {', '.join(found) or 'none'} (the jam's file has no channel)")
-        if args.hidden and CHANNEL in found:
-            return fail(f"--hidden works only on a new channel, and {CHANNEL} exists")
+        say(f"channels on the page: {', '.join(found) or 'none'}")
+        if args.hidden and channel in found:
+            return fail(f"--hidden works only on a new channel, and {channel} exists")
         # A push to a channel that doesn't exist yet makes a new file on the page, visible at once.
         # Only the hidden first push by hand may do that; a workflow run never does.
-        if not args.hidden and CHANNEL not in found:
-            return fail(f"{CHANNEL} is not on the page yet: make the first push by hand with --hidden")
+        if not args.hidden and channel not in found:
+            if not args.dry_run:
+                return fail(f"{channel} is not on the page yet: make the first push by hand with --hidden")
+            say(f"note: {channel} is not on the page yet, so a real push would stop here (use --hidden)")
     if args.hidden:
         cmd.append("--hidden")
     if args.dry_run:
@@ -356,7 +426,7 @@ def main() -> int:
         run(cmd, capture=False)
     except RuntimeError as e:
         return fail(str(e))
-    say(f"pushed {version} to {GAME}:{CHANNEL}")
+    say(f"pushed {version} to {GAME}:{channel}")
     return 0
 
 
