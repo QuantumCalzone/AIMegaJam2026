@@ -6,12 +6,12 @@ on Windows, a Mac build on a Mac.
 
     python Tools/deploy_itch.py --dry-run                 # package origin/noHumansOnSet, check it, push nothing
     python Tools/deploy_itch.py                           # the same, then push it
-    python Tools/deploy_itch.py --commit <sha>            # a given commit (the workflow passes its own)
+    python Tools/deploy_itch.py --commit <sha>            # a given commit
     python Tools/deploy_itch.py --hidden                  # the first push to a channel: makes it, hidden
     python Tools/deploy_itch.py --build <folder> --dry-run   # check (and push) a build already made
 
-The GitHub Actions workflow .github/workflows/itch-deploy.yml runs this on each push that changes
-the game. See "Deploys to itch.io" in CLAUDE.md.
+In the editor, Tools > itch.io runs it (Content/Python/nhos_itch_deploy.py). See "Deploys to
+itch.io" in CLAUDE.md.
 
 | Platform | Channel | Folder inside the download   | Built with                         |
 |----------|---------|------------------------------|------------------------------------|
@@ -35,14 +35,14 @@ What it does, in order:
    has no Local/, and nothing is ever copied out of it). Anything but exit code 0 stops the run,
    and so does a check that found no key files to look for.
 5. Reads the page's channels back with butler status. A channel that isn't on the page yet would
-   become a new file, visible at once, so only a push with --hidden may make one; a workflow run
-   never does. butler pushes only to its own channels, so it can't touch a file that went up
+   become a new file, visible at once, so only a push with --hidden may make one; the editor's
+   menu never does. butler pushes only to its own channels, so it can't touch a file that went up
    through the web form (the jam's file). Then it pushes:
    butler push <build> quantumcalzone/no-humans-on-set:<channel>
        --userversion <commit date>-<short sha> --if-changed
 
-butler signs in with BUTLER_API_KEY when that variable is set (the workflow's Actions secret), or
-else with the butler_creds file that `butler login` saved. This script never reads or prints a key.
+butler signs in with the butler_creds file that `butler login` saved (or BUTLER_API_KEY, when that
+variable is set). This script never reads or prints a key.
 
 Exit code: 0 pushed (or, with --dry-run, ready to push), 1 failed or stopped.
 """
@@ -97,7 +97,15 @@ def fail(text: str) -> int:
 def run(cmd: list[str], cwd: Path | None = None, check: bool = True, capture: bool = False) -> subprocess.CompletedProcess:
     shown = " ".join(f'"{c}"' if " " in c else c for c in cmd)
     say(f"$ {shown}")
-    proc = subprocess.run(cmd, cwd=cwd, text=True, capture_output=capture)
+    if capture:
+        proc = subprocess.run(cmd, cwd=cwd, text=True, capture_output=True)
+    else:
+        # Streamed through print, so --log gets the packager's and butler's output too.
+        with subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                              text=True, errors="replace") as child:
+            for line in child.stdout:
+                print(line, end="", flush=True)
+        proc = subprocess.CompletedProcess(cmd, child.returncode)
     if check and proc.returncode != 0:
         if capture:
             print(proc.stdout + proc.stderr, flush=True)
@@ -108,6 +116,59 @@ def run(cmd: list[str], cwd: Path | None = None, check: bool = True, capture: bo
 def git(*args: str, cwd: Path, capture: bool = True) -> str:
     proc = run(["git", *args], cwd=cwd, capture=capture)
     return proc.stdout.strip() if capture else ""
+
+
+class _Tee:
+    def __init__(self, *streams):
+        self.streams = streams
+
+    def write(self, text):
+        for s in self.streams:
+            s.write(text)
+            s.flush()
+
+    def flush(self):
+        for s in self.streams:
+            s.flush()
+
+
+def tee_to(log: Path) -> None:
+    """Copies this run's own output to the log (child processes' output goes through print below)."""
+    log.parent.mkdir(parents=True, exist_ok=True)
+    fh = log.open("w", encoding="utf-8")
+    sys.stdout = _Tee(sys.__stdout__, fh)
+    sys.stderr = _Tee(sys.__stderr__, fh)
+
+
+def take_lock(deploy: Path):
+    """One run at a time per deploy worktree: a second click while a build runs stops at once."""
+    lock = deploy.parent / (deploy.name + ".lock")
+    try:
+        fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        try:
+            pid = int(lock.read_text().strip() or 0)
+        except (OSError, ValueError):
+            pid = 0
+        if pid and _alive(pid):
+            raise RuntimeError(f"another deploy is running (process {pid}); wait for it to finish")
+        lock.unlink(missing_ok=True)  # left by a run that was closed
+        fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    os.write(fd, str(os.getpid()).encode())
+    os.close(fd)
+    import atexit
+    atexit.register(lambda: lock.unlink(missing_ok=True))
+
+
+def _alive(pid: int) -> bool:
+    if os.name == "nt":
+        out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True).stdout
+        return str(pid) in out
+    try:
+        os.kill(pid, 0)
+        return True
+    except OSError:
+        return False
 
 
 def this_platform() -> str | None:
@@ -333,7 +394,10 @@ def main() -> int:
                                      f"{DEFAULT_DEPLOY['windows']})")
     ap.add_argument("--ue-root", help="the engine folder (default: UE_ROOT, or the launcher's UE_5.8)")
     ap.add_argument("--butler", help="butler (default: BUTLER, PATH, or the itch app's copy)")
+    ap.add_argument("--log", help="also write everything this run prints to this file")
     args = ap.parse_args()
+    if args.log:
+        tee_to(Path(args.log))
 
     here = this_platform()
     plat = args.platform or here
@@ -368,6 +432,7 @@ def main() -> int:
                 return fail(f"the deploy worktree {deploy} must be outside the repo folder {repo}")
             if ue_root is None:
                 return fail("the engine was not found (pass --ue-root or set UE_ROOT)")
+            take_lock(deploy)
             sha = prepare_worktree(repo, deploy, args.commit)
             say(f"building {sha[:7]} in {deploy}")
             deploy_dir = deploy / "Packaged" / "deploy"
@@ -411,7 +476,7 @@ def main() -> int:
         if args.hidden and channel in found:
             return fail(f"--hidden works only on a new channel, and {channel} exists")
         # A push to a channel that doesn't exist yet makes a new file on the page, visible at once.
-        # Only the hidden first push by hand may do that; a workflow run never does.
+        # Only the hidden first push by hand may do that; the editor's menu never does.
         if not args.hidden and channel not in found:
             if not args.dry_run:
                 return fail(f"{channel} is not on the page yet: make the first push by hand with --hidden")
