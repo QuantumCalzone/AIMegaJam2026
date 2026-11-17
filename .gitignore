@@ -24,6 +24,8 @@ Build/*/FileOpenOrder/
 # Claude Code personal settings and notes
 .claude/settings.local.json
 CLAUDE.local.md
+# Session worktrees the Claude desktop app makes (a worktree is a full checkout, never part of the repo)
+.claude/worktrees/
 
 # Agent status files stay on one machine (see Agents/README.md)
 Agents/status/
