@@ -2,14 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Work on `noHumansOnSet`
+## Work on `dev`
 
-All work is done off the `noHumansOnSet` branch. Treat it as this repo's main branch: branch from it, merge into it, push to it, open pull requests against it, and diff against it when you check what changed. `main` is the GitHub default, but it holds only the project's first setup and has none of this game. Never push `main`.
+All work is done off the `dev` branch (called `noHumansOnSet` until 2026-11-17). Treat it as this repo's working branch: branch from it, merge into it, push to it, open pull requests against it, and diff against it when you check what changed. `main` is the production branch and the GitHub default. It is for releases, so never push `main` or merge into it unless your person says so, and never force-push. Until the first release (T91), `main` holds only the project's first setup and has none of this game.
 
-If your clone or worktree started from `main` (worktrees that the Claude desktop app makes do), move to `noHumansOnSet` before you do anything else:
+If your clone or worktree started from `main` (worktrees that the Claude desktop app makes do), move to `dev` before you do anything else:
 
-- In a clone: `git checkout noHumansOnSet`.
-- In a worktree, which can't check out a branch that the repo folder already has: `git fetch`, then, while your branch has no commits or changes of its own, `git reset --hard origin/noHumansOnSet`.
+- In a clone: `git checkout dev`.
+- In a worktree, which can't check out a branch that the repo folder already has: `git fetch`, then, while your branch has no commits or changes of its own, `git reset --hard origin/dev`.
 
 ## Project
 
@@ -42,7 +42,7 @@ When you believe your task is done, tell your person in one line that it is done
 
 - Commit only your own files, staged by path (never `git add -A` or `git add .`). Other sessions work in the same folder.
 - A plan task's commit holds what "How to run a task" in the plan lists. Other work gets a message that says what changed.
-- Push with `git push` on `noHumansOnSet`. Never push `main`, and never force-push. If the push is rejected, don't pull or rebase while another session in the folder has uncommitted work. Tell your person instead.
+- Push with `git push` on `dev`. Never push `main`, and never force-push. If the push is rejected, don't pull or rebase while another session in the folder has uncommitted work. Tell your person instead.
 - Don't commit work that is half done or fails its check. Say what is left instead.
 
 ## Engine
@@ -122,14 +122,14 @@ python Tools/check_build_secrets.py <build folder or zip>
 
 Builds go to https://quantumcalzone.itch.io/no-humans-on-set with butler, one channel per platform: `windows` and `mac`. Each channel is one file on the page, and a later push to it replaces that file and uploads only what changed. A file that went up through the web form (such as the jam's `QuantumCalzone_NoHumansOnSet_Windows.zip`) has no channel, so butler never touches it.
 
-- **In the editor, Tools > itch.io builds and uploads.** "Build and upload to itch.io" asks first, then runs `Tools/deploy_itch.py` in its own console window with the engine's own Python, so the editor stays usable. "Build only (dry run)" pushes nothing, and "Open the last deploy log" opens `Saved/Logs/DeployItch.log`. It builds the pushed tip of `noHumansOnSet`, not the editor's unsaved or uncommitted work, so push first. The menu comes from `Content/Python/init_unreal.py` (the Python Script Plugin runs it when the editor starts) and `Content/Python/nhos_itch_deploy.py`; neither is cooked into a build. One deploy runs at a time: a second click while one builds stops at once.
+- **In the editor, Tools > itch.io builds and uploads.** "Build and upload to itch.io" asks first, then runs `Tools/deploy_itch.py` in its own console window with the engine's own Python, so the editor stays usable. "Build only (dry run)" pushes nothing, and "Open the last deploy log" opens `Saved/Logs/DeployItch.log`. It builds the pushed tip of `dev`, not the editor's unsaved or uncommitted work, so push first. The menu comes from `Content/Python/init_unreal.py` (the Python Script Plugin runs it when the editor starts) and `Content/Python/nhos_itch_deploy.py`; neither is cooked into a build. One deploy runs at a time: a second click while one builds stops at once.
 - **`Tools/deploy_itch.py`** packages the commit for the machine it runs on, in a deploy worktree (a detached worktree of the repo folder, never the repo folder itself; on the PC `C:/Users/Personal/Projects/NHOS_deploy`). It puts the build in `NoHumansOnSet_Windows/` or `NoHumansOnSet_Mac/` (the staged `.app`), deletes `.pdb` files and any `Local/` or `Saved/`, runs the secrets check with `--local` on the repo folder's `Local/`, and pushes nothing unless the check exits 0. Then it pushes with `--userversion <commit date>-<short sha>`. A channel that isn't on the page yet would be a new file, visible at once, so the script makes one only with `--hidden`, by hand (the menu never does); then untick "Hide this file" on the page's edit screen and save. `windows` is on the page; `mac` needs its hidden first push from the Mac. Run it by hand too (it needs the engine, so pass `--ue-root` or set `UE_ROOT`; on a Mac also pass `--deploy` or set `NHOS_DEPLOY`):
 
 ```bash
 python Tools/deploy_itch.py --dry-run
 ```
 
-  `--dry-run` does everything but the push. `--commit <sha>` builds a given commit (default `origin/noHumansOnSet`). `--build <folder>` checks and pushes a build that is already made (the folder must hold only the `NoHumansOnSet_<Windows|Mac>/` folder). `--log <file>` copies the output to a file.
+  `--dry-run` does everything but the push. `--commit <sha>` builds a given commit (default `origin/dev`). `--build <folder>` checks and pushes a build that is already made (the folder must hold only the `NoHumansOnSet_<Windows|Mac>/` folder). `--log <file>` copies the output to a file.
 - **butler** is on PATH, or the copy the itch app keeps in its `broth/butler/` folder (`%APPDATA%/itch/` on Windows, `~/Library/Application Support/itch/` on a Mac), which the script finds itself. It signs in with the `butler_creds` that `butler login` saved in `~/.config/itch/`, once per machine. The key never goes in git or in chat.
 - **A zip made by hand** is named `QuantumCalzone_NoHumansOnSet_<Windows|Mac>_<YYYY-MM-DD>.zip` and goes up as a new file. Never replace, rename or delete the jam's file.
 
@@ -161,7 +161,7 @@ Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.lo
 
 ## Two machines at once: a dispatcher on each
 
-The Mac and the Windows PC can work on `noHumansOnSet` at the same time. [Docs/TwoMachines.md](Docs/TwoMachines.md) has the steps, what we learned on 2026-11-15, and the text to paste. [Docs/LaunchAgents.md](Docs/LaunchAgents.md) has the dispatcher's own instructions. When your person asks you to set this up, or to be a machine's dispatcher, read both first. In short:
+The Mac and the Windows PC can work on `dev` at the same time. [Docs/TwoMachines.md](Docs/TwoMachines.md) has the steps, what we learned on 2026-11-15, and the text to paste. [Docs/LaunchAgents.md](Docs/LaunchAgents.md) has the dispatcher's own instructions. When your person asks you to set this up, or to be a machine's dispatcher, read both first. In short:
 
 - **The split.** One machine, the chain machine, takes only tasks whose Touches name `BP_Show.uasset` or `WBP_Stage.uasset`. The other machine takes the rest: editor tasks on other assets, and tasks that need no editor. Either machine can have either role. Your person names the chain machine.
 - **One dispatcher session per machine,** on the repo folder with no worktree. It keeps the ledger in `Agents/status/dispatcher.md` with a machine for every open task, and it talks to the other machine's dispatcher. It can start a task session only on a message that your person types in the desktop app, not on a note or a Remote Control message.
@@ -200,7 +200,7 @@ These settings (in `Config/DefaultEngine.ini`) affect how content must be author
 ## Source control
 
 - Remote: `https://github.com/QuantumCalzone/AIMegaJam2026.git`.
-- **This game is on the `noHumansOnSet` branch, which is this repo's main branch.** See "Work on `noHumansOnSet`" at the top of this file. `main`, the GitHub default, holds only the project's first setup, which other branches (such as `Take37`) also start from. Commit and push on `noHumansOnSet`, and don't push `main`. Never force-push.
+- **Work happens on the `dev` branch; `main` is the production branch.** See "Work on `dev`" at the top of this file. `main`, the GitHub default, is for releases and, until the first release (T91), holds only the project's first setup, which other branches (such as `Take37`) also start from. Commit and push on `dev`, and don't push `main` unless your person says so. Never force-push.
 - `.gitignore` excludes the folders the engine generates (`DerivedDataCache/`, `Intermediate/`, `Saved/`, `Binaries/`) and packaged builds in `Packaged/`. Don't archive builds into `Build/`, because Unreal uses that folder for project build settings.
 - **Git LFS** stores binary files (see `.gitattributes`): `.uasset`, `.umap`, models, images, audio, fonts and archives. When you add a new kind of binary file, add an LFS rule for it before you commit it.
 - Binary assets can't be merged. Before changing a Blueprint, level or other asset, pull first, then lock it with `git lfs lock` (see `Agents/README.md`). If someone else holds the lock, or may be editing the asset, check with the user.

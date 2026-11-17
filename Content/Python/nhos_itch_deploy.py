@@ -5,7 +5,7 @@ Each entry starts Tools/deploy_itch.py in
 its own console window, with the engine's own Python, and returns at once, so the editor stays
 usable while it builds:
 
-- Build and upload to itch.io: packages the pushed tip of noHumansOnSet in the deploy worktree
+- Build and upload to itch.io: packages the pushed tip of dev in the deploy worktree
   (never this folder, so unsaved or uncommitted work here is not in it), checks it for secrets
   and pushes it to the page's channel for this platform. It asks first.
 - Build only (dry run): the same, but pushes nothing.
@@ -80,7 +80,7 @@ def launch(dry_run):
 def build_and_upload():
     answer = unreal.EditorDialog.show_message(
         "Upload to itch.io",
-        "Build the pushed tip of noHumansOnSet and upload it to the itch.io page?\n\n"
+        "Build the pushed tip of dev and upload it to the itch.io page?\n\n"
         "It builds what is pushed to GitHub, not this editor's unsaved or uncommitted work. "
         "It takes a few minutes in its own window, and the editor stays usable.",
         unreal.AppMsgType.YES_NO, unreal.AppReturnType.NO)
@@ -122,7 +122,7 @@ def register():
     sub = tools.add_sub_menu(MENU_OWNER, "", "NHOS_Itch", "itch.io", "Build the game and upload it to itch.io")
     sub.add_section(SECTION, "No Humans On Set")
     _entry(sub, "NHOS_ItchUpload", "Build and upload to itch.io",
-           "Package the pushed tip of noHumansOnSet, check it for secrets and upload it (asks first)",
+           "Package the pushed tip of dev, check it for secrets and upload it (asks first)",
            "import nhos_itch_deploy; nhos_itch_deploy.build_and_upload()")
     _entry(sub, "NHOS_ItchDryRun", "Build only (dry run)",
            "Package and check it for secrets, but upload nothing",

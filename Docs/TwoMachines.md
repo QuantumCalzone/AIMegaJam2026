@@ -27,7 +27,7 @@ Pick the chain machine once: the one that holds an asset of the chain now, or el
 
 Do this on each machine:
 
-1. `git pull` on `noHumansOnSet`, then open the Unreal Editor on the project, so that Unreal MCP is up.
+1. `git pull` on `dev`, then open the Unreal Editor on the project, so that Unreal MCP is up.
 2. In the Claude desktop app's Code tab, start a session on the repo folder itself, with no worktree, on Fable 5.2. Turn on Remote Control in it, so that the two dispatchers can see and message each other. Paste the dispatcher message below.
 3. Before you leave: keep the machine plugged in and awake with the lid open, and leave the Claude app and the editor open.
 4. Write down your answer for every open task that needs one before it can work (its Needs line says "my answer" or "my OK"), in the task's file.

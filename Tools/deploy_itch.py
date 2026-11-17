@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Package a commit of noHumansOnSet and push it to the game's itch.io page with butler.
+"""Package a commit of dev and push it to the game's itch.io page with butler.
 
 Usage (Python 3.10+, no packages needed). It packages for the machine it runs on: a Windows build
 on Windows, a Mac build on a Mac.
 
-    python Tools/deploy_itch.py --dry-run                 # package origin/noHumansOnSet, check it, push nothing
+    python Tools/deploy_itch.py --dry-run                 # package origin/dev, check it, push nothing
     python Tools/deploy_itch.py                           # the same, then push it
     python Tools/deploy_itch.py --commit <sha>            # a given commit
     python Tools/deploy_itch.py --hidden                  # the first push to a channel: makes it, hidden
@@ -62,7 +62,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PROJECT = "AIMegaJam2026"
-BRANCH = "noHumansOnSet"
+BRANCH = "dev"
 GAME = "quantumcalzone/no-humans-on-set"
 
 PLATFORMS = {

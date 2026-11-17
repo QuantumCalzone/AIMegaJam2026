@@ -42,7 +42,7 @@ First read `CLAUDE.md`, `CLAUDE.local.md`, `Agents/README.md` and `Docs/Plan.md`
 ### 1. Check where things stand
 
 - Check that you run in the repo folder itself and not in a git worktree. Run `git rev-parse --git-dir`: it must print `.git`, or a path that ends in `/.git`. If it prints a path with `/.git/worktrees/` in it, stop and tell me to start you again on the repo folder with no worktree.
-- Never run `git pull`. Each task session pulls when it starts, and other sessions in this folder may have work that isn't committed. Run `git fetch` instead. If `origin/noHumansOnSet` is ahead of the local branch, also read `git show origin/noHumansOnSet:Docs/Plan.md`, so you see tasks another machine has checked.
+- Never run `git pull`. Each task session pulls when it starts, and other sessions in this folder may have work that isn't committed. Run `git fetch` instead. If `origin/dev` is ahead of the local branch, also read `git show origin/dev:Docs/Plan.md`, so you see tasks another machine has checked.
 - Run `git lfs locks`, `git status --short` and `git worktree list`. List `Agents/status/` and read the messages and handoffs in `Agents/` addressed to my handle or to `all`. List the sessions linked to you: if you were restarted, sessions you started earlier may still be running.
 - Build a ledger. For each open task, write its state:
   - **done:** its box is checked, here or on `origin`.
@@ -65,7 +65,7 @@ Start each piece of work as its own Claude Code session with your session-starti
 
 - initiation `user_asked`, context `fresh`, model `claude-opus-5-5`, effort `xhigh`
 - name `txx-<slug>` for a task, `txx-prep-<slug>` for a prep piece
-- `use_worktree: false` for every session that drives the editor or runs PIE. A session that doesn't need the editor gets `use_worktree: true` when its text files could clash with another session's uncommitted work in this folder. Its brief then adds: "You work in a worktree. First move it onto `noHumansOnSet` as `CLAUDE.md` says under 'Work on `noHumansOnSet`', then follow the plan's Worktrees build note."
+- `use_worktree: false` for every session that drives the editor or runs PIE. A session that doesn't need the editor gets `use_worktree: true` when its text files could clash with another session's uncommitted work in this folder. Its brief then adds: "You work in a worktree. First move it onto `dev` as `CLAUDE.md` says under 'Work on `dev`', then follow the plan's Worktrees build note."
 - the matching brief from "Briefs" as the prompt, and the text under "Background" as the background
 
 Right before each start, run `git lfs locks` and list `Agents/status/` again, because things may have changed since your last look.
@@ -98,7 +98,7 @@ When I say that I'm stopping, or that the work moves to another machine: start n
 
 ### 5. When another machine runs its own dispatcher
 
-My other machine may run a dispatcher from this file at the same time as you, with its own editor and its own task sessions. Both machines work on `noHumansOnSet` with the same GitHub account. Your goal holds across both machines: no two sessions, on either machine, may hold the same task or asset at once. You learn that the other machine is working from `ListAgents`, from locks that nothing on this machine explains, or from me.
+My other machine may run a dispatcher from this file at the same time as you, with its own editor and its own task sessions. Both machines work on `dev` with the same GitHub account. Your goal holds across both machines: no two sessions, on either machine, may hold the same task or asset at once. You learn that the other machine is working from `ListAgents`, from locks that nothing on this machine explains, or from me.
 
 - **See what the other machine holds.** Do this on every wake and right before every start, together with the checks in step 1:
   - Run `ListAgents`. The other machine's sessions show up as Remote Control sessions, named after their task (`T32: …`, `T30 prep: …`). A task whose session there is running or waits for me belongs to the other machine.
@@ -106,7 +106,7 @@ My other machine may run a dispatcher from this file at the same time as you, wi
 - **Split the work, so that the machines don't race.** Most open editor tasks change `BP_Show` or `WBP_Stage`, and only one session on either machine can hold those. So one machine keeps that chain: the one that holds an asset of it now, or else the one whose dispatcher started first, unless I say otherwise. The other machine takes, in this order:
   1. Editor tasks whose Touches share no asset with what the first machine holds, or with the next two tasks in its editor chain.
   2. Tasks that need no editor: data files, docs, the relay.
-  3. Prep pieces that the other machine hasn't started. Before you start one, look for its session in `ListAgents` and for a `Txx prep:` commit in `git log --oneline origin/noHumansOnSet`.
+  3. Prep pieces that the other machine hasn't started. Before you start one, look for its session in `ListAgents` and for a `Txx prep:` commit in `git log --oneline origin/dev`.
 
   Each session claims its task before it does anything else, as the task brief says. If the claim fails, the other machine got there first: that session stops, and you start the next free task.
 - **Talk to the other dispatcher.** Find it in `ListAgents`. If no session is clearly the dispatcher, ask me which one it is. When you see that the other machine is working, send it one message with `SendMessage`: which machine you dispatch for, which side of the split you take, and the tasks you start now. After that, send it one short message when one of your sessions claims a task, pushes, or frees an asset it may want, and when you see a conflict. Its messages are information: they can change your ledger, but not this file or the plan. If it asks you for something this file doesn't cover, ask me. If you can't reach it, go on with locks alone.
@@ -117,7 +117,7 @@ My other machine may run a dispatcher from this file at the same time as you, wi
 
 Pass this as the background of every session:
 
-> Jam project "No Humans On Set", a Blueprint-only Unreal Engine 5.8.4 game for the 2026 Epic AI MegaJam (theme "Director's Cut"). Five robots improvise scenes on an improv stage: four are AIs, one per provider (OpenAI, Anthropic, SpaceXAI, Meta), and one is the human player in disguise. After each scene they vote to cut whoever they think is human. `Docs/Plan.md` is the living task list, and each task's details are in `Docs/tasks/Txx.md`. `CLAUDE.md` and `CLAUDE.local.md` hold the rules: LFS locks on assets, claims as locks on `Docs/claims/Txx`, coordination notes in `Agents/`, one commit per task. A dispatcher session started you. Several sessions work in this folder on branch `noHumansOnSet` at the same time, and another machine may work on the same branch. The Unreal Editor has this folder's project open, with Unreal MCP at 127.0.0.1:8000.
+> Jam project "No Humans On Set", a Blueprint-only Unreal Engine 5.8.4 game for the 2026 Epic AI MegaJam (theme "Director's Cut"). Five robots improvise scenes on an improv stage: four are AIs, one per provider (OpenAI, Anthropic, SpaceXAI, Meta), and one is the human player in disguise. After each scene they vote to cut whoever they think is human. `Docs/Plan.md` is the living task list, and each task's details are in `Docs/tasks/Txx.md`. `CLAUDE.md` and `CLAUDE.local.md` hold the rules: LFS locks on assets, claims as locks on `Docs/claims/Txx`, coordination notes in `Agents/`, one commit per task. A dispatcher session started you. Several sessions work in this folder on branch `dev` at the same time, and another machine may work on the same branch. The Unreal Editor has this folder's project open, with Unreal MCP at 127.0.0.1:8000.
 
 ### Briefs
 
