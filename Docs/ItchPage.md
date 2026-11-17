@@ -16,7 +16,7 @@ The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used f
 | Kind of project | Downloadable |
 | Release status | Prototype |
 | Pricing | No payments (free). See open question 10 in `Submission.md`. |
-| Uploads | `[YOU: team name]_NoHumansOnSet.zip`, marked Windows |
+| Uploads | `no-humans-on-set-windows.zip`, from butler's channel `windows`, marked Windows: each push that changes the game replaces it (T89; see "Deploys to itch.io" in CLAUDE.md). A Mac file, channel `mac`, comes when the Mac is a runner. Since 2026-11-17 the page holds no jam zip (`QuantumCalzone_NoHumansOnSet_Windows.zip`); never replace one that goes up through the web form. |
 | Genre | Other |
 | Tags | social-deduction, ai, llm, improv, comedy, robots, text-based, unreal-engine |
 | Cover image | 630 × 500, a crop of the theater mid-scene |
