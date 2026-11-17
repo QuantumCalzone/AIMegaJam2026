@@ -3,5 +3,8 @@
     "allow": [
       "mcp__ccd_session_mgmt__archive_session"
     ]
+  },
+  "worktree": {
+    "baseRef": "head"
   }
 }
