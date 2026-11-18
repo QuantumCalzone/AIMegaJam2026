@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top. T93 (the title's Play button) has its work pushed and waits only for the relay deploy (its `Waiting:` line); it is done with the design doc, so T90 (the design doc moves into the repo) comes next. Then come the new audio and the new art (T94, T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T84, T85, T87 and T61 wait for T90, and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: T90 (the design doc moves into the repo). Then come the new audio and the new art (T94, T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T84, T85, T87 and T61 wait for T90, and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -118,14 +118,6 @@ These hold for every task, and for editor work outside the task list too. If one
 
 ### Open
 
-
-- [ ] **T93 The title's Play button replaces Play via Relay and is greyed out when fewer than three AIs work**
-  - **Model and effort:** Opus 5.5, high. A real check of each provider in the relay, the title's three button states, and a test switch, checked against the live relay.
-  - **Depends on:** T21 (the relay's `/health` and the "AI service unavailable" screen), T33 (the title screen and its keyboard play), T37 (`errors.json` and `ErrorLine`), T53 (the 4-actor show, which sets the floor at three AIs). All are done. It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine.
-  - **Needs:** editor + Unreal MCP running; the relay, with `wrangler dev` for the bad-key test; my OK before the relay is deployed; my OK on the greyed-out lines; my OK on the design doc edit, if the doc names Play via Relay; a short relay show that Claude plays by hand (a few cents).
-  - **Touches:** `Content/NHOS/UI/WBP_Title.uasset`, `Content/NHOS/Core/BPC_LLMClient.uasset` (the check when the title opens, the `health_test` filter, `ErrorLine`), `Relay/src/index.js` and `Relay/relay.config.json` (a real check of each provider), `Relay/README.md`, `Content/NHOS/Data/errors.json` (the greyed-out lines), `Content/NHOS/Data/llm.json` (`_readme`), `Docs/switches.example.json` (`health_test`), `Tools/check_prompts.py` if it checks `errors.json`, `CLAUDE.md` (the "Test for free" paragraph), `Docs/ItchPage.md`, the design doc if it names the button, `Graphs/` files for the graphs it writes, `Docs/tasks/T93.md`.
-  - **Details:** [Docs/tasks/T93.md](tasks/T93.md)
-  - **Waiting:** the work is pushed, and every check passed except the live relay's. The Worker's Production branch is `main` (2026-11-17), so no push to `dev` deploys the relay; you OKed deploying it now with wrangler from the Mac. Left: run `npx wrangler login` in `Relay/` in your own terminal and click Allow in the browser (or tell Claude when you're at the browser), then Claude runs `npx wrangler deploy`, checks `curl <relay>/health` and closes T93.
 
 - [ ] **T90 The design doc moves into the repo as Markdown files**
   - **Model and effort:** Opus 5.5, high. A word-for-word copy of every tab, with its tables and pictures, checked against the doc by a diff; then every pointer to the doc rewritten. A dropped line is easy to miss.
@@ -429,6 +421,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T89.md](tasks/T89.md)
 - [x] **T100 New audio, part 1: music that fits each scene and sits in the background, picked by me**
   - **Details:** [Docs/tasks/T100.md](tasks/T100.md)
+- [x] **T93 The title's Play button replaces Play via Relay and is greyed out when fewer than three AIs work**
+  - **Details:** [Docs/tasks/T93.md](tasks/T93.md)
 
 ## Not planned yet
 
