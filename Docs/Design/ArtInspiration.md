@@ -41,7 +41,7 @@ The approved direction board. It sets the look, not the layout: the UI's layout 
 | OpenAI | #A8CCFF pale blue |
 | Anthropic | #E8894A orange |
 | SpaceXAI | #D8F04A lime |
-| Meta | mustard, with black (T95). Its exact hex is set when the UI's seat color changes; until then the game shows #5B8CFF blue |
+| Meta | mustard #C8AC12, with black (T95, T108) |
 | You | #3FD0C9 teal |
 
 The colors are the UI's seat colors, so a bot, its name tag and its chat bar always match.
@@ -162,9 +162,9 @@ Colors are set by role. Start from these values; if a value changes, keep its ro
 | Text on ink | #FFFFFF; quiet #C9C3DA | Speech; actions, hints and captions |
 | Inset | #0E0B18 | The input box fill |
 | Raised | #2A2342 | Secondary button fill |
-| Seat colors | OpenAI #A8CCFF · Anthropic #E8894A · SpaceXAI #D8F04A · Meta #5B8CFF · You #3FD0C9 | Names, chat bars, name tags, ballot tickets |
+| Seat colors | OpenAI #A8CCFF · Anthropic #E8894A · SpaceXAI #D8F04A · Meta #C8AC12 · You #3FD0C9 | Names, chat bars, name tags, ballot tickets |
 
-- **Gold means act now, teal means you.** Nothing else in the play area is gold. SpaceXAI moves from yellow to lime so it never reads as gold, and OpenAI and Meta differ in lightness, not only hue.
+- **Gold means act now, teal means you.** Nothing else in the play area is gold. SpaceXAI moves from yellow to lime, and Meta's mustard leans green and sits darker than the gold, so neither reads as gold.
 - **States:** hover mixes a fill 15% toward white, pressed 12% toward black, and disabled is 40% opacity with no outline. Curtain red is only a fill with white text on it: red text on ink measures 3.2:1.
 - **Display face:** one chunky rounded sans with an open font license (Lilita One fits), with a 2–3 px dark outline. Use it for the phase header, banner, buttons, stamp, title and end result, in short labels only. If importing it costs more than an hour, use F\_UI Bold with the same outline. List it with the outside assets. The dark outline goes on light display text only; dark labels on gold or paper have none.
 - **Body face:** F\_UI (Roboto) stays for chat, cards and hints: names bold, actions italic, speech regular.

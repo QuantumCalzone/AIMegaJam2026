@@ -53,7 +53,7 @@ The **seat colors are fixed**, because the UI uses them too: each bot's name, ch
 | OpenAI | #A8CCFF pale blue |
 | Anthropic | #E8894A orange |
 | SpaceXAI | #D8F04A lime |
-| Meta | #5B8CFF blue (its tee) |
+| Meta | #C8AC12 mustard (its top, with black) |
 | You | #3FD0C9 teal (the painted box) |
 
 The **world colors** are albedo targets for the clay materials. The board is a dim, warm-lit house, so its pixels read much darker than these. Pick a material's color from this table, not from the board.
@@ -71,7 +71,7 @@ The **world colors** are albedo targets for the clay materials. The board is a d
 
 - **Keep the seat colors for the five bots.** No set piece, prop or audience bot uses a seat color at full strength. A prop that must be blue or orange is muted or darker.
 - **Gold means act now in the UI.** The theater may be gold, but nothing gold lands on the stage floor near the bots, beyond their own small accents.
-- SpaceXAI stays lime and never drifts to yellow, so it never reads as gold. OpenAI and Meta stay apart by lightness, not only hue.
+- SpaceXAI stays lime and never drifts to yellow, so it never reads as gold. Meta's mustard stays green-leaning and darker than the gold, and the audience's mustard (#C9A43F) stays muted beside it.
 
 ### Materials and surfaces
 

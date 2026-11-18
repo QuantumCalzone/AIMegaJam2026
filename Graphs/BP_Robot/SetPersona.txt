@@ -14,7 +14,7 @@
   (bind _h (Utilities|String|EqualExactly(String) Id "human"))
   ; T79: OpenAI, Anthropic and SpaceXAI wear the shared round head. T80: Meta has its doll head and I wear a cardboard box.
   (bind _r (or _v (or _w _o)))
-  (Variables|Default|SetBaseColor (select _v (Utilities|Struct|MakeLinearColor :R 0.392 :G 0.604 :B 1.0 :A 1.0) (select _w (Utilities|Struct|MakeLinearColor :R 0.807 :G 0.25 :B 0.068 :A 1.0) (select _o (Utilities|Struct|MakeLinearColor :R 0.687 :G 0.871 :B 0.068 :A 1.0) (select _p (Utilities|Struct|MakeLinearColor :R 0.105 :G 0.262 :B 1.0 :A 1.0) (select _h (Utilities|Struct|MakeLinearColor :R 0.05 :G 0.631 :B 0.584 :A 1.0) (Variables|Default|GetBaseColor)))))))
+  (Variables|Default|SetBaseColor (select _v (Utilities|Struct|MakeLinearColor :R 0.392 :G 0.604 :B 1.0 :A 1.0) (select _w (Utilities|Struct|MakeLinearColor :R 0.807 :G 0.25 :B 0.068 :A 1.0) (select _o (Utilities|Struct|MakeLinearColor :R 0.687 :G 0.871 :B 0.068 :A 1.0) (select _p (Utilities|Struct|MakeLinearColor :R 0.578 :G 0.413 :B 0.006 :A 1.0) (select _h (Utilities|Struct|MakeLinearColor :R 0.05 :G 0.631 :B 0.584 :A 1.0) (Variables|Default|GetBaseColor)))))))
   ; T79: OpenAI's idle bob becomes a slow hover, 8 cm up, with its hands pressed together at rest.
   (Variables|Default|SetBobSpeed (select _v 1.1 (select _w 6.0 (select _o 4.5 (select _p 0.7 2.0)))))
   (Variables|Default|SetBobAmp (select _v 3.5 (select _w 1.0 (select _o 4.0 (select _p 0.6 2.5)))))

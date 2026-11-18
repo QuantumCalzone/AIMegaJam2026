@@ -142,13 +142,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/Audio/**` (reimports, three new music loops, and deletes of sounds T101 left out), `Content/NHOS/Audio/SC_Music.uasset`, `SC_Effects.uasset` and `SC_Voice.uasset`, `Content/NHOS/Core/BPC_ShowAudio.uasset` (levels, ducking, and the three new music keys in `PhaseKey` and `TrackFor`), `Graphs/BPC_ShowAudio/` files for the graphs it writes, `Content/NHOS/Core/BP_Show.uasset` (one pin in `OpenPrep`), `Graphs/BP_Show/OpenPrep.txt`, `Docs/Assets.md`, `Docs/AudioShortlist.md`, `Docs/ItchPage.md` (credits), `Docs/tasks/T102.md`.
   - **Details:** [Docs/tasks/T102.md](tasks/T102.md)
 
-- [ ] **T108 Meta's seat color becomes mustard, in the UI and on the robot**
-  - **Model and effort:** Sonnet 5.5, medium. One color value in each of two Blueprints, the docs that list the seat colors, and a free PIE check.
-  - **Depends on:** T95 (my pick of mustard for Meta; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine. It locks `BP_Robot.uasset`, as T103 does, so the two never run at once.
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE check, my pick of the exact hex, my OK on the design doc and style guide edits.
-  - **Touches:** `Content/NHOS/UI/Style/UIStyle.uasset` (`SeatColor`), `Content/NHOS/Stage/BP_Robot.uasset` (`SetPersona`), any other asset that holds Meta's blue, `Graphs/UIStyle/SeatColor.txt`, `Graphs/BP_Robot/SetPersona.txt`, `Docs/Design/ArtInspiration.md` (the bots table and the UI section's palette), `Docs/Art/Direction/README.md` (the palette), `Docs/tasks/T108.md`.
-  - **Details:** [Docs/tasks/T108.md](tasks/T108.md)
-
 - [ ] **T103 New art, part 7: the cast's models, generated from the approved concepts**
   - **Model and effort:** Opus 5.5, high. Five robots generated and swapped into `BP_Robot`, keeping the sockets, the face and every hook the show uses.
   - **Depends on:** T95 (the approved turnarounds); T75, T82 and T83 (the face, `M_CastModel` and the last swap; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine. Run it where its generator is: Hyper3D's MCP server is on the Mac, and the PC has the Meshy key.
@@ -400,6 +393,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T101 New audio, part 2: the show and robot sounds, the clicks and the bots' voices, picked by me**
   - **Details:** [Docs/tasks/T101.md](tasks/T101.md)
+
+- [x] **T108 Meta's seat color becomes mustard, in the UI and on the robot**
+  - **Details:** [Docs/tasks/T108.md](tasks/T108.md)
 
 ## Not planned yet
 

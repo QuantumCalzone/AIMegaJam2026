@@ -10,9 +10,9 @@
   ; SpaceXAI: #D8F04A
   (if (Utilities|String|EqualExactly(String) Name "SpaceXAI")
     (return (Utilities|Struct|MakeLinearColor 0.6867 0.8714 0.0685 1.0)))
-  ; Meta: #5B8CFF
+  ; Meta: #C8AC12 (mustard, T108)
   (if (Utilities|String|EqualExactly(String) Name "Meta")
-    (return (Utilities|Struct|MakeLinearColor 0.1046 0.2623 1.0000 1.0)))
+    (return (Utilities|Struct|MakeLinearColor 0.5776 0.4125 0.0060 1.0)))
   ; You: #3FD0C9
   (if (Utilities|String|EqualExactly(String) Name "You")
     (return (Utilities|Struct|MakeLinearColor 0.0497 0.6308 0.5841 1.0)))
