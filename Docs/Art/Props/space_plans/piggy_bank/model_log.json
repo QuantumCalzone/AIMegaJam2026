@@ -1,0 +1,52 @@
+{
+ "prop": "piggy bank",
+ "card": "space_plans",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "y8lqkOSfO-p25SwXBwazHQ",
+ "generation_id": "adfda439-c999-461c-8b53-266a11d3ad80",
+ "prompt": "A round fat piggy bank in dusty muted pink clay, with a wide coin slot on its back, two triangle ears, a flat round snout, four stubby legs and a thick curly tail. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "adfda439-c999-461c-8b53-266a11d3ad80"
+ ],
+ "size_cm": 32,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7498,
+  "bbox_min": [
+   -0.687,
+   -0.951,
+   -0.655
+  ],
+  "bbox_max": [
+   0.687,
+   0.951,
+   0.657
+  ],
+  "pieces": 2,
+  "piece_vertex_counts": [
+   6880,
+   618
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md."
+}

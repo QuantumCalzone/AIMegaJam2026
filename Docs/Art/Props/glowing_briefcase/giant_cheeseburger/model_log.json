@@ -1,0 +1,51 @@
+{
+ "prop": "giant cheeseburger",
+ "card": "glowing_briefcase",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "1Et3qAT3ZC38SRRde-qN_Q",
+ "generation_id": "71026c11-6e62-4c68-97e7-2487618f05fe",
+ "prompt": "A giant chunky cheeseburger: a tall domed golden-brown bun with a few big cream sesame seeds, a thick brown patty, a melted yellow cheese slice drooping at the corners, a wavy green lettuce layer and thick red tomato slices. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "71026c11-6e62-4c68-97e7-2487618f05fe"
+ ],
+ "size_cm": 40,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7502,
+  "bbox_min": [
+   -0.907,
+   -0.949,
+   -0.775
+  ],
+  "bbox_max": [
+   0.908,
+   0.953,
+   0.778
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7502
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md."
+}

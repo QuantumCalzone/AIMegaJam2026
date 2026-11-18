@@ -1,0 +1,53 @@
+{
+ "prop": "glowing briefcase",
+ "card": "glowing_briefcase",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "x9kvMbqCkHLGZc0Bsn6zxA",
+ "generation_id": "e7769a18-2d63-4e00-b317-fc7051012291",
+ "prompt": "A slim, flat attache case in matte black clay lying flat on the ground and opened wide: the thin lid swings up almost upright, joined to the base along the back edge, and the front of the base faces the viewer with a chunky handle in the middle and two old-gold latches. The shallow inside is lined in warm gold clay. No light rays. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "e7769a18-2d63-4e00-b317-fc7051012291"
+ ],
+ "size_cm": 45,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7464,
+  "bbox_min": [
+   -0.837,
+   -0.951,
+   -0.782
+  ],
+  "bbox_max": [
+   0.838,
+   0.944,
+   0.783
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7464
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides",
+  "glow.png": "emissive mask, white = glows"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md.",
+ "note": "glow.png masks the gold lining (fixtex.swift glow, hue 28-58); it also catches the two small gold latch plates. The god rays are an engine light, not in the model."
+}

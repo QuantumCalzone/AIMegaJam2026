@@ -1,0 +1,51 @@
+{
+ "prop": "gold pocket watch",
+ "card": "glowing_briefcase",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 8000,
+ "texture_delight": true,
+ "reference": "model_view.png",
+ "upload_id": "UZJ932O8PQvB4Ry9s6OGaQ",
+ "generation_id": "00c99027-fab2-4c63-8d0c-a930cf1f40fe",
+ "prompt": "A chunky old-gold pocket watch standing up, its round lid open, a plain cream face with two thick black hands and no numbers, and a round winding knob with a thick ring loop on top. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "00c99027-fab2-4c63-8d0c-a930cf1f40fe"
+ ],
+ "size_cm": 14,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 8000,
+  "vertices": 4000,
+  "bbox_min": [
+   -0.701,
+   -0.156,
+   -0.949
+  ],
+  "bbox_max": [
+   0.702,
+   0.156,
+   0.951
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   4000
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md."
+}

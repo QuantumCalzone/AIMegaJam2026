@@ -1,0 +1,52 @@
+{
+ "prop": "rolled-up rug",
+ "card": "league_night",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "mlSFov8tdc2rN1O8ABVWvg",
+ "generation_id": "b1817e6d-966a-47d5-8051-1cbf1bac23d7",
+ "prompt": "A rolled-up rug: a long, thick cylinder of rug rolled tight, deep red with a big simple dark old-gold diamond pattern, tied with two thick cream cords, with a rounded spiral showing at each end. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "b1817e6d-966a-47d5-8051-1cbf1bac23d7"
+ ],
+ "size_cm": 80,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7494,
+  "bbox_min": [
+   -0.953,
+   -0.287,
+   -0.232
+  ],
+  "bbox_max": [
+   0.951,
+   0.287,
+   0.233
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7494
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md.",
+ "note": "The diamonds came back bright mustard-orange (now Meta's seat color). fixtex.swift shifted the orange pixels to dark old gold (hue 37, saturation 0.74, value x0.72). My person chose this fix."
+}

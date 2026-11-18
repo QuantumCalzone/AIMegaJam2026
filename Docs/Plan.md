@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T99, T102, T103 to T106), where each concept and each pick waits for my approval. T101 picked the new sounds and voices that T102 imports: "Show, robot and button sounds, and the bots' voices (T101)" in `Docs/AudioShortlist.md`. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T97 approved the props that T105 builds on: `Docs/Art/Props/README.md`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T99, T102, T103, T104, T106), where each concept and each pick waits for my approval. T101 picked the new sounds and voices that T102 imports: "Show, robot and button sounds, and the bots' voices (T101)" in `Docs/AudioShortlist.md`. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -148,13 +148,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, Meshy (`Local/meshy_key.json`) or Hyper3D (the Mac's MCP server, or an API key I put in `Local/`), my OK on the estimated cost before the first paid call, my OK on the models and on the final fit grid, my OK on the design doc edit.
   - **Touches:** new `Content/NHOS/Stage/Costumes/`, `Content/NHOS/Stage/Headpieces/` (deleted), `Content/NHOS/Stage/BP_Robot.uasset` (`SetHeadpiece`, `DressFromShow`, attach points, `costume_test`), `Content/NHOS/Data/costumes.json`, `Content/NHOS/Data/scenes.json` (each seat's costume), `Tools/check_prompts.py` if it checks costumes, `Docs/switches.example.json`, `Docs/Art/Costumes/` (models and logs), `Docs/Assets.md`, the design doc, `Graphs/BP_Robot/` files for the graphs it writes, `Docs/tasks/T104.md`.
   - **Details:** [Docs/tasks/T104.md](tasks/T104.md)
-
-- [ ] **T105 New art, part 9: the story props' models, generated from the approved concepts**
-  - **Model and effort:** Sonnet 5.5, medium. 28 image-to-3D props, scaled to their sizes, on the pattern T41 and T43 set.
-  - **Depends on:** T97 (the approved props, with views and sizes); T45 and T62 (the prop table, and grab, throw and give; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine.
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, Meshy (`Local/meshy_key.json`) or Hyper3D, my OK on the estimated cost before the first paid call (about 840 Meshy credits), my OK on each card's models.
-  - **Touches:** `Content/NHOS/Stage/Props/**`, `Content/NHOS/Data/props.json`, `Content/NHOS/Stage/BP_Prop.uasset` only if it must change, new `Docs/Art/Props/manifest.json`, `Docs/Art/Props/` (models and logs), `Docs/Assets.md`, `Graphs/BP_Prop/` files if it writes any, `Docs/tasks/T105.md`.
-  - **Details:** [Docs/tasks/T105.md](tasks/T105.md)
 
 - [ ] **T106 New art, part 10: the theater, its set pieces and the audience, built from the approved concepts**
   - **Model and effort:** Opus 5.5, high. A rebuild of `L_Stage`'s house that keeps the camera's frame, the places, the prop table, the backdrop flat and the near rows' lighting.
@@ -392,6 +385,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T96 New art, part 3: concepts for a costume for each role, fitted to every character, approved by me**
   - **Details:** [Docs/tasks/T96.md](tasks/T96.md)
+
+- [x] **T105 New art, part 9: the story props' models, generated from the approved concepts**
+  - **Details:** [Docs/tasks/T105.md](tasks/T105.md)
 
 ## Not planned yet
 

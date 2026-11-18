@@ -1,0 +1,52 @@
+{
+ "prop": "bowling ball",
+ "card": "league_night",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "CDHH1AzQMfkHFMtPE7gQ8Q",
+ "generation_id": "e35c639f-fb12-40a3-a584-1d88e44df257",
+ "prompt": "A bowling ball in deep plum purple with a few soft swirls of lighter purple, with three round finger holes. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "e35c639f-fb12-40a3-a584-1d88e44df257"
+ ],
+ "size_cm": 26,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7494,
+  "bbox_min": [
+   -0.935,
+   -0.941,
+   -0.949
+  ],
+  "bbox_max": [
+   0.937,
+   0.941,
+   0.949
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7494
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md.",
+ "note": "The model came back pale lavender with no swirls. fixtex.swift recolored the diffuse map to deep plum (hue 305, value x0.6). My person chose this fix over a redo."
+}

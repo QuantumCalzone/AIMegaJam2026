@@ -1,0 +1,51 @@
+{
+ "prop": "bowl of oranges",
+ "card": "favor_father",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "uwccfzimGFSStvd7XySmKA",
+ "generation_id": "461532d3-9b62-435f-8fa8-18c0992e9aa3",
+ "prompt": "A wide, shallow cream bowl piled high with five big round deep tangerine-orange oranges, with two chunky green leaves on top. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "461532d3-9b62-435f-8fa8-18c0992e9aa3"
+ ],
+ "size_cm": 30,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7474,
+  "bbox_min": [
+   -0.948,
+   -0.949,
+   -0.884
+  ],
+  "bbox_max": [
+   0.947,
+   0.946,
+   0.885
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7474
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md."
+}

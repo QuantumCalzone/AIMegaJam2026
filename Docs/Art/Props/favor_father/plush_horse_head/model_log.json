@@ -1,0 +1,53 @@
+{
+ "prop": "plush horse head",
+ "card": "favor_father",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "FmjaAJLGFuy_4a4FhkQ2zQ",
+ "generation_id": "5dd0b585-1885-412c-9c77-97b7a10eba54",
+ "prompt": "A cute plush toy horse head, cut off neatly at the neck like a stuffed toy with a flat cream base: a chunky, rounded, cuddly chestnut-brown head with a cream muzzle, two round black button eyes, two rounded ears, and a mane made as one thick solid rounded dark brown ridge. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "11c4a17b-6a13-429c-a364-47d324f62f76",
+  "5dd0b585-1885-412c-9c77-97b7a10eba54"
+ ],
+ "size_cm": 40,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7502,
+  "bbox_min": [
+   -0.753,
+   -0.952,
+   -0.935
+  ],
+  "bbox_max": [
+   0.751,
+   0.95,
+   0.933
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7502
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md.",
+ "note": "Take 1 (11c4a17b-...) came back broken: 10,016 scattered sliver triangles with a total area of 0.006. Take 2 is the model."
+}

@@ -1,0 +1,682 @@
+{
+ "_readme": [
+  "T105: each story prop's model, made with Hyper3D Rodin from T97's model_view.png, and how props.json fits it.",
+  "bounds_cm: the imported static mesh's local bounds (min, max). Rodin's front faces +Y once imported (the FBX import mirrors Y), so yaw 90 turns it to the house, as with Meshy's models.",
+  "scale = size_cm / the longest side; z = -min_z * scale (the bottom on the actor's origin); grip_z = -half the height * scale (the hand holds the middle).",
+  "Docs/tasks/T105.md has the findings; each prop's folder holds model.fbx, model_log.json (generation ids, prompt, fixes) and the thumbnails."
+ ],
+ "props": {
+  "tin-can robot": {
+   "card": "space_plans",
+   "id": "tin_can_robot",
+   "asset": "/Game/NHOS/Stage/Props/space_plans/SM_TinCanRobot.SM_TinCanRobot",
+   "size_cm": 45,
+   "bounds_cm": [
+    [
+     -76.6,
+     -41.5,
+     -95.2
+    ],
+    [
+     76.7,
+     41.1,
+     95.1
+    ]
+   ],
+   "tris": 14998,
+   "scale": 0.2364,
+   "yaw": 90,
+   "z": 22.5,
+   "grip_z": -22.5,
+   "model": "Docs/Art/Props/space_plans/tin_can_robot/model.fbx"
+  },
+  "glow-stick sword": {
+   "card": "space_plans",
+   "id": "glow_stick_sword",
+   "asset": "/Game/NHOS/Stage/Props/space_plans/SM_GlowStickSword.SM_GlowStickSword",
+   "size_cm": 70,
+   "bounds_cm": [
+    [
+     -18.3,
+     -9.3,
+     -94.8
+    ],
+    [
+     18.3,
+     9.3,
+     94.9
+    ]
+   ],
+   "tris": 14992,
+   "scale": 0.3692,
+   "yaw": 90,
+   "z": 35.0,
+   "grip_z": -9.0,
+   "model": "Docs/Art/Props/space_plans/glow_stick_sword/model.fbx"
+  },
+  "toy blaster": {
+   "card": "space_plans",
+   "id": "toy_blaster",
+   "asset": "/Game/NHOS/Stage/Props/space_plans/SM_ToyBlaster.SM_ToyBlaster",
+   "size_cm": 32,
+   "bounds_cm": [
+    [
+     -39.5,
+     -94.9,
+     -89.5
+    ],
+    [
+     39.4,
+     95.1,
+     89.7
+    ]
+   ],
+   "tris": 14998,
+   "scale": 0.1684,
+   "yaw": 0,
+   "z": 15.1,
+   "grip_z": -15.1,
+   "model": "Docs/Art/Props/space_plans/toy_blaster/model.fbx"
+  },
+  "piggy bank": {
+   "card": "space_plans",
+   "id": "piggy_bank",
+   "asset": "/Game/NHOS/Stage/Props/space_plans/SM_PiggyBank.SM_PiggyBank",
+   "size_cm": 32,
+   "bounds_cm": [
+    [
+     -68.7,
+     -95.1,
+     -65.5
+    ],
+    [
+     68.7,
+     95.1,
+     65.7
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.1683,
+   "yaw": 60,
+   "z": 11.0,
+   "grip_z": -11.0,
+   "model": "Docs/Art/Props/space_plans/piggy_bank/model.fbx"
+  },
+  "cursed ring": {
+   "card": "mine_bridge",
+   "id": "cursed_ring",
+   "asset": "/Game/NHOS/Stage/Props/mine_bridge/SM_CursedRing.SM_CursedRing",
+   "size_cm": 12,
+   "bounds_cm": [
+    [
+     -61.7,
+     -46.4,
+     -95.0
+    ],
+    [
+     61.6,
+     46.4,
+     94.8
+    ]
+   ],
+   "tris": 8000,
+   "scale": 0.0632,
+   "yaw": 90,
+   "z": 6.0,
+   "grip_z": -6.0,
+   "model": "Docs/Art/Props/mine_bridge/cursed_ring/model.fbx"
+  },
+  "glowing staff": {
+   "card": "mine_bridge",
+   "id": "glowing_staff",
+   "asset": "/Game/NHOS/Stage/Props/mine_bridge/SM_GlowingStaff.SM_GlowingStaff",
+   "size_cm": 90,
+   "bounds_cm": [
+    [
+     -18.5,
+     -17.1,
+     -94.9
+    ],
+    [
+     18.7,
+     17.1,
+     95.0
+    ]
+   ],
+   "tris": 14958,
+   "scale": 0.474,
+   "yaw": 90,
+   "z": 45.0,
+   "grip_z": -30.0,
+   "model": "Docs/Art/Props/mine_bridge/glowing_staff/model.fbx"
+  },
+  "water bucket": {
+   "card": "mine_bridge",
+   "id": "water_bucket",
+   "asset": "/Game/NHOS/Stage/Props/mine_bridge/SM_WaterBucket.SM_WaterBucket",
+   "size_cm": 35,
+   "bounds_cm": [
+    [
+     -83.3,
+     -71.4,
+     -94.6
+    ],
+    [
+     83.0,
+     71.8,
+     94.6
+    ]
+   ],
+   "tris": 14998,
+   "scale": 0.1849,
+   "yaw": 90,
+   "z": 17.5,
+   "grip_z": -17.5,
+   "model": "Docs/Art/Props/mine_bridge/water_bucket/model.fbx"
+  },
+  "frying pan": {
+   "card": "mine_bridge",
+   "id": "frying_pan",
+   "asset": "/Game/NHOS/Stage/Props/mine_bridge/SM_FryingPan.SM_FryingPan",
+   "size_cm": 42,
+   "bounds_cm": [
+    [
+     -51.3,
+     -94.9,
+     -24.5
+    ],
+    [
+     51.3,
+     95.0,
+     24.8
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.2212,
+   "yaw": 0,
+   "z": 5.4,
+   "grip_z": -5.4,
+   "model": "Docs/Art/Props/mine_bridge/frying_pan/model.fbx"
+  },
+  "dino egg": {
+   "card": "dino_island",
+   "id": "dino_egg",
+   "asset": "/Game/NHOS/Stage/Props/dino_island/SM_DinoEgg.SM_DinoEgg",
+   "size_cm": 32,
+   "bounds_cm": [
+    [
+     -69.4,
+     -69.0,
+     -94.0
+    ],
+    [
+     69.4,
+     69.2,
+     94.9
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.1694,
+   "yaw": 90,
+   "z": 15.9,
+   "grip_z": -16.0,
+   "model": "Docs/Art/Props/dino_island/dino_egg/model.fbx"
+  },
+  "meaty drumstick": {
+   "card": "dino_island",
+   "id": "meaty_drumstick",
+   "asset": "/Game/NHOS/Stage/Props/dino_island/SM_MeatyDrumstick.SM_MeatyDrumstick",
+   "size_cm": 32,
+   "bounds_cm": [
+    [
+     -50.8,
+     -46.8,
+     -95.1
+    ],
+    [
+     51.0,
+     46.6,
+     94.9
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.1685,
+   "yaw": 90,
+   "z": 16.0,
+   "grip_z": -16.0,
+   "model": "Docs/Art/Props/dino_island/meaty_drumstick/model.fbx"
+  },
+  "safety waiver": {
+   "card": "dino_island",
+   "id": "safety_waiver",
+   "asset": "/Game/NHOS/Stage/Props/dino_island/SM_SafetyWaiver.SM_SafetyWaiver",
+   "size_cm": 30,
+   "bounds_cm": [
+    [
+     -65.7,
+     -8.7,
+     -94.8
+    ],
+    [
+     65.7,
+     10.1,
+     94.9
+    ]
+   ],
+   "tris": 7994,
+   "scale": 0.1581,
+   "yaw": 90,
+   "z": 15.0,
+   "grip_z": -15.0,
+   "model": "Docs/Art/Props/dino_island/safety_waiver/model.fbx"
+  },
+  "dino plush": {
+   "card": "dino_island",
+   "id": "dino_plush",
+   "asset": "/Game/NHOS/Stage/Props/dino_island/SM_DinoPlush.SM_DinoPlush",
+   "size_cm": 36,
+   "bounds_cm": [
+    [
+     -70.9,
+     -72.1,
+     -95.1
+    ],
+    [
+     71.4,
+     72.1,
+     94.7
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.1896,
+   "yaw": 90,
+   "z": 18.0,
+   "grip_z": -18.0,
+   "model": "Docs/Art/Props/dino_island/dino_plush/model.fbx"
+  },
+  "plush horse head": {
+   "card": "favor_father",
+   "id": "plush_horse_head",
+   "asset": "/Game/NHOS/Stage/Props/favor_father/SM_PlushHorseHead.SM_PlushHorseHead",
+   "size_cm": 40,
+   "bounds_cm": [
+    [
+     -75.3,
+     -95.0,
+     -93.5
+    ],
+    [
+     75.1,
+     95.2,
+     93.3
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.2103,
+   "yaw": 90,
+   "z": 19.7,
+   "grip_z": -19.7,
+   "model": "Docs/Art/Props/favor_father/plush_horse_head/model.fbx"
+  },
+  "cannoli tray": {
+   "card": "favor_father",
+   "id": "cannoli_tray",
+   "asset": "/Game/NHOS/Stage/Props/favor_father/SM_CannoliTray.SM_CannoliTray",
+   "size_cm": 42,
+   "bounds_cm": [
+    [
+     -106.2,
+     -106.4,
+     -57.7
+    ],
+    [
+     106.5,
+     106.3,
+     52.5
+    ]
+   ],
+   "tris": 15480,
+   "scale": 0.1975,
+   "yaw": 90,
+   "z": 11.4,
+   "grip_z": -10.9,
+   "model": "Docs/Art/Props/favor_father/cannoli_tray/model.fbx"
+  },
+  "wedding envelope": {
+   "card": "favor_father",
+   "id": "wedding_envelope",
+   "asset": "/Game/NHOS/Stage/Props/favor_father/SM_WeddingEnvelope.SM_WeddingEnvelope",
+   "size_cm": 26,
+   "bounds_cm": [
+    [
+     -94.9,
+     -36.0,
+     -93.6
+    ],
+    [
+     95.1,
+     35.9,
+     93.2
+    ]
+   ],
+   "tris": 8000,
+   "scale": 0.1368,
+   "yaw": 90,
+   "z": 12.8,
+   "grip_z": -12.8,
+   "model": "Docs/Art/Props/favor_father/wedding_envelope/model.fbx"
+  },
+  "bowl of oranges": {
+   "card": "favor_father",
+   "id": "bowl_of_oranges",
+   "asset": "/Game/NHOS/Stage/Props/favor_father/SM_BowlOfOranges.SM_BowlOfOranges",
+   "size_cm": 30,
+   "bounds_cm": [
+    [
+     -94.8,
+     -94.6,
+     -88.4
+    ],
+    [
+     94.7,
+     94.9,
+     88.5
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.1583,
+   "yaw": 90,
+   "z": 14.0,
+   "grip_z": -14.0,
+   "model": "Docs/Art/Props/favor_father/bowl_of_oranges/model.fbx"
+  },
+  "glowing briefcase": {
+   "card": "glowing_briefcase",
+   "id": "glowing_briefcase",
+   "asset": "/Game/NHOS/Stage/Props/glowing_briefcase/SM_GlowingBriefcase.SM_GlowingBriefcase",
+   "size_cm": 45,
+   "bounds_cm": [
+    [
+     -83.7,
+     -94.4,
+     -78.2
+    ],
+    [
+     83.8,
+     95.1,
+     78.3
+    ]
+   ],
+   "tris": 14998,
+   "scale": 0.2374,
+   "yaw": 90,
+   "z": 18.6,
+   "grip_z": -18.6,
+   "model": "Docs/Art/Props/glowing_briefcase/glowing_briefcase/model.fbx"
+  },
+  "gold pocket watch": {
+   "card": "glowing_briefcase",
+   "id": "gold_pocket_watch",
+   "asset": "/Game/NHOS/Stage/Props/glowing_briefcase/SM_GoldPocketWatch.SM_GoldPocketWatch",
+   "size_cm": 14,
+   "bounds_cm": [
+    [
+     -70.1,
+     -15.6,
+     -94.9
+    ],
+    [
+     70.2,
+     15.6,
+     95.1
+    ]
+   ],
+   "tris": 8000,
+   "scale": 0.0737,
+   "yaw": 90,
+   "z": 7.0,
+   "grip_z": -7.0,
+   "model": "Docs/Art/Props/glowing_briefcase/gold_pocket_watch/model.fbx"
+  },
+  "giant milkshake": {
+   "card": "glowing_briefcase",
+   "id": "giant_milkshake",
+   "asset": "/Game/NHOS/Stage/Props/glowing_briefcase/SM_GiantMilkshake.SM_GiantMilkshake",
+   "size_cm": 45,
+   "bounds_cm": [
+    [
+     -39.3,
+     -40.6,
+     -95.1
+    ],
+    [
+     38.8,
+     40.8,
+     94.8
+    ]
+   ],
+   "tris": 14996,
+   "scale": 0.237,
+   "yaw": 90,
+   "z": 22.5,
+   "grip_z": -22.5,
+   "model": "Docs/Art/Props/glowing_briefcase/giant_milkshake/model.fbx"
+  },
+  "giant cheeseburger": {
+   "card": "glowing_briefcase",
+   "id": "giant_cheeseburger",
+   "asset": "/Game/NHOS/Stage/Props/glowing_briefcase/SM_GiantCheeseburger.SM_GiantCheeseburger",
+   "size_cm": 40,
+   "bounds_cm": [
+    [
+     -90.7,
+     -95.3,
+     -77.5
+    ],
+    [
+     90.8,
+     94.9,
+     77.8
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.2102,
+   "yaw": 90,
+   "z": 16.3,
+   "grip_z": -16.3,
+   "model": "Docs/Art/Props/glowing_briefcase/giant_cheeseburger/model.fbx"
+  },
+  "rolled-up rug": {
+   "card": "league_night",
+   "id": "rolled_up_rug",
+   "asset": "/Game/NHOS/Stage/Props/league_night/SM_RolledUpRug.SM_RolledUpRug",
+   "size_cm": 80,
+   "bounds_cm": [
+    [
+     -95.3,
+     -28.7,
+     -23.2
+    ],
+    [
+     95.1,
+     28.7,
+     23.3
+    ]
+   ],
+   "tris": 14998,
+   "scale": 0.4201,
+   "yaw": 90,
+   "z": 9.8,
+   "grip_z": -9.8,
+   "model": "Docs/Art/Props/league_night/rolled_up_rug/model.fbx"
+  },
+  "bowling ball": {
+   "card": "league_night",
+   "id": "bowling_ball",
+   "asset": "/Game/NHOS/Stage/Props/league_night/SM_BowlingBall.SM_BowlingBall",
+   "size_cm": 26,
+   "bounds_cm": [
+    [
+     -93.5,
+     -94.1,
+     -94.9
+    ],
+    [
+     93.7,
+     94.1,
+     94.9
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.137,
+   "yaw": 90,
+   "z": 13.0,
+   "grip_z": -13.0,
+   "model": "Docs/Art/Props/league_night/bowling_ball/model.fbx"
+  },
+  "ransom bag": {
+   "card": "league_night",
+   "id": "ransom_bag",
+   "asset": "/Game/NHOS/Stage/Props/league_night/SM_RansomBag.SM_RansomBag",
+   "size_cm": 36,
+   "bounds_cm": [
+    [
+     -69.5,
+     -69.5,
+     -94.6
+    ],
+    [
+     69.4,
+     69.7,
+     95.0
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.1899,
+   "yaw": 90,
+   "z": 18.0,
+   "grip_z": -18.0,
+   "model": "Docs/Art/Props/league_night/ransom_bag/model.fbx"
+  },
+  "milk carton": {
+   "card": "league_night",
+   "id": "milk_carton",
+   "asset": "/Game/NHOS/Stage/Props/league_night/SM_MilkCarton.SM_MilkCarton",
+   "size_cm": 26,
+   "bounds_cm": [
+    [
+     -50.5,
+     -53.4,
+     -94.8
+    ],
+    [
+     50.4,
+     53.4,
+     94.7
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.1372,
+   "yaw": 90,
+   "z": 13.0,
+   "grip_z": -13.0,
+   "model": "Docs/Art/Props/league_night/milk_carton/model.fbx"
+  },
+  "red pill": {
+   "card": "pick_a_pill",
+   "id": "red_pill",
+   "asset": "/Game/NHOS/Stage/Props/pick_a_pill/SM_RedPill.SM_RedPill",
+   "size_cm": 12,
+   "bounds_cm": [
+    [
+     -94.9,
+     -31.5,
+     -32.4
+    ],
+    [
+     94.9,
+     31.5,
+     32.3
+    ]
+   ],
+   "tris": 7998,
+   "scale": 0.0632,
+   "yaw": 90,
+   "z": 2.0,
+   "grip_z": -2.0,
+   "model": "Docs/Art/Props/pick_a_pill/red_pill/model.fbx"
+  },
+  "blue pill": {
+   "card": "pick_a_pill",
+   "id": "blue_pill",
+   "asset": "/Game/NHOS/Stage/Props/pick_a_pill/SM_BluePill.SM_BluePill",
+   "size_cm": 12,
+   "bounds_cm": [
+    [
+     -94.5,
+     -37.1,
+     -36.1
+    ],
+    [
+     94.8,
+     37.4,
+     35.8
+    ]
+   ],
+   "tris": 8000,
+   "scale": 0.0634,
+   "yaw": 90,
+   "z": 2.3,
+   "grip_z": -2.3,
+   "model": "Docs/Art/Props/pick_a_pill/blue_pill/model.fbx"
+  },
+  "ringing phone": {
+   "card": "pick_a_pill",
+   "id": "ringing_phone",
+   "asset": "/Game/NHOS/Stage/Props/pick_a_pill/SM_RingingPhone.SM_RingingPhone",
+   "size_cm": 26,
+   "bounds_cm": [
+    [
+     -94.7,
+     -59.9,
+     -55.9
+    ],
+    [
+     95.1,
+     60.0,
+     55.6
+    ]
+   ],
+   "tris": 15000,
+   "scale": 0.137,
+   "yaw": 90,
+   "z": 7.7,
+   "grip_z": -7.6,
+   "model": "Docs/Art/Props/pick_a_pill/ringing_phone/model.fbx"
+  },
+  "bent spoon": {
+   "card": "pick_a_pill",
+   "id": "bent_spoon",
+   "asset": "/Game/NHOS/Stage/Props/pick_a_pill/SM_BentSpoon.SM_BentSpoon",
+   "size_cm": 20,
+   "bounds_cm": [
+    [
+     -25.7,
+     -12.2,
+     -94.9
+    ],
+    [
+     25.7,
+     12.0,
+     95.1
+    ]
+   ],
+   "tris": 7996,
+   "scale": 0.1053,
+   "yaw": 90,
+   "z": 10.0,
+   "grip_z": -10.0,
+   "model": "Docs/Art/Props/pick_a_pill/bent_spoon/model.fbx"
+  }
+ }
+}

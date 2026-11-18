@@ -1,0 +1,51 @@
+{
+ "prop": "cursed ring",
+ "card": "mine_bridge",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 8000,
+ "texture_delight": true,
+ "reference": "model_view.png",
+ "upload_id": "4iTqUZ-ne362pgh8Rm7MlQ",
+ "generation_id": "16e1124f-12b9-4916-94fd-b337e0c511cd",
+ "prompt": "A single chunky, oversized finger ring standing upright on its edge: a thick, smooth, rounded band in old-gold clay with a satin sheen, and one big rounded dark red stone set on top. The ring is empty: no finger and no hand inside it. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "16e1124f-12b9-4916-94fd-b337e0c511cd"
+ ],
+ "size_cm": 12,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 8000,
+  "vertices": 4000,
+  "bbox_min": [
+   -0.617,
+   -0.464,
+   -0.95
+  ],
+  "bbox_max": [
+   0.616,
+   0.464,
+   0.948
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   4000
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md."
+}

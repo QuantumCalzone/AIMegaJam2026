@@ -1,0 +1,53 @@
+{
+ "prop": "ringing phone",
+ "card": "pick_a_pill",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "O0GJgHk1c8TF65FhRi9ssg",
+ "generation_id": "d1400d46-8c96-4393-b93b-971f53941ca8",
+ "prompt": "An old rotary desk telephone in charcoal black with a big cream dial with round finger holes, its chunky handset knocked crooked on the cradle, one end tilted up. No cord. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "e18d6593-784c-4014-82a9-d5f088e0e1be",
+  "d1400d46-8c96-4393-b93b-971f53941ca8"
+ ],
+ "size_cm": 26,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7492,
+  "bbox_min": [
+   -0.947,
+   -0.6,
+   -0.559
+  ],
+  "bbox_max": [
+   0.951,
+   0.599,
+   0.556
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   7492
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md.",
+ "note": "The curly cord stayed in both takes (the image wins over the prompt). Take 2 is kept: one closed piece, where take 1's cord was 19 loose pieces. My person chose to keep the cord."
+}

@@ -1,0 +1,56 @@
+{
+ "prop": "cannoli tray",
+ "card": "favor_father",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": true,
+ "reference": "model_view.png",
+ "upload_id": "GwIyn2IXrWFjAw6VABga6w",
+ "generation_id": "bebee97d-33c1-486f-8d5c-89dd4d8e10b3",
+ "prompt": "A round flat serving tray in pale silver-gray matte clay, piled with six chunky cannoli pastries: thick golden-brown tube shells with white cream filling showing at both ends. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "bebee97d-33c1-486f-8d5c-89dd4d8e10b3",
+  "aacc17a7-2ee6-4788-9725-0514ba4ccd5b",
+  "b0991ad7-eabb-4d76-a344-cff8e5f0c3ef"
+ ],
+ "size_cm": 42,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15480,
+  "vertices": 7730,
+  "bbox_min": [
+   -1.062,
+   -1.063,
+   -0.577
+  ],
+  "bbox_max": [
+   1.065,
+   1.064,
+   0.525
+  ],
+  "pieces": 2,
+  "piece_vertex_counts": [
+   7488,
+   242
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md.",
+ "note_prompts": "takes 2 and 3 named the tray first; take 3 had no reference image",
+ "note": "Rodin left out the gray tray in all three takes (image, image with the tray named first, text only). Take 1 is kept; T105's fbxedit.py added a flat round tray under it (48 segments, 480 triangles) whose UVs sit in an empty corner of the diffuse map, painted pale silver-gray (168,168,162). My person chose this."
+}

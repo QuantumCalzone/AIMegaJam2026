@@ -1,0 +1,53 @@
+{
+ "prop": "water bucket",
+ "card": "mine_bridge",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "reference": "model_view.png",
+ "upload_id": "Yo05vBEOl6qYM11q2HJEig",
+ "generation_id": "71426159-b687-46e1-9351-45389144ea53",
+ "prompt": "An old wooden bucket of chunky warm brown staves with two thick dark iron-gray bands and a thick rope handle arched over the top, filled almost to the brim with deep slate-blue clay water with a rounded wavy surface. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "71426159-b687-46e1-9351-45389144ea53"
+ ],
+ "size_cm": 35,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 15000,
+  "vertices": 7440,
+  "bbox_min": [
+   -0.833,
+   -0.718,
+   -0.946
+  ],
+  "bbox_max": [
+   0.83,
+   0.714,
+   0.946
+  ],
+  "pieces": 3,
+  "piece_vertex_counts": [
+   5630,
+   1561,
+   249
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md."
+}

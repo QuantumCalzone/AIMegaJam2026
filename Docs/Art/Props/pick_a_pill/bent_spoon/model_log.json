@@ -1,0 +1,51 @@
+{
+ "prop": "bent spoon",
+ "card": "pick_a_pill",
+ "task": "T105",
+ "made": "2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai), Business plan, through the hyper3d MCP server",
+ "tool": "rodin_generate",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "geometry_file_format": "fbx",
+ "quality_override": 8000,
+ "texture_delight": true,
+ "reference": "model_view.png",
+ "upload_id": "uJj3dj4wndBIHIxlkVrGlQ",
+ "generation_id": "2257e4a2-10a7-4a67-ab35-8bd600f8bd81",
+ "prompt": "A big, chunky spoon in pale silver-gray matte clay, its neck bent 30 degrees just below the round bowl; it rests on its bowl with the straight handle tilted up. One spoon, in one piece. Hand-sculpted matte modeling clay, stop-motion claymation style, chunky rounded forms. One single closed object, no base, no text, no logos.",
+ "takes": [
+  "2257e4a2-10a7-4a67-ab35-8bd600f8bd81"
+ ],
+ "size_cm": 20,
+ "mesh": {
+  "meshes": 1,
+  "triangles": 8000,
+  "vertices": 4002,
+  "bbox_min": [
+   -0.257,
+   -0.12,
+   -0.949
+  ],
+  "bbox_max": [
+   0.257,
+   0.122,
+   0.951
+  ],
+  "pieces": 1,
+  "piece_vertex_counts": [
+   4002
+  ],
+  "open_edges": 0,
+  "fbx_settings": {
+   "UpAxis": 1,
+   "UnitScaleFactor": 1.0
+  }
+ },
+ "files": {
+  "model.fbx": "Rodin's base_basic_pbr.fbx; its embedded diffuse map is the final one, and its normal, roughness and metallic maps are flat 1-pixel images (flat normal, roughness 0.85, not metallic), so the clay stays matte",
+  "model_thumb.png": "front view (T105's SceneKit renderer)",
+  "model_turntable.jpg": "four sides"
+ },
+ "credits": "Rodin reports no cost per call; about 0.5 credit a generation (T81's measurement). T105's total is in Docs/tasks/T105.md."
+}
