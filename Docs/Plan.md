@@ -171,9 +171,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T102 New audio, part 3: import the picks and set a quieter mix**
   - **Model and effort:** Opus 5.5, high. Measured loudness, a mix set without hearing it, and recordings of each phase for my OK.
-  - **Depends on:** T100 and T101 (the picks); T20 and T71 (`BPC_ShowAudio` and the sound classes; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine. If an ambience bed needs `BP_Show`, it moves to the chain machine.
+  - **Depends on:** T100 and T101 (the picks); T20 and T71 (`BPC_ShowAudio` and the sound classes; done). It changes one pin in `BP_Show`'s `OpenPrep`, so that Scene Prep plays its own loop (my call on 2026-11-17). So while the two-machine setup is active, it belongs to the chain machine.
   - **Needs:** editor + Unreal MCP running, a free autoplay show in a game window for the recordings, my OK on the mix from those recordings.
-  - **Touches:** `Content/NHOS/Audio/**` (reimports, and deletes of sounds T101 left out), `Content/NHOS/Audio/SC_Music.uasset`, `SC_Effects.uasset` and `SC_Voice.uasset`, `Content/NHOS/Core/BPC_ShowAudio.uasset` (levels, ducking, and the ambience bed if I chose one), `Graphs/BPC_ShowAudio/` files for the graphs it writes, `Docs/Assets.md`, `Docs/AudioShortlist.md`, `Docs/ItchPage.md` (credits), `Docs/tasks/T102.md`.
+  - **Touches:** `Content/NHOS/Audio/**` (reimports, three new music loops, and deletes of sounds T101 left out), `Content/NHOS/Audio/SC_Music.uasset`, `SC_Effects.uasset` and `SC_Voice.uasset`, `Content/NHOS/Core/BPC_ShowAudio.uasset` (levels, ducking, and the three new music keys in `PhaseKey` and `TrackFor`), `Graphs/BPC_ShowAudio/` files for the graphs it writes, `Content/NHOS/Core/BP_Show.uasset` (one pin in `OpenPrep`), `Graphs/BP_Show/OpenPrep.txt`, `Docs/Assets.md`, `Docs/AudioShortlist.md`, `Docs/ItchPage.md` (credits), `Docs/tasks/T102.md`.
   - **Details:** [Docs/tasks/T102.md](tasks/T102.md)
 
 - [ ] **T103 New art, part 7: the cast's models, generated from the approved concepts**
