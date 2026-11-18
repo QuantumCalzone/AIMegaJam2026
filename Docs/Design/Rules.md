@@ -55,7 +55,7 @@ Everything that happens in one show, from casting to the last cut.
 5. Reactions: the cut actor reacts first, then each remaining bot, then you, one line each. You get 15 seconds; when time runs out, what you typed is sent, and an empty field is a pass. Reactions go into the log, so how you react is evidence.
 6. Repeat from Scene Prep until two actors remain or the last scene ends. A clapperboard on screen shows the count, such as SCENE 2 / 4.
 
-You win if you make the final two, or if you’re still on stage when the last scene ends. The win screen shows every AI’s reasoning, then reveals their rivals. If you’re cut, you lose: the AIs gloat in the reaction round, then the lose screen shows every AI’s reasoning about you, names the reason that got the most votes, and offers an instant restart.
+You win if you make the final two, or if you’re still on stage when the last scene ends. Then every AI, cut or still on stage, reacts to the reveal in one line: the cut robots get back up, still gray, and your robot cheers. The win screen shows every AI’s reasoning, then reveals their rivals. If you’re cut, you lose: the AIs gloat in the reaction round, then the lose screen shows every AI’s reasoning about you, names the reason that got the most votes, and offers an instant restart.
 
 ## Emotions
 

@@ -1,0 +1,3 @@
+; T87: whether a reply's tag is one of this win's reaction asks (BP_Show.HandleReply asks before its phase branches).
+(fn Owns (Tag)
+  (return (and (V Armed) (>= (Utilities|Array|FindItem (V Tags) Tag) 0))))

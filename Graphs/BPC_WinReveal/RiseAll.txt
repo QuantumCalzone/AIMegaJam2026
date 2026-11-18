@@ -1,0 +1,26 @@
+; T87: at the "reveal" cue (BP_Show.RunCue), when the queue reaches the reveal: each cut robot gets back up (Rise), and
+; my robot shows HUMAN on its label and cheers (Unmask). CutArr, Hum and Ids were filled when the reveal was queued.
+; The WIN REVEAL line prints before the Unmask block: code after an if whose body ends in an IsValid branch lands in
+; that if's else path (see BP_Show.EmoteSeat).
+(fn RiseAll ()
+  (CallFunction|FindShow)
+  (bind _r (Class|BPShow|GetRobots :self (V Show)))
+  (set Bots _r)
+  (if (< (len (V CutArr)) (len (V Bots)))
+    (Utilities|Array|Resize (V CutArr) (len (V Bots))))
+  (set Risen 0)
+  (for _s (range (len (V Bots)))
+    (set Bot (get (V Bots) _s))
+    (if (get (V CutArr) _s)
+      (Utilities|IsValid (V Bot)
+        (:"Is Valid"
+          (Class|BPRobot|Rise :self (V Bot))
+          (set Risen (+ (V Risen) 1)))
+        (:"Is Not Valid"))))
+  (print (cat "NHOS: WIN REVEAL risen=" (str (V Risen)) " human=" (get (V Ids) (V Hum))))
+  (if (< (V Hum) (len (V Bots)))
+    (set Bot (get (V Bots) (V Hum)))
+    (Utilities|IsValid (V Bot)
+      (:"Is Valid"
+        (Class|BPRobot|Unmask :self (V Bot) :Stamp "HUMAN"))
+      (:"Is Not Valid"))))

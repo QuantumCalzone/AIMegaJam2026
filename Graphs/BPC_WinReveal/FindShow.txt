@@ -1,0 +1,7 @@
+; T87: the show this component belongs to (BPC_LinePlayer.FindShow's way).
+(fn FindShow ()
+  (Utilities|IsValid (V Show)
+    (:"Is Valid")
+    (:"Is Not Valid"
+      (bind _s (Actor|GetActorOfClass :ActorClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+      (set Show _s))))

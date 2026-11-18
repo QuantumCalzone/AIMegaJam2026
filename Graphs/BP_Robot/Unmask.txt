@@ -1,0 +1,7 @@
+; T87: my robot at the reveal on a win: its label shows Stamp ("HUMAN") in the cut stamp's red, as SetCut writes a
+; stamp, and it cheers once (T19's Cheer), so the cast's reactions point at someone. It isn't cut and keeps its colors.
+(fn Unmask (Stamp)
+  (Rendering|Components|TextRender|SetText :self (Variables|Default|GetLabel) :Value (Utilities|Text|ToText(String) Stamp))
+  (Rendering|Components|TextRender|SetTextRenderColor :self (Variables|Default|GetLabel) :Value (Math|Conversions|ToColor(LinearColor) :InLinearColor (Utilities|Struct|MakeLinearColor :R 1.0 :G 0.12 :B 0.08 :A 1.0) :InUseSRGB true))
+  (CallFunction|Cheer)
+  (print (cat "NHOS: UNMASK " (str (V Seat)) " " Stamp)))

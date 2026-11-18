@@ -1,0 +1,26 @@
+; T87: a cut robot gets back up for the reveal on a win (BPC_WinReveal.RiseAll, at the "reveal" cue). It is no longer
+; cut, so its bubble (Say, Typing), its face (Emote, T75), its cheer and its look (the stage director) work again. Its tip
+; eases back to upright, SetCut's fall in reverse (EventGraph eases TipRoll and Slump to 0). It keeps its gray body and
+; its dark floor ring, so the player can still tell who was cut; its eyes, mouth, brows and name come back.
+(fn Rise ()
+  (if (not (V IsCut))
+    (return))
+  (Variables|Default|SetIsCut false)
+  (Variables|Default|SetTipGoal 0.0)
+  (set Slump 1.0)
+  (set LookUntil 0.0)
+  (set AroundUntil 0.0)
+  (bind _eye (Math|Conversions|ToVector(LinearColor) (Variables|Default|GetEyeColor)))
+  (bind _ink (Math|Vector|MakeVector :X 0.015 :Y 0.015 :Z 0.015))
+  (Rendering|Material|SetVectorParameterValueonMaterials :self (Variables|Default|GetEyeL) :ParameterName "Color" :ParameterValue _eye)
+  (Rendering|Material|SetVectorParameterValueonMaterials :self (Variables|Default|GetEyeR) :ParameterName "Color" :ParameterValue _eye)
+  (Rendering|Material|SetVectorParameterValueonMaterials :self (Variables|Default|GetMouth) :ParameterName "Color" :ParameterValue (select (Variables|Default|GetLedMouth) _eye _ink))
+  (Rendering|Material|SetVectorParameterValueonMaterials :self (Variables|Default|GetBrowWL) :ParameterName "Color" :ParameterValue _eye)
+  (Rendering|Material|SetVectorParameterValueonMaterials :self (Variables|Default|GetBrowWR) :ParameterName "Color" :ParameterValue _eye)
+  (Rendering|Material|SetVectorParameterValueonMaterials :self (Variables|Default|GetBrowAL) :ParameterName "Color" :ParameterValue _eye)
+  (Rendering|Material|SetVectorParameterValueonMaterials :self (Variables|Default|GetBrowAR) :ParameterName "Color" :ParameterValue _eye)
+  (Rendering|Components|TextRender|SetText :self (Variables|Default|GetLabel) :Value (Utilities|Text|ToText(String) (Variables|Default|GetDisplayName)))
+  (Rendering|Components|TextRender|SetTextRenderColor :self (Variables|Default|GetLabel) :Value (Math|Conversions|ToColor(LinearColor) :InLinearColor (Utilities|Struct|MakeLinearColor :R 1.0 :G 1.0 :B 1.0 :A 1.0) :InUseSRGB true))
+  (CallFunction|SetLit :On false)
+  (set PassedOn false)
+  (print (cat "NHOS: RISE " (str (V Seat)) " persona=" (V PersonaId))))

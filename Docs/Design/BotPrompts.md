@@ -79,6 +79,14 @@ RULES
 - "emotion": the face the player's robot shows while the line plays. Pick the one the line shows best: an apology is "embarrassed", an accusation or a pointed question "suspicious", a puzzled question "confused", a shout "surprised" or "angry". Use "neutral" when you can't tell, and for a pass or an empty line. "emotion" never changes speech.
 ```
 
+## Ask after a win
+
+When the human wins, every AI in the show, cut or still on stage, gets one more ask before the win screen, in the same batch as the closing vote. Like every actor ask, it comes after the opening prompt, the base prompt and the persona. The bots learn who the human was, and how they won, from the last game message. Each reply is one line of speech with its emotion. It plays on stage and never enters the log.
+
+```text
+The reveal. The human fooled the whole cast and won the show: the last of game_messages says who it was and how. React to the reveal in character, in one short line, about 10 words, to the cast, whether you were cut earlier or are still on stage. Fill: speech. No actions.
+```
+
 ## Persona prompts
 
 Personas carry no label during play, and the prompts never name them. The headings below are pun names for this doc only. In play every actor goes by a Player number. Only the player’s screen shows which provider runs each AI, and the reveal stamp names the provider, such as “OPENAI: AI”.

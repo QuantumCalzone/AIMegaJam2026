@@ -1,0 +1,10 @@
+; T87: the face part of StageLine (T77), in its own function: Seat's robot shows emotion Id (BP_Robot.Emote). In
+; StageLine, this Utilities|IsValid branch at the end of an if body made the DSL put the stage director call in that
+; if's else path, so from T77 to T87 no line's action played (a seat is always in range). Here nothing follows it.
+(fn EmoteSeat (Seat Id)
+  (if (and (>= Seat 0) (< Seat (len (V Robots))))
+    (set EmoBot (get (V Robots) Seat))
+    (Utilities|IsValid (V EmoBot)
+      (:"Is Valid"
+        (Class|BPRobot|Emote :self (V EmoBot) :Emotion Id))
+      (:"Is Not Valid"))))

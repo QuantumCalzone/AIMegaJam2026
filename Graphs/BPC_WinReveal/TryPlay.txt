@@ -1,0 +1,8 @@
+; T87: once the closing replies and every reaction are in, queue the reveal (Play), then the end cue behind it
+; (BP_Show.CueEnd, which HoldEnd now lets through, since Armed is off).
+(fn TryPlay ()
+  (if (not (and (V Armed) (and (V ClosingIn) (>= (V Got) (V WantN)))))
+    (return))
+  (set Armed false)
+  (CallFunction|Play)
+  (Class|BPShow|CueEnd :self (V Show)))

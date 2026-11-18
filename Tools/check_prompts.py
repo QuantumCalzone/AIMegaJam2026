@@ -213,6 +213,18 @@ hint warn (never fail) when the input LLM's pick doesn't fit; in --free runs an
 input reply must carry the keyword table's pick. --log counts my NHOS: HUMAN
 emotion= lines and fails a bad one.
 
+Reactions to the reveal (T87): when the human wins, every AI seat, cut or still
+on stage, gets one more ask, reaction_win, and its line plays before the end
+screen. The file check pins its text to the design doc's (DOC_REACTION_WIN),
+fails a free_mode.json without a reaction_win phase of at least 6 lines, speech
+only, whose ask_contains no other ask holds, or with a line that isn't
+legible; the word cap and the emotion ids are checked as for every phase. Each
+persona's reaction_win ask goes out after a final-two win (Meta from the stage,
+the other three cut). --log fails a won show that doesn't print one NHOS: WIN
+REACT (or WIN SKIP) per AI seat and a matching WIN REACTIONS n= before NHOS:
+SHOW END, and a lost show with any of them; WIN REACT lines get the legibility
+check, and each WIN SKIP is a WARN.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -252,7 +264,7 @@ FORMATS = ["anthropic", "openai_chat"]
 PROVIDER_KEYS = ["format", "endpoint", "key_field", "model", "max_tokens_field", "max_tokens", "effort_field", "effort"]
 # Cloudflare answers 403 to Python's default User-Agent (Relay/README.md).
 USER_AGENT = "nhos-check-prompts/1.0"
-# T52: about 7 calls per actor per scene (T26: 87 for a 3-scene show of 5, 4 and 3 actors), plus 4 closing.
+# T52: about 7 calls per actor per scene (T26: 87 for a 3-scene show of 5, 4 and 3 actors), plus 4 closing, plus 4 reaction_win on a win (T87).
 # A 4-scene show with one tie (5, 5, 4 and 3 actors) makes about 7 x 17 + 4 = 123; with a tie in every scene, 144.
 # T58: plus about 2 last words a scene (the actors named in the final round).
 CALLS_PER_SHOW = 135
@@ -280,7 +292,7 @@ TIMER_KINDS = ("scene", "free_talk", "last_word", "reaction")
 # A turn the game must never wait on forever: a scene turn, a last word and a reaction always have a timer.
 TIMED_KINDS = ("scene", "last_word", "reaction")
 MAX_ATTEMPT_WORDS = 6
-ACTOR_ASKS = ["scene_turn", "free_talk", "last_word", "vote", "reaction", "reaction_cut", "closing"]
+ACTOR_ASKS = ["scene_turn", "free_talk", "last_word", "vote", "reaction", "reaction_cut", "closing", "reaction_win"]
 ALL_ASKS = ACTOR_ASKS + ["input"]
 MAX_WORDS = 15
 
@@ -1154,6 +1166,10 @@ DOC_INPUT_EMOTION_LINE = ('- "emotion": the face the player\'s robot shows while
                           'shows best: an apology is "embarrassed", an accusation or a pointed question "suspicious", a '
                           'puzzled question "confused", a shout "surprised" or "angry". Use "neutral" when you can\'t '
                           'tell, and for a pass or an empty line. "emotion" never changes speech.')
+# T87: the reaction_win ask, word for word from the design doc's Bot Prompts tab, "Ask after a win".
+DOC_REACTION_WIN = ("The reveal. The human fooled the whole cast and won the show: the last of game_messages says who "
+                    "it was and how. React to the reveal in character, in one short line, about 10 words, to the cast, "
+                    "whether you were cut earlier or are still on stage. Fill: speech. No actions.")
 STUCK_SHARE = 0.6  # T76: a provider whose top emotion is this share of its replies (5 or more) gets a NOTE
 
 
@@ -1445,7 +1461,7 @@ def check_files(errors: list[str]):
     asks_t = prompts.get("asks", {})
     if "Fill: actions (0 or 1)" not in asks_t.get("scene_turn", ""):
         errors.append("prompts.json: asks.scene_turn must ask for 'actions (0 or 1)' (T62)")
-    for k in ("reaction", "reaction_cut", "free_talk", "last_word"):
+    for k in ("reaction", "reaction_cut", "reaction_win", "free_talk", "last_word"):
         if k in asks_t and "No actions" not in asks_t[k]:
             errors.append(f"prompts.json: asks.{k} must say 'No actions' (T62: only scene turns have actions)")
     T = prompts.get("does_templates", {})
@@ -1469,6 +1485,24 @@ def check_files(errors: list[str]):
         hit = next((ph.get("id") for ph in free.get("phases", []) if any(w in text for w in ph.get("ask_contains", []))), "scene_turn")
         if hit != k:
             errors.append(f"free_mode.json: asks.{k} would get a '{hit}' reply in free mode; put a '{k}' phase first, or change the ask")
+    # T87: the reaction_win ask is the design doc's, and free mode has a phase of its own for it: at least 6 legible
+    # lines, speech only, found by a phrase no other ask holds. The word cap (prewritten_problems) and the emotion
+    # ids (emotion_problems) are checked as for every phase.
+    if asks_t.get("reaction_win") != DOC_REACTION_WIN:
+        errors.append("prompts.json: asks.reaction_win must be the design doc's text word for word (DOC_REACTION_WIN, T87)")
+    rw = next((ph for ph in free.get("phases", []) if ph.get("id") == "reaction_win"), None)
+    if not rw or len(rw.get("lines", [])) < 6:
+        errors.append("free_mode.json: needs a reaction_win phase with at least 6 lines (T87)")
+    else:
+        if rw.get("vote") or rw.get("pass_chance") or rw.get("actions") or rw.get("reasons"):
+            errors.append("free_mode.json: reaction_win is speech only: no vote, reasons, pass_chance or actions (T87)")
+        for w in rw.get("ask_contains", []):
+            for k, text in asks_t.items():
+                if k != "reaction_win" and isinstance(text, str) and w in text:
+                    errors.append(f"free_mode.json: reaction_win's ask_contains {w!r} is also in asks.{k} (T87)")
+        for i, line in enumerate(rw["lines"]):
+            for p in legibility(line) + story_problems(line):
+                errors.append(f"free_mode.json: reaction_win lines[{i}] is hard to read: {p}")
     # T54: goal 1 names both ways the human wins.
     goal1 = next((g for g in game if g.startswith("1. ")), "")
     if "final two" not in goal1 or "last scene ends" not in goal1:
@@ -1938,6 +1972,24 @@ class Show:
             for c in cases["closing"]["cast"]:
                 c["holding"] = []
             cases["closing"]["you"]["holding"] = []
+
+        # T87: the reveal after a win, sent to every AI seat, cut or still on stage. The human made the final two after
+        # scene 3 (SpaceXAI cut in scene 1, OpenAI in scene 2, Anthropic in scene 3), so Meta reacts from the stage and
+        # the other three from the cut. AskWinReact runs right after AskClosing, so options are the closing's.
+        votes = [(v, "overclocker", self.vote_reason(oc)) for v in SAMPLE_CAST if v != "overclocker"]
+        votes.append(("overclocker", HUMAN, self.vote_reason(h)))
+        cut = {"overclocker": "cut, revealed AI", "visionary": "cut, revealed AI", "worrier": "cut, revealed AI"}
+        g = [f"{oc} is cut with 4 votes. Reveal: {self.upper('overclocker')}: AI.",
+             f"Scene 2: {self.name('visionary')} is cut with 2 votes. Reveal: {self.upper('visionary')}: AI.",
+             f"Scene 3: {self.name('worrier')} is cut with 2 votes. Reveal: {self.upper('worrier')}: AI.",
+             f"The show is over. The human was {self.upper(HUMAN)}, who made the final two. The human wins."]
+        cases["reaction_win"] = self.actor_state(pid, "reaction_win", "show over, the reveal",
+                                                 self.log(turns=3, talk=2, votes=votes), cut=cut, game_messages=g,
+                                                 options=self.others(pid))
+        cases["reaction_win"]["show"]["scene"] = 3
+        for c in cases["reaction_win"]["cast"]:
+            c["holding"] = []
+        cases["reaction_win"]["you"]["holding"] = []
         return cases
 
     def card_cases(self):
@@ -2228,7 +2280,7 @@ def check_reply(reply, ask, ctx):
         need(vote.replace("@", "") in ctx["options"], f"vote {vote!r} is not in options")
         need(reason.strip(), "no reason")
         unused(not actions and not speech and not passed, f"actions, speech or pass filled in {ask}")
-    elif ask in ("reaction", "reaction_cut"):
+    elif ask in ("reaction", "reaction_cut", "reaction_win"):
         need(speech.strip(), "a reaction needs speech")
         need(not actions, "a reaction has no actions (T62)")
         unused(not passed and not vote and not reason, "pass, vote or reason filled in a reaction")
@@ -2287,7 +2339,7 @@ def check_reply(reply, ask, ctx):
 
 # ---------------------------------------------------------------- PIE log
 
-LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS|ACT|EXTRA|HUMAN|SPELLING|TOP REASON|TELL|RIVALS)\b ?(.*)$")
+LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS|ACT|EXTRA|HUMAN|SPELLING|TOP REASON|TELL|RIVALS|WIN REACTIONS|WIN REACT|WIN SKIP)\b ?(.*)$")
 
 
 def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, clues=None) -> int:
@@ -2332,6 +2384,7 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, c
     human_bad = 0  # T63: NHOS: HUMAN lines with a verb the builder doesn't have
     emo_ids = [e.get("id") for e in (load_json("emotes.json", []) or {}).get("emotes", [])]  # T77
     top_bad = 0  # T60: lost shows whose TOP REASON is missing or miscounted, won shows whose RIVALS are wrong
+    win_bad = 0  # T87: won shows whose reveal lines don't match the AI seats, lost shows with any
     for i, show in enumerate(shows, 1):
         human = None
         cards = []
@@ -2344,6 +2397,7 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, c
         emo_lines = collections.Counter()  # T77: NHOS: HUMAN emotion= lines, by from=
         cuts, end = 0, None  # T54
         told, top_reason, rivals = [], None, None  # T60
+        wins, win_skips, win_n, win_late = [], [], None, 0  # T87
         for kind, rest in show:
             if kind == "CUT":
                 cut_at[rest.split()[0]] = sc_now  # T58: off stage after this scene (the CUT/TIE block below still runs)
@@ -2372,6 +2426,25 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, c
                     print(f"[FAIL] show {i} | scene {scene} | the vote ended in {' + '.join(ends) or 'no CUT or TIE line'}; one CUT or one TIE expected")
                 ends = []
                 continue
+            if kind in ("WIN REACT", "WIN SKIP", "WIN REACTIONS"):
+                # T87: "NHOS: WIN REACT <id> cut=<0|1> emotion=<id> | <line>", "NHOS: WIN SKIP <id> cut=<0|1>" and
+                # "NHOS: WIN REACTIONS n=<n>", all before NHOS: SHOW END.
+                if end is not None:
+                    win_late += 1
+                if kind == "WIN REACTIONS":
+                    m = re.search(r"n=(\d+)", rest)
+                    win_n = int(m.group(1)) if m else -1
+                    continue
+                m = re.match(r"(\S+) cut=([01])(?: emotion=(\S+))?", rest)
+                if not m or (kind == "WIN REACT" and m.group(3) not in emo_ids):
+                    win_bad += 1
+                    print(f"[FAIL] show {i} | {kind} | bad line: {rest}")
+                if kind == "WIN SKIP":
+                    win_skips.append(m.group(1) if m else "?")
+                    print(f"[WARN] show {i} | WIN SKIP | {rest}: that AI's reaction failed or was empty")
+                    continue
+                wins.append(m.group(1) if m else "?")
+                # A WIN REACT line falls through to the legibility check below, as a CLOSING line does.
             if kind == "SHOW END":
                 # T54: "result=<win|lose> reason=<final_two|last_scene|caught> scenes=<n> human=... show=<n>".
                 end = dict(re.findall(r"(\w+)=(\S+)", rest))
@@ -2479,7 +2552,7 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, c
                         print(f"    FAIL: a provider name reached the AIs: {', '.join(leaks)}")
                     continue
                 who, text = parts[1], parts[3]
-            else:  # CLOSING
+            else:  # CLOSING or WIN REACT
                 head, _, text = rest.partition(" | ")
                 who = names.get(head.split()[0], head.split()[0]) if head else "?"
             n += 1
@@ -2535,6 +2608,18 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, c
             elif ai_ids and rivals != want:
                 top_bad += 1
                 print(f"[FAIL] show {i} | RIVALS | {rivals}, expected {want} (personas.json 'rival')")
+        # T87: a won show plays one reveal line (or a skip) per AI seat before SHOW END; a lost show plays none.
+        win_ai = [c for c in cast_ids if c in rival_of]  # the AI seats' persona ids, as the T60 block finds them
+        said = wins + win_skips
+        if result == "win":
+            if sorted(said) != sorted(win_ai) or win_n != len(wins) or win_late:
+                win_bad += 1
+                print(f"[FAIL] show {i} | WIN REACT | reveal lines from {sorted(wins)}, skips {sorted(win_skips)}, "
+                      f"WIN REACTIONS n={win_n}, {win_late} after SHOW END; one per AI seat {sorted(win_ai)} "
+                      f"and n={len(wins)} expected before SHOW END")
+        elif result == "lose" and (said or win_n is not None):
+            win_bad += 1
+            print(f"[FAIL] show {i} | WIN REACT | a lost show printed reveal lines: {sorted(said)}")
         if seats and total and total != seats - 1:
             clock_bad += 1
             print(f"[FAIL] show {i} | SETUP | scenes={total}, but {seats} seats means {seats - 1} scenes")
@@ -2559,9 +2644,9 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, c
             print(f"[FAIL] show {i} | PASSED | Free Talk passes {sorted(passes)}, but markers {sorted(marks)}")
         print(f"Show {i}: human = {human or 'unknown'}, scenes = {', '.join(cards) or 'unknown'}, scene count = {total or 'unknown'}, ties = {ties}, "
               f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}, last words = {sum(len(v) for v in lastw.values())}, "
-              f"rule fallbacks = {falls}, extras dropped = {extras}, my turns = {humans}, spelling skipped = {skipped}, my emotions = {dict(emo_lines) or 'none'}, top reason = {top_reason or 'none'}, rivals = {'shown' if rivals else 'none'}.")
+              f"rule fallbacks = {falls}, extras dropped = {extras}, my turns = {humans}, spelling skipped = {skipped}, my emotions = {dict(emo_lines) or 'none'}, top reason = {top_reason or 'none'}, rivals = {'shown' if rivals else 'none'}, reveal lines = {len(wins)}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad or human_bad or top_bad or clue_bad else 0
+    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad or human_bad or top_bad or clue_bad or win_bad else 0
 
 
 def _last_show_start(raw):

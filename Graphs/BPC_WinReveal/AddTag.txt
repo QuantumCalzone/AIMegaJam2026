@@ -1,0 +1,3 @@
+; T87: AskWinReact's tag for one AI seat.
+(fn AddTag (Tag)
+  (add (V Tags) Tag))

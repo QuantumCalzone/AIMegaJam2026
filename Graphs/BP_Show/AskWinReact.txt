@@ -1,0 +1,12 @@
+; T87: the reaction_win ask for one AI seat, cut or still on stage. EndShow sends it on a win, right after that seat's
+; closing ask. The tag has the usual <seat id>-<n> shape, because BPC_LLMClient.AskProvider finds the provider from the
+; part before the last "-", so WinReveal keeps its own list of these tags (AddTag) and HandleReply sends their replies to
+; it, not to StoreClosing. AskClosing has just cleared AskOpts, so the state's options are empty; the ask needs none.
+(fn AskWinReact (Seat)
+  (set AskCount (+ (V AskCount) 1))
+  (set WinTag (cat (get (V SeatId) Seat) "-" (str (V AskCount))))
+  (add (V PendingTags) (V WinTag))
+  (add (V PendingSeats) Seat)
+  (Class|BPCWinReveal|AddTag :self (V WinReveal) :Tag (V WinTag))
+  (bind _st (CallFunction|ActorState :Seat Seat :AskKey "reaction_win" :Now "show over, the reveal"))
+  (Class|BPCLLMClient|Ask :self (V LLMClient) :Tag (V WinTag) :Role "actor" :System (get (V SeatSystem) Seat) :User _st))

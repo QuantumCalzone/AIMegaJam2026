@@ -21,6 +21,10 @@
     (Transformation|SetRelativeRotation :self (Variables|Default|GetArmPivotL) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw 0.0))
     (Transformation|SetRelativeRotation :self (Variables|Default|GetArmPivotR) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw 0.0))
     (else
+      ; T87: a robot that rose for the reveal (Rise) eases from its fallen pose back to upright, SetCut's fall in
+      ; reverse, at the fall's speed. Slump and TipRoll are 0 for a robot that was never cut, so nothing changes for it.
+      (set Slump (Math|Interpolation|FInterpTo (V Slump) 0.0 DeltaSeconds 3.0))
+      (Variables|Default|SetTipRoll (Math|Interpolation|FInterpTo (Variables|Default|GetTipRoll) 0.0 DeltaSeconds 3.0))
       (bind _talk (< _c (Variables|Default|GetTalkUntil)))
       (bind _cheer (< _c (Variables|Default|GetCheerUntil)))
       (bind _shake (< _c (Variables|Default|GetShakeUntil)))
@@ -31,8 +35,8 @@
       (bind _z (+ (Variables|Default|GetHoverZ) (+ (* _st (Variables|Default|GetBobAmp)) (+ (select _talk (* (Math|Float|Absolute(Float) _w13) 9.0) 0.0) (select _cheer (* (Math|Float|Absolute(Float) (Math|Trig|Sin(Radians) (* _c 9.0))) 26.0) 0.0)))))
       (bind _yaw (select _shake (* (Math|Trig|Sin(Radians) (* _c 45.0)) 14.0) 0.0))
       ; T75: the gesture's offsets (GestTick) ride on the hover, the bob, the talking bounce, the cheer and the shake.
-      (Transformation|SetRelativeLocation :self (Variables|Default|GetRig) :NewLocation (Math|Vector|MakeVector :X (V GX) :Y 0.0 :Z (+ _z (V GZ))))
-      (Transformation|SetRelativeRotation :self (Variables|Default|GetRig) :NewRotation (Math|Rotator|MakeRotator :Roll (V GRoll) :Pitch (V GPitch) :Yaw (+ _yaw (V GYaw))))
+      (Transformation|SetRelativeLocation :self (Variables|Default|GetRig) :NewLocation (Math|Vector|MakeVector :X (V GX) :Y 0.0 :Z (+ (* (- 1.0 (V Slump)) (+ _z (V GZ))) (* (V Slump) -10.0))))
+      (Transformation|SetRelativeRotation :self (Variables|Default|GetRig) :NewRotation (Math|Rotator|MakeRotator :Roll (+ (V GRoll) (Variables|Default|GetTipRoll)) :Pitch (+ (V GPitch) (* (V Slump) -14.0)) :Yaw (+ _yaw (V GYaw))))
       (bind _gs (+ 1.0 (V GScale)))
       (Transformation|SetRelativeScale3D :self (Variables|Default|GetRig) :NewScale3D (Math|Vector|MakeVector :X _gs :Y _gs :Z _gs))
       (bind _arm (select _cheer 150.0 (select _talk (+ 30.0 (* _w13 22.0)) (+ 6.0 (* _st 4.0)))))

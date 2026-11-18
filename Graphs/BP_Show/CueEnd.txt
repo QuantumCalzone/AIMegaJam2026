@@ -1,2 +1,8 @@
+; T30: the end screen's cue, behind every line in front of it. StoreClosing calls it when the last closing reply is in.
+; T87: on a win, WinReveal holds it (HoldEnd) until every reaction_win reply is in and the reveal is queued, then calls
+; CueEnd again itself, so the end cue goes in behind the reactions. On a loss HoldEnd lets it straight through.
 (fn CueEnd ()
+  (bind _hold (Class|BPCWinReveal|HoldEnd :self (V WinReveal)))
+  (if _hold
+    (return))
   (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "end" :Text "" :Num 0))

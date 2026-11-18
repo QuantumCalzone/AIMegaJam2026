@@ -3,6 +3,8 @@
 ; no longer matches SpellTag and is dropped as stale. Written from the editor's read-back in T63.
 ; T60: a reply in The Cut keeps its tell first (StoreTell reads the client's RTell, which the next reply overwrites).
 ; T77: every reply that reaches a seat keeps its emotion for that seat's next log entry (KeepEmo).
+; T87: a reaction_win reply (WinReveal.Owns its tag) goes to WinReveal with its line (CapWords, 15 words) and its
+; emotion, before the phase branches, since its phase is still "closing".
 (fn HandleReply (Tag Ok Speech Pass Verbs Targets Items)
   (if (and (not (Utilities|String|IsEmpty (V SpellTag))) (streq Tag (V SpellTag)))
     (CallFunction|SpellIn :Ok Ok :Speech Speech :Pass Pass)
@@ -20,6 +22,13 @@
   (if (== (V RSeat) (V HumanSeat))
     (bind _sc (CallFunction|ScrubLabels :Text Speech))
     (set RSpeech _sc))
+  (bind _win (Class|BPCWinReveal|Owns :self (V WinReveal) :Tag Tag))
+  (if _win
+    (bind _we (CallFunction|TakeEmo :Seat (V RSeat)))
+    (bind _ww (CallFunction|EmoWord :Id _we))
+    (bind _wl (CallFunction|CapWords :Text (V RSpeech)))
+    (Class|BPCWinReveal|Store :self (V WinReveal) :Seat (V RSeat) :Ok (and Ok (not Pass)) :Line _wl :Emotion _we :Word _ww)
+    (return))
   (if (streq (V Phase) "free talk")
     (CallFunction|PlayTalk :Seat (V RSeat) :Ok Ok :Speech (V RSpeech) :Pass Pass)
     (return))

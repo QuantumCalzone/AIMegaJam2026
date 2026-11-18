@@ -3,6 +3,8 @@
 ; (FeelsId; neutral when it has none). PlayCur calls this as the bubble shows and the line starts to type (T38, T73),
 ; so the face changes with them. Every line that plays gets it: scene turns, Free Talk, passes, last words, votes and
 ; reactions. A cut robot doesn't emote (T75).
+; T87: the face part is EmoteSeat now, so the stage director call below runs again for every line (since T77 it sat
+; in the seat check's else path and never ran).
 (fn StageLine (Seat Entry)
   (set EmoTmp "")
   (bind _hf (Json|HasField Entry "feels"))
@@ -10,12 +12,7 @@
     (bind _f (Json|GetField Entry "feels"))
     (set EmoTmp _f))
   (bind _id (CallFunction|FeelsId :Word (V EmoTmp)))
-  (if (and (>= Seat 0) (< Seat (len (V Robots))))
-    (set EmoBot (get (V Robots) Seat))
-    (Utilities|IsValid (V EmoBot)
-      (:"Is Valid"
-        (Class|BPRobot|Emote :self (V EmoBot) :Emotion _id))
-      (:"Is Not Valid")))
+  (CallFunction|EmoteSeat :Seat Seat :Id _id)
   (bind _hd (Json|HasField Entry "does"))
   (if (not _hd)
     (return))

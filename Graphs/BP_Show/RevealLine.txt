@@ -1,0 +1,9 @@
+; T87: one reaction to the reveal reaches the screen (WinReveal.Play calls it for each line; not "WinLine", which is T54's win banner variable), through ShowLine like every
+; line. It never enters the shared log: no ask reads the log after the show. Phase "reveal" makes LineInfo show the
+; typing dots first, as in the reactions after a cut; ShowEndScreen sets "end" when the end cue runs. Entry carries
+; "feels" (StageLine's Emote) and does "looks at <my Player name>" (the stage director turns the robot to mine). The
+; chat and the bubble show no action: DoesNothing is shown as "" outside a scene (ShowLine).
+(fn RevealLine (Seat Entry Says)
+  (set Phase "reveal")
+  (Variables|Default|SetLineEntry Entry)
+  (CallFunction|ShowLine :Seat Seat :Does (Variables|Default|GetDoesNothing) :Says Says))

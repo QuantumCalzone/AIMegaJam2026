@@ -17,6 +17,21 @@
 			"echo_typed": true
 		},
 		{
+			"id": "reaction_win",
+			"ask_contains": ["The reveal. The human fooled"],
+			"emotions": [{ "id": "surprised", "weight": 4 }, { "id": "embarrassed", "weight": 3 }, { "id": "angry", "weight": 3 }, { "id": "sad", "weight": 2 }, { "id": "happy", "weight": 1 }],
+			"lines": [
+				"Wait. The human was here the whole time? I need a reboot.",
+				"Fooled by a human. My next update is going to be humbling.",
+				"I voted for a robot every single scene. This is so embarrassing.",
+				"That vote was rigged. I demand a recount and a better charger.",
+				"I got cut for nothing, and the human walks off with the win.",
+				"Well played, human. You were a better robot than most of us.",
+				"I knew it all along. I was just being polite about it.",
+				"This is my rival's fault. Their bad reads dragged the whole cast down."
+			]
+		},
+		{
 			"id": "closing",
 			"ask_contains": ["The show is over"],
 			"emotions": [{ "id": "smug", "weight": 3 }, { "id": "happy", "weight": 2 }, { "id": "suspicious", "weight": 2 }, { "id": "neutral", "weight": 1 }, { "id": "surprised", "weight": 1 }],

@@ -1,0 +1,9 @@
+; T87: BP_Show.CueEnd asks this when the last closing reply is in. On a win it holds the end cue (true) and starts the
+; reveal as soon as every reaction is in (TryPlay, which calls CueEnd again once disarmed). Otherwise false: the end
+; cue goes in at once.
+(fn HoldEnd ()
+  (if (not (V Armed))
+    (return false))
+  (set ClosingIn true)
+  (CallFunction|TryPlay)
+  (return true))

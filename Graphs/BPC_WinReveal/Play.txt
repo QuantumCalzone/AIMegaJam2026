@@ -1,0 +1,35 @@
+; T87: the reveal, queued behind everything the show queued before it: the "reveal" cue (RiseAll: the cut robots get
+; up, my robot cheers), the header THE REVEAL (no analytics key, no music change), a banner whose 2 s hold covers the
+; rise, then one line per AI in MakeOrder's order through BP_Show.RevealLine, each with its face and a look at my robot.
+; A reply with nothing to play plays nothing. Prints NHOS: WIN REACT / WIN SKIP for each AI, then WIN REACTIONS n=,
+; all before the end cue (so before NHOS: SHOW END). The entry's "when" comes from a JSON template, because a literal
+; can't go into Set Field's value pin (T01).
+(fn Play ()
+  (CallFunction|MakeOrder)
+  (bind _lp (Class|BPShow|GetLinePlayer :self (V Show)))
+  (set LP _lp)
+  (Class|BPCLinePlayer|Cue :self (V LP) :Kind "reveal" :Text "" :Num 0)
+  (Class|BPShow|CueHeader :self (V Show) :Text "THE REVEAL")
+  (Class|BPShow|CueBanner :self (V Show) :Text "The cast learns the truth.")
+  (bind _nm (Class|BPShow|GetSeatName :self (V Show)))
+  (set Names _nm)
+  (bind _id (Class|BPShow|GetSeatId :self (V Show)))
+  (set Ids _id)
+  (set MeName (get (V Names) (V Hum)))
+  (set Played 0)
+  (for _s (V Order)
+    (set Cur _s)
+    (set CutTxt (select (get (V CutArr) (V Cur)) "1" "0"))
+    (if (get (V WOk) (V Cur))
+      (bind _e (Json|LoadJsonfromString "{\"when\": \"show over, the reveal\"}"))
+      (set WEntry _e)
+      (Json|SetField (V WEntry) "actor" (get (V Names) (V Cur)))
+      (Json|SetField (V WEntry) "does" (cat "looks at " (V MeName)))
+      (Json|SetField (V WEntry) "says" (get (V WLine) (V Cur)))
+      (Json|SetField (V WEntry) "feels" (get (V WWord) (V Cur)))
+      (Class|BPShow|RevealLine :self (V Show) :Seat (V Cur) :Entry (V WEntry) :Says (get (V WLine) (V Cur)))
+      (print (cat "NHOS: WIN REACT " (get (V Ids) (V Cur)) " cut=" (V CutTxt) " emotion=" (get (V WEmo) (V Cur)) " | " (get (V WLine) (V Cur))))
+      (set Played (+ (V Played) 1))
+      (else
+        (print (cat "NHOS: WIN SKIP " (get (V Ids) (V Cur)) " cut=" (V CutTxt))))))
+  (print (cat "NHOS: WIN REACTIONS n=" (str (V Played)))))

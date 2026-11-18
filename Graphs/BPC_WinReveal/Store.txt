@@ -1,0 +1,10 @@
+; T87: one reaction_win reply, from HandleReply: its line (15 words at most), its emotion id and that emotion's "feels"
+; word. A failed, passed or empty reply is kept as nothing to play. Each reply counts; the last one may start the reveal.
+(fn Store (Seat Ok Line Emotion Word)
+  (if (and (>= Seat 0) (< Seat (len (V WLine))))
+    (Utilities|Array|SetArrayElem (V WOk) Seat (and Ok (not (Utilities|String|IsEmpty (Utilities|String|Trim Line)))))
+    (Utilities|Array|SetArrayElem (V WLine) Seat Line)
+    (Utilities|Array|SetArrayElem (V WEmo) Seat Emotion)
+    (Utilities|Array|SetArrayElem (V WWord) Seat Word))
+  (set Got (+ (V Got) 1))
+  (CallFunction|TryPlay))

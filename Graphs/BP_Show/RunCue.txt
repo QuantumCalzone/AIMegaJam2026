@@ -3,6 +3,7 @@
 ; the stinger and the crowd at the cut, the applause or laughs at the end screen.
 ; T71: each header asks BPC_ShowAudio for its phase's music (PlayPhase); OpenPrep starts the card's loop.
 ; T68: the "stat" cue (analytics phase events) and show_end at the end screen.
+; T87: the "reveal" cue (WinReveal.RiseAll).
 (fn RunCue (Kind Text Num)
   ; T68: a phase's analytics event, queued by CueHeader right before its header (BPC_Analytics.CuePhase).
   (if (streq Kind "stat")
@@ -45,6 +46,10 @@
   ; T71: the card's loop starts in OpenPrep, at the end of ScenePrep.
   (if (streq Kind "prep")
     (CallFunction|ScenePrep)
+    (return))
+  ; T87: the reveal on a win: the cut robots get back up and my robot cheers under its HUMAN stamp (WinReveal.RiseAll).
+  (if (streq Kind "reveal")
+    (Class|BPCWinReveal|RiseAll :self (V WinReveal))
     (return))
   (if (streq Kind "end")
     (Class|BPCShowAudio|EndCheer :self (V Audio) :Win (V ShowWin))
