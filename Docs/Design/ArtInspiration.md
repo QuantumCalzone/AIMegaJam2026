@@ -145,7 +145,7 @@ The UI is the theater's own paperwork: a call sheet, a sealed note, ballot ticke
 
 ![In-show screen layout · 16:9, a scene turn on your move](images/ArtInspiration/layout.svg)
 
-The input row sits bottom left, with the chat above it when you open it. Your part sits top right, and the robots own the band between them. Only the speech bubbles, the banner and the stamp cross into the stage, and the banner and the stamp stay only a few seconds.
+The input row sits bottom left, with the chat above it when you open it. Your part sits top right, and the robots own the band between them. In Scene Prep, the scene sits on a panel at the bottom, in the middle, with Start the scene under it. Only the speech bubbles, the banner and the stamp cross into the stage, and the banner and the stamp stay only a few seconds.
 
 #### Palette and type
 
@@ -178,11 +178,11 @@ Colors are set by role. Start from these values; if a value changes, keep its ro
 | --- | --- | --- |
 | Header | Ink panel, top left. Phase in display type, scene and turn as pips (●●○), one line below on what to do now. | States each fact once; the chat never repeats it. On your move the line turns gold and starts with YOUR MOVE. |
 | Clapperboard | A small ink slate under the header, top left, with a striped clapstick. SCENE 2 / 4 in display type. | Set at each Scene Prep; the same in every phase of a scene. Hides with the stage on the title and end screens. |
-| Your part | Paper card, top right: your role as the title, your want under it. | Scene Prep shows the full call sheet in the center. When the scene starts, it shrinks into the corner, so you see where it went. |
+| Your part | Paper card, top right: your role as the title, your want under it. | In Scene Prep, the scene and the stage show on an ink panel in the lower middle, under the robots' feet, with Start the scene under them; your part and the note's clue stay on the card. When the scene starts, the panel goes and the card stays. |
 | Director's note | Gold note card clipped to your part, with a SECRET tab. | Always in view while you act, never behind a scroll. |
 | Chat | Ink panel, bottom left, above the input row. Hidden at the start of each show; the Show chat button opens it. Name bold in its seat color, action in quiet italic, speech in white. Your lines get a teal bar and a YOU tag. | Actor lines only, newest at the bottom. "Name is typing…" holds the place of the next line. Each line's speech then types out letter by letter in a box already at its full size, while the speaker's voice babbles one gibberish sound per syllable. It gets every line while hidden, and stays open or closed as you set it until the next show. |
 | Speech bubble | Ink bubble over the speaker's robot, above its name tag, with a ring and a pointed tail in the speaker's seat color. Speech in white at 20, wrapping at about 420 px at 1600 × 900. A line with no speech shows its action in quiet italic; a vote shows "Votes for X." above the reason. | Four states. Line: types out with the chat line, in one voice. Typing: three cycling dots before an AI's line in Free Talk and the reactions. Fading: 250 ms, when the next robot speaks or the phase changes. Hidden: a cut robot, Scene Prep, the end screen. The robot just cut still gets bubbles for its last words in the reactions. Stays 24 px inside the window and clear of the panels, the banner and the stamp, moving aside while its tail points at its robot. |
-| Input row | Dark box with a 2 px outline, a gold Action! and an outline Pass. In your scene turns the action builder sits above it: the preview line in a mono face, the seven action buttons and the picked action's chips. A Secondary Show chat button (it reads Hide chat while the chat is open) sits at its left end. The panel is 1080 wide in every phase. | Your move: a gold focus ring pulses once and the caret waits in the box. Otherwise it dims, and the hint says who you are waiting on. |
+| Input row | Dark box with a 2 px outline, a gold Action! and an outline Pass. In your scene turns the action builder sits above it: the preview line in a mono face, the seven action buttons and the picked action's chips. A Secondary Show chat button (it reads Hide chat while the chat is open) sits at its left end. The panel is 1080 wide in every phase but Scene Prep, where it is 640 wide and holds only Show chat and the greyed field. In scene 1's Scene Prep it is hidden, with the chat. | Your move: a gold focus ring pulses once and the caret waits in the box. Otherwise it dims, and the hint says who you are waiting on. |
 | Name tags | A pill over each robot in its seat color, dark outline, 18 pt or more. Yours is teal and reads YOU. | Tags never overlap; close robots stack them. The speaker's tag grows 20%. Yours bounces on your move. |
 | Ballot | One paper ticket per actor: a seat-color bar and the provider name. | Click a ticket: a red HUMAN? stamp lands on it and the rest dim. Then type the reason. |
 | Banner | Ink strip across the top of the stage, gold display letters. | One moment at a time (a new scene, a tie, the tally, who was cut). Holds 4 s, then fades. |
@@ -200,7 +200,7 @@ Size, weight, color and position follow this ranking: the first column is the bi
 | Title | The name, as a playbill over the stage | Play, on our relay. It stays greyed out, with a short line on why, until at least 3 AIs are working and today's budget isn't used up. Own keys and Test for Free are secondary buttons, each with one line on what it needs. |
 | Key entry | Which providers still need a key | Save and Play |
 | AI service unavailable | What went wrong, in one sentence | Enter your own keys |
-| Scene Prep | Your part and the secret note | Start the scene |
+| Scene Prep | The scene in the middle, then your part and the note's clue | Start the scene |
 | Scene turn, your move | The header line in gold | Pick an action, add a line if you like, press Action! |
 | Scene turn, waiting | The robots acting | Nothing: watch the turn play out |
 | Free Talk | The newest chat line | Type a line, or Pass |
@@ -212,7 +212,7 @@ Size, weight, color and position follow this ranking: the first column is the bi
 
 #### Motion and rules
 
-- **Motion times:** hovers and presses 120 ms; panels in and out 250 ms, easing out; the call sheet shrinks to its corner in 400 ms.
+- **Motion times:** hovers and presses 120 ms; panels in and out 250 ms, easing out.
 - **Big motion is for moments:** the stamp, the banner, the hook. Text panels never bounce, shake or slide while you read. A small spring overshoot goes only on things that land: the stamp, a picked ticket, the YOU tag.
 - **Every screen passes these,** checked at 1600 × 900 and 1280 × 720:
   - Text is 18 pt or more at 1080p, with 4.5:1 contrast or better. Buttons and panel edges reach 3:1.

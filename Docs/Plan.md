@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T96, T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T97 approved the props that T105 builds on: `Docs/Art/Props/README.md`. T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T96, T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T97 approved the props that T105 builds on: `Docs/Art/Props/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -183,13 +183,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, Meshy (`Local/meshy_key.json`) or Hyper3D, my OK on the estimated cost before the first paid call, my OK on the models and on the house screenshots, my OK on the design doc edit.
   - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/Set/**` (with `BP_AudienceBot`), `Content/NHOS/Stage/Materials/**`, `Content/NHOS/Stage/BP_Backdrop.uasset` only if the flat changes, `Docs/Art/Set/` (models and logs), `Docs/Assets.md`, the design doc, `Docs/tasks/T106.md`.
   - **Details:** [Docs/tasks/T106.md](tasks/T106.md)
-
-- [ ] **T84 Scene Prep shows the scene and Start the scene in the middle**
-  - **Model and effort:** Opus 5.5, high. A layout change across Scene Prep's widgets, judged from screenshots at two sizes.
-  - **Depends on:** T38 (the chat hidden at each show's start and its Show chat button: this task decides what the lower panel shows in scene 1's Scene Prep; if T38 is cut, take it off this line), T78 (the lower panel's width, which the middle panel must clear in scenes 2 on), T88 (the clue rows in the card's note box, and `PrepPrompt`'s turn line), T90 (its design doc edit goes in the files in `Docs/Design/`)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, my OK on the design doc edit.
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (a new prep panel with `PrepBox`'s scene and stage parts, `StartButton` moved into it, the lower panel hidden in scene 1's Scene Prep, `SetPrepMode`), `Content/NHOS/Core/BP_Show.uasset` (`PrepPrompt`'s turn line), `Graphs/WBP_Stage/SetPrepMode.txt`, `Graphs/BP_Show/PrepPrompt.txt`, `Docs/tasks/T32.md` (row 13), `Docs/tasks/T84.md`.
-  - **Details:** [Docs/tasks/T84.md](tasks/T84.md)
 
 - [ ] **T85 The cast's roles and wants show when I point at a robot**
   - **Model and effort:** Opus 5.5, high. A new hover card placed over moving robots, a screen test each frame, and the robots named from scene 1's Scene Prep on.
@@ -408,6 +401,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T97 New art, part 4: concepts for the story props, approved by me**
   - **Details:** [Docs/tasks/T97.md](tasks/T97.md)
+
+- [x] **T84 Scene Prep shows the scene and Start the scene in the middle**
+  - **Details:** [Docs/tasks/T84.md](tasks/T84.md)
 
 ## Not planned yet
 

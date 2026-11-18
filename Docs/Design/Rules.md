@@ -19,7 +19,7 @@ Everything that happens in one show, from casting to the last cut.
 - The AIs know you lack the note and see exactly which clue you got. They follow it subtly so you can’t simply copy them, never say it aloud during the scene, and treat anyone who only matches the clue, or copies a turn late, as a suspect.
 - The twelve kinds of clue: the category, the vowels only, the consonants only, the first letters, the words scrambled, Pig Latin, the key word hidden, only the key word, emoji, the opposite rule, a riddle from the director, and the note autocorrected.
 - Notes are mostly physical, so they show on stage and the game can check them against the log. Examples: “throw something whenever someone lies,” “climb onto the Riser at least once.”
-- Scene Prep is a pause. Your screen shows the whole card: the scene, your role and your want, the note’s clue, the cast with their roles and wants, and the stage’s places and props. The scene starts when you press Start the scene.
+- Scene Prep is a pause. The scene and the stage’s places and props show in a panel in the middle of your screen, with Start the scene under them. Your card on the right shows your role and your want, the note’s clue, and the cast with their roles and wants. The scene starts when you press Start the scene.
 
 ## The Scene & acting
 

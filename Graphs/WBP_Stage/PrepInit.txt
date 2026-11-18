@@ -1,0 +1,21 @@
+; T84: once, the middle panel's look and its type (T84 step 2): an Ink panel like the earpiece and the face list, the
+; scene's title in CardTitle, its text in Body, the stage's title in Name and its lines in Caption, the titles in old gold.
+; SetPrepMode calls it on every Scene Prep; PrepReady makes it run once.
+(fn PrepInit ()
+  (if (V PrepReady)
+    (return))
+  (set PrepReady true)
+  (bind cGold (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "OldGold")))
+  (bind cText (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (bind fCap (Class|UIStyle|UIFont :Role "Caption"))
+  (Class|UIStyle|StylePanel :Panel (Variables|WBP_Stage|GetPrepPanel) :Look "Ink")
+  (Class|Text|SetFont :self (Variables|WBP_Stage|GetSceneTitle) :Font (Class|UIStyle|UIFont :Role "CardTitle"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetSceneTitle) :ColorAndOpacity cGold)
+  (Class|Text|SetFont :self (Variables|WBP_Stage|GetSceneText) :Font (Class|UIStyle|UIFont :Role "Body"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetSceneText) :ColorAndOpacity cText)
+  (Class|Text|SetFont :self (Variables|WBP_Stage|GetSetTitle) :Font (Class|UIStyle|UIFont :Role "Name"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetSetTitle) :ColorAndOpacity cGold)
+  (Class|Text|SetFont :self (Variables|WBP_Stage|GetPlacesText) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetPlacesText) :ColorAndOpacity cText)
+  (Class|Text|SetFont :self (Variables|WBP_Stage|GetPropsText) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetPropsText) :ColorAndOpacity cText))
