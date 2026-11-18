@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 18:59 UTC",
+    "generation": "1f1e3822-4eb4-6c90-90d3-e91bf3eba8cf",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/meta/turn/canvas.png",
+    "refs": [],
+    "prompt": "Turn this into a clean character turnaround reference sheet for 3D modeling of the character on the left. Draw the same character twice, side by side, at the same size and height, both full body from the top of the head to the feet: on the left a straight front view, on the right a straight side view in profile facing right. In both views it stands upright in a neutral relaxed pose, its arms hanging a little away from its body and its hands open and empty. Replace the curtain and the stage with a plain light gray background, soft even studio light and no cast shadow. Keep the character's design, proportions, colors and matte clay look exactly as they are: the big smooth pale gold-white doll head with small rounded ears and a short button nose, the thick black rectangular glasses, the ball-jointed arms, the royal blue t-shirt and pants, the cream shoes and the chunky gold chain. One change: its eyes behind the glasses are flat painted dark eyes with no glow, and its mouth is a small neutral line. No text, no logos, no props, no other characters.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

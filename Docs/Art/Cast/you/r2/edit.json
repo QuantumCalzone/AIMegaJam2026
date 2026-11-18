@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 18:15 UTC",
+    "generation": "1f1e37bf-d0e6-6e60-9500-f876f39bd1a0",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/you/r1/candidate_3.png",
+    "refs": [],
+    "prompt": "Change only the hands: replace the teal hands with a pair of chunky, slightly too big canvas garden work gloves in a muted tan color with darker brown cuffs, sculpted in clay. Keep everything else exactly as it is: the teal cardboard box head with the two eye slots and the human eyes peeking through, the smile drawn in black marker, the ping-pong ball on its straw, the side knobs, the red and cream knitted scarf, the teal box body with the duct tape strip and the bottle-cap buttons, the red and cream striped sleeves, the jeans, the sneakers, the pose, the proportions, the matte clay look, the wooden stage, the crimson curtain and the light.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

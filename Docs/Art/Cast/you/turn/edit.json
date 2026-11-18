@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 18:59 UTC",
+    "generation": "1f1e3822-4e3d-6280-9f0d-f09ed86fbf4d",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/you/turn/canvas.png",
+    "refs": [],
+    "prompt": "Turn this into a clean character turnaround reference sheet for 3D modeling of the character on the left. Draw the same character twice, side by side, at the same size and height, both full body from the top of the head to the feet: on the left a straight front view, on the right a straight side view in profile facing right. In both views it stands upright in a neutral relaxed pose, its arms hanging a little away from its body and its hands open and empty. Replace the curtain and the stage with a plain light gray background, soft even studio light and no cast shadow. Keep the character's design, proportions, colors and matte clay look exactly as they are: the teal cardboard box head with its side knobs and the smile drawn in black marker, the teal box body with the tan duct-tape band and the bottle-cap buttons, the red and cream striped knitted sleeves, the red and cream knitted scarf, the tan garden gloves with brown cuffs, the jeans and the sneakers. Two changes: remove the ping-pong ball and its straw, so the top of the box is flat; and the two eye slots are plain dark openings with nothing visible inside. No text, no logos, no props, no other characters.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 18:12 UTC",
+    "generation": "1f1e37b9-5b51-6070-8cf6-635e018faee9",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A cute doll-like android robot actor. Its big head is a smooth pale gold-white doll head with small rounded ears and a short button nose, big glowing yellow-gold eyes behind thick chunky black rectangular glasses, and a small stiff polite smile. Its arms are jointed with round ball joints. It wears a royal blue t-shirt and royal blue pants, cream shoes and a thick chunky old-gold chain necklace. It stands stiffly upright and gives a small polite wave. Toy proportions: the head is big, about a third of the character's height, on a short chunky body, and the top of the head is smooth and bare. It stands on a warm wooden stage in front of a softly blurred crimson velvet curtain, in soft warm stage light. Full body, three-quarter front view, the whole character centered and in frame. A single character, no text, no logos.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, multiple characters, cropped, halo, glowing ring"
+    },
+    "api_credit_cost": null,
+    "seed": 1243111220,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

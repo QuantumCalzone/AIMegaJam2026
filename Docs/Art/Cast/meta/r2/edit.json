@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 19:08 UTC",
+    "generation": "1f1e3836-d950-6660-86e5-c22ea69a25c0",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/meta/approved.png",
+    "refs": [],
+    "prompt": "Change only the color of the android's skin (its head, ears, nose, hands and jointed arms): make it a pale golden android skin, an even, pale yellow-gold like cream mixed with a little gold, smooth and matte clay with no shine, clearly artificial and not a human skin tone. Keep everything else exactly as it is: the glowing yellow-gold eyes, the thick black glasses, the small stiff smile, the ball joints, the royal blue t-shirt and pants, the cream shoes, the chunky gold chain, the waving pose, the proportions, the matte clay look, the wooden stage, the crimson curtain and the light. No text, no logos.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 19:15 UTC",
+    "generation": "1f1e3846-29ef-6990-b195-132b36a25f59",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/meta/r2/edit_2.png",
+    "refs": [],
+    "prompt": "Make these changes to the android, and keep everything else as it is. 1. Its skin (head, ears, nose, hands and jointed arms) is an even pale yellow-gold, matte clay with no shine. 2. Its head is less baby-like: a more grown-up head shape, a little taller and less round, with a flatter top, a smooth high forehead, defined cheekbones and a firmer, squarer jaw. It is still big, about a third of its height, smooth and bald, a clay toy and not a realistic human face. 3. Its t-shirt becomes a fitted crew top in two colors: black shoulders and upper chest, and a mustard-gold lower body, split straight across the chest, with no badge, no insignia and no emblem. 4. Its pants are black. 5. The chain around its neck is a thick, chunky chain of bright pure gold links. 6. Its glasses are thick black wayfarer-style smart glasses, with a small round camera lens at the outer front corner on one side and a small glowing white recording light at the outer front corner on the other side. Keep the glowing yellow-gold eyes, the small stiff polite smile, the ball joints, the cream shoes, the waving pose, the body's proportions, the matte clay look, the wooden stage, the crimson curtain and the light. No text, no logos.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

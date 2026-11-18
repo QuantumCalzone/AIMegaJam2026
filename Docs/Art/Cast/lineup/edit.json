@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 18:24 UTC",
+    "generation": "1f1e37d5-34ba-66c0-bd74-717d8cd7e565",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/lineup/collage_v1.png",
+    "refs": [],
+    "prompt": "Repaint this collage as one single photo of a stop-motion claymation scene: five clay characters standing side by side in a row on one wooden opera stage in front of one continuous crimson velvet curtain, in one soft warm stage light with warm footlights from below. Make the curtain, the floor, the light and the shadows continuous across the whole image, with no seams and no panel edges. Keep each of the five characters exactly as they are, in the same place, at the same size, in the same pose, with the same colors and details. From left to right: the pale blue round-headed robot in a gray knit sweater with its hands pressed together; the orange round robot with round gold glasses, an amber light on its antenna and one finger raised; the lime green robot with a long nose, a toothy grin, a lightning bolt on its belly, spring arms and legs and black boots, giving two thumbs up; the doll-like android with glowing gold eyes behind thick black glasses, a gold chain, a blue t-shirt and blue pants, waving; and the person in a teal cardboard box robot costume with two eye slots, a drawn smile, a ping-pong ball on a straw, a red and cream knitted scarf, striped sleeves, tan garden gloves, jeans and sneakers. Do not add, remove, swap or merge any character. No text, no logos.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

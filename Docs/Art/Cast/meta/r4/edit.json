@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 19:17 UTC",
+    "generation": "1f1e384a-bfa6-6ca0-aa04-a85929e70421",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/meta/r3/edit_2.png",
+    "refs": [],
+    "prompt": "Change only the color of the android's skin (its head, ears, nose, hands and jointed arms) to a pale silver: a very light, cool silvery gray with a soft satin sheen, matte clay and not shiny chrome or mirror metal. Keep everything else exactly as it is: the head shape, the glowing yellow-gold eyes, the thick black smart glasses with the camera lens and the white recording light, the small polite smile, the ball joints, the black and mustard-gold two-tone top, the black pants, the cream shoes, the gold link chain, the waving pose, the proportions, the matte clay look, the wooden stage, the crimson curtain and the light. No text, no logos.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

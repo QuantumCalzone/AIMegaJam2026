@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 18:12 UTC",
+    "generation": "1f1e37b9-5bab-65c0-9c52-910f52828405",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A cute robot actor. Its head is a big round pale sky blue ball with a large dark screen face that shows big glowing white LED eyes, wide and earnest, and a small gentle glowing smile, two round cream ear pods and a short old-gold collar. Its body is a short, chunky, smooth pale sky blue teardrop shape that stands on the stage floor on two stubby rounded feet, dressed in a soft chunky gray knit crewneck sweater. Its round mitten hands are pressed together in front of its chest. Toy proportions: the head is big, about a third of the character's height, on a short chunky body, and the top of the head is smooth and bare. It stands on a warm wooden stage in front of a softly blurred crimson velvet curtain, in soft warm stage light. Full body, three-quarter front view, the whole character centered and in frame. A single character, no text, no logos.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, multiple characters, cropped, halo, glowing ring"
+    },
+    "api_credit_cost": null,
+    "seed": 79243207,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 18:15 UTC",
+    "generation": "1f1e37bf-d899-61d0-a672-b6498fd372d5",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/spacexai/r1/candidate_3.png",
+    "refs": [],
+    "prompt": "Change only the olive green of the robot's clay head, body, hands and the lightning bolt to a bright, fresh lime green (hex D8F04A): a vivid light yellow-green like the skin of a lime, not olive, not dark green and not yellow. Keep everything else exactly as it is: the dark visor with its glowing white eyes and the cocked eyebrow, the long nose, the wide toothy grin, the cream ear pods, the cream belly, the steel coil-spring neck, arms and legs, the dark boots, the double thumbs-up pose, the proportions, the matte clay look with faint thumbprints, the wooden stage, the crimson curtain and the light.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

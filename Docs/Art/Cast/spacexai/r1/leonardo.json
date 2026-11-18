@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 18:12 UTC",
+    "generation": "1f1e37b9-5d54-62a0-847e-d55dc184f28a",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A cute robot actor. Its head is a big round lime green ball with a large dark screen visor face that shows glowing white LED eyes, one eyebrow cocked at an angle, and a wide toothy grin, two round cream ear pods and a short old-gold collar. A long, straight, sculpted lime nose sticks out under the visor. Its body is round and lime green with a big cream belly that carries a large chunky cream lightning bolt shape. Its arms and legs are thick chunky coil springs, and it wears big chunky dark boots. It gives a confident double thumbs-up. Toy proportions: the head is big, about a third of the character's height, on a short chunky body, and the top of the head is smooth and bare. It stands on a warm wooden stage in front of a softly blurred crimson velvet curtain, in soft warm stage light. Full body, three-quarter front view, the whole character centered and in frame. A single character, no text, no logos.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, multiple characters, cropped, halo, glowing ring"
+    },
+    "api_credit_cost": null,
+    "seed": 486234096,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

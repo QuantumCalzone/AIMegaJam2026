@@ -21,17 +21,19 @@ The approved direction board. It sets the look, not the layout: the UI's layout 
 
 ### The bots
 
-**Being redrawn in T95 (concepts) and T103 (models), in the direction above.** Until then, this section describes the cast as built on 2026-11-15. On T94's board my person dropped OpenAI's halo and floor ring, and T95 brings this section in line.
+**Concepts approved in T95 (2026-11-18); T103 builds the models from them.** Until then the game shows the cast as built on 2026-11-15. The concepts, the turnarounds and every round are in [Docs/Art/Cast/](../Art/Cast/README.md).
 
-- Four polished clay bots and one human in a homemade cardboard costume. That contrast is the premise in one picture: the player is the one pretending. Every bot is about 1.6 m tall, and its seat color is on its body, because a wig or a hood hides most of a head.
-- OpenAI, Anthropic and SpaceXAI share one round head: a dark screen face with big LED eyes and a mouth that stretches wide, two small cream ear pods and a short gold collar. Meta has its own doll head, and the player a cardboard box.
-- **OpenAI:** a smooth pale-blue teardrop that hovers over a glowing ring on the floor, in a gray knit sweater, hands pressed together, a halo above.
-- **Anthropic:** a round orange body with a cream belly and a few buttons, small round feet, perfectly circular thin gold glasses over the screen, an amber light on a thin antenna.
-- **SpaceXAI:** a round lime body with a cream belly on coiled spring arms and legs, chunky boots, a long straight nose under the visor, a toothy grin, a small lightning bolt.
-- **Meta:** a doll-like android with a pale gold-white head, small ears and a short nose, glowing yellow-gold eyes behind thick black smart glasses with a tiny camera in each corner, a small stiff smile, jointed arms, a royal blue tee and pants, cream shoes and a chunky gold chain.
-- **You:** a person in a homemade robot costume: a teal-painted cardboard box over the head with two eye slots and a smile drawn on, a ping-pong-ball antenna and the red and cream knitted scarf; a bigger teal box for the body with duct tape and bottle-cap buttons, striped sleeves, garden gloves, jeans and sneakers.
-- The energy is borrowed from chaotic sidekick crowds: jittery, slapstick, gibberish blips for voices. The look is our own: no overalls, goggles, rabbit ears or screaming mouths, and no known character's signature look.
-- Each provider bot carries a light parody nod to its company's leader through signature traits only (glasses, clothes, expression, pose), never a name or a likeness, and nothing carries a brand mark. No hair and no wires. Costumes go over the built-in parts: the shades hide Meta's and Anthropic's glasses, and OpenAI's halo, Anthropic's antenna light, SpaceXAI's bolt and the player's ping-pong ball poke up beside any hat.
+![The approved cast in seat order on one clay opera stage: OpenAI, a pale blue round-headed bot in a gray knit sweater; Anthropic, an orange round bot with round gold glasses, an amber light and a raised finger; SpaceXAI, a lime round bot with a long nose, a toothy grin, a lightning bolt, spring limbs and a double thumbs-up; Meta, a pale silver android with slicked black hair, yellow eyes, black smart glasses, a gold chain and a black and mustard top; and You, a person in a teal cardboard box costume with eye slots, a drawn smile, a ping-pong ball, a scarf and garden gloves](../Art/Cast/lineup.png)
+
+- Four polished clay bots and one human in a homemade cardboard costume. That contrast is the premise in one picture: round, toy-like bots, and the player as the one boxy, homemade shape, pretending. Every bot is about 1.6 m tall, with a big head about a third of its height, and its seat color is on its body, because a wig or a hood hides most of a head.
+- OpenAI, Anthropic and SpaceXAI share one round head: a dark screen face with big LED eyes and a mouth that stretches wide, two cream ear pods and a short gold collar. Meta has its own android head, and the player a cardboard cube.
+- **OpenAI:** a short pale sky blue teardrop body on stubby feet, in a gray knit sweater, hands pressed together, wide earnest eyes. It stands on the floor: no halo and no ring.
+- **Anthropic:** a round orange body with a big cream belly and three round buttons, short arms and round feet, circular gold glasses over the screen, calm eyes, one finger raised to make a careful point, and an amber light on a short stalk.
+- **SpaceXAI:** a round lime body with a cream belly and a lime lightning bolt, on steel coil-spring neck, arms and legs, chunky dark boots, a dark visor with one cocked brow, a long cream nose under it, a wide toothy grin and a double thumbs-up.
+- **Meta:** an android with pale silver skin and a grown-up head: thin, flat, slicked-back black hair with a side part, small ears, pale yellow eyes with dead black pupils, a small polite smile, and thick black smart glasses with a camera lens on one corner and a recording light on the other. Ball-jointed silver arms, a black and mustard top, black pants, silver shoes and a chunky gold link chain. Its look nods to Data from *Star Trek: The Next Generation* (my person's call), with no badge or insignia.
+- **You:** a person in a homemade robot costume: a teal-painted cardboard cube over the head with two eye slots that the person's eyes peek through, a smile drawn in marker and a ping-pong ball on a straw; a bigger teal box for the body with a duct-tape band and bottle-cap buttons; the red and cream knitted scarf, red and cream striped sleeves, tan garden gloves, jeans and sneakers.
+- The energy is borrowed from chaotic sidekick crowds: jittery, slapstick, gibberish blips for voices. No overalls, goggles, rabbit ears or screaming mouths.
+- Each provider bot carries a light parody nod to its company's leader through signature traits only (glasses, clothes, expression, pose), never a name, and nothing carries a brand mark. No wires, and no hair but Meta's solid hair cap. Costumes go over the built-in parts: the shades hide Meta's and Anthropic's glasses, a wig sits over Meta's hair, and Anthropic's antenna light, SpaceXAI's bolt and the player's ping-pong ball poke up beside any hat. Every costume has a version for the player's cube head.
 - The audience in the boxes and the stalls are small clay capsule bots, most in top hats.
 
 | Seat | Body color |
@@ -39,14 +41,10 @@ The approved direction board. It sets the look, not the layout: the UI's layout 
 | OpenAI | #A8CCFF pale blue |
 | Anthropic | #E8894A orange |
 | SpaceXAI | #D8F04A lime |
-| Meta | #5B8CFF blue |
+| Meta | mustard, with black (T95). Its exact hex is set when the UI's seat color changes; until then the game shows #5B8CFF blue |
 | You | #3FD0C9 teal |
 
 The colors are the UI's seat colors, so a bot, its name tag and its chat bar always match.
-
-The five bots as built on 2026-11-15, in seat order, with their name tags hidden. The castle backdrop and props behind them are older pieces, not yet replaced.
-
-![The five clay pill bots front on: OpenAI pale blue with a halo ring, Anthropic orange with a warning light, SpaceXAI lime with a lightning bolt, Meta blue with a headset, and You teal with a bent antenna and scarf](images/ArtInspiration/bots.jpg)
 
 ### The stage
 

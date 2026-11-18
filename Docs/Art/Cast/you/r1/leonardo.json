@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 18:12 UTC",
+    "generation": "1f1e37b9-5d19-6920-b271-18aa19ce0366",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A person in a homemade robot costume, trying hard to pass as a robot. Over the head is a teal-painted cardboard box with two wide rectangular eye slots, through which a pair of human eyes peek out nervously, and a big smile drawn on the box in black marker. A ping-pong ball sits on a chunky straw on top of the box. The body is a bigger teal-painted cardboard box with strips of silver duct tape and big bottle-cap buttons. Red and white striped long sleeves, chunky garden gloves, blue jeans and sneakers, and a red and cream knitted scarf around the neck. Toy proportions: the head is big, about a third of the character's height, on a short chunky body, and the top of the head is smooth and bare. It stands on a warm wooden stage in front of a softly blurred crimson velvet curtain, in soft warm stage light. Full body, three-quarter front view, the whole character centered and in frame. A single character, no text, no logos.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, multiple characters, cropped, halo, glowing ring"
+    },
+    "api_credit_cost": null,
+    "seed": 238532518,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 19:21 UTC",
+    "generation": "1f1e3854-81de-63f0-baea-7b346630bd5a",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/meta/turn2/canvas.png",
+    "refs": [],
+    "prompt": "Turn this into a clean character turnaround reference sheet for 3D modeling of the character on the left. Draw the same character twice, side by side, at the same size and height, both full body from the top of the head to the feet: on the left a straight front view, on the right a straight side view in profile facing right. In both views it stands upright in a neutral relaxed pose, its arms hanging a little away from its body and its hands open and empty. Replace the curtain and the stage with a plain light gray background, soft even studio light and no cast shadow. Keep the character's design, proportions, colors and matte clay look exactly as they are: the pale silver android head and skin, the thin flat slicked-back black hair cap with its side part, the small ears, the pale yellow eyes with black pupils, the small polite smile, the thick black smart glasses with the small camera lens on one corner, the ball-jointed silver arms, the black and mustard-gold two-tone top, the gold link chain, the black pants and the silver shoes. One change: the recording light on the glasses is a plain small white dot with no glow. No text, no logos, no props, no other characters.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 19:19 UTC",
+    "generation": "1f1e384e-ea67-62b0-b2bb-002c87a7b175",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/meta/r4/edit_2.png",
+    "refs": [],
+    "prompt": "Make two changes and keep everything else exactly as it is. 1. Its eyes no longer glow: they are flat pale yellow eyes with small, dead black pupils, behind the glasses. 2. Add thin, flat black hair: a short, smooth, slicked-back cap of black hair, sculpted as one solid piece of matte clay that lies flat on the top and back of the head, with a neat side part, and no strands and no fringe. Keep the pale silver skin, the head shape, the ears, the thick black smart glasses with the camera lens and the white recording light, the small polite smile, the ball joints, the black and mustard-gold two-tone top, the black pants, the silver shoes, the gold link chain, the waving pose, the proportions, the matte clay look, the wooden stage, the crimson curtain and the light. No text, no logos.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

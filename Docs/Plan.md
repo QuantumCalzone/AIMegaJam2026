@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T96 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -127,13 +127,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** my answer on the sources; my pick for each sound and each voice set, on a private Artifact page; my OK on the terms and cost, and my own sign-up, if an AI sound service is used.
   - **Touches:** `SourceAssets/Audio/Show/`, `Robot/`, `UI/` and `Voice/<provider>/` (the picks; never `Voice/Me`), `Tools/make_voices.py` if it makes the new sets, `Docs/AudioShortlist.md`, `Docs/tasks/T101.md`; outside the repo: `Local/audio/candidates/` and a private Artifact page.
   - **Details:** [Docs/tasks/T101.md](tasks/T101.md)
-
-- [ ] **T95 New art, part 2: concepts for the cast, me included, approved by me**
-  - **Model and effort:** Opus 5.5, high. Five characters in concept rounds until I approve each, then turnarounds that image-to-3D can use.
-  - **Depends on:** T94 (the direction and the style guide). It needs no editor and changes no asset, so it can run on either machine, beside the chain.
-  - **Needs:** `Local/leonardo_key.json`; my OK on the estimated cost before the first paid call; my approval of each character, the lineup and the turnarounds; my OK on the design doc edit.
-  - **Touches:** new `Docs/Art/Cast/`, the design doc's Art Inspiration tab (the bots), `Docs/tasks/T95.md`.
-  - **Details:** [Docs/tasks/T95.md](tasks/T95.md)
 
 - [ ] **T96 New art, part 3: concepts for a costume for each role, fitted to every character, approved by me**
   - **Model and effort:** Opus 5.5, high. A costume for every role, each drawn on all five approved characters, with a version made for my cube head.
@@ -413,6 +406,9 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T87.md](tasks/T87.md)
 - [x] **T107 Fix the bugs T87 found: late banners, a robot hidden at the Back mark, and three small ones**
   - **Details:** [Docs/tasks/T107.md](tasks/T107.md)
+
+- [x] **T95 New art, part 2: concepts for the cast, me included, approved by me**
+  - **Details:** [Docs/tasks/T95.md](tasks/T95.md)
 
 ## Not planned yet
 

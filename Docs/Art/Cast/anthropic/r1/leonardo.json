@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 18:12 UTC",
+    "generation": "1f1e37b9-5d43-6130-be61-31b17f646a8c",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A cute robot actor. Its head is a big round orange ball with a large dark screen face that shows calm, half-closed glowing white LED eyes and a small thoughtful smile, two round cream ear pods and a short old-gold collar, and it wears perfectly circular thick old-gold glasses over the screen. A short thick stalk on top of its head ends in a round amber light. Its body is round and orange with a big cream belly and three large round buttons, with short chunky arms and small round feet. One mitten hand is raised with one finger up, as if making a careful point. Toy proportions: the head is big, about a third of the character's height, on a short chunky body, and the top of the head is smooth and bare. It stands on a warm wooden stage in front of a softly blurred crimson velvet curtain, in soft warm stage light. Full body, three-quarter front view, the whole character centered and in frame. A single character, no text, no logos.",
+      "width": 864,
+      "height": 1152,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, multiple characters, cropped, halo, glowing ring"
+    },
+    "api_credit_cost": null,
+    "seed": 600644331,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

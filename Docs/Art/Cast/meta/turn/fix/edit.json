@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 19:05 UTC",
+    "generation": "1f1e382f-f113-6f10-a03c-cafcd3e55879",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Cast/meta/turn/edit_1.png",
+    "refs": [],
+    "prompt": "One change: in the front view on the left, add the thick chunky gold chain necklace around its neck, resting on the blue t-shirt, the same chain the side view on the right shows. Keep everything else exactly as it is: both views, the bald pale gold-white doll heads, the thick black glasses with the flat dark eyes, the ears, the noses, the small neutral mouth, the ball-jointed arms, the royal blue t-shirts and pants, the cream shoes, the poses, the sizes, the plain light gray background and the soft even light. No text, no logos.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]
