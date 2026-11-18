@@ -163,13 +163,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/UI/Style/UIStyle.uasset` (`SeatColor`), `Content/NHOS/Stage/BP_Robot.uasset` (`SetPersona`), any other asset that holds Meta's blue, `Graphs/UIStyle/SeatColor.txt`, `Graphs/BP_Robot/SetPersona.txt`, `Docs/Design/ArtInspiration.md` (the bots table and the UI section's palette), `Docs/Art/Direction/README.md` (the palette), `Docs/tasks/T108.md`.
   - **Details:** [Docs/tasks/T108.md](tasks/T108.md)
 
-- [ ] **T108 Meta's seat color becomes mustard, in the UI and on the robot**
-  - **Model and effort:** Sonnet 5.5, medium. One color value in each of two Blueprints, the docs that list the seat colors, and a free PIE check.
-  - **Depends on:** T95 (my pick of mustard for Meta; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine. It locks `BP_Robot.uasset`, as T103 does, so the two never run at once.
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE check, my pick of the exact hex, my OK on the design doc and style guide edits.
-  - **Touches:** `Content/NHOS/UI/Style/UIStyle.uasset` (`SeatColor`), `Content/NHOS/Stage/BP_Robot.uasset` (`SetPersona`), any other asset that holds Meta's blue, `Graphs/UIStyle/SeatColor.txt`, `Graphs/BP_Robot/SetPersona.txt`, `Docs/Design/ArtInspiration.md` (the bots table and the UI section's palette), `Docs/Art/Direction/README.md` (the palette), `Docs/tasks/T108.md`.
-  - **Details:** [Docs/tasks/T108.md](tasks/T108.md)
-
 - [ ] **T103 New art, part 7: the cast's models, generated from the approved concepts**
   - **Model and effort:** Opus 5.5, high. Five robots generated and swapped into `BP_Robot`, keeping the sockets, the face and every hook the show uses.
   - **Depends on:** T95 (the approved turnarounds); T75, T82 and T83 (the face, `M_CastModel` and the last swap; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine. Run it where its generator is: Hyper3D's MCP server is on the Mac, and the PC has the Meshy key.
