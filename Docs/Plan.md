@@ -1,10 +1,10 @@
 # Plan: No Humans On Set
 
-The living plan for our game: the tasks in priority order, how to run one and how to add one. The design is a private Claude Doc, linked from [GameDesign.md](GameDesign.md). Say **"Next task"** to build the next step.
+The living plan for our game: the tasks in priority order, how to run one and how to add one. The design is in `Docs/Design/`, listed in [GameDesign.md](GameDesign.md). Say **"Next task"** to build the next step.
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: T90 (the design doc moves into the repo). Then come the new audio and the new art (T94, T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T84, T85, T87 and T61 wait for T90, and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T94, T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T84, T85, T87 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -94,7 +94,7 @@ These hold for every task, and for editor work outside the task list too. If one
 - **Prompts are files, not Blueprint strings.** The opening game prompt, the base prompt, the personas, the input LLM prompt and the scene cards live in `Content/NHOS/Data/`, so they diff in git. Store long text as an array of lines.
 - **One provider.** All calls go to the Claude Messages API. The model, effort and token limit for each role (actor, input LLM) are values in `Content/NHOS/Data/llm.json`. T01 and T02 ran `claude-opus-5-5` at low effort. Since 2026-11-13 every role runs `claude-haiku-5-5` at low effort, the cheapest model at its lowest level. Haiku 5.5 has no server-side fallback, so `beta` and `fallbacks` in `llm.json` are empty; a refusal comes back as `stop_reason: "refusal"`.
 - **One provider per persona, from T16 and T18 on.** Each persona runs on its own provider, as in the design's table, with a key per provider (no router). T16 sets up the prompts and the keys; T18 makes the game call them. Since 2026-11-14 each bot goes by its provider's name on screen, in the log and in the cast list the AIs read (OpenAI, Anthropic, SpaceXAI, Meta: the `name` fields in `personas.json`), not by a persona name such as "The Worrier". Persona ids (`worrier`) stay as they are in files and `NHOS:` lines. Real people's names and product names stay out of prompts and off the screen.
-- **The design doc follows the game.** The Claude Doc is the only source of truth for the design, and the repo keeps no copy of it: [GameDesign.md](GameDesign.md) only links it. When a task changes the design (the speech style, the sets, the providers), it shows me the matching edit to the Claude Doc, and after my OK it makes the edit with the Claude Docs connector. A prompt changes in the doc's Bot Prompts tab first, then word for word in `prompts.json` or `personas.json`. No script checks the two against each other.
+- **The design doc follows the game.** The design doc is the Markdown files in `Docs/Design/`, one per part, listed in [GameDesign.md](GameDesign.md), and they are the only source of truth for the design. When a task changes the design (the speech style, the sets, the providers), it shows me the matching edit to the file, and after my OK it makes the edit in the task's commit. A prompt changes in `Docs/Design/BotPrompts.md` first, then word for word in `prompts.json` or `personas.json`. No script checks the two against each other. Until T90 (2026-11-17) the design was a private Claude Doc; task files from before then call the files "tabs" and may name that doc's node ids and revisions.
 - **Legibility first.** Everything an AI says reads like a normal chat, the way Claude or ChatGPT write: plain sentences, no brackets or tags, no beeps or sound effects, no emoji, no ALL-CAPS words. Each persona's personality comes through what it says, not how it is typed.
 - **Outside and generated assets.** Record every art, audio or font asset in `Docs/Assets.md` when you add it: what it is, where it came from (a Fab link, a site, or the AI tool and prompt) and its license.
 - **One reply shape.** Every ask (scene turn, Free Talk line, vote, reaction, closing line, input conversion) gets back the same small JSON object, with unused fields empty. One parser serves the whole game.
@@ -119,12 +119,6 @@ These hold for every task, and for editor work outside the task list too. If one
 ### Open
 
 
-- [ ] **T90 The design doc moves into the repo as Markdown files**
-  - **Model and effort:** Opus 5.5, high. A word-for-word copy of every tab, with its tables and pictures, checked against the doc by a diff; then every pointer to the doc rewritten. A dropped line is easy to miss.
-  - **Depends on:** T88 (it saves its OKed design doc edits in the Claude Doc, so the copy waits for them). T90 needs no editor and changes no asset, so it can run beside the chain, in its own worktree (see the "Worktrees" build note).
-  - **Needs:** the Claude Docs connector, to read the doc (the doc is edited only in T90's step 7, with my OK); no session editing the doc while T90 copies it (`Agents/status/`); my answers on the doc's open suggestions and comments; my OK on the retirement line in step 7.
-  - **Touches:** new `Docs/Design/` (one `.md` per tab, and `images/`), `Docs/GameDesign.md` (becomes the index), `CLAUDE.md`, `README.md`, `Docs/Plan.md` (the build note "The design doc follows the game"), `Docs/UIStyle.md`, `Docs/tasks/T25.md` (its link), `Content/NHOS/Data/personas.json` and `prompts.json` (`_readme` only), the open tasks' files and build sheets that say to use the connector (T84, T85, T87, T61, T34), a new note in `Agents/messages/`, `Docs/tasks/T90.md`; outside the repo: my memory notes that point at the Claude Doc.
-  - **Details:** [Docs/tasks/T90.md](tasks/T90.md)
 
 - [ ] **T94 New art, part 1: the art direction, approved by me**
   - **Model and effort:** Opus 5.5, high. The direction and the style guide that every later art task follows, from a list of every art asset in the game.
@@ -423,6 +417,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T100.md](tasks/T100.md)
 - [x] **T93 The title's Play button replaces Play via Relay and is greyed out when fewer than three AIs work**
   - **Details:** [Docs/tasks/T93.md](tasks/T93.md)
+- [x] **T90 The design doc moves into the repo as Markdown files**
+  - **Details:** [Docs/tasks/T90.md](tasks/T90.md)
 
 ## Not planned yet
 

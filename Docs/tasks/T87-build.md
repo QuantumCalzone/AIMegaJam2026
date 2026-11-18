@@ -16,7 +16,7 @@ T87's dependencies are all pushed. These are the points that can still move befo
    - **`WBP_Stage` reads no `Phase`.** At `b515048` no `WBP_Stage` graph reads `BP_Show.Phase` (`grep -rn "GetPhase" Graphs/WBP_Stage`), so part 3g's new phase `"reveal"` changes nothing there. If a T78 follow-up or T34 made the input row follow `Phase`, check what it shows in `"reveal"` (it should look as it does in `"closing"`).
 3. **`free_mode.json`'s phase order.** The `closing` phase still matches `"The show is over"`, and `input` is still first. Part 6 puts `reaction_win` right after `input`.
 4. **`emotes.json`** still has `surprised`, `embarrassed`, `angry`, `sad` and `happy` (part 6's list).
-5. **The design doc:** read Bot Prompts and Rules again. Part 9 quotes them at Bot Prompts rev 91 and Rules rev 52.
+5. **The design doc:** read `Docs/Design/BotPrompts.md` and `Docs/Design/Rules.md` again (T90 moved the doc's tabs there). Part 9 quotes them at Bot Prompts rev 91 and Rules rev 52 of the old Claude Doc.
 6. **T34** is after T87 in the plan. T34-build's 2.1 may hide the robots' 3D labels. If T34 landed first, part 2c's `HUMAN` stamp on my robot's label won't show: tell my person, and put the stamp where T34 moved the cut stamp.
 
 ## In short
@@ -789,6 +789,8 @@ In `actor_cases`, right after the closing case's block (after `cases["closing"][
 7. The return line adds `or win_bad`.
 
 ## 9. The design doc (needs my person's OK, typed in the T87 session)
+
+**Where these places are now (T90):** the node ids and revisions in this part are from the old Claude Doc. After the OK, make the edits in the files, in T87's commit. 9a goes in `Docs/Design/BotPrompts.md`, after the code block under "## Input LLM prompt" and before "## Persona prompts". 9b is the paragraph after the numbered list under "## The Cut" in `Docs/Design/Rules.md`, and its Onboarding table is the one under "### What the player sees, and when".
 
 ### 9a. Bot Prompts: a new section "Ask after a win" (my person's answer)
 

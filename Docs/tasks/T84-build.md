@@ -13,7 +13,7 @@ T84 comes after T88. T88's sheet ([T88-build.md](T88-build.md), parts 5c, 5d, 6 
 3. **My card's note box.** After T88, `NoteBox` holds `NoteTitle`, `NoteText` ("Clue: <label>"), the new wrapped **`ClueText`** and `NoteHidden`. It stays on the card; T84 doesn't touch it. The longest clue (Pig Latin of the note `hold_prop`, about five lines) makes the card taller in every phase, which is why the card-scroll check in part 6 forces it.
 4. **`ShowPrep`** (no file). T88 changes its `SetInfoTop` note pin and adds a `SetClue` call. T84 doesn't change `ShowPrep`, but part 0 reads where it fills `SceneTitle`, `SceneText`, `PlacesText` and `PropsText`: they must be filled by widget variable, so moving the widgets doesn't break the fill.
 5. **The locks and claims.** `git lfs locks` shows no lock on `BP_Show.uasset` or `WBP_Stage.uasset` and none on `Docs/claims/T88`. Then reload both packages in the editor if the pull changed them (memory "Editor stale after a pull").
-6. **The design doc.** If T90 (the doc moves into the repo) is done, the doc edit in part 5 goes into `Docs/Design/Rules.md` and `Docs/Design/Art Inspiration.md` (whatever names T90 gave them), not the Claude Doc. Otherwise read the two tabs again: if a quoted passage changed since rev 59 / rev 41, put the OKed edit into the new text by meaning.
+6. **The design doc.** T90 moved the doc into the repo, so the doc edit in part 5 goes into `Docs/Design/Rules.md` and `Docs/Design/ArtInspiration.md`. Read the two files again: if a quoted passage changed since this sheet read it (rev 59 / rev 41 of the old Claude Doc), put the OKed edit into the new text by meaning.
 7. **T85's prep sheet** (`Docs/tasks/T85-build.md`, written by a parallel prep session). If it names T84's new widgets, check it uses the names in part 2 (`PrepSize`, `PrepPanel`, `PrepPanelBox`). If it doesn't, tell the dispatcher; don't edit it.
 8. **T61.** Still open (it depends on T84). `WBP_Earpiece`'s stage spot is T61's; T84 only writes where it can go (part 7).
 
@@ -247,7 +247,9 @@ As pushed (before T88) the turn line is "Read the card on the right: the scene, 
 
 ## 5. The design doc (step 7; question 2)
 
-Read at Rules rev 59 and Art Inspiration rev 41. Nothing was changed. Each edit names its node id. Show my person the whole set (question 2) and save after the OK: straight edits, not suggestions. If T90 has moved the doc into the repo, edit the Markdown files instead (re-check 6).
+Read at Rules rev 59 and Art Inspiration rev 41. Nothing was changed. Each edit names its node id. Show my person the whole set (question 2) and, after the OK, make the edits in the Markdown files (re-check 6), in T84's commit.
+
+**Where these places are now (T90):** the node ids and revisions in this part are from the old Claude Doc. In `Docs/Design/Rules.md`, `.8385` is the last bullet under "## Scene Prep", `.8620` the first bullet under "## The Scene & acting", and `.6880` the Scene Prep row of the table under "### What the player sees, and when". In `Docs/Design/ArtInspiration.md`, `.7488` (Your part), `.7995` (Input row) and `.7754` (Chat) are rows of the table under "#### Components", `.12156` is the paragraph under the layout picture in "#### Layout", `.9853` and `.9884` are the Scene Prep row of the table under "#### Screens", `.10448` is the first bullet under "#### Motion and rules", and `.11890` is item 5 under "#### Fix first".
 
 ### 5a. Rules tab, Scene Prep, the pause (`.8385`)
 
@@ -262,7 +264,7 @@ Read at Rules rev 59 and Art Inspiration rev 41. Nothing was changed. Each edit 
 3. **Layout** (`.12156`). Old: "The input row sits bottom left, with the chat above it when you open it. Your part sits top right, and the robots own the band between them. …" New: insert after the second sentence: "In Scene Prep, the scene sits on a panel at the bottom, in the middle, with Start the scene under it."
 4. **The screens table, Scene Prep row** (`.9853`, "See first"). Old: "Your part and the secret note". New: "The scene in the middle, then your part and the note’s clue". ("Do next", `.9884`, "Start the scene", stays.) "Secret note" was already out of date (T50).
 5. **Motion times** (`.10448`). Old: "Motion times: hovers and presses 120 ms; panels in and out 250 ms, easing out; the call sheet shrinks to its corner in 400 ms." New: "Motion times: hovers and presses 120 ms; panels in and out 250 ms, easing out." (decision 6)
-6. **Left as they are:** the "Fix first" item "The scene premise fills the card during play. Show it in Scene Prep only; …" (`.11890`: a list of the 2026-11-14 playtest's faults, and T84 does what it asks); the Chat row (`.7754`, still true: the chat is hidden at each show's start). The tab's layout picture ("In-show screen layout") is T34's to redraw (T38's note).
+6. **Left as they are:** the "Fix first" item "The scene premise fills the card during play. Show it in Scene Prep only; …" (`.11890`: a list of the 2026-11-14 playtest's faults, and T84 does what it asks); the Chat row (`.7754`, still true: the chat is hidden at each show's start). The tab's layout picture ("In-show screen layout", now `Docs/Design/images/ArtInspiration/layout.svg`) is T34's to redraw (T38's note).
 
 ### 5c. My person's answer to question 2
 
@@ -305,4 +307,4 @@ One commit for T84, as "How to run a task" in the plan lists: `Content/NHOS/UI/W
 - **T34:** `StartButton` now sits in `PrepPanelBox`, centered. T34-build 1b's `StartRing` wraps it there (padding 0), and `SetPrepMode(true)` is where it takes focus. The lower panel's width in prep (`LowerPrep`) and `FitBuilder`'s dead width branch (T38's note) are T34's to tidy. The card's ranking (2.9) is now only my part, the clue and the cast.
 - **T61:** part 7.
 - **T86** (the floor): in scene 1's Scene Prep more floor shows at the bottom left now (T86 step 1 already expects it).
-- **T90:** this sheet points at the Claude Doc in part 5; T90 rewrites that pointer if it lands first.
+- **T90:** done first. Re-check 6 and part 5 now point at the files in `Docs/Design/`.

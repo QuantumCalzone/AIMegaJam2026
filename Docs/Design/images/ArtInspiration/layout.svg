@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 512" width="760" height="512" role="img" aria-label="The stage owns the middle; the UI keeps to the corners" font-size="13" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="layout-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#8a8984"/>
+    </marker>
+  </defs>
+  <rect width="760" height="512" fill="#ffffff"/>
+  <text x="24" y="28" font-size="15" font-weight="600" fill="#1f1e1d">The stage owns the middle; the UI keeps to the corners</text>
+  <text x="24" y="48" font-size="11.5" fill="#6b6a68">In-show screen at 16:9, during a scene turn on your move</text>
+  <g>
+    <rect x="24" y="64" width="712" height="400" rx="8" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+  </g>
+  <g>
+    <rect x="34" y="74" width="250" height="64" rx="8" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <text x="50" y="96" font-weight="600" fill="#1f1e1d">Header</text>
+    <text x="50" y="114" font-size="11.5" fill="#6b6a68">Phase, scene and turn pips</text>
+    <text x="50" y="130" font-size="11.5" fill="#6b6a68">One line: what to do now</text>
+  </g>
+  <g>
+    <rect x="566" y="74" width="160" height="106" rx="8" fill="#efece4" stroke="#8a8984" stroke-width="1.25"/>
+    <text x="582" y="96" font-weight="600" fill="#1f1e1d">Your part</text>
+    <text x="582" y="112" font-size="11.5" fill="#6b6a68">Role and want</text>
+    <rect x="578" y="120" width="136" height="48" rx="6" fill="none" stroke="#8a8984" stroke-width="1"/>
+    <text x="590" y="140" font-size="11.5" font-weight="600" fill="#1f1e1d">Secret</text>
+    <text x="590" y="156" font-size="11.5" font-weight="600" fill="#1f1e1d">director’s note</text>
+  </g>
+  <g>
+    <rect x="290" y="146" width="180" height="40" rx="8" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <text x="380" y="163" text-anchor="middle" font-weight="600" fill="#1f1e1d">Banner</text>
+    <text x="380" y="178" text-anchor="middle" font-size="11.5" fill="#6b6a68">Moments, 4 s each</text>
+  </g>
+  <g>
+    <rect x="130" y="192" width="520" height="80" rx="8" fill="none" stroke="#8a8984" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="142" y="207" font-size="11.5" fill="#6b6a68">Keep clear: robots, name tags, props</text>
+    <rect x="167" y="240" width="26" height="26" rx="6" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <rect x="272" y="240" width="26" height="26" rx="6" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <rect x="377" y="240" width="26" height="26" rx="6" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <rect x="482" y="240" width="26" height="26" rx="6" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <rect x="587" y="240" width="26" height="26" rx="6" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <rect x="154" y="218" width="52" height="16" rx="8" fill="none" stroke="#8a8984" stroke-width="1"/>
+    <rect x="265" y="218" width="40" height="16" rx="8" fill="#3b6fd8" fill-opacity="0.12" stroke="#3b6fd8" stroke-width="2"/>
+    <rect x="369" y="218" width="42" height="16" rx="8" fill="none" stroke="#8a8984" stroke-width="1"/>
+    <rect x="463" y="218" width="64" height="16" rx="8" fill="none" stroke="#8a8984" stroke-width="1"/>
+    <rect x="565" y="218" width="70" height="16" rx="8" fill="none" stroke="#8a8984" stroke-width="1"/>
+    <text x="180" y="230" text-anchor="middle" font-size="11.5" fill="#1f1e1d">OpenAI</text>
+    <text x="285" y="230" text-anchor="middle" font-size="11.5" font-weight="600" fill="#1f1e1d">YOU</text>
+    <text x="390" y="230" text-anchor="middle" font-size="11.5" fill="#1f1e1d">Meta</text>
+    <text x="495" y="230" text-anchor="middle" font-size="11.5" fill="#1f1e1d">SpaceXAI</text>
+    <text x="600" y="230" text-anchor="middle" font-size="11.5" fill="#1f1e1d">Anthropic</text>
+  </g>
+  <g>
+    <path d="M390 298V276" fill="none" stroke="#8a8984" stroke-width="1.25" marker-end="url(#layout-arrow)"/>
+    <text x="300" y="314" font-size="11.5" fill="#6b6a68">The stamp slams center-stage for 3.5 s,</text>
+    <text x="300" y="330" font-size="11.5" fill="#6b6a68">then fades so the fallen robot shows.</text>
+  </g>
+  <g>
+    <rect x="34" y="278" width="240" height="176" rx="8" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <text x="50" y="300" font-weight="600" fill="#1f1e1d">Chat</text>
+    <text x="50" y="316" font-size="11.5" fill="#6b6a68">Actor lines only,</text>
+    <text x="50" y="332" font-size="11.5" fill="#6b6a68">newest line at the bottom</text>
+    <g stroke="#d9d8d4" stroke-width="4" stroke-linecap="round">
+      <line x1="50" y1="348" x2="240" y2="348"/>
+      <line x1="50" y1="360" x2="206" y2="360"/>
+      <line x1="50" y1="372" x2="228" y2="372"/>
+    </g>
+  </g>
+  <g>
+    <rect x="46" y="382" width="216" height="24" rx="6" fill="#efece4" stroke="#8a8984" stroke-width="1"/>
+    <text x="58" y="398" font-size="11.5" fill="#1f1e1d">Ballot tickets, vote only</text>
+  </g>
+  <g>
+    <rect x="46" y="414" width="128" height="28" rx="6" fill="#3b6fd8" fill-opacity="0.12" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="58" y="432" font-size="11.5" fill="#1f1e1d">Type a line</text>
+    <rect x="180" y="414" width="38" height="28" rx="6" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <text x="199" y="432" text-anchor="middle" font-size="11.5" fill="#1f1e1d">Send</text>
+    <rect x="224" y="414" width="38" height="28" rx="6" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <text x="243" y="432" text-anchor="middle" font-size="11.5" fill="#1f1e1d">Pass</text>
+  </g>
+  <g>
+    <rect x="636" y="394" width="90" height="60" rx="8" fill="none" stroke="#8a8984" stroke-width="1.25"/>
+    <text x="681" y="419" text-anchor="middle" font-weight="600" fill="#1f1e1d">Money burn</text>
+    <text x="681" y="437" text-anchor="middle" font-size="11.5" fill="#6b6a68">relay only</text>
+  </g>
+  <text x="24" y="488" font-size="11.5" fill="#6b6a68">Tinted: paper cards. Highlighted: you, and where you act. Every panel sits 24 px from the edge.</text>
+</svg>
