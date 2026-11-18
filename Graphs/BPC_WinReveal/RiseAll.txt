@@ -1,5 +1,7 @@
 ; T87: at the "reveal" cue (BP_Show.RunCue), when the queue reaches the reveal: each cut robot gets back up (Rise), and
-; my robot shows HUMAN on its label and cheers (Unmask). CutArr, Hum and Ids were filled when the reveal was queued.
+; my robot shows HUMAN on its label and cheers (Unmask). Then every robot walks to its home mark (GoHome, the Scene Prep
+; line-up), so nobody reacts hidden behind another (a robot left at the Back mark stands behind OpenAI's home).
+; CutArr, Hum and Ids were filled when the reveal was queued.
 ; The WIN REVEAL line prints before the Unmask block: code after an if whose body ends in an IsValid branch lands in
 ; that if's else path (see BP_Show.EmoteSeat).
 (fn RiseAll ()
@@ -17,6 +19,12 @@
           (Class|BPRobot|Rise :self (V Bot))
           (set Risen (+ (V Risen) 1)))
         (:"Is Not Valid"))))
+  (for _s2 (range (len (V Bots)))
+    (set Bot (get (V Bots) _s2))
+    (Utilities|IsValid (V Bot)
+      (:"Is Valid"
+        (Class|BPRobot|GoHome :self (V Bot)))
+      (:"Is Not Valid")))
   (print (cat "NHOS: WIN REVEAL risen=" (str (V Risen)) " human=" (get (V Ids) (V Hum))))
   (if (< (V Hum) (len (V Bots)))
     (set Bot (get (V Bots) (V Hum)))

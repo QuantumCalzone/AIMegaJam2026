@@ -1,4 +1,5 @@
-; T87: a new show starts with no rise in progress (Slump).
+; T87: a new show starts with no rise in progress (Slump), and the bubble's anchor comes back down from over a risen
+; robot's "(cut)" line (BubbleLift reads PassedOn).
 (fn ResetLook ()
   ; T75: any emotion ends, and the face is at rest (Restart, a new persona).
   (CallFunction|EmoteStop)
@@ -36,4 +37,5 @@
   ; T38: no bubble, and no "(passed)" line under it.
   (CallFunction|HideBubble)
   (set PassedOn false)
+  (CallFunction|BubbleLift)
   (CallFunction|FaceCamera))

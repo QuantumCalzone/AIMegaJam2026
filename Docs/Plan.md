@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T84, T85, T87 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T84, T85 and T61 come next (T87 is done) (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -211,13 +211,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Content/NHOS/UI/WBP_CastTip.uasset`, `Content/NHOS/UI/WBP_Stage.uasset` (the hover test, the cast off the card), `Content/NHOS/Core/BP_Show.uasset` (the names in scene 1's Scene Prep, `PrepPrompt`'s hint, the cast data if the card needs it), `Content/NHOS/Stage/BP_Robot.uasset` only if the names or the hover need it, `Docs/switches.example.json` if the test switch is added, `Graphs/` files for the graphs it writes, `Docs/tasks/T85.md`.
   - **Details:** [Docs/tasks/T85.md](tasks/T85.md)
 
-- [ ] **T87 When I win, every AI reacts to the reveal, the cut ones too**
-  - **Model and effort:** Opus 5.5, high. A new ask with its free-mode lines, cut robots that get back up, and a short reaction phase before the end screen.
-  - **Depends on:** T77 (each line's emotion reaches its robot in `StageLine`), T38 (the bubbles, and `Say`'s `EvenCut` for a cut robot; if T38 is cut, take it off this line), T60 (the end screen and `EndReveal`, which the reactions play before), T54 (the two wins and their line in `game_messages`), T75 (`Emote`, and its rule that a cut robot doesn't emote), T76 (free mode's emotion lists), T90 (its Bot Prompts and Rules edits go in the files in `Docs/Design/`)
-  - **Needs:** editor + Unreal MCP running, Test for Free with `spare_human` and `force_tie` for the PIE shows, the relay for a `--relay --free` check, my OK on the Bot Prompts and Rules tab edits, my OK before the relay is deployed again (`free_mode.json`), my OK for a paid `--ask reaction_win` run (a few cents).
-  - **Touches:** `Content/NHOS/Core/BP_Show.uasset` (the new ask sent with the closing ask on a win, one call that plays the reactions before `ShowEndScreen`; new logic in its own component if it grows), `Content/NHOS/Core/BPC_LinePlayer.uasset` (the reaction lines, a cut robot's bubble), `Content/NHOS/Stage/BP_Robot.uasset` (a cut robot gets back up, `Emote` for a risen robot), `Content/NHOS/Core/BPC_LLMClient.uasset` only if `FreeReply` needs a change, `Content/NHOS/Data/prompts.json` (`asks.reaction_win`, `_readme`), `Content/NHOS/Data/free_mode.json` (the `reaction_win` phase), `Relay/src/index.js` only if its free mode needs it, `Tools/check_prompts.py`, the design doc, `Graphs/` files for the graphs it writes, `Docs/tasks/T87.md`.
-  - **Details:** [Docs/tasks/T87.md](tasks/T87.md)
-
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
   - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes), and T64, T65, T66, T78 (the action builder, the preview line, the speech field, the timer and the emotion chip are in the input row it polishes), and T73 (the lines type out on the screen it polishes), and T84, T85 (Scene Prep's middle panel and the cast's hover cards; they settle T34-build's 2.9 and the names in Scene Prep from its 2.1), and T87 (the reactions to a win play on the screen it polishes), and T88 (each scene's clue on my card).
@@ -415,6 +408,8 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T94 New art, part 1: the art direction, approved by me**
   - **Details:** [Docs/tasks/T94.md](tasks/T94.md)
+- [x] **T87 When I win, every AI reacts to the reveal, the cut ones too**
+  - **Details:** [Docs/tasks/T87.md](tasks/T87.md)
 
 ## Not planned yet
 
