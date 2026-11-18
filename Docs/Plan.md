@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T96, T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T97 approved the props that T105 builds on: `Docs/Art/Props/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T96, T99, T102, T103 to T106), where each concept and each pick waits for my approval. T101 picked the new sounds and voices that T102 imports: "Show, robot and button sounds, and the bots' voices (T101)" in `Docs/AudioShortlist.md`. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T97 approved the props that T105 builds on: `Docs/Art/Props/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -120,13 +120,6 @@ These hold for every task, and for editor work outside the task list too. If one
 ### Open
 
 
-
-- [ ] **T101 New audio, part 2: the show and robot sounds, the clicks and the bots' voices, picked by me**
-  - **Model and effort:** Opus 5.5, high. About twenty sounds and four voice sets, judged by me alone, with T72's and T73's rules for the voices.
-  - **Depends on:** T94 (the sounds fit its direction), T72 and T73 (how a voice syllable is made and played; done). It needs no editor and changes no asset, so it can run on either machine, beside the chain.
-  - **Needs:** my answer on the sources; my pick for each sound and each voice set, on a private Artifact page; my OK on the terms and cost, and my own sign-up, if an AI sound service is used.
-  - **Touches:** `SourceAssets/Audio/Show/`, `Robot/`, `UI/` and `Voice/<provider>/` (the picks; never `Voice/Me`), `Tools/make_voices.py` if it makes the new sets, `Docs/AudioShortlist.md`, `Docs/tasks/T101.md`; outside the repo: `Local/audio/candidates/` and a private Artifact page.
-  - **Details:** [Docs/tasks/T101.md](tasks/T101.md)
 
 - [ ] **T96 New art, part 3: concepts for a costume for each role, fitted to every character, approved by me**
   - **Model and effort:** Opus 5.5, high. A costume for every role, each drawn on all five approved characters, with a version made for my cube head.
@@ -404,6 +397,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T84 Scene Prep shows the scene and Start the scene in the middle**
   - **Details:** [Docs/tasks/T84.md](tasks/T84.md)
+
+- [x] **T101 New audio, part 2: the show and robot sounds, the clicks and the bots' voices, picked by me**
+  - **Details:** [Docs/tasks/T101.md](tasks/T101.md)
 
 ## Not planned yet
 

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Make the robots' syllable voices (T72), and cut my own recorded voice into clips.
+"""Make the robots' syllable voices (T72, T101), and cut my own recorded voice into clips.
 
 Usage (from anywhere; Python 3.10+, standard library only, no numpy):
 
-    python Tools/make_voices.py                 # write the four robot sets, print each clip's numbers
+    python Tools/make_voices.py                 # write the four picked robot sets, print each clip's numbers
     python Tools/make_voices.py --stats         # print the numbers only, write nothing
+    python Tools/make_voices.py --variant b --out DIR   # write candidate set b of every robot under DIR/<Provider>/
     python Tools/make_voices.py --me TAKE.wav   # cut my one-take recording into the "Me" set
     python Tools/make_voices.py --measure FILE.wav [...]   # print the numbers of any 16-bit wav
 
@@ -33,6 +34,21 @@ so the four differ in tone and not only in pitch:
 
 T20's pitch order holds (Meta lowest, then Anthropic, then OpenAI, with
 SpaceXAI highest): the base pitches are T20's blip pitches times 175 Hz.
+
+T101 added two more candidate sets per robot (variants b and c, each with its
+own maker and seed) and my person picked one set per robot by ear. The sets
+the game ships, and what a plain run writes, are PICKED below:
+
+  OpenAI    b: an airy whistle: few harmonics, a lot of breath, a slightly
+            sharp doubled copy, a slow rise, soft h and w onsets.
+  Anthropic a: T72's warm, round vowel, as above.
+  SpaceXAI  b: an overclocked chiptune: a bare square wave (duty 1/8, 1/4 or
+            1/2) that leaps through a fast three-note arpeggio, crushed to 4 bits.
+  Meta      b: a rigid machine monotone: a dark saw at an exactly flat pitch,
+            ring-modulated at 55 Hz for a metal edge, switched on and off.
+
+--variant a, b or c writes that candidate set of every robot instead
+(a is T72's four sets); use --out to write them somewhere else.
 
 Levels: every clip, mine included, is set to the same loudness (an RMS taken
 through a rough loudness weighting: a high-pass at 100 Hz and a +4 dB shelf
@@ -401,6 +417,242 @@ def syl_meta(rng, i):
     return on + body
 
 
+# ---------------------------------------------------------------- T101 variants b and c
+#
+# T101 asked for three candidate sets per provider. Variant a is T72's set
+# above, unchanged. Variants b and c keep each persona and T20's pitch order
+# (the same base pitches), but change the source and the effect, so the three
+# sound clearly different. Each variant has its own seed offset.
+
+def src_fm(track, ratio, index_start, index_end):
+    """Two-operator FM: a sine carrier whose phase is pushed by a sine at ratio x f0.
+
+    The index falls over the clip, so the attack is glassy and the end is pure.
+    """
+    out, pc, pm, n = [], 0.0, 0.0, len(track)
+    for i, f in enumerate(track):
+        pc += 2 * math.pi * f / SR
+        pm += 2 * math.pi * f * ratio / SR
+        idx = index_start + (index_end - index_start) * (i / max(1, n - 1))
+        out.append(math.sin(pc + idx * math.sin(pm)))
+    return out
+
+
+def chorus(xs, cents=12, delay_s=0.011):
+    """Add a copy that is a little sharp and a little late (a crude chorus)."""
+    r = 2 ** (cents / 1200)
+    d = int(delay_s * SR)
+    out = []
+    for k, x in enumerate(xs):
+        j = (k - d) * r
+        y = 0.0
+        if j >= 0:
+            j0 = int(j)
+            if j0 + 1 < len(xs):
+                fr = j - j0
+                y = xs[j0] * (1 - fr) + xs[j0 + 1] * fr
+        out.append(x + 0.6 * y)
+    return out
+
+
+def comb(xs, f_hz, fb=0.6):
+    """Feedback comb at f_hz: a nasal, kazoo-like ring."""
+    d = max(1, int(SR / f_hz))
+    out = []
+    for k, x in enumerate(xs):
+        out.append(x + (fb * out[k - d] if k >= d else 0.0))
+    return out
+
+
+def ringmod(xs, f_hz, depth=1.0):
+    return [x * ((1 - depth) + depth * math.sin(2 * math.pi * f_hz * k / SR)) for k, x in enumerate(xs)]
+
+
+def syl_openai_b(rng, i):
+    """OpenAI b, an airy whistle: few harmonics, lots of breath, a doubled tone, a slow rise."""
+    f0 = BASE_F0 * 1.15
+    dur = rng.uniform(0.085, 0.125)
+    vowels = ["ee", "eh", "ih", "ee", "ae", "ih", "ee", "eh", "ih", "ae"]
+    onsets = ["", "h", "", "w", "", "h", "", "", "w", ""]
+    v, v2 = vowels[i % len(vowels)], rng.choice(["ee", "ih"])
+    onset = onsets[i % len(onsets)]
+    v_from = v
+    if onset == "w":
+        onset, v_from = "", "oo"
+    if onset == "h":   # a breathy h: a puff of air, no click
+        nh = int(SR * 0.018)
+        on = [0.35 * x * e for x, e in zip(Biquad("bp", 2500, 0.6).run(noise(nh, rng)), envelope(nh, 0.006, 0.010))]
+    else:
+        on = []
+    n = body_len(dur, on)
+    rise = rng.uniform(1.06, 1.18)
+    contour = [(0, 1.0), (1, rise)]
+    tr = f0_track(n, f0 * rng.uniform(0.97, 1.04), contour, rng, vib_hz=6.0, vib_depth=0.01)
+    src = src_harmonics(tr, rolloff=1.8, top=5000)
+    air = Biquad("bp", 3000, 0.5).run(noise(n, rng))
+    src = [s + 0.16 * a for s, a in zip(norm_peak(src), norm_peak(air))]
+    out = formant_filter(src, vowel_tracks(n, v_from, v2, 1.15), [0.5, 1.0, 0.7], [5, 7, 8])
+    out = chorus(norm_peak(out), cents=14)
+    out = Biquad("hp", 400, 0.7).run(out)
+    env = envelope(n, 0.012, rng.uniform(0.035, 0.045))
+    return on + [x * e for x, e in zip(norm_peak(out), env)]
+
+
+def syl_openai_c(rng, i):
+    """OpenAI c, a glassy toy chime: FM with a falling index, front vowels, an upward lilt."""
+    f0 = BASE_F0 * 1.15
+    dur = rng.uniform(0.07, 0.11)
+    vowels = ["ee", "ih", "eh", "ae", "ee", "eh", "ih", "ee", "ae", "eh"]
+    onsets = ["d", "", "b", "t", "", "d", "n", "", "b", "t"]
+    on = consonant(onsets[i % len(onsets)], rng, f0)
+    n = body_len(dur, on)
+    v = vowels[i % len(vowels)]
+    contour = [(0, 0.97), (0.5, rng.uniform(1.10, 1.22)), (1, rng.uniform(1.15, 1.28))]
+    tr = f0_track(n, f0 * rng.uniform(0.96, 1.05), contour, rng)
+    src = src_fm(tr, ratio=3.0, index_start=rng.uniform(2.2, 3.0), index_end=0.4)
+    out = formant_filter(src, vowel_tracks(n, v, "ee", 1.15), [0.4, 1.0, 0.9], [7, 9, 10])
+    out = [0.45 * s + 0.55 * o for s, o in zip(norm_peak(src), norm_peak(out))]
+    out = Biquad("hshelf", 2500, 0.7, 4.0).run(Biquad("hp", 300, 0.7).run(out))
+    env = envelope(n, 0.003, rng.uniform(0.030, 0.040))
+    return on + [x * e for x, e in zip(norm_peak(out), env)]
+
+
+def syl_anthropic_b(rng, i):
+    """Anthropic b, warm and fretful: a breathier glottal buzz, a fast nervous flutter, a worried upturn or a sigh."""
+    f0 = BASE_F0 * 0.85
+    dur = rng.uniform(0.09, 0.14)
+    vowels = ["oh", "uh", "oo", "a", "oh", "aw", "uh", "oo", "oh", "a"]
+    onsets = ["h", "m", "", "b", "h", "n", "", "m", "d", ""]
+    v, v2 = vowels[i % len(vowels)], rng.choice(["oo", "uh"])
+    onset = onsets[i % len(onsets)]
+    if onset == "h":
+        nh = int(SR * 0.020)
+        on = [0.3 * x * e for x, e in zip(Biquad("bp", 1400, 0.6).run(noise(nh, rng)), envelope(nh, 0.006, 0.012))]
+    else:
+        on = consonant(onset, rng, f0)
+    n = body_len(dur, on)
+    if rng.random() < 0.4:   # a worried question
+        contour = [(0, 0.97), (0.6, 1.0), (1, rng.uniform(1.10, 1.16))]
+    else:                    # a sigh
+        contour = [(0, 1.04), (1, rng.uniform(0.84, 0.90))]
+    tr = f0_track(n, f0 * rng.uniform(0.96, 1.04), contour, rng, vib_hz=12.0, vib_depth=0.03, jitter=0.02)
+    src = src_glottal(tr, open_q=0.75)
+    br = Biquad("lp", 3000, 0.7).run(noise(n, rng))
+    src = [s + 0.10 * b for s, b in zip(norm_peak(src), norm_peak(br))]
+    out = formant_filter(src, vowel_tracks(n, v, v2, 1.0), [1.0, 0.6, 0.25], [5, 7, 8])
+    out = Biquad("lp", 1900, 0.8).run(Biquad("hp", 90, 0.7).run(out))
+    env = envelope(n, 0.010, rng.uniform(0.035, 0.045))
+    return on + [x * e for x, e in zip(norm_peak(out), env)]
+
+
+def syl_anthropic_c(rng, i):
+    """Anthropic c, a soft clay ocarina: hollow odd harmonics, round vowels, a gentle sighing fall."""
+    f0 = BASE_F0 * 0.85
+    dur = rng.uniform(0.09, 0.13)
+    vowels = ["oo", "oh", "aw", "oo", "a", "oh", "uh", "oo", "oh", "aw"]
+    onsets = ["", "m", "d", "", "b", "n", "", "m", "", "d"]
+    on = consonant(onsets[i % len(onsets)], rng, f0)
+    n = body_len(dur, on)
+    v = vowels[i % len(vowels)]
+    contour = [(0, 1.0), (0.25, rng.uniform(1.03, 1.07)), (1, rng.uniform(0.88, 0.94))]
+    tr = f0_track(n, f0 * rng.uniform(0.97, 1.03), contour, rng, vib_hz=7.0, vib_depth=0.012)
+    sq = src_square(tr, duty=0.5)            # odd harmonics only: hollow, woody
+    src = Biquad("lp", 1500, 0.9).run(Biquad("lp", 2000, 0.7).run(sq))
+    air = Biquad("bp", 1800, 0.8).run(noise(n, rng))
+    src = [s + 0.06 * a for s, a in zip(norm_peak(src), norm_peak(air))]
+    out = formant_filter(src, vowel_tracks(n, v, "oo", 1.0), [1.0, 0.5, 0.15], [6, 8, 9])
+    out = [0.35 * s + 0.65 * o for s, o in zip(norm_peak(src), norm_peak(out))]
+    out = Biquad("hp", 140, 0.7).run(out)
+    env = envelope(n, 0.012, rng.uniform(0.035, 0.045))
+    return on + [x * e for x, e in zip(norm_peak(out), env)]
+
+
+def syl_spacex_b(rng, i):
+    """SpaceXAI b, an overclocked chiptune: a bare square that leaps through a fast three-note arpeggio."""
+    f0 = BASE_F0 * 1.30
+    dur = rng.uniform(0.07, 0.11)
+    onsets = ["t", "", "k", "z", "", "t", "ks", "", "k", "z", ""]
+    on = consonant(onsets[i % len(onsets)], rng, f0)
+    n = body_len(dur, on)
+    a, b, c = 1.0, rng.choice([1.26, 1.33, 1.5]), rng.choice([1.5, 1.68, 2.0])
+    if rng.random() < 0.5:
+        a, c = c, a                     # some go down
+    contour = [(0, a), (0.33, a), (0.331, b), (0.66, b), (0.661, c), (1, c)]
+    tr = f0_track(n, f0 * rng.uniform(0.95, 1.06), contour, rng)
+    src = src_square(tr, duty=rng.choice([0.125, 0.25, 0.5]))
+    out = bitcrush(src, bits=4, hold=4)
+    out = Biquad("lp", 7000, 0.7).run(Biquad("hp", 300, 0.7).run(out))
+    env = envelope(n, 0.002, rng.uniform(0.015, 0.022))
+    return on + [x * e for x, e in zip(norm_peak(out), env)]
+
+
+def syl_spacex_c(rng, i):
+    """SpaceXAI c, a fuzzed kazoo: a saw through a nasal comb, hard-clipped, with fast downward zips."""
+    f0 = BASE_F0 * 1.30
+    dur = rng.uniform(0.07, 0.12)
+    vowels = ["a", "ae", "ee", "a", "eh", "ih", "a", "ae", "uh", "ee", "a"]
+    onsets = ["z", "", "b", "z", "d", "", "z", "k", "", "b", "ks"]
+    on = consonant(onsets[i % len(onsets)], rng, f0)
+    n = body_len(dur, on)
+    v = vowels[i % len(vowels)]
+    if rng.random() < 0.6:
+        contour = [(0, rng.uniform(1.35, 1.6)), (1, rng.uniform(0.80, 0.92))]
+    else:
+        contour = [(0, 0.95), (1, rng.uniform(1.25, 1.4))]
+    tr = f0_track(n, f0 * rng.uniform(0.95, 1.06), contour, rng, jitter=0.03)
+    src = src_saw(tr)
+    out = formant_filter(src, vowel_tracks(n, v, "a", 1.2), [1.0, 0.9, 0.6], [5, 6, 7])
+    out = comb(norm_peak(out), rng.uniform(900, 1300), fb=0.55)
+    out = softclip(norm_peak(out), 7.0)
+    out = Biquad("lp", 6500, 0.7).run(Biquad("hp", 300, 0.7).run(out))
+    env = envelope(n, 0.003, rng.uniform(0.016, 0.024))
+    return on + [x * e for x, e in zip(norm_peak(out), env)]
+
+
+def syl_meta_b(rng, i):
+    """Meta b, a rigid monotone: a dark saw, ring-modulated for a metal edge, dead flat, boxy envelope."""
+    f0 = BASE_F0 * 0.70
+    dur = rng.uniform(0.10, 0.14)
+    vowels = ["uh", "a", "eh", "oh", "uh", "a", "aw", "eh", "uh", "oh"]
+    onsets = ["d", "m", "", "b", "d", "n", "", "m", "b", ""]
+    on = consonant(onsets[i % len(onsets)], rng, f0)
+    n = body_len(dur, on)
+    v = vowels[i % len(vowels)]
+    tr = [f0] * n                      # exactly flat: not one cent of wobble
+    src = src_saw(tr)
+    out = formant_filter(src, vowel_tracks(n, v, v, 0.9), [1.0, 0.5, 0.2], [7, 8, 9])
+    out = [0.6 * o + 0.4 * r for o, r in zip(norm_peak(out), norm_peak(ringmod(norm_peak(out), 55.0, 1.0)))]
+    out = Biquad("lp", 1800, 0.9).run(Biquad("hp", 70, 0.7).run(out))
+    env = envelope(n, 0.004, 0.015)    # switched on and off, like a machine
+    return on + [x * e for x, e in zip(norm_peak(out), env)]
+
+
+def syl_meta_c(rng, i):
+    """Meta c, too sincere: a low, round hum that swoops up and down, as if putting on a friendly human tone."""
+    f0 = BASE_F0 * 0.70
+    dur = rng.uniform(0.11, 0.15)
+    vowels = ["oh", "uh", "a", "oh", "eh", "aw", "uh", "a", "oh", "eh"]
+    onsets = ["m", "", "h", "n", "m", "", "d", "h", "", "m"]
+    v = vowels[i % len(vowels)]
+    onset = onsets[i % len(onsets)]
+    if onset == "h":
+        nh = int(SR * 0.016)
+        on = [0.25 * x * e for x, e in zip(Biquad("bp", 1000, 0.6).run(noise(nh, rng)), envelope(nh, 0.005, 0.010))]
+    else:
+        on = consonant(onset, rng, f0)
+    n = body_len(dur, on)
+    peak_r = rng.uniform(1.15, 1.30)
+    contour = [(0, 0.95), (0.45, peak_r), (1, rng.uniform(0.85, 0.95))]   # an over-friendly "hel-lo"
+    tr = f0_track(n, f0 * rng.uniform(0.98, 1.02), contour, rng)
+    src = src_glottal(tr, open_q=0.55)
+    out = formant_filter(src, vowel_tracks(n, v, "oh", 0.9), [1.0, 0.5, 0.2], [6, 7, 8])
+    hum = Biquad("bp", 240, 2.5).run(src)
+    out = [o + 0.5 * h for o, h in zip(norm_peak(out), norm_peak(hum))]
+    out = Biquad("lp", 1400, 0.9).run(Biquad("hp", 60, 0.7).run(out))
+    env = envelope(n, 0.010, rng.uniform(0.035, 0.045))
+    return on + [x * e for x, e in zip(norm_peak(out), env)]
+
+
 PROVIDERS = [
     # (folder and asset name, seed offset, maker, clip count)
     ("OpenAI", 1, syl_openai, 10),
@@ -408,6 +660,20 @@ PROVIDERS = [
     ("SpaceXAI", 3, syl_spacex, 11),
     ("Meta", 4, syl_meta, 10),
 ]
+
+VARIANTS = {
+    "a": PROVIDERS,   # T72's sets
+    "b": [("OpenAI", 11, syl_openai_b, 10), ("Anthropic", 12, syl_anthropic_b, 10),
+          ("SpaceXAI", 13, syl_spacex_b, 11), ("Meta", 14, syl_meta_b, 10)],
+    "c": [("OpenAI", 21, syl_openai_c, 10), ("Anthropic", 22, syl_anthropic_c, 10),
+          ("SpaceXAI", 23, syl_spacex_c, 11), ("Meta", 24, syl_meta_c, 10)],
+}
+
+# My person's picks in T101 (2026-11-18), by ear on the listening page. These
+# are the sets the game ships, and what a plain run writes.
+PICKED = {"OpenAI": "b", "Anthropic": "a", "SpaceXAI": "b", "Meta": "b"}
+VARIANTS["picked"] = [next(v for v in VARIANTS[PICKED[name]] if v[0] == name)
+                      for name in ("OpenAI", "Anthropic", "SpaceXAI", "Meta")]
 
 
 # ---------------------------------------------------------------- levels and analysis
@@ -586,17 +852,19 @@ def read_wav(path):
     return xs
 
 
-def make_robots(write):
+def make_robots(write, variant="picked", out_dir=None):
+    out_root = out_dir or OUT
+    providers = VARIANTS[variant]
     all_bytes = hashlib.sha256()
     summary = []
-    for name, off, maker, count in PROVIDERS:
+    for name, off, maker, count in providers:
         rng = random.Random(SEED * 10 + off)
         clips = [level(maker(rng, i)) for i in range(count)]
         stats = [clip_stats(c) for c in clips]
         avg, bands = print_set(name, stats)
         summary.append((name, avg, bands))
         for i, c in enumerate(clips):
-            path = os.path.join(OUT, name, f"S_Voice{name}_{i:02d}.wav")
+            path = os.path.join(out_root, name, f"S_Voice{name}_{i:02d}.wav")
             if write:
                 write_wav(path, c)
                 with open(path, "rb") as f:
@@ -607,7 +875,7 @@ def make_robots(write):
         print(f"   {name:10s}  {avg['f0']:5.0f}  {avg['wobble']:7.0f}  {avg['centroid']:11.0f}  {avg['flat']:8.3f}"
               f"  {100 * b[0]:6.1f}%  {100 * b[1]:5.1f}%  {100 * b[2]:4.1f}%  {100 * b[3]:4.1f}%  {100 * b[4]:4.1f}%")
     if write:
-        print(f"\nwrote {sum(p[3] for p in PROVIDERS)} files under {os.path.relpath(OUT, ROOT)}/")
+        print(f"\nwrote {sum(p[3] for p in providers)} files (variant {variant}) under {out_root}/")
         print(f"hash of all files: {all_bytes.hexdigest()}")
 
 
@@ -671,6 +939,9 @@ def main():
     ap.add_argument("--max-len", type=float, default=0.35, help="longest clip in the Me set, seconds")
     ap.add_argument("--first", type=int, default=0, help="keep only the first N syllables of the take")
     ap.add_argument("--measure", nargs="+", metavar="FILE.wav", help="print the numbers of these wavs")
+    ap.add_argument("--variant", choices=sorted(VARIANTS), default="picked",
+                    help="which robot sets to make: picked (the default) is T101's picks; a is T72's, b and c are T101's other candidates")
+    ap.add_argument("--out", metavar="DIR", help="write the robot sets under DIR/<Provider>/ instead of SourceAssets/Audio/voices/")
     args = ap.parse_args()
     if args.measure:
         print_set("measured", [clip_stats(read_wav(p)) for p in args.measure])
@@ -679,7 +950,7 @@ def main():
     elif args.me:
         cut_me(args.me, args.max_len, args.first)
     else:
-        make_robots(write=not args.stats)
+        make_robots(write=not args.stats, variant=args.variant, out_dir=args.out)
 
 
 if __name__ == "__main__":

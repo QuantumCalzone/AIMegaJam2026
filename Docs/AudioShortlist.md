@@ -1,10 +1,10 @@
-# Audio shortlist (T20 prep, T100 music)
+# Audio shortlist (T20 prep, T100 music, T101 sounds and voices)
 
 Files picked for T20, chosen without the editor. The picks and their backups are committed in `SourceAssets/Audio/`, outside `Content/` so Unreal doesn't import them on its own, and every machine gets them with `git pull`. T20 imports them into `Content/NHOS/Audio/` and moves these entries into `Docs/Assets.md`.
 
 The picks were made by name, length and license, without listening. T20's listening pass makes the final choice; swap in the backup or a nearby file from the same pack if a pick sounds wrong.
 
-The music for every phase and every scene card was replaced in T100: see "Music (T100)" first. The rest of this file is T20's shortlist. Its two music rows, the title loop and the show loop, are superseded by T100.
+The music for every phase and every scene card was replaced in T100: see "Music (T100)" first. Every other sound and three of the four robot voice sets were replaced in T101: see "Show, robot and button sounds, and the bots' voices (T101)". The rest of this file is T20's shortlist, kept as the record of how T20 chose. All of its rows are superseded: the music by T100, everything else by T101.
 
 ## Music (T100)
 
@@ -77,6 +77,62 @@ For `Docs/ItchPage.md`, the game's credits and the jam's "Tools you used" field.
 - **Short:** "Music generated with Stable Audio by Stability AI."
 - **Long:** "Music: 16 tracks generated with Stable Audio 3 (Stability AI) through the Stability AI API, from prompts written with Claude (Anthropic), picked by the team."
 
+## Show, robot and button sounds, and the bots' voices (T101)
+
+My person picked these by ear on 2026-11-18, one per cue, on a private listening page. Every take there was set to the same loudness, so the sounds were compared, not their volume. They replace every T20 sound in `Content/NHOS/Audio/Show/`, `Robot/` and `UI/`, and three of the four robot voice sets. T102 imports them, sets the mix and moves these entries into `Docs/Assets.md`. Until then the game still plays T20's and T72's files. How T101 got here is in [T101's findings](tasks/T101.md).
+
+- **Sources:** my person chose "both": free libraries (CC0, CC BY and public domain, from Kenney, OpenGameArt and Wikimedia Commons) and Stable Audio 3 (model `stable-audio-3`, Stability AI) through the Stability AI API on my person's own account, the same account and terms as T100. Stable Audio's terms give us the output with a commercial license and need no credit, and they forbid removing a watermark or provenance mark. 22 takes were made in all, at 8 credits ($0.08) each: $1.76. The voices are made by `Tools/make_voices.py`, which needs no license.
+- **Files:** the picks are cut, faded and leveled to the same loudness as on the listening page (maximum momentary loudness −20 LUFS, the hover −30), as 16-bit, 44.1 kHz WAV, named for the asset each replaces:
+  - `SourceAssets/Audio/show/`, `robot/` and `ui/`. The folders are lowercase, like `music/` and `voices/`: Mac and Windows file systems can't hold `Voice/` beside `voices/`, so the set keeps one style.
+  - `SourceAssets/Audio/voices/<Provider>/`, written in place by `python Tools/make_voices.py`. The counts are unchanged (OpenAI 10, Anthropic 10, SpaceXAI 11, Meta 10), so `BPC_ShowAudio.LoadVoices` and `Syllable` need no change. `voices/Me/` is untouched.
+  - Every take not picked, each with a note (source, license, prompt or cut, and why it fits), is only in `Local/audio/candidates/t101/` on the Mac.
+- **S_TalkBlip has no pick.** Nothing plays it since T73, so T102 deletes it (the asset, `Sfx`'s "blip" branch and its row in `Docs/Assets.md`).
+
+| Asset | File | What it is | Source | License and credit | Length | My person's words |
+|---|---|---|---|---|---|---|
+| `S_DrumRoll` | `show/S_DrumRoll.wav` | Orchestral snare roll over soft timpani, a crash every 4 s. **A 12 s loop**: three of the take's 4 s bars (0.97 to 12.97 s), with the 50 ms after the end blended into the start | Stable Audio, take B, seed 101021, 20 s take | Ours; no credit needed | 12.0 s, stereo, loops | Picked B over my recommendation of A. In recent shows the vote ran 25 to 50 s, longer than the take, so I cut a loop; my person chose "Use the loop". |
+| `S_StingHuman` | `show/S_StingHuman.wav` | Melancholy: strings swell, then sink into a dark minor chord, a low horn sighs, a timpani roll fades | Stable Audio, round 2 take E, seed 101005, 4 s take | Ours; no credit needed | 3.9 s, stereo | Turned down A to C: "It should be on the sad side since it means the player lost." Then picked E over my recommendation of D. |
+| `S_StingAI` | `show/S_StingAI.wav` | Cheeky "got away with it": a perky trumpet fanfare, a comic timpani boing, pizzicato, a squeaky clarinet giggle, a happy final chord | Stable Audio, round 2 take F, seed 101016, 4 s take | Ours; no credit needed | 3.1 s, stereo | Turned down A to C: "It should be a mix of triumphant for you and also a little silly for the bots being mistaken, which is funny." Then picked F over my recommendation of D. |
+| `S_Applause` | `show/S_Applause.wav` | Applause in a real medium-large theater, 8 s cut with a 2 s fade | "Applause-2" by RHumphries (Freesound 1921), Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Applause-2.ogg | **CC BY 3.0, credit needed** (below) | 8.0 s, stereo | Picked A, as I recommended. |
+| `S_ApplauseWin` | `show/S_ApplauseWin.wav` | Standing ovation in an opera house: clapping, cheers, whistles, shouts of bravo; peaks early and tapers | Stable Audio, take B, seed 101041, 25 s take | Ours; no credit needed | 25.0 s, stereo | Picked B, as I recommended. |
+| `S_Laughs` | `show/S_Laughs.wav` | A real audience of about 800 laughing, no clapping, 10 s cut with a 2 s fade | "approx 800 laughter only 1" by lonemonk (Freesound pack 4695), Wikimedia Commons: https://commons.wikimedia.org/wiki/File:72843_lonemonk_approx-800-laughter-only-1.wav | **CC BY 3.0, credit needed** (below) | 10.0 s, stereo | Picked A, as I recommended. |
+| `S_Step0` to `S_Step4` | `robot/S_Step0.wav` to `S_Step4.wav` | Clay-robot steps on a wooden stage: a muted clay squelch with a light wooden tap. Five hits cut from one take (at 3.93, 5.13, 5.68, 6.22 and 6.94 s), 0.28 s each | Stable Audio, take C, seed 101061, 8 s take | Ours; no credit needed | 0.28 s each, stereo | Picked C, as I recommended. |
+| `S_Grab` | `robot/S_Grab.wav` | A clay squeeze and grip, the first squish of the take (from 0.07 s) | Stable Audio, take C, seed 101071, 2 s take | Ours; no credit needed | 0.30 s, stereo | Picked C, as I recommended. |
+| `S_Throw` | `robot/S_Throw.wav` | A short, clean swish | `swish-3.wav` from "Swishes sound pack" by artisticdude: https://opengameart.org/content/swishes-sound-pack | CC0; courtesy credit "artisticdude" | 0.13 s, stereo | Picked A, as I recommended. |
+| `S_Land` | `robot/S_Land.wav` | A clay lump landing on a wooden floor: a muted squishy thud with a wooden knock (from 0.55 s) | Stable Audio, take C, seed 101091, 2 s take | Ours; no credit needed | 0.65 s, stereo | Picked C, as I recommended. |
+| `S_Click` | `ui/S_Click.wav` | A real, short mechanical click | `click.9.ogg` from "10 clicks and switches" by StarNinjas: https://opengameart.org/content/10-clicks-and-switches | CC0; courtesy credit "StarNinjas" | 0.10 s, stereo | Picked B over my recommendation of A. |
+| `S_Hover` | `ui/S_Hover.wav` | A tiny rising whoosh of air: white noise through a band-pass swept from 1.5 to 5 kHz over 0.1 s, 25 ms rise and fall | Made by Claude's script (round 3 take I, numpy, seed 10103) | Ours; no credit needed | 0.10 s, mono | Turned down A to C, chose "a softer sibling of the click", turned down D to F, then: "This sound should be a really soft hint. All it's supposed to do is indicate that your mouse is over an interactable element. Nothing mechanical, really, sounding to it. Maybe something airy." Picked I over my recommendation of G. |
+| `S_VoiceOpenAI_00` to `_09` | `voices/OpenAI/` | Set B, an airy whistle: few harmonics, a lot of breath, a slightly sharp doubled copy, a slow rise, soft h and w onsets | `python Tools/make_voices.py` (`syl_openai_b`, seed 72731) | Ours | 0.09 to 0.12 s, mono | Picked B, as I recommended. |
+| `S_VoiceAnthropic_00` to `_09` | `voices/Anthropic/` | Set A, T72's warm, round vowel, unchanged | `python Tools/make_voices.py` (`syl_anthropic`, seed 72722) | Ours | 0.09 to 0.13 s, mono | Picked A, T72's set, over my recommendation of B. |
+| `S_VoiceSpaceXAI_00` to `_10` | `voices/SpaceXAI/` | Set B, an overclocked chiptune: a bare square wave leaping through a fast three-note arpeggio, crushed to 4 bits | `python Tools/make_voices.py` (`syl_spacex_b`, seed 72733) | Ours | 0.08 to 0.11 s, mono | Picked B, as I recommended. |
+| `S_VoiceMeta_00` to `_09` | `voices/Meta/` | Set B, a rigid machine monotone: an exactly flat dark saw, ring-modulated at 55 Hz, switched on and off | `python Tools/make_voices.py` (`syl_meta_b`, seed 72734) | Ours | 0.10 to 0.14 s, mono | Picked B over my recommendation of C. |
+
+My person also heard the four picked voice sets and their own voice one line after another, and said each is easy to tell apart ("Yes, keep them").
+
+### The prompts
+
+For `Docs/Assets.md`, which records the AI tool and the prompt for every generated asset. Every take was made on 2026-11-18 with `output_format=wav`.
+
+- `S_DrumRoll` (seed 101021, 20 s): "Orchestral snare drum roll building suspense on a theater stage before a big reveal: a steady, even, tight snare roll that slowly swells, a soft timpani roll underneath, concert hall reverb, steady and sustained throughout, instrumental."
+- `S_StingHuman` (seed 101005, 4 s): "Melancholy orchestral game-over sting: strings swell softly then sink into a dark minor chord, a low French horn sighs, a soft timpani roll fades away, short, instrumental."
+- `S_StingAI` (seed 101016, 4 s): "Cheeky orchestral got-away-with-it sting: a perky trumpet fanfare in a major key, a comic timpani boing, plucky pizzicato and a squeaky clarinet giggle, ending on a bright, happy chord, instrumental."
+- `S_ApplauseWin` (seed 101041, 25 s): "Rapturous standing ovation in a grand opera house: a full house clapping loudly, cheering and whistling, shouts of bravo, sustained enthusiasm, natural hall reverb, field recording."
+- `S_Step0` to `S_Step4` (seed 101061, 8 s): "Claymation foley: soft squishy footsteps of a small clay robot walking across a wooden theater stage, each step a gentle muted clay squelch with a light wooden tap, evenly spaced single steps with quiet between them, dry close recording, sound effect."
+- `S_Grab` (seed 101071, 2 s): "Claymation foley: a clay hand grabbing a small prop, one soft squishy clay squeeze and a gentle grip, close dry recording, single short sound effect."
+- `S_Land` (seed 101091, 2 s): "Claymation foley: a lump of soft modeling clay landing on a wooden stage floor, one muted squishy thud with a light wooden knock, single short sound effect, dry close recording."
+
+### Credit lines
+
+The two CC BY files need a credit wherever the game's credits are shown (the credits screen, `Docs/ItchPage.md`):
+
+- **Applause:** "Applause-2" by RHumphries, CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/), via Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Applause-2.ogg
+- **Laughs:** "approx 800 laughter only 1" by lonemonk, CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/), via Wikimedia Commons: https://commons.wikimedia.org/wiki/File:72843_lonemonk_approx-800-laughter-only-1.wav
+
+Courtesy lines, not required:
+
+- "Sound effects generated with Stable Audio by Stability AI." (Together with T100's line: "Music and sound effects generated with Stable Audio by Stability AI.")
+- "Throw swish by artisticdude, click by StarNinjas (CC0, via OpenGameArt)."
+
 ## Sources
 
 - **Kenney Game Assets All-in-1 3.8.0** (https://kenney.itch.io/kenney-game-assets), bought by the team. The bundle holds Kenney's free packs. Each pack's `License.txt` says **CC0 1.0** (https://creativecommons.org/publicdomain/zero/1.0/), so no credit is needed. Optional credit: "Kenney (www.kenney.nl)". The picks are in `SourceAssets/Audio/kenney/`, each pack folder with its `License.txt`. The bundle's whole Audio folder (1,325 files) is unpacked only on the Windows PC, in `Local/audio/kenney/`, which git ignores. Format: Ogg Vorbis, 44.1 kHz unless noted.
@@ -85,7 +141,7 @@ For `Docs/ItchPage.md`, the game's credits and the jam's "Tools you used" field.
 
 ## Picks
 
-Paths are relative to `SourceAssets/Audio/`.
+T20's picks, all superseded by T100 and T101 (above). Paths are relative to `SourceAssets/Audio/`.
 
 | Sound | Chosen file | Backup | License | Length, format |
 |---|---|---|---|---|
@@ -107,7 +163,7 @@ Paths are relative to `SourceAssets/Audio/`.
 
 ## Attribution text (for the CC BY files in use)
 
-Put these in the credits and the itch.io page if the file ships:
+T20's lines. None of these files ships once T102 imports T101's picks; T101's own credit lines are under "Show, robot and button sounds, and the bots' voices (T101)". Until then, put these in the credits and the itch.io page if the file ships:
 
 - **Win applause:** "Applaudissements" by Thomas Bresson, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), via Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Thomas_Bresson_-_Applaudissements.mp3
 - **Laughs:** "approx 800 laughter and clapter 1" by lonemonk (https://freesound.org/people/lonemonk/packs/4695/), CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/), via Wikimedia Commons: https://commons.wikimedia.org/wiki/File:72844_lonemonk_approx-800-laughter-and-clapter-1.wav
