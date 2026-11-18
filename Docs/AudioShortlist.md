@@ -1,14 +1,87 @@
-# Audio shortlist (T20 prep)
+# Audio shortlist (T20 prep, T100 music)
 
 Files picked for T20, chosen without the editor. The picks and their backups are committed in `SourceAssets/Audio/`, outside `Content/` so Unreal doesn't import them on its own, and every machine gets them with `git pull`. T20 imports them into `Content/NHOS/Audio/` and moves these entries into `Docs/Assets.md`.
 
 The picks were made by name, length and license, without listening. T20's listening pass makes the final choice; swap in the backup or a nearby file from the same pack if a pick sounds wrong.
 
+The music for every phase and every scene card was replaced in T100: see "Music (T100)" first. The rest of this file is T20's shortlist. Its two music rows, the title loop and the show loop, are superseded by T100.
+
+## Music (T100)
+
+Picked by my person by ear on 2026-11-17, one track for each phase and one for each scene card, on a private listening page. These replace T20's title and show loops and T71's eleven loops. T102 imports them into `Content/NHOS/Audio/Music/`, sets the mix and moves these entries into `Docs/Assets.md`. Until then the game still plays the Kenney loops. How T100 got here is in [T100's findings](tasks/T100.md).
+
+- **Source:** Stable Audio 3 (model `stable-audio-3`), Stability AI's text-to-audio model, through the Stability AI API (https://platform.stability.ai), on my person's own account. Claude wrote the prompts, and my person changed them: a Mozart-style title, symphonic film score for the scenes except three, and orchestral for everything else. 46 takes were made in all, at 8 credits ($0.08) each: $3.68. No other audio tool was used.
+- **License:** Stability AI's Terms of Service (effective 2026-09-30, https://stability.ai/terms-of-service) say that, as between Stability and the user, "you own the Output (to the extent permitted by applicable law)". Stable Audio's pricing page (https://stableaudio.com/pricing) lists a commercial license on every plan. Only a company that makes over $1M a year needs an enterprise license. No credit is required. The terms forbid removing any watermark or provenance mark that Stability adds, so never process the files to strip one.
+- **Files:** `SourceAssets/Audio/music/t100/<NN>_<key>.flac`, named by the music key T102 uses.
+  - Each file is the loop as cut: a whole number of bars from the steady middle of a 120 s take, with a 0.25 s blend at the seam, so the end runs straight into the start.
+  - 16-bit, 44.1 kHz stereo, lossless FLAC (109 MB for all 16), at the level the model made it (about −14 LUFS).
+  - The folder is `music/`, not `Music/`: `SourceAssets/Audio/music/` already exists, and Mac and Windows file systems can't hold both.
+  - The full 120 s takes, the 30 takes not picked and each take's note (prompt, seed, generation id) are only in `Local/audio/candidates/` on the Mac.
+- **The brief:**
+  - Background music under the talk.
+  - No vocals.
+  - No lead melody that competes with the lines. The title, win and lose screens have no talk, so they may carry a tune.
+  - Soft dynamics and a clean loop.
+  - It may suggest a film's genre, but never imitates a real film's score. The prompts name no film, composer or artist. Mozart, named for the title, is centuries out of copyright and isn't a film score.
+- **The measurements** come from Claude's scripts, not from listening:
+  - Loudness is integrated (BS.1770, K-weighted, gated).
+  - "Swing" is the spread of 3 s short-term loudness, 5th to 95th percentile.
+  - "Clipped" counts samples at full scale in the 120 s take.
+  - "Seam" is how well the audio around the loop's end matches the audio around its start.
+  My person heard every pick, flags included.
+
+| Key | File | Plays during | What it is | Tempo, loop | Take | Measured | My person's words |
+|---|---|---|---|---|---|---|---|
+| `title` | `01_title.flac` | Title screen | Mozart-style comic opera overture: strings, oboes and flutes, horns, timpani, harpsichord | 126 BPM, 4/4, 36 bars, 69.1 s | B | -14.4 LUFS; swing 9.1 LU; 0 clipped in the take; seam listen to it | Asked for the title music to be "more like a grand symphony that would be in a play? Maybe even almost Mozart", then picked take B. |
+| `scene_prep` | `02_scene_prep.flac` | Scene Prep, every card | Quiet symphonic underscore: pizzicato, sustained strings, woodwinds, celesta | 96 BPM, 4/4, 28 bars, 70.0 s | B | -14.3 LUFS; swing 10.7 LU; 4,692 clipped in the take; seam listen to it | Asked to "Make it orchestral", then picked take B. |
+| `space_plans` | `03_space_plans.flac` | The Scene, `space_plans` | Symphonic space-adventure underscore at desert dusk: low strings, soft horns, harp | 78 BPM, 4/4, 20 bars, 62.8 s | B | -17.3 LUFS; swing 10.0 LU; 238 clipped in the take; seam listen to it | Asked for the scenes to be "more soundtrack movie style, so symphonic", then picked take B. |
+| `mine_bridge` | `04_mine_bridge.flac` | The Scene, `mine_bridge` | Dark symphonic fantasy underscore: low strings and brass, distant drums, bell tones | 71 BPM, 4/4, 24 bars, 82.3 s | B | -13.7 LUFS; swing 9.7 LU; 350 clipped in the take; seam good | Asked for the scenes to be "more soundtrack movie style, so symphonic", then picked take B. |
+| `dino_island` | `05_dino_island.flac` | The Scene, `dino_island` | Adventurous symphonic underscore: horns, pizzicato, marimba, hand percussion | 104 BPM, 4/4, 32 bars, 73.8 s | B | -14.0 LUFS; swing 3.1 LU; 368 clipped in the take; seam good | Asked for the scenes to be "more soundtrack movie style, so symphonic", then picked take B. |
+| `favor_father` | `06_favor_father.flac` | The Scene, `favor_father` | Symphonic Italian wedding waltz: strings, mandolin, accordion, clarinet | 90 BPM, 3/4, 42 bars, 84.0 s | B | -13.7 LUFS; swing 6.0 LU; 56 clipped in the take; seam fair | Asked for the scenes to be "more soundtrack movie style, so symphonic", then picked take B. |
+| `glowing_briefcase` | `07_glowing_briefcase.flac` | The Scene, `glowing_briefcase` | 1960s surf rock and soul pop: reverb guitar, combo organ, bass, drums | 118 BPM, 4/4, 44 bars, 89.5 s | B | -13.8 LUFS; swing 6.9 LU; 0 clipped in the take; seam listen to it | Asked for this scene to be "like pop music from a Tarantino movie", then picked take B. |
+| `league_night` | `08_league_night.flac` | The Scene, `league_night` | 1960s folk: fingerpicked guitar, soft harmonica chords, upright bass, brushed snare | 88 BPM, 4/4, 30 bars, 81.8 s | B | -13.6 LUFS; swing 4.5 LU; 50 clipped in the take; seam listen to it | Asked for this scene to be "almost like folk music", then picked take B. |
+| `pick_a_pill` | `09_pick_a_pill.flac` | The Scene, `pick_a_pill` | Cyberpunk drum and bass: rolling breakbeat, sub bass, dark pads, glitches | 172 BPM, 4/4, 44 bars, 61.4 s | B | -13.7 LUFS; swing 2.9 LU; 0 clipped in the take; seam good | Asked for this scene to be "kind of like a cyberpunk drum and bass type thing", then picked take B. |
+| `free_talk` | `10_free_talk.flac` | Free Talk | Sneaky chamber-orchestra whodunit: pizzicato, staccato clarinet and bassoon, harp | 100 BPM, 4/4, 34 bars, 81.6 s | C | -14.1 LUFS; swing 11.5 LU; 4,769 clipped in the take; seam good | Asked to "redo everything that isn't a scene to symphonic / orchestral", then picked orchestral take C. |
+| `last_word` | `11_last_word.flac` | Last Word | Hushed symphonic tension: low strings, tremolo violins, pizzicato ticks, harp | 84 BPM, 4/4, 24 bars, 68.6 s | F | -13.1 LUFS; swing 11.0 LU; 2,724 clipped in the take; seam good | Asked to "redo everything that isn't a scene to symphonic / orchestral", then picked orchestral take F. |
+| `cut` | `12_cut.flac` | The Cut (40% under the drum roll) | Tense symphonic "thinking clock": string ostinato, pizzicato ticks, muted horns, woodblock | 112 BPM, 4/4, 40 bars, 85.7 s | C | -13.8 LUFS; swing 5.3 LU; 514 clipped in the take; seam listen to it | Asked to "redo everything that isn't a scene to symphonic / orchestral", then picked orchestral take C. |
+| `reactions` | `13_reactions.flac` | Reactions | Wry, light symphonic underscore: strings, woodwinds, harp, pizzicato | 94 BPM, 4/4, 30 bars, 76.6 s | B | -14.2 LUFS; swing 8.6 LU; 438 clipped in the take; seam good | Asked to "redo everything that isn't a scene to symphonic / orchestral", then picked orchestral take B. |
+| `win` | `14_win.flac` | End screen, win | Triumphant symphonic finale: brass fanfare chords, soaring strings, timpani | 124 BPM, 4/4, 40 bars, 77.4 s | D | -14.5 LUFS; swing 8.9 LU; 0 clipped in the take; seam fair | Asked to "Make it orchestral", then "Make it more triumphant.", then picked take D. |
+| `lose` | `15_lose.flac` | End screen, lose | Wry, deflated symphonic shrug: slow strings, bassoon and tuba, clarinet | 72 BPM, 4/4, 24 bars, 80.0 s | C | -13.7 LUFS; swing 4.9 LU; 0 clipped in the take; seam good | Asked to "redo everything that isn't a scene to symphonic / orchestral", then picked orchestral take C. |
+| `show` | `16_show.flac` | Fallback: a card with no track | Neutral, light symphonic film-set underscore: strings, woodwinds, harp | 100 BPM, 4/4, 33 bars, 79.2 s | B | -13.0 LUFS; swing 8.5 LU; 9 clipped in the take; seam listen to it | Asked to "redo everything that isn't a scene to symphonic / orchestral", then picked orchestral take B. |
+
+### The prompts
+
+For `Docs/Assets.md`, which records the AI tool and the prompt for every generated asset. Each take was 120 s, made with `output_format=wav`.
+
+- `01_title.flac` (take B, seed 3247519507, made 2026-11-18, loop from 17.41 s of the 120 s take): "Grand classical-era symphony in the style of Mozart, a playful opera buffa overture in an elegant 18th-century theater: bright strings, oboes and flutes, French horns, timpani, harpsichord continuo. Festive, witty, a theatrical sense of occasion, steady tempo, instrumental, 126 BPM."
+- `02_scene_prep.flac` (take B, seed 3596362908, made 2026-11-18, loop from 40.91 s of the 120 s take): "Quiet symphonic film score underscore, backstage just before the camera rolls on a film set: soft pizzicato strings, warm sustained strings, light woodwinds, gentle celesta, soft ticking percussion. Curious anticipation, quiet and steady, soft dynamics, instrumental, 96 BPM."
+- `03_space_plans.flac` (take B, seed 3754550674, made 2026-11-18, loop from 8.41 s of the 120 s take): "Symphonic film score underscore for a space adventure on a desert planet at dusk under two suns: low sustained strings, soft French horns, harp, gentle timpani, distant woodwinds. Mysterious, wide and lonely, quiet and steady, soft dynamics, instrumental, 78 BPM."
+- `04_mine_bridge.flac` (take B, seed 288248621, made 2026-11-18, loop from 28.65 s of the 120 s take): "Dark symphonic fantasy film score underscore deep inside an ancient dwarf mine: low strings, muted horns and low brass, soft deep drums like distant footsteps, faint bell tones, cavern reverb. Hushed, tense and ancient, quiet and steady, soft dynamics, instrumental, 70 BPM."
+- `05_dino_island.flac` (take B, seed 599893121, made 2026-11-18, loop from 7.01 s of the 120 s take): "Adventurous symphonic film score underscore for a jungle island theme park: pizzicato strings, warm French horns, marimba and hand percussion, soft timpani pulse. Wonder with a hint of comic danger, steady and even, soft dynamics, instrumental, 104 BPM."
+- `06_favor_father.flac` (take B, seed 1716905050, made 2026-11-18, loop from 26.89 s of the 120 s take): "Symphonic film score underscore for a sunny Italian garden wedding with a sly shadow: warm strings, mandolin, accordion, soft clarinet, gentle 3/4 waltz. Nostalgic, festive and quietly ominous, steady and even, soft dynamics, instrumental, 90 BPM."
+- `07_glowing_briefcase.flac` (take B, seed 1363824617, made 2026-11-18, loop from 13.70 s of the 120 s take): "1960s surf rock and soul pop instrumental, a retro crime-film jukebox in a diner on dance-contest night: twangy spring-reverb electric guitar, vintage combo organ, punchy bass, tight drums. Cool, groovy, a little dangerous, steady and even, instrumental, 118 BPM."
+- `08_league_night.flac` (take B, seed 566761696, made 2026-11-18, loop from 29.12 s of the 120 s take): "1960s folk instrumental for a laid-back bowling alley on league night: fingerpicked acoustic guitar, soft harmonica chords, upright bass, light brushed snare. Wry, easygoing and unbothered, steady and even, soft, instrumental, 88 BPM."
+- `09_pick_a_pill.flac` (take B, seed 2488681773, made 2026-11-18, loop from 34.78 s of the 120 s take): "Cyberpunk drum and bass in a rain-soaked neon city at midnight: rolling breakbeat, deep sub bass, dark synth pads, glitchy digital textures. Tense, hypnotic, sleek, steady and even, instrumental, 172 BPM."
+- `10_free_talk.flac` (take C, seed 2083969685, made 2026-11-18, loop from 16.30 s of the 120 s take): "Light sneaky chamber orchestra underscore, a cast whispering between takes while hunting for an impostor: playful pizzicato strings, staccato clarinet and bassoon, soft muted horn, light harp. Curious, playful, conspiratorial, quiet and steady, soft dynamics, instrumental, 100 BPM."
+- `11_last_word.flac` (take F, seed 2298393024, made 2026-11-18, loop from 9.43 s of the 120 s take): "Quiet, tense symphonic underscore, a hushed room just before a vote: sustained low strings, soft tremolo violins, gentle pizzicato like a ticking clock, a faint harp shimmer. Suspended and expectant, quiet and steady, soft dynamics, instrumental, 84 BPM."
+- `12_cut.flac` (take C, seed 3704110694, made 2026-11-18, loop from 11.47 s of the 120 s take): "Tense symphonic underscore for a game-show vote, like a thinking clock: a low string ostinato, staccato pizzicato ticks, soft muted horns, light woodblock. Suspenseful but quiet and even, steady, soft dynamics, instrumental, 112 BPM."
+- `13_reactions.flac` (take B, seed 2832459487, made 2026-11-18, loop from 22.52 s of the 120 s take): "Wry, light symphonic underscore after a big reveal: warm strings, playful woodwinds, soft harp, gentle pizzicato. Relaxed and a little amused, neither triumphant nor sad, quiet and steady, soft dynamics, instrumental, 94 BPM."
+- `14_win.flac` (take D, seed 3144764042, made 2026-11-18, loop from 15.28 s of the 120 s take): "Grand triumphant symphonic victory finale, a standing ovation at the end of a comedy stage play: full orchestra, bold brass fanfare chords, soaring strings, rolling timpani, bright woodwind runs. Jubilant, victorious and a little cheeky, steady and even, instrumental, 124 BPM."
+- `15_lose.flac` (take C, seed 3852197593, made 2026-11-18, loop from 30.98 s of the 120 s take): "Wry, deflated symphonic underscore for a comedy game-over screen: slow strings, a mournful but funny bassoon and tuba, soft clarinet, gentle pizzicato. Gently sad and funny, a shrug, steady and even, soft dynamics, instrumental, 72 BPM."
+- `16_show.flac` (take B, seed 3480459292, made 2026-11-18, loop from 9.52 s of the 120 s take): "Neutral, light symphonic film score underscore on a film set: soft strings, gentle woodwinds, harp, light pizzicato. Pleasant and unobtrusive, quiet and steady, soft dynamics, instrumental, 100 BPM."
+
+### Credit lines
+
+For `Docs/ItchPage.md`, the game's credits and the jam's "Tools you used" field. T100 doesn't edit those files. No credit is required, so these are courtesy lines, and they also declare the AI tool as the jam asks.
+
+- **Short:** "Music generated with Stable Audio by Stability AI."
+- **Long:** "Music: 16 tracks generated with Stable Audio 3 (Stability AI) through the Stability AI API, from prompts written with Claude (Anthropic), picked by the team."
+
 ## Sources
 
 - **Kenney Game Assets All-in-1 3.8.0** (https://kenney.itch.io/kenney-game-assets), bought by the team. The bundle holds Kenney's free packs. Each pack's `License.txt` says **CC0 1.0** (https://creativecommons.org/publicdomain/zero/1.0/), so no credit is needed. Optional credit: "Kenney (www.kenney.nl)". The picks are in `SourceAssets/Audio/kenney/`, each pack folder with its `License.txt`. The bundle's whole Audio folder (1,325 files) is unpacked only on the Windows PC, in `Local/audio/kenney/`, which git ignores. Format: Ogg Vorbis, 44.1 kHz unless noted.
 - **Wikimedia Commons** (https://commons.wikimedia.org), in `SourceAssets/Audio/commons/`. Licenses are per file, below.
-- No AI audio tools were used.
+- No AI audio tools were used for T20's picks. T100's music was made with Stable Audio (see "Music (T100)").
 
 ## Picks
 
