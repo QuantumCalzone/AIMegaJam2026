@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 07:03 UTC",
+    "generation": "1f1e31e2-f7b2-6680-b22a-d6888a6b3135",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Direction/rounds/r1b/collage.png",
+    "refs": [],
+    "prompt": "This is a rough collage: five robot characters pasted onto a claymation opera-house stage. Repaint it as one seamless stop-motion claymation still. Remove the blurred red curtain patches and the leftover ghost arms and pieces between and behind the five characters, so the painted pink desert backdrop shows cleanly behind them. Keep the five characters' designs, colors, accessories, poses and left-to-right order exactly, but sculpt them in the same matte modeling clay with faint thumbprints as the theater, standing on the stage floor with soft shadows and warm footlight glow. Replace the people in the front audience rows with small clay capsule robots seen from behind, most wearing black top hats. Keep the theater, curtains, side boxes, lighting, the small props at both sides and the purple panel at top left.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

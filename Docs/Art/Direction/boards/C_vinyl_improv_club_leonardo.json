@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 06:45 UTC",
+    "generation": "1f1e31b8-fd3c-6a80-9498-fcc1b09a337a",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Wide 16:9 view from the audience seats toward a stage. Five characters stand in a row, left to right: a pale-blue teardrop robot floating over a glowing floor ring, a halo above, in a gray knit sweater; a round orange robot with a cream belly, round gold glasses and an amber antenna light; a round lime robot on coiled-spring legs with chunky boots and a small lightning bolt, grinning; a doll-like android in a royal-blue tee with thick black glasses and a gold chain; and a person in a homemade costume: a teal cardboard box over the head with eye slots and a drawn smile, a ping-pong-ball antenna, a red and cream knit scarf, jeans and sneakers. A small table holds a giant milkshake and a toy ray gun. Backs of audience robots' heads at the bottom. Game UI: a dark plum panel with a thin gold border top left, a cream paper card top right, a speech bubble above the orange robot, all with blank lines, no text. Designer vinyl art-toy style: the robots are smooth matte soft-vinyl collectible figures, simple geometric forms, flat saturated colors, minimal detail; the costumed person looks homemade beside them. A small late-night improv comedy club: red brick back wall, low black wooden stage, one warm spotlight, a few wooden chairs and a stool as the only set, a mic stand, string lights, round cafe tables with candle lamps. Deep navy and warm amber with the characters' colors popping. Soft rim light. Clean readable silhouettes.",
+      "width": 1920,
+      "height": 1080,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, extra characters, crowd on stage, realistic human faces, scary, gore, ink outlines"
+    },
+    "api_credit_cost": null,
+    "seed": 1225523682,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

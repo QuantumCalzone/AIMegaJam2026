@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 07:18 UTC",
+    "generation": "1f1e3203-9f6f-62e0-b4b3-c96d0abff2f3",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Direction/rounds/r5/edit_1.png",
+    "refs": [],
+    "prompt": "Add hats to the audience robots in the front rows of this claymation theater image: put a round black clay bowler hat on three of the hatless audience robots, and a black clay top hat on three other hatless audience robots, spread across the rows. The hats sit on their smooth dome heads between the cream ear pods. Do not remove any hat that is already there. Change nothing else: keep the five characters on stage, the theater, the curtains, the backdrop, the lighting, the prop table, the speech bubble, the purple panel at top left and the cream card at top right exactly as they are.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

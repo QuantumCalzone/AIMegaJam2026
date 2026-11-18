@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T94, T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T84, T85, T87 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T84, T85, T87 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -119,13 +119,6 @@ These hold for every task, and for editor work outside the task list too. If one
 ### Open
 
 
-
-- [ ] **T94 New art, part 1: the art direction, approved by me**
-  - **Model and effort:** Opus 5.5, high. The direction and the style guide that every later art task follows, from a list of every art asset in the game.
-  - **Depends on:** T90 (its design doc edit goes in `Docs/Design/`). It needs no editor and changes no asset, so it can run on either machine, beside the chain.
-  - **Needs:** `Local/leonardo_key.json` (on the PC); my OK on the estimated cost before the first paid call; my pick of a direction and my approval of its board; my OK on the design doc edit.
-  - **Touches:** new `Docs/Art/README.md` (every art asset and the task that replaces it), new `Docs/Art/Direction/`, the design doc's Art Inspiration tab, `Docs/tasks/T94.md`.
-  - **Details:** [Docs/tasks/T94.md](tasks/T94.md)
 
 - [ ] **T101 New audio, part 2: the show and robot sounds, the clicks and the bots' voices, picked by me**
   - **Model and effort:** Opus 5.5, high. About twenty sounds and four voice sets, judged by me alone, with T72's and T73's rules for the voices.
@@ -419,6 +412,9 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T93.md](tasks/T93.md)
 - [x] **T90 The design doc moves into the repo as Markdown files**
   - **Details:** [Docs/tasks/T90.md](tasks/T90.md)
+
+- [x] **T94 New art, part 1: the art direction, approved by me**
+  - **Details:** [Docs/tasks/T94.md](tasks/T94.md)
 
 ## Not planned yet
 

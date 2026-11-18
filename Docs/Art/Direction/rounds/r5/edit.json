@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 07:17 UTC",
+    "generation": "1f1e3201-4f2e-6f80-84c3-08d23b2607ae",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Direction/rounds/r4/edit_1.png",
+    "refs": [],
+    "prompt": "Edit this claymation theater image. 1) Remove every remaining thin antenna from the audience robots in the front rows, so no audience head has an antenna; keep their smooth dome heads and small round cream ear pods. 2) Put a round black clay bowler hat on some of the audience robots that have no hat, about four of them, so the house mixes top hats and bowler hats. Keep everything else exactly as it is: the existing top hats, the five characters on stage, the theater, the curtains, the backdrop, the lighting, the prop table, the speech bubble, the purple panel at top left and the cream card at top right.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -2,18 +2,26 @@
 
 ## Art direction
 
-Stop-motion clay robots perform film parodies on a grand clay opera stage. Everything looks hand-sculpted from modeling clay: the robots, the theater, the costumes and the props. This direction replaced the earlier one on 2026-11-15; the mood images further down predate it, and where they disagree, this section wins.
+Stop-motion clay robots put on an improv show in a grand clay opera house, and one human hides among them in a homemade cardboard costume. Everything looks hand-sculpted from matte modeling clay: the robots, the theater, the costumes, the props and the audience. My person chose this direction on 2026-11-17 (T94): the clay opera house of 2026-11-15, done better. All the game's art is being redrawn in it. T95 to T99 draw the concepts, and T103 to T106 make the models. The full style guide is in [Docs/Art/Direction/README.md](../Art/Direction/README.md): the palette, the rules for image-to-3D, and the prompt text that every generation starts from. [Docs/Art/README.md](../Art/README.md) lists every asset being replaced.
+
+The approved direction board. It sets the look, not the layout: the UI's layout is in the UI section below.
+
+![The approved direction board: the five robots sculpted in clay on the opera stage (OpenAI, Meta, the player's cardboard costume, Anthropic, SpaceXAI), a cloth-covered prop table with a giant milkshake and a toy ray gun, red velvet curtains and a gold proscenium, clay robot audience in top hats and bowler hats, a plum UI panel, a paper card and a speech bubble](../Art/Direction/board.png)
 
 ### Style
 
 - True 3D in Unreal Engine 5, styled as stop-motion clay. Never 2D or drawn, and no ink outlines on characters or sets.
-- Matte modeling clay: soft rounded forms, chunky simple shapes, faint thumbprints and tool marks. One shared clay material gives everything the same surface; only the color changes.
-- Saturated, slightly chalky colors. Gold, crimson and cream for the theater; each bot's seat color on its body.
-- Warm footlight glow from below, a soft key light, and colored rim light so the bots stand out from the backdrop.
-- Shapes are bold and simple, because the house camera sees props at about 30 px tall. Outline and color carry a thing, not its detail.
-- Tone: chaotic, petty slapstick. Never scary or gory.
+- Matte modeling clay everywhere, with high roughness and no metal. The gold is gold-painted clay with a satin sheen. Thumbprints and tool marks live in the textures, never in the silhouette. One shared clay material colors anything of a single color.
+- Round, toy-like bots with big heads, about a third of their height. The player's costume is the one boxy, homemade shape on stage. The theater is classical but chunky, with nothing thin or spindly.
+- Each bot's seat color is its body color, and the seat colors belong to the five alone. The world is crimson velvet, old gold, cream and dark wood, and the audience wears muted colors.
+- Detail reads at the house camera's distance. At 1600 × 900 a bot is about 125 px tall and a prop 25 to 50 px. Outline and two or three colors carry a thing, and no detail is smaller than about 1/20 of its height.
+- Lumen light with no baked light: warm footlights from below, a soft warm key, pink and cyan rim lights, and a dim house. Textures carry no painted light.
+- Built for image-to-3D: thick, joined parts and clean silhouettes. A generated model has no hair, wires, thin rings or see-through parts. Glows and lenses are engine parts.
+- Tone: chaotic, petty slapstick. Never scary or gory. No brand marks, writing or real people's likenesses.
 
 ### The bots
+
+**Being redrawn in T95 (concepts) and T103 (models), in the direction above.** Until then, this section describes the cast as built on 2026-11-15. On T94's board my person dropped OpenAI's halo and floor ring, and T95 brings this section in line.
 
 - Four polished clay bots and one human in a homemade cardboard costume. That contrast is the premise in one picture: the player is the one pretending. Every bot is about 1.6 m tall, and its seat color is on its body, because a wig or a hood hides most of a head.
 - OpenAI, Anthropic and SpaceXAI share one round head: a dark screen face with big LED eyes and a mouth that stretches wide, two small cream ear pods and a short gold collar. Meta has its own doll head, and the player a cardboard box.
@@ -42,6 +50,8 @@ The five bots as built on 2026-11-15, in seat order, with their name tags hidden
 
 ### The stage
 
+**Being redrawn in T98 (concepts) and T106 (the build), in the direction above.** Until then, this section describes the house as built. On T94's board the audience bots have smooth dome heads with cream ear pods, no antennas, and top hats or bowler hats.
+
 - One stage for every story: a grand 19th-century opera house, sculpted in clay.
 - A gold clay proscenium arch with chubby clay cherubs, red velvet clay curtains with gold tassels, and footlights along the front edge.
 - A clay chandelier hangs over the house. Horseshoe boxes on both sides and four raked rows of red stalls below the stage hold the clay audience: small capsule bots, most in top hats, some in fedoras or beanies, some with opera glasses. From the house camera the stalls fill the bottom of the frame, seen from behind, dimmer toward the camera.
@@ -62,6 +72,8 @@ The three generated set pieces (Meshy renders of the models).
 ![Renders of the chandelier, cherub and theater box models](images/ArtInspiration/set-pieces.jpg)
 
 ### Costumes
+
+**Being redrawn in T96 (concepts) and T104 (models), in the direction above.** Until then, this section describes the headpieces as built.
 
 Thirteen clay headpieces dress all 35 roles. Each role wears one, in its own color: one model per piece, and the color comes from its clay material.
 
@@ -91,6 +103,8 @@ The 13 headpiece models (Meshy renders), in neutral clay. Each role's color come
 
 ### Props and backdrops
 
+**Being redrawn: the props in T97 (concepts) and T105 (models), and the backdrops in T99, in the direction above.** Until then, this section describes them as built.
+
 Each story brings four clay props to the Prop Table (three core, the last a spare) and drops in its own painted backdrop. The AI actors may only name the props on the current card.
 
 | Story | Props (spare last) | Needs a generated model | Backdrop |
@@ -116,6 +130,8 @@ Each story's props, one row per story in the table's order, spare last (Meshy re
 Seven film parodies set what gets built: a space saga, a ring quest, a dino park, a crime-family wedding, a diner caper, a bowling league night and an office simulation. Each full card, with every role's want and headpiece, is in [Stories](Stories.md).
 
 ## UI
+
+**The UI's 2D art is being redrawn in T99, in the direction above:** the stagehand's portrait, and the burning bills with their badges. The concept, layout, palette, type and components below stay as they are.
 
 The UI is the theater's own paperwork: a call sheet, a sealed note, ballot tickets and a rubber stamp, made chunky enough to read from the back row. Legibility beats style every time, and each screen has one thing to look at and one thing to do.
 
@@ -217,39 +233,3 @@ Today's screens (the 2026-11-14 playtest shots) work, but read as a generic dark
 4. **Panels at 75–82% opacity** let the stage show through words. Raise them to 92% or more.
 5. **The scene premise fills the card during play.** Show it in Scene Prep only; in the scene, your part and the note are enough.
 6. **Nothing says "theater" yet:** plain dark boxes and Roboto everywhere. The display face, the paper cards and the old-gold trim fix that.
-
-> **Mood reference only. Nothing in these images is a rule to implement.**
->
-> They are here for the feel: warm theater light, chunky toy-like robots, a playful and slightly petty stage world. The characters, names, costumes, props, scenes, UI panels, timers, text and layouts are all examples, not requirements.
->
-> **Ask before you use anything from them.** Name the image number and the element, then wait for a yes from @George Katsaros. Where an image disagrees with the written tabs, the tabs win.
-
-## Image 1 · Backstage
-
-Five robot actors in bathrobes hold sealed director's notes beneath dressing-room mirrors. Each mirror carries a nickname card, and the shelf holds props from future scenes.
-
-![Image 1: robot cast backstage in bathrobes holding director's notes](images/ArtInspiration/mood-1-backstage.jpg)
-
-## Image 2 · The stage
-
-A gilded theater with a "No Humans On Set" banner, a robot audience in the boxes, and the cast mid-duel in a musketeer-style scene.
-
-![Image 2: robot cast mid-duel on a theater stage under a No Humans On Set banner](images/ArtInspiration/mood-2-stage.jpg)
-
-## Image 3 · A scene in play
-
-The balcony scene from the player's side: a YOU marker, speech bubbles, a countdown clock, a director's note card and a typed command box.
-
-![Image 3: balcony scene with a YOU marker, timer, director's note and command box](images/ArtInspiration/mood-3-scene.jpg)
-
-## Image 4 · Free Talk
-
-A fairy-tale ballroom scene with a chat panel showing a Free Talk round in progress.
-
-![Image 4: fairy-tale ballroom scene with a Free Talk chat panel](images/ArtInspiration/mood-4-free-talk.jpg)
-
-## Image 5 · The Cut
-
-A cut actor is yanked offstage by a giant hook. A vote panel lists the cast's reasons, and a stamp reveals the actor was AI.
-
-![Image 5: a cut robot yanked offstage by a hook beside vote results and an AI reveal stamp](images/ArtInspiration/mood-5-cut.jpg)

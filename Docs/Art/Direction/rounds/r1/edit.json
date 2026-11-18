@@ -1,0 +1,17 @@
+[
+  {
+    "time": "2026-11-18 07:00 UTC",
+    "generation": "1f1e31db-67ed-6c40-9472-b27c1e76b629",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Direction/rounds/r0_board.png",
+    "refs": [
+      "Docs/BotArt/cast.png"
+    ],
+    "prompt": "Edit this claymation theater image. Replace the five characters standing on the stage with the five characters from the second image, in the same order left to right: the pale-blue robot with a halo and a glowing floor ring, the blue-shirted doll android with black glasses and a gold chain, the person in the teal cardboard box robot costume with the red and cream scarf, the round orange robot with round gold glasses, and the lime robot on spring legs. Keep each one's colors, shapes and accessories, but sculpt them in this image's matte modeling-clay style, at the same size and spread across the stage like the current characters. Replace the people in the front audience rows with small clay capsule robots seen from behind, most wearing black top hats. Keep the theater, curtains, backdrop, lighting, the side boxes and the purple panel at top left unchanged.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]
