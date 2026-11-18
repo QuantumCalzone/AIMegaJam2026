@@ -1,14 +1,27 @@
+; T19: a spot is taken when another robot's goal is within 95 cm sideways and 140 cm in depth.
+; T107: or when the two line up from the camera: their sideways offsets over their distance from the camera
+; (the tangent of the angle each makes with the camera's view, which looks down +X) differ by less than 0.06,
+; about 63 cm at the home row. T87 saw a robot on Back's first spot (220 cm straight behind OpenAI's home, more than
+; 140 cm) hidden from the camera but for its label. MinGap is the smallest such gap to any other robot, for the log.
 (fn PickSpot ()
+  (CallFunction|FindCam)
   (for _c (V Cands)
     (bind _ok (CallFunction|InStage :P _c))
     (if _ok
       (set Clash false)
+      (set MinGap 9.0)
+      (bind _tc (/ (- (.y _c) (.y (V CamPos))) (Math|Float|Max(Float) (- (.x _c) (.x (V CamPos))) 1.0)))
       (for _b (V AllBots)
         (if (and (!= _b (V NullBot)) (!= _b (V CurBot)))
           (bind _g (Class|BPRobot|GetGoal :self _b))
           (if (and (< (Math|Float|Absolute(Float) (- (.y _g) (.y _c))) 95.0) (< (Math|Float|Absolute(Float) (- (.x _g) (.x _c))) 140.0))
-            (set Clash true))))
+            (set Clash true))
+          (bind _tg (/ (- (.y _g) (.y (V CamPos))) (Math|Float|Max(Float) (- (.x _g) (.x (V CamPos))) 1.0)))
+          (set MinGap (Math|Float|Min(Float) (V MinGap) (Math|Float|Absolute(Float) (- _tg _tc))))))
+      (if (< (V MinGap) 0.06)
+        (set Clash true))
       (if (not (V Clash))
         (set Pick _c)
+        (print (cat "NHOS: SPOT x=" (Utilities|String|ToString(Float) (.x _c)) " y=" (Utilities|String|ToString(Float) (.y _c)) " gap=" (Utilities|String|ToString(Float) (V MinGap))))
         (return true))))
   (return false))

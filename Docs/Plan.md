@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T107 (the bugs T87 found), T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -104,6 +104,7 @@ These hold for every task, and for editor work outside the task list too. If one
 - **Unreal MCP.** Do editor work through Unreal MCP. One call at a time, each short enough that the client doesn't stop waiting. Split long work, and save after each step. Write graphs with `BlueprintTools.write_graph_dsl`, and batch calls with `ProgrammaticToolset.execute_tool_script`. Read "T01: spike results" in [Docs/tasks/T01.md](tasks/T01.md) first: it lists the DSL rules that cost time to find. Later tasks' files add more, each under "Unreal MCP rules found in this task". MCP can't create a level, so a person makes new levels in the editor (File > New Level > Empty Level).
 - **Read only the graphs you need.** List a Blueprint's graphs, then read only the ones the task changes or calls. Never dump every graph of `BP_Show`: a full dump in T18 and T26 was a very large read, and one was too big for a tool result.
 - **Graph sources live in `Graphs/`.** `Graphs/<Blueprint>/<Graph>.txt` holds the DSL source last written to each graph, one file per graph, as written (shorthand, before `Tools/dslpp.py`). To change a graph, start from its file and push it. If it has no file yet, read the graph from the editor and write your source from that. Commit the updated files with the task. A read-back is for reading only, because writing one back drops data (T06). If you change a graph some other way, like a pin value or a hand edit in the editor, make the same change in its file, or delete the file. The per-task copies in `Saved/Txx/src/` from before 2026-11-14 may be out of date.
+- **The DSL's else trap.** In `write_graph_dsl`, code after an `if` whose body ends in a branching node (`Utilities|IsValid`, or any node written with `(:"...")` exec branches) becomes that `if`'s else path, as code after an `if` that ends in `return` does (T01). T77's `StageLine` broke this way and no line's action played until T87. Put such a branch in a function of its own and call it, or put it where no code follows it. `python Tools/check_prompts.py --offline` (or `python Tools/check_graphs.py`) fails a source in `Graphs/` written that way (T107): run it before you push a graph.
 - **Worktrees, for sessions that don't need the editor.** The editor has the repo folder open, so a session that drives the editor or runs PIE works there. A session that doesn't need the editor may work in its own git worktree, on its own branch, when its files could clash with another session's uncommitted work in the repo folder (for example `Content/NHOS/Data/*.json` or `Docs/`).
   - Never change a `.uasset` or `.umap` in a worktree, because binary assets can't be merged.
   - A worktree has no `Local/` folder, and nothing gets copied into it, the key file least of all. Run `Tools/check_prompts.py` there with `--offline`, `--free` or `--relay`. A run that calls the providers with direct keys waits until after the merge, in the repo folder.
@@ -196,13 +197,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, Meshy (`Local/meshy_key.json`) or Hyper3D, my OK on the estimated cost before the first paid call, my OK on the models and on the house screenshots, my OK on the design doc edit.
   - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/Set/**` (with `BP_AudienceBot`), `Content/NHOS/Stage/Materials/**`, `Content/NHOS/Stage/BP_Backdrop.uasset` only if the flat changes, `Docs/Art/Set/` (models and logs), `Docs/Assets.md`, the design doc, `Docs/tasks/T106.md`.
   - **Details:** [Docs/tasks/T106.md](tasks/T106.md)
-
-- [ ] **T107 Fix the bugs T87 found: late banners, a robot hidden at the Back mark, and three small ones**
-  - **Model and effort:** Opus 5.5, high. Debugging across the banner queue, the stage director's spots, free mode and the graph sources.
-  - **Depends on:** T87 (it found these bugs, and its reveal shows the banners)
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE show; my OK on any change to how long banners show or how long the line queue waits.
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (`ShowBanner`, `NextBanner`; the chain machine's asset while the two-machine setup is active), `Content/NHOS/Data/pacing.json` only with my OK, `Content/NHOS/Stage/BP_StageDirector.uasset` (`PickSpot`) or `Content/NHOS/Maps/L_Stage.umap` and its marks, `Content/NHOS/Core/BPC_LLMClient.uasset` (`FreeReply`), `Content/NHOS/Core/BPC_LinePlayer.uasset` (`LoadPacing`) only if `fast_lines` is read again, `Docs/switches.example.json`, `Content/NHOS/Data/free_mode.json` (`_readme`) only if needed, `Tools/check_prompts.py` or a new `Tools/check_graphs.py`, this file's build notes, `Graphs/` files for the graphs it writes, `Docs/tasks/T107.md`.
-  - **Details:** [Docs/tasks/T107.md](tasks/T107.md)
 
 - [ ] **T84 Scene Prep shows the scene and Start the scene in the middle**
   - **Model and effort:** Opus 5.5, high. A layout change across Scene Prep's widgets, judged from screenshots at two sizes.
@@ -417,6 +411,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T94.md](tasks/T94.md)
 - [x] **T87 When I win, every AI reacts to the reveal, the cut ones too**
   - **Details:** [Docs/tasks/T87.md](tasks/T87.md)
+- [x] **T107 Fix the bugs T87 found: late banners, a robot hidden at the Back mark, and three small ones**
+  - **Details:** [Docs/tasks/T107.md](tasks/T107.md)
 
 ## Not planned yet
 

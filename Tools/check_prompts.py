@@ -225,6 +225,11 @@ REACT (or WIN SKIP) per AI seat and a matching WIN REACTIONS n= before NHOS:
 SHOW END, and a lost show with any of them; WIN REACT lines get the legibility
 check, and each WIN SKIP is a WARN.
 
+Graph sources (T107): the file check also runs Tools/check_graphs.py over
+Graphs/, so --offline fails a Blueprint graph source with the DSL trap that
+broke T77's StageLine (an if whose body ends in a branching node, with code
+after it). Its docstring has the rule.
+
 Exit code 0 means the files are valid and every reply passed its checks.
 FAIL lines are hard failures. WARN lines are style problems to look at.
 """
@@ -2832,6 +2837,16 @@ def main():
     if check_rules(show, jobs):
         return 1
     print("The sample show follows the action rules, and every actor state says who holds what.")
+    # T107: the graph sources, for the DSL trap that broke T77's StageLine (Tools/check_graphs.py).
+    sys.path.insert(0, str(ROOT / "Tools"))
+    import check_graphs
+    graph_srcs = check_graphs.all_sources()
+    graph_bad = check_graphs.check_files(graph_srcs)
+    for gp, gl, gm in graph_bad:
+        print(f"FAIL {Path(gp).relative_to(ROOT)}:{gl}: {gm}")
+    if graph_bad:
+        return 1
+    print(f"No graph source in Graphs/ has an if that ends in a branching node with code after it ({len(graph_srcs)} sources).")
     if args.offline:
         return 0
 

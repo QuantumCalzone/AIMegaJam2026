@@ -1,0 +1,8 @@
+; T107: the show camera's location, for PickSpot's line-of-sight rule. The level's camera is at (-1050, 0, 330) today.
+(fn FindCam ()
+  (set CamPos (Math|Vector|MakeVector :X -1050.0 :Y 0.0 :Z 330.0))
+  (bind _cam (Actor|GetActorOfClass :ActorClass "/Script/Engine.CameraActor"))
+  (Utilities|IsValid _cam
+    (:"Is Valid"
+      (set CamPos (Transformation|GetActorLocation :self _cam)))
+    (:"Is Not Valid")))

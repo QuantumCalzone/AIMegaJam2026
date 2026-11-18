@@ -1,6 +1,9 @@
+; T107: a new banner replaces the one on screen at once, so it shows when its cue plays, never behind an older banner.
+; The line queue spaces banner cues by pacing.cue_hold.banner; the last banner of a run holds its full time in NextBanner.
 (fn ShowBanner (Line)
   (if (not (Utilities|String|IsEmpty Line))
-    (Utilities|Array|Add (Variables|Default|GetBannerQueue) Line)
     (Development|PrintString (Utilities|String|Append "NHOS: BANNER " Line) false)
-    (if (not (Variables|Default|GetBannerBusy))
-      (CallFunction|NextBanner))))
+    (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "FadeBanner")
+    (Utilities|Array|Clear (Variables|Default|GetBannerQueue))
+    (Utilities|Array|Add (Variables|Default|GetBannerQueue) Line)
+    (CallFunction|NextBanner)))

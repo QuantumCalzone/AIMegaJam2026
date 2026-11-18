@@ -75,7 +75,8 @@
     (bind _rs (Json|GetField (V FreePhase) "reasons"))
     (set TmpArr2 _rs)
     (if (> (len (V TmpArr2)) 0)
-      (set FreeIdx (Math|Random|RandomIntegerinRange 0 (- (len (V TmpArr2)) 1)))
+      ; T107: a vote's reason skips the reasons this phase gave in the last round, as a line does (FreePickLine).
+      (CallFunction|FreePickLine)
       (set TmpStr (get (V TmpArr2) (V FreeIdx)))
       (bind _rf (CallFunction|FreeFill :Text (V TmpStr)))
       (set RReason _rf)
@@ -99,7 +100,9 @@
     (bind _ls (Json|GetField (V FreePhase) "lines"))
     (set TmpArr2 _ls)
     (if (> (len (V TmpArr2)) 0)
-      (set TmpStr (get (V TmpArr2) (Math|Random|RandomIntegerinRange 0 (- (len (V TmpArr2)) 1))))
+      ; T107: FreePickLine skips the lines this phase gave in the last round, so two seats don't say the same line.
+      (CallFunction|FreePickLine)
+      (set TmpStr (get (V TmpArr2) (V FreeIdx)))
       (bind _fl (CallFunction|FreeFill :Text (V TmpStr)))
       (set RSpeech _fl)))
   (set ALo 0)
