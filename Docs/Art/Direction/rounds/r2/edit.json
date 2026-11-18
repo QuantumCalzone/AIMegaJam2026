@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 07:06 UTC",
+    "generation": "1f1e31e8-068c-6570-a3f2-0941ade44ae3",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Direction/rounds/r1b/edit_2.png",
+    "refs": [],
+    "prompt": "Edit this claymation theater image. 1) Replace every person in the front audience rows with a small clay robot seen from behind: a smooth capsule body and a round dome head with no hair, in muted rose, plum, mustard and lilac clay, most wearing a black clay top hat. 2) Remove the two small boxes at the sides of the stage and put one small cloth-covered prop table on the right side of the stage, holding a giant pink clay milkshake with a straw and a chunky red and silver toy ray gun. 3) Add a flat game UI overlay: a dark plum-black speech bubble with an orange outline and a pointed tail, floating just above the orange robot's head, and a cream paper card with rounded corners and a thin dark outline in the top right corner, both showing only a few blank gray lines, no text. Keep the five characters, the theater, the curtains, the backdrop, the lighting and the purple panel at top left exactly as they are.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]
