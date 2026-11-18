@@ -1,0 +1,77 @@
+{
+ "part": "openai/arm",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "a50b1fd2-d40e-4dde-a104-6810cff903d5",
+ "display_url": "https://hyper3d.ai/workspace/rodin/a50b1fd2-d40e-4dde-a104-6810cff903d5",
+ "prompt": "A single detached arm of a cute claymation toy robot, hanging straight down: a medium gray chunky rib-knit sweater sleeve, round in cross-section all the way around, with a rounded closed shoulder end at the top and a ribbed cuff at the bottom, ending in a small rounded pale sky blue mitten hand with a short thumb. Only the arm, no body. One closed piece, soft matte clay, no logos.",
+ "references": "none: text only",
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [
+  {
+   "generation_id": "e5319d9f-0d43-429a-8627-7497faf4c395",
+   "refs": [
+    {
+     "crop_of": "openai_arm_f",
+     "upload_id": "Ak6QB1vPOjDTvwDhrZ3MIQ"
+    }
+   ],
+   "texture_delight": true,
+   "dropped": "the crop edge cut the sleeve, so the arm came back with a flat side and holes in it",
+   "display_url": "https://hyper3d.ai/workspace/rodin/e5319d9f-0d43-429a-8627-7497faf4c395"
+  }
+ ],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   0.6504,
+   1.8981,
+   0.6117
+  ],
+  "gltf_bbox_min": [
+   -0.3255,
+   -0.9492,
+   -0.306
+  ],
+  "gltf_bbox_max": [
+   0.3249,
+   0.9489,
+   0.3057
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.2582,
+  "cm_per_gltf_m": 25.82,
+  "size_cm": {
+   "width_Y": 16.8,
+   "depth_X": 15.8,
+   "height_Z": 49.0
+  },
+  "bbox_top_z_cm": 76.8,
+  "z_range_cm": [
+   27.8,
+   76.8
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "log.json"
+ ]
+}

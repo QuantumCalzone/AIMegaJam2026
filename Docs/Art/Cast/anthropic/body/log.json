@@ -1,0 +1,97 @@
+{
+ "part": "anthropic/body",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": true
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "0681d112-2780-4a4a-99e8-cc82fca56867",
+ "display_url": "https://hyper3d.ai/workspace/rodin/0681d112-2780-4a4a-99e8-cc82fca56867",
+ "prompt": "Only the torso of a cute claymation toy robot, no head and no arms: a round egg-shaped matte orange body with a large cream oval belly patch and three small round orange buttons down the middle, a short tan neck collar disc on top, two short orange legs and round orange feet. The neck top and the shoulders are smooth closed rounded surfaces. One closed piece, soft clay, symmetrical, no logos.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "FMcc8Z8xKEqxXOBHuXl_LQ",
+   "crop": {
+    "src": "Docs/Art/Cast/anthropic/turnaround.png",
+    "rect": [
+     200,
+     410,
+     290,
+     295
+    ],
+    "fills": [
+     {
+      "clear": [
+       160,
+       445,
+       62,
+       200
+      ]
+     },
+     {
+      "clear": [
+       464,
+       445,
+       64,
+       200
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   1.6051,
+   1.8949,
+   1.5634
+  ],
+  "gltf_bbox_min": [
+   -0.8037,
+   -0.949,
+   -0.7788
+  ],
+  "gltf_bbox_max": [
+   0.8015,
+   0.9458,
+   0.7846
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.4713,
+  "cm_per_gltf_m": 47.13,
+  "size_cm": {
+   "width_Y": 75.6,
+   "depth_X": 73.7,
+   "height_Z": 89.3
+  },
+  "bbox_bottom_z_cm": 0,
+  "z_range_cm": [
+   0,
+   89.3
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "log.json"
+ ]
+}

@@ -1,0 +1,98 @@
+{
+ "part": "you/head",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate_agentic",
+ "settings": {
+  "tier": "standard",
+  "export_type": "glb",
+  "producer": "n-gons"
+ },
+ "downloaded_file": "model.glb",
+ "generation_id": "c8987209-09d7-4ad8-b632-0af7d27a1df6",
+ "display_url": "https://hyper3d.ai/workspace/rodin/c8987209-09d7-4ad8-b632-0af7d27a1df6",
+ "prompt": "Only the head of a homemade robot costume, front and side view of the same box: a teal-painted cardboard box, a little wider than tall, scuffed at the corners, with two open rectangular eye slots cut through the front so you can see into the hollow box, and a small round teal knob on each side like an ear. No face drawn, no antenna. The bottom of the box is open for the wearer's neck. Low-poly hard-surface, flat painted materials.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "iU4wrrC52xgKiJAlp8m_iw",
+   "crop": {
+    "src": "Docs/Art/Cast/you/turnaround.png",
+    "rect": [
+     218,
+     118,
+     234,
+     170
+    ],
+    "fills": [
+     {
+      "heal": [
+       252,
+       228,
+       164,
+       50
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "file": "reference_side.png",
+   "upload_id": "38TaWL5DEjW16ect-azGlA",
+   "crop": {
+    "src": "Docs/Art/Cast/you/side.png",
+    "rect": [
+     245,
+     108,
+     200,
+     178
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   0.4242,
+   0.2953,
+   0.304
+  ],
+  "gltf_bbox_min": [
+   -0.2121,
+   -0.1477,
+   -0.152
+  ],
+  "gltf_bbox_max": [
+   0.2121,
+   0.1477,
+   0.152
+  ],
+  "ue_uniform_scale_from_gltf_m": 1.5205,
+  "cm_per_gltf_m": 152.05,
+  "size_cm": {
+   "width_Y": 64.5,
+   "depth_X": 46.2,
+   "height_Z": 44.9
+  },
+  "bbox_bottom_z_cm": 113.1,
+  "z_range_cm": [
+   113.1,
+   158.0
+  ],
+  "triangles": 27074,
+  "pieces": 5,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "reference_side.png",
+  "log.json"
+ ]
+}

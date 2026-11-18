@@ -1,0 +1,77 @@
+{
+ "part": "anthropic/arm",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "2de3d640-1381-4c64-af50-6186834864dc",
+ "display_url": "https://hyper3d.ai/workspace/rodin/2de3d640-1381-4c64-af50-6186834864dc",
+ "prompt": "A single detached arm of a cute claymation toy robot, hanging straight down: a matte orange arm made of five stacked ribbed rings like a soft accordion, a rounded closed shoulder ball at the top, ending in an orange cartoon hand with four short rounded fingers, slightly curled. Round in cross-section all the way around. Only the arm, no body. One closed piece, soft clay, no logos.",
+ "references": "none: text only",
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [
+  {
+   "generation_id": "0b0b658f-275e-41f1-9043-b24ff2ed03e3",
+   "refs": [
+    {
+     "crop_of": "anthropic_arm_f",
+     "upload_id": "a6laI4Q4qxptNxk8cbwi1g"
+    }
+   ],
+   "texture_delight": true,
+   "dropped": "the body behind the arm in the crop came back as a disc fused to the arm",
+   "display_url": "https://hyper3d.ai/workspace/rodin/0b0b658f-275e-41f1-9043-b24ff2ed03e3"
+  }
+ ],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   0.721,
+   1.8991,
+   0.3596
+  ],
+  "gltf_bbox_min": [
+   -0.3608,
+   -0.9493,
+   -0.1793
+  ],
+  "gltf_bbox_max": [
+   0.3601,
+   0.9498,
+   0.1803
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.3054,
+  "cm_per_gltf_m": 30.54,
+  "size_cm": {
+   "width_Y": 22.0,
+   "depth_X": 11.0,
+   "height_Z": 58.0
+  },
+  "bbox_top_z_cm": 78.0,
+  "z_range_cm": [
+   20.0,
+   78.0
+  ],
+  "triangles": 15000,
+  "pieces": 3,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "log.json"
+ ]
+}

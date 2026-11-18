@@ -1,0 +1,114 @@
+{
+ "part": "spacexai/body",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": true
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "5245fe65-f728-448d-a220-6b2ef513db0b",
+ "display_url": "https://hyper3d.ai/workspace/rodin/5245fe65-f728-448d-a220-6b2ef513db0b",
+ "prompt": "Only the torso and legs of a cute claymation toy robot, no head and no arms: a round matte lime green ball body with a large tan oval belly patch and a raised lime lightning bolt on the belly, a short steel coil spring neck on top, short steel coil spring legs and chunky dark charcoal boots. The spring neck top and the shoulders are closed; only small round shoulder sockets at the sides. One closed piece, soft clay, symmetrical, no logos.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "UoksDjV1hQWhNjU8v_CE9g",
+   "crop": {
+    "src": "Docs/Art/Cast/spacexai/turnaround.png",
+    "rect": [
+     232,
+     326,
+     275,
+     397
+    ],
+    "fills": [
+     {
+      "clear": [
+       140,
+       360,
+       105,
+       215
+      ]
+     },
+     {
+      "clear": [
+       490,
+       360,
+       110,
+       215
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [
+  {
+   "generation_id": "9aa0ed72-20f5-490d-9d5c-37c5191c26ce",
+   "refs": [
+    {
+     "crop_of": "spacexai_body_f",
+     "upload_id": "UoksDjV1hQWhNjU8v_CE9g"
+    },
+    {
+     "crop_of": "spacexai_body_s",
+     "upload_id": "bVroDx7PYIFN3Hs1sETBxw"
+    }
+   ],
+   "texture_delight": true,
+   "dropped": "tried for a plain lime back; the side view brought both arms back into the body, so they could not move",
+   "display_url": "https://hyper3d.ai/workspace/rodin/9aa0ed72-20f5-490d-9d5c-37c5191c26ce"
+  }
+ ],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   1.2903,
+   1.8959,
+   1.2003
+  ],
+  "gltf_bbox_min": [
+   -0.6458,
+   -0.9519,
+   -0.6009
+  ],
+  "gltf_bbox_max": [
+   0.6446,
+   0.9439,
+   0.5995
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.51,
+  "cm_per_gltf_m": 51.0,
+  "size_cm": {
+   "width_Y": 65.8,
+   "depth_X": 61.2,
+   "height_Z": 96.7
+  },
+  "bbox_bottom_z_cm": 0,
+  "z_range_cm": [
+   0,
+   96.7
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "log.json"
+ ]
+}

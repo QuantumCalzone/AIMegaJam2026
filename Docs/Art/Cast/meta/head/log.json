@@ -1,0 +1,84 @@
+{
+ "part": "meta/head",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "390fc8ca-4f8b-4a3b-9bef-a329c65bdcc1",
+ "display_url": "https://hyper3d.ai/workspace/rodin/390fc8ca-4f8b-4a3b-9bef-a329c65bdcc1",
+ "prompt": "Only the head of a cute stylized claymation toy android: a medium silver-gray metallic head with a broad, squarish, grown-up face (not a baby face), thin flat slicked-back black hair as one solid smooth clay cap with a side part, round silver-gray ears, a small rounded silver-gray nose. A blank smooth face with no eyes, no mouth and no glasses. A short silver-gray neck stub with a closed bottom. One closed piece, satin brushed silver finish, toy-like, no logos.",
+ "references": "none: text only",
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [
+  {
+   "generation_id": "a6a2455f-2922-4e64-9eb3-c2a015d1b1ae",
+   "refs": [
+    {
+     "crop_of": "meta_head_f",
+     "upload_id": "MRmNJMXOJKB8r7SuWkKzwQ"
+    }
+   ],
+   "texture_delight": true,
+   "dropped": "from the turnaround with the glasses, eyes and smile painted over: the painted band came back as a gray visor plate",
+   "display_url": "https://hyper3d.ai/workspace/rodin/a6a2455f-2922-4e64-9eb3-c2a015d1b1ae"
+  },
+  {
+   "generation_id": "e6c555e1-9e4b-492c-ab87-7577ee098fa8",
+   "refs": [],
+   "texture_delight": true,
+   "dropped": "good shape, but texture_delight turned the silver skin white",
+   "display_url": "https://hyper3d.ai/workspace/rodin/e6c555e1-9e4b-492c-ab87-7577ee098fa8"
+  }
+ ],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   1.7894,
+   1.9005,
+   1.4612
+  ],
+  "gltf_bbox_min": [
+   -0.8951,
+   -0.9501,
+   -0.729
+  ],
+  "gltf_bbox_max": [
+   0.8943,
+   0.9505,
+   0.7322
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.4262,
+  "cm_per_gltf_m": 42.62,
+  "size_cm": {
+   "width_Y": 76.3,
+   "depth_X": 62.3,
+   "height_Z": 81.0
+  },
+  "bbox_bottom_z_cm": 77.0,
+  "z_range_cm": [
+   77.0,
+   158.0
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "log.json"
+ ]
+}

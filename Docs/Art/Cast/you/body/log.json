@@ -1,0 +1,110 @@
+{
+ "part": "you/body",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": true
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "d6cc9e66-8046-4264-ab52-26bfa3b4acc5",
+ "display_url": "https://hyper3d.ai/workspace/rodin/d6cc9e66-8046-4264-ab52-26bfa3b4acc5",
+ "prompt": "Only the body of a homemade robot costume worn by a person, no head and no arms: a teal-painted cardboard box worn as a torso, plain teal on the back and on both sides, scuffed at the corners, with a tan masking tape band around the middle and four bottle-cap buttons down the front; under the box, dark gray-blue jeans with rolled cuffs and canvas sneakers with cream toes and laces. The top of the box is closed. One closed piece, claymation toy style, no logos.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "jY4aoLo8QYnudxweHcORfw",
+   "crop": {
+    "src": "Docs/Art/Cast/you/turnaround.png",
+    "rect": [
+     228,
+     322,
+     218,
+     382
+    ],
+    "fills": [
+     {
+      "clear": [
+       160,
+       325,
+       77,
+       330
+      ]
+     },
+     {
+      "clear": [
+       433,
+       325,
+       80,
+       330
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [
+  {
+   "generation_id": "ffd444dd-9efd-4a0c-8846-1929120d5223",
+   "refs": [
+    {
+     "crop_of": "you_body_f",
+     "upload_id": "c1p2vHaVsO6Mt1rYr6wPyA"
+    }
+   ],
+   "texture_delight": true,
+   "dropped": "the sleeves left in the crop came back as stripes and a white patch on the box sides",
+   "display_url": "https://hyper3d.ai/workspace/rodin/ffd444dd-9efd-4a0c-8846-1929120d5223"
+  }
+ ],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   1.0239,
+   1.8997,
+   1.0309
+  ],
+  "gltf_bbox_min": [
+   -0.5122,
+   -0.949,
+   -0.5152
+  ],
+  "gltf_bbox_max": [
+   0.5117,
+   0.9507,
+   0.5156
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.5517,
+  "cm_per_gltf_m": 55.17,
+  "size_cm": {
+   "width_Y": 56.5,
+   "depth_X": 56.9,
+   "height_Z": 104.8
+  },
+  "bbox_bottom_z_cm": 0,
+  "z_range_cm": [
+   0,
+   104.8
+  ],
+  "triangles": 15000,
+  "pieces": 2,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "log.json"
+ ]
+}

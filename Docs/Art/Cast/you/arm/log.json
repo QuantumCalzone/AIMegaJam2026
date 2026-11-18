@@ -1,0 +1,79 @@
+{
+ "part": "you/arm",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": true
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "195a3e6a-495e-4af1-9a92-62722a11b8fc",
+ "display_url": "https://hyper3d.ai/workspace/rodin/195a3e6a-495e-4af1-9a92-62722a11b8fc",
+ "prompt": "A single detached arm of a homemade costume: a red and cream horizontally striped knit sweater sleeve with a rounded closed shoulder end at the top, a brown ribbed knit cuff, and a tan suede garden glove with five fingers, hanging straight down. Only the arm, no body. One closed piece, claymation toy style, no logos.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "zbJDTYdzW5kZrM70jHLg4g",
+   "crop": {
+    "src": "Docs/Art/Cast/you/turnaround.png",
+    "rect": [
+     424,
+     338,
+     92,
+     282
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   0.5987,
+   1.8999,
+   0.5371
+  ],
+  "gltf_bbox_min": [
+   -0.2995,
+   -0.9491,
+   -0.2692
+  ],
+  "gltf_bbox_max": [
+   0.2991,
+   0.9508,
+   0.2679
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.3948,
+  "cm_per_gltf_m": 39.48,
+  "size_cm": {
+   "width_Y": 23.6,
+   "depth_X": 21.2,
+   "height_Z": 75.0
+  },
+  "bbox_top_z_cm": 98.0,
+  "z_range_cm": [
+   23.0,
+   98.0
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "log.json"
+ ]
+}

@@ -1,0 +1,64 @@
+{
+ "part": "meta/glasses",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 8000,
+  "geometry_file_format": "glb",
+  "texture_delight": true
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "95bafedc-c9f1-4211-903c-28aa11bba243",
+ "display_url": "https://hyper3d.ai/workspace/rodin/95bafedc-c9f1-4211-903c-28aa11bba243",
+ "prompt": "A pair of thick black rectangular smart glasses on their own, seen from the front: chunky matte black frames with rounded square lenses, a small round camera lens set into the top left corner of the frame, a tiny white recording light dot at the top right corner, and two straight black temple arms. Clear lenses. Only the glasses, no face. Toy-like claymation style, no logos, no text.",
+ "references": "none: text only",
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   1.8982,
+   0.7325,
+   1.8264
+  ],
+  "gltf_bbox_min": [
+   -0.9487,
+   -0.3664,
+   -0.9113
+  ],
+  "gltf_bbox_max": [
+   0.9495,
+   0.3661,
+   0.9152
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.3522,
+  "cm_per_gltf_m": 35.22,
+  "size_cm": {
+   "width_Y": 66.9,
+   "depth_X": 64.3,
+   "height_Z": 25.8
+  },
+  "bbox_bottom_z_cm": 98.8,
+  "z_range_cm": [
+   98.8,
+   124.6
+  ],
+  "triangles": 8000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "log.json"
+ ]
+}

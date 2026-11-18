@@ -1,0 +1,58 @@
+{
+ "file": "model.glb",
+ "frame": "glTF: Y up, metres, as exported",
+ "triangles": 27074,
+ "vertices": 20202,
+ "welded_vertices": 13147,
+ "pieces": 5,
+ "open_edges": 0,
+ "nonmanifold_edges": 685,
+ "bbox_min": [
+  -0.2121,
+  -0.1477,
+  -0.152
+ ],
+ "bbox_max": [
+  0.2121,
+  0.1477,
+  0.152
+ ],
+ "size": [
+  0.4242,
+  0.2953,
+  0.304
+ ],
+ "materials": [
+  "Muted teal \u00b7 matte craft paint",
+  "Kraft \u00b7 unpainted liner",
+  "Abraded kraft fibres",
+  "Dark pressed board"
+ ],
+ "material_factors": [
+  [
+   0.07225258648395538,
+   0.21311672031879425,
+   0.16983507573604584,
+   1
+  ],
+  [
+   0.2478785365819931,
+   0.12733040750026703,
+   0.05290079116821289,
+   1
+  ],
+  [
+   0.3584316372871399,
+   0.22915047407150269,
+   0.10964589565992355,
+   1
+  ],
+  [
+   0.15487249195575714,
+   0.0862332433462143,
+   0.038992803543806076,
+   1
+  ]
+ ],
+ "images": []
+}

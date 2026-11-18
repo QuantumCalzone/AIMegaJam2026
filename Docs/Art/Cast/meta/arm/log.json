@@ -1,0 +1,89 @@
+{
+ "part": "meta/arm",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": true
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "1d1f3061-0b41-44fd-a6d8-4a03caf7aba0",
+ "display_url": "https://hyper3d.ai/workspace/rodin/1d1f3061-0b41-44fd-a6d8-4a03caf7aba0",
+ "prompt": "A single detached arm of a stylized toy android: a jointed pale silver metallic arm with a round shoulder joint at the top, a round elbow joint, and a silver four-fingered hand, slightly bent, hanging down. No sleeve. Only the arm, no body. One closed piece, smooth clay toy finish with a satin silver sheen, no logos.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "myV1do5RviQgh7WBupeu8g",
+   "crop": {
+    "src": "Docs/Art/Cast/meta/turnaround.png",
+    "rect": [
+     418,
+     450,
+     92,
+     135
+    ],
+    "fills": [
+     {
+      "clear": [
+       410,
+       440,
+       24,
+       70
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   0.7486,
+   1.8972,
+   1.0397
+  ],
+  "gltf_bbox_min": [
+   -0.3742,
+   -0.9472,
+   -0.5194
+  ],
+  "gltf_bbox_max": [
+   0.3744,
+   0.95,
+   0.5204
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.2108,
+  "cm_per_gltf_m": 21.08,
+  "size_cm": {
+   "width_Y": 15.8,
+   "depth_X": 21.9,
+   "height_Z": 40.0
+  },
+  "bbox_top_z_cm": 70.0,
+  "z_range_cm": [
+   30.0,
+   70.0
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "log.json"
+ ]
+}

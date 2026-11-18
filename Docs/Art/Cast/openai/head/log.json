@@ -1,0 +1,93 @@
+{
+ "part": "openai/head",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": true
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "33c56d9a-42f4-4d5a-b045-e0c21a3d6736",
+ "display_url": "https://hyper3d.ai/workspace/rodin/33c56d9a-42f4-4d5a-b045-e0c21a3d6736",
+ "prompt": "Only the head of a cute claymation toy robot, front and side view of the same head: a smooth matte pale sky blue round helmet head, slightly wider than tall, with a large blank glossy black oval screen recessed into the front, and a flat round cream ear pod on each side. The screen is empty, no eyes, no face. No neck, no collar: the bottom of the head is a smooth closed rounded surface. One closed piece, soft clay finish, no logos, no text.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "fJ0BTQlbJuH3wHGSnHHaGA",
+   "crop": {
+    "src": "Docs/Art/Cast/openai/turnaround.png",
+    "rect": [
+     155,
+     90,
+     355,
+     290
+    ]
+   }
+  },
+  {
+   "file": "reference_side.png",
+   "upload_id": "zk5FdgusiXiduED6tUATog",
+   "crop": {
+    "src": "Docs/Art/Cast/openai/side.png",
+    "rect": [
+     80,
+     90,
+     300,
+     290
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   1.8989,
+   1.5588,
+   1.6047
+  ],
+  "gltf_bbox_min": [
+   -0.9484,
+   -0.7802,
+   -0.8018
+  ],
+  "gltf_bbox_max": [
+   0.9505,
+   0.7787,
+   0.8029
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.5158,
+  "cm_per_gltf_m": 51.58,
+  "size_cm": {
+   "width_Y": 97.9,
+   "depth_X": 82.8,
+   "height_Z": 80.4
+  },
+  "bbox_bottom_z_cm": 77.6,
+  "z_range_cm": [
+   77.6,
+   158.0
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "reference_side.png",
+  "log.json"
+ ]
+}

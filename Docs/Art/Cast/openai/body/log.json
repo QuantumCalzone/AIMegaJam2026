@@ -1,0 +1,110 @@
+{
+ "part": "openai/body",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "1278e041-8aeb-46c0-86f9-fabd30dda773",
+ "display_url": "https://hyper3d.ai/workspace/rodin/1278e041-8aeb-46c0-86f9-fabd30dda773",
+ "prompt": "Only the torso and legs of a cute claymation toy robot, no head and no arms: a short pale blue teardrop body wearing a medium gray chunky knit sweater with a ribbed hem and a thin gold ribbed collar ring at the neck; under the sweater the pale blue body continues into two short stubby legs and round pale blue feet. The neck top is a smooth closed surface inside the gold collar, the shoulders are smooth closed rounded surfaces with no sleeves. One closed piece, soft matte clay, symmetrical, no logos.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "Wj7xurVXiOgbW5NeNqiaKg",
+   "crop": {
+    "src": "Docs/Art/Cast/openai/turnaround.png",
+    "rect": [
+     200,
+     378,
+     272,
+     300
+    ],
+    "fills": [
+     {
+      "clear": [
+       160,
+       395,
+       88,
+       200
+      ]
+     },
+     {
+      "clear": [
+       425,
+       395,
+       90,
+       200
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [
+  {
+   "generation_id": "c0b24547-f5bd-4b91-9733-ecbb020665c8",
+   "texture_delight": true,
+   "dropped": "texture_delight bleached the gray knit sweater to near white",
+   "refs": [
+    {
+     "crop_of": "openai_body_f",
+     "upload_id": "Wj7xurVXiOgbW5NeNqiaKg"
+    }
+   ],
+   "display_url": "https://hyper3d.ai/workspace/rodin/c0b24547-f5bd-4b91-9733-ecbb020665c8"
+  }
+ ],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   1.1616,
+   1.9019,
+   1.1243
+  ],
+  "gltf_bbox_min": [
+   -0.5807,
+   -0.9491,
+   -0.562
+  ],
+  "gltf_bbox_max": [
+   0.5809,
+   0.9528,
+   0.5623
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.4201,
+  "cm_per_gltf_m": 42.01,
+  "size_cm": {
+   "width_Y": 48.8,
+   "depth_X": 47.2,
+   "height_Z": 79.9
+  },
+  "bbox_bottom_z_cm": 0,
+  "z_range_cm": [
+   0,
+   79.9
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "log.json"
+ ]
+}

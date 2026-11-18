@@ -1,0 +1,110 @@
+{
+ "part": "meta/body",
+ "task": "T103 prep (steps 1 to 3), 2026-11-18",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb",
+ "generation_id": "f16da075-9e98-49d6-8f4c-aede373d57ab",
+ "display_url": "https://hyper3d.ai/workspace/rodin/f16da075-9e98-49d6-8f4c-aede373d57ab",
+ "prompt": "Only the torso and legs of a stylized claymation toy android, no head and no arms: a black short-sleeve top with a wide mustard-gold band across the middle, a shiny gold link chain necklace lying on the chest, black pants and silver-gray shoes, a short silver-gray neck stub on top. The sleeve openings and the neck top are closed. One closed piece, soft clay, symmetrical, no logos.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "44rwROOOcmrCSlHIEPaHuw",
+   "crop": {
+    "src": "Docs/Art/Cast/meta/turnaround.png",
+    "rect": [
+     222,
+     372,
+     240,
+     355
+    ],
+    "fills": [
+     {
+      "clear": [
+       170,
+       428,
+       58,
+       170
+      ]
+     },
+     {
+      "clear": [
+       452,
+       428,
+       58,
+       170
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 25 calls, about 12.5 credits in all",
+ "tries": [
+  {
+   "generation_id": "fb090bab-ee5d-416f-bcfb-6c36212090a0",
+   "texture_delight": true,
+   "dropped": "texture_delight turned the shoes white and the gold chain pale",
+   "refs": [
+    {
+     "crop_of": "meta_body_f",
+     "upload_id": "44rwROOOcmrCSlHIEPaHuw"
+    }
+   ],
+   "display_url": "https://hyper3d.ai/workspace/rodin/fb090bab-ee5d-416f-bcfb-6c36212090a0"
+  }
+ ],
+ "approved": "by my person on the sheet Docs/Art/Cast/models_sheet.png, 2026-11-18",
+ "suggested_fit": {
+  "gltf_size_m": [
+   1.2796,
+   1.9026,
+   0.8565
+  ],
+  "gltf_bbox_min": [
+   -0.6397,
+   -0.9522,
+   -0.4285
+  ],
+  "gltf_bbox_max": [
+   0.64,
+   0.9504,
+   0.428
+  ],
+  "ue_uniform_scale_from_gltf_m": 0.4047,
+  "cm_per_gltf_m": 40.47,
+  "size_cm": {
+   "width_Y": 51.8,
+   "depth_X": 34.7,
+   "height_Z": 77.0
+  },
+  "bbox_bottom_z_cm": 0,
+  "z_range_cm": [
+   0,
+   77.0
+  ],
+  "triangles": 15000,
+  "pieces": 1,
+  "open_edges": 0
+ },
+ "frame": "glTF as exported: metres, +Y up, the part faces +Z. Rodin scales the longest side to about 1.9 (the agentic box head is at its own scale). See Docs/tasks/T103-build.md",
+ "files": [
+  "model.glb",
+  "texture_diffuse.png",
+  "texture_normal.png",
+  "texture_metallic_roughness.png",
+  "thumbnail.png",
+  "turntable.png",
+  "mesh_stats.json",
+  "reference_front.png",
+  "log.json"
+ ]
+}
