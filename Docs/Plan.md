@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T84, T85 and T61 come next (T87 is done) (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T107 (the bugs T87 found), T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -197,6 +197,13 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** `Content/NHOS/Maps/L_Stage.umap`, `Content/NHOS/Stage/Set/**` (with `BP_AudienceBot`), `Content/NHOS/Stage/Materials/**`, `Content/NHOS/Stage/BP_Backdrop.uasset` only if the flat changes, `Docs/Art/Set/` (models and logs), `Docs/Assets.md`, the design doc, `Docs/tasks/T106.md`.
   - **Details:** [Docs/tasks/T106.md](tasks/T106.md)
 
+- [ ] **T107 Fix the bugs T87 found: late banners, a robot hidden at the Back mark, and three small ones**
+  - **Model and effort:** Opus 5.5, high. Debugging across the banner queue, the stage director's spots, free mode and the graph sources.
+  - **Depends on:** T87 (it found these bugs, and its reveal shows the banners)
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE show; my OK on any change to how long banners show or how long the line queue waits.
+  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset` (`ShowBanner`, `NextBanner`; the chain machine's asset while the two-machine setup is active), `Content/NHOS/Data/pacing.json` only with my OK, `Content/NHOS/Stage/BP_StageDirector.uasset` (`PickSpot`) or `Content/NHOS/Maps/L_Stage.umap` and its marks, `Content/NHOS/Core/BPC_LLMClient.uasset` (`FreeReply`), `Content/NHOS/Core/BPC_LinePlayer.uasset` (`LoadPacing`) only if `fast_lines` is read again, `Docs/switches.example.json`, `Content/NHOS/Data/free_mode.json` (`_readme`) only if needed, `Tools/check_prompts.py` or a new `Tools/check_graphs.py`, this file's build notes, `Graphs/` files for the graphs it writes, `Docs/tasks/T107.md`.
+  - **Details:** [Docs/tasks/T107.md](tasks/T107.md)
+
 - [ ] **T84 Scene Prep shows the scene and Start the scene in the middle**
   - **Model and effort:** Opus 5.5, high. A layout change across Scene Prep's widgets, judged from screenshots at two sizes.
   - **Depends on:** T38 (the chat hidden at each show's start and its Show chat button: this task decides what the lower panel shows in scene 1's Scene Prep; if T38 is cut, take it off this line), T78 (the lower panel's width, which the middle panel must clear in scenes 2 on), T88 (the clue rows in the card's note box, and `PrepPrompt`'s turn line), T90 (its design doc edit goes in the files in `Docs/Design/`)
@@ -213,7 +220,7 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [ ] **T34 Fix the in-show screen**
   - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
-  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes), and T64, T65, T66, T78 (the action builder, the preview line, the speech field, the timer and the emotion chip are in the input row it polishes), and T73 (the lines type out on the screen it polishes), and T84, T85 (Scene Prep's middle panel and the cast's hover cards; they settle T34-build's 2.9 and the names in Scene Prep from its 2.1), and T87 (the reactions to a win play on the screen it polishes), and T88 (each scene's clue on my card).
+  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes), and T64, T65, T66, T78 (the action builder, the preview line, the speech field, the timer and the emotion chip are in the input row it polishes), and T73 (the lines type out on the screen it polishes), and T84, T85 (Scene Prep's middle panel and the cast's hover cards; they settle T34-build's 2.9 and the names in Scene Prep from its 2.1), and T87 (the reactions to a win play on the screen it polishes), and T88 (each scene's clue on my card), and T107 (the banner timing: T34-build's `NextBanner` rewrite in 2.6 starts from T107's version and keeps what T107's findings say it must).
   - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
   - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_SpeechBubble.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
   - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
