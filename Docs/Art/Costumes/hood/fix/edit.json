@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 22:49 UTC",
+    "generation": "1f1e3a25-30ff-6d80-8cfe-668dda07392a",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/hood/candidate_2.png",
+    "refs": [],
+    "prompt": "Shorten this clay hood's cape: cut it off so it ends just past the shoulders, a short shoulder cape that would end at the top of the chest, with a softly rounded hem. Keep the hood itself exactly as it is: its shape, its peak, its deep empty face opening, its moss green color and matte clay look. Keep the plain light gray background and the soft even light. Single object, whole in frame, no cast shadow.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

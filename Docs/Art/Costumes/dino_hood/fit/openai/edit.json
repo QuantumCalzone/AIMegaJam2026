@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "generation": "1f1e3a34-33e8-6060-a830-de9f6f3d843c",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dino_hood.png"
+    ],
+    "prompt": "Put the grass green clay dino hood from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The dino head goes over the whole round head, and the robot's face looks out from between the open jaws: the whole dark screen face, eyes and mouth show inside the open mouth, the lower jaw under the chin. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

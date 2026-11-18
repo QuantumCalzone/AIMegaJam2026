@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 23:00 UTC",
+    "generation": "1f1e3a3d-0ec0-6860-9639-9bc3428ba8ba",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/cubehead_beanie.png",
+    "refs": [],
+    "prompt": "Remove the cardboard box character completely: its box head, eye slots, eyes, drawn smile, straw and ping-pong ball, ear knobs, scarf, sleeves and box body. Leave only the boxy gray-blue knit beanie with its pompom that it wears on its head, on its own, worn by no one, keeping exactly the same square boxy shape, proportions, size, color and matte clay look, with an empty hollow where the head was. Replace the red curtain and everything else with a plain light gray background, soft even studio light, no cast shadow. Single object, centered, whole in frame, seen from the front and a little from one side.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 21:35 UTC",
+    "generation": "1f1e397f-ee28-6160-9b48-c90d5a5138bc",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/you_canvas.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig_you.png"
+    ],
+    "prompt": "Remake the chestnut clay bob wig from the second image for a cube head, and show it twice. Left: the teal cardboard box character wears it. The cube version is boxy, not round: a flat square top that sits flat on the box's lid, four flat straight sides that hang straight down from the box's top edges to just below the box's bottom edge, with square corners, and a straight thick fringe across the top of the box's front that ends above the two eye slots. The two eye slots with the eyes, the drawn smile and the ping-pong ball on its straw stay fully visible; the straw and ball poke up through the wig's flat top. Right, on the plain light gray background: the same cube-version wig on its own, worn by no one, in a three-quarter front view, whole, centered, with a square opening at the front, no cast shadow. Keep the box character, its colors, body, pose, size and place, the red curtain and the wooden stage exactly as they are. Same matte clay style.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

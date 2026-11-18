@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "generation": "1f1e3a33-9079-6a50-b5bd-b1d842609544",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The helmet sits on the round dome above the screen face, the straps run down the sides past the ear pods, and the beard hangs from under the screen down over the chest. The whole screen face, eyes and mouth show through the gap. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

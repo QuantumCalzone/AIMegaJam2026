@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 21:37 UTC",
+    "generation": "1f1e3983-62f7-6510-889a-76577d4a9413",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/pair_openai_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig_you.png"
+    ],
+    "prompt": "Put the chestnut clay bob wig from the second image on both robots in the first image, one wig each. Left, the pale blue robot: the wig sits snugly on its round dome, the fringe just above its dark screen face, the sides falling to the jaw in front of its cream ear pods. Right, the orange robot with gold glasses: the same wig on its round head, the fringe above the glasses, the sides in front of its ear pods, and the amber light on its stalk poking up through the top of the wig. Both faces, screens, eyes, glasses and mouths stay fully visible. Keep everything else exactly as it is: both robots, their colors, bodies, poses, sizes and places, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

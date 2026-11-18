@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "generation": "1f1e3a2c-21d8-6e40-b2c7-fd6e723daf80",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig.png"
+    ],
+    "prompt": "Put the chestnut clay bob wig from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The wig covers its slicked black hair completely, the fringe above its black glasses, the sides falling past its ears to the jaw. The face, glasses and smile stay visible. The wig covers its slicked black hair completely, the fringe above its black glasses, the sides falling past its ears to the jaw. The face, glasses and smile stay visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

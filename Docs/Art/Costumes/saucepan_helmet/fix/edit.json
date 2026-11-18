@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 22:49 UTC",
+    "generation": "1f1e3a25-3fb4-67e0-9509-d4f44ea9f093",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/saucepan_helmet/candidate_1.png",
+    "refs": [],
+    "prompt": "Move the handle: take the long handle off the top of this upside-down black clay pot and attach it to the side of the pot's rolled bottom rim instead, sticking straight out horizontally to the right, long and thick, like a saucepan handle. The top of the pot becomes a smooth flat round bottom with nothing on it. Keep the pot's dome shape, its rolled rim, its matte black clay look, the plain light gray background and the soft even light. Single object, whole in frame, no cast shadow.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

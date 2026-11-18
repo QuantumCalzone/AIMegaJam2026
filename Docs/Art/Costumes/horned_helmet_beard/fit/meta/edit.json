@@ -1,0 +1,30 @@
+[
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "generation": "1f1e3a33-8faa-6200-bbd0-3a5c0398e015",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin; the face, glasses and smile show through the gap. The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin; the face, glasses and smile show through the gap. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  },
+  {
+    "time": "2026-11-18 22:58 UTC",
+    "generation": "1f1e3a39-9968-6930-987d-98c70cf989d7",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin, below its smile: the face, glasses and the whole smile stay fully visible above the beard. No moustache. The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin, below its smile: the face, glasses and the whole smile stay fully visible above the beard. No moustache. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

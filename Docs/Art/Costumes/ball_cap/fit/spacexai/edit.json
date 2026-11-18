@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "generation": "1f1e3a2e-a900-6470-b2c1-03ab45981c97",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The cap's crown fits snugly over the top of the round dome, the peak pointing forward above the dark screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

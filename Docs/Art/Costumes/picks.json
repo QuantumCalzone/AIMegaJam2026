@@ -1,0 +1,19 @@
+{
+  "_readme": "T96: my person's pick for each costume (2026-11-18), the file it is, and the edit made to it before fitting. pick.png in each folder is the picked image after its edit.",
+  "words": "My picks + 3 edits (Recommended)",
+  "costumes": {
+    "hood": {"pick": "candidate_2.png", "edit": "shortened to end at the shoulders, so the seat color shows"},
+    "dark_shades": {"pick": "candidate_2.png"},
+    "top_hat": {"pick": "candidate_1.png"},
+    "bob_wig": {"pick": "candidate_1.png"},
+    "ball_cap": {"pick": "candidate_2.png"},
+    "wide_brim_hat": {"pick": "candidate_1.png"},
+    "saucepan_helmet": {"pick": "candidate_1.png", "round": 2, "edit": "handle turned out to the side"},
+    "wizard_hat": {"pick": "candidate_1.png"},
+    "tiara": {"pick": "candidate_2.png"},
+    "fedora": {"pick": "candidate_1.png"},
+    "horned_helmet_beard": {"pick": "r1_candidate_1.png", "round": 1, "edit": "the face taken out, an empty gap left"},
+    "dino_hood": {"pick": "candidate_2.png"},
+    "beanie": {"pick": "candidate_1.png"}
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "generation": "1f1e3a34-e6a2-66b0-bf3d-0295a377b645",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_beanie.png"
+    ],
+    "prompt": "Put the gray-blue clay knit beanie from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The beanie is pulled over its slicked hair, the cuff above its glasses and ears. The beanie is pulled over its slicked hair, the cuff above its glasses and ears. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

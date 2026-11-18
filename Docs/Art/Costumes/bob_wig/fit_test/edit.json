@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 21:34 UTC",
+    "generation": "1f1e397c-bb80-6e40-9af3-853cbfb30bcd",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/lineup_tall.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig.png"
+    ],
+    "prompt": "Put the chestnut clay bob wig from the second image on all five characters in the first image, so it fits each head's own shape, like a stop-motion costume fitting. 1) The three round robots on the left (pale blue, orange, lime): the wig sits snugly on the round dome of the head, the fringe just above the dark screen face, the sides falling to the jaw and tucked in front of the ear pods, so the whole face screen, eyes, glasses and mouth stay visible. The orange robot's amber light on its stalk still pokes up through the top of the wig. 2) The silver android, fourth: the wig goes over its slicked black hair and covers it completely, the fringe above its black glasses, the sides falling past its ears to the jaw; face, glasses and smile stay visible. 3) The teal cardboard box character on the right: remake the wig for a cube head, not a round one: a boxy bob with a flat top that sits flat on the box's lid, straight square sides that hang down from the box's top edges, and a straight fringe across the top of the box's front, above the two eye slots; the eye slots, the drawn smile and the ping-pong ball on its straw stay visible, the ball poking up through the wig's top. Keep everything else exactly as it is: the five characters, their faces, colors, bodies, poses, sizes and places, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

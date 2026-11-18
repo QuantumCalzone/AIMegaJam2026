@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "generation": "1f1e3a2c-1e56-6740-9c66-008f19c5e7c4",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig.png"
+    ],
+    "prompt": "Put the chestnut clay bob wig from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The wig sits snugly on the round dome, the fringe just above the dark screen face, the sides falling to the jaw in front of the ear pods. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "generation": "1f1e3a2d-a1f0-6870-a051-01e852822fb5",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dark_shades.png"
+    ],
+    "prompt": "Put the chunky dark clay shades from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The shades replace its black glasses: take the black glasses off. The shades sit over its eyes, the arms over its ears. The shades replace its black glasses: take the black glasses off. The shades sit over its eyes, the arms over its ears. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

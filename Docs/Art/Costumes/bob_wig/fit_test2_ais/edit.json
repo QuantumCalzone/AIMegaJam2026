@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 21:35 UTC",
+    "generation": "1f1e397f-355c-6f50-9ce7-6c63b1e51390",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/ais.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig_ais.png"
+    ],
+    "prompt": "Put the chestnut clay bob wig from the second image on each of the four characters in the first image, one wig per character, all four, fitted to each head like a stop-motion costume fitting. Character 1, far left, the pale blue robot: the wig sits snugly on its round dome, the fringe just above its dark screen face, the sides falling to the jaw in front of its ear pods. Character 2, the orange robot with gold glasses: the same wig on its round head, the fringe above the glasses, the amber light on its stalk poking up through the top of the wig. Character 3, the lime robot with the long nose: the same wig on its round head, the fringe above its dark visor and cocked brow. Character 4, the silver android: the wig covers its slicked black hair completely, the fringe above its black glasses, the sides past its ears to the jaw. On every character the face, screen, eyes, glasses, nose and mouth stay fully visible. Keep everything else exactly as it is: the four characters, their faces, colors, bodies, poses, sizes and places, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

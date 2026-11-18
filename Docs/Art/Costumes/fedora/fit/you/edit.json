@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "generation": "1f1e3a32-c4fa-6eb0-b95a-347cde8d336e",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_fedora.png"
+    ],
+    "prompt": "Put the dark charcoal clay fedora from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the fedora for a cube head, not a round one: its crown has a square base that sits flat on the box's flat lid, the brim snapped down at the front above the eye slots. The straw and ping-pong ball poke up out of the crown. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

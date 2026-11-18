@@ -1,0 +1,1808 @@
+[
+  {
+    "time": "2026-11-18 21:04 UTC",
+    "kind": "candidates",
+    "costume": "hood",
+    "round": 1,
+    "generation": "1f1e393b-296c-6900-a424-3022693dba2c",
+    "seed": 2078539086,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. An empty hooded cloak hood in moss green clay: a deep, softly peaked hood with a wide rounded face opening, and a short draped shoulder cape attached at its base, thick heavy folds, no clasp, no buttons, no laces. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/hood/candidate_1.png",
+      "Docs/Art/Costumes/hood/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 5581,
+    "balance_after": 5279
+  },
+  {
+    "time": "2026-11-18 21:04 UTC",
+    "kind": "candidates",
+    "costume": "ball_cap",
+    "round": 1,
+    "generation": "1f1e393b-2eab-6560-9b76-8cefb5c49f70",
+    "seed": 481363600,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A plain baseball cap in cherry red clay: a rounded six-panel crown with a round button on top and a thick curved peak at the front. Plain, no logo, no patch. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/ball_cap/candidate_1.png",
+      "Docs/Art/Costumes/ball_cap/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 5581,
+    "balance_after": 5212
+  },
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "kind": "candidates",
+    "costume": "wide_brim_hat",
+    "round": 1,
+    "generation": "1f1e393b-758b-6de0-9d52-f07e616e2954",
+    "seed": 366065277,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A wide-brim field hat in straw-yellow clay: a rounded, dented crown with a thick band, and a very wide floppy brim that dips a little at the front and back, like a farm hat or an explorer's hat. Smooth clay, no woven texture. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/wide_brim_hat/candidate_1.png",
+      "Docs/Art/Costumes/wide_brim_hat/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 5212,
+    "balance_after": 5044
+  },
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "kind": "candidates",
+    "costume": "dark_shades",
+    "round": 1,
+    "generation": "1f1e393b-776f-6440-a57d-ff97bc4edc11",
+    "seed": 1041373516,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A pair of chunky dark sunglasses in matte near-black clay: one thick rounded-rectangle frame with two big opaque matte black lenses, a thick bridge, and two short thick temple arms folded open. Wide and bold, like a secret agent's shades. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/dark_shades/candidate_1.png",
+      "Docs/Art/Costumes/dark_shades/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 5212,
+    "balance_after": 5027
+  },
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "kind": "candidates",
+    "costume": "saucepan_helmet",
+    "round": 1,
+    "generation": "1f1e393c-21e2-6850-8524-c6f761c1520b",
+    "seed": 409276702,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A homemade helmet made from an upside-down saucepan in matte black clay: a round deep pot turned bottom-up, with a thick rolled rim, and a long thick straight handle sticking out to one side. A silly costume helmet, not a real film helmet. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/saucepan_helmet/candidate_1.png",
+      "Docs/Art/Costumes/saucepan_helmet/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 5044,
+    "balance_after": 4843
+  },
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "kind": "candidates",
+    "costume": "top_hat",
+    "round": 1,
+    "generation": "1f1e393c-5647-69b0-bdc2-944f5c8734c1",
+    "seed": 2124290711,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A tall top hat in rich purple clay: a straight tall crown slightly wider at the top, a flat top, a thick band near the base, and a wide brim curled up at both sides. Chunky and theatrical. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/top_hat/candidate_1.png",
+      "Docs/Art/Costumes/top_hat/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 5027,
+    "balance_after": 4843
+  },
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "kind": "candidates",
+    "costume": "wizard_hat",
+    "round": 1,
+    "generation": "1f1e393c-cfa7-6620-b46e-452cf2542e5d",
+    "seed": 1938199400,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A tall wizard hat in dusty gray clay: a tall soft cone whose tip flops over to one side, a thick band at its base, and a wide, slightly wavy round brim. No stars, no moons, no patterns. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/wizard_hat/candidate_1.png",
+      "Docs/Art/Costumes/wizard_hat/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4843,
+    "balance_after": 4809
+  },
+  {
+    "time": "2026-11-18 21:06 UTC",
+    "kind": "candidates",
+    "costume": "bob_wig",
+    "round": 1,
+    "generation": "1f1e393d-0fb1-66d0-8c06-a79dd85da424",
+    "seed": 1248727126,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A chin-length bob wig in chestnut brown clay, sculpted as one smooth solid mass with no separate strands: a rounded dome top, a straight thick fringe across the front, and sides that curve under at the bottom, with an open hollow face opening at the front. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/candidate_1.png",
+      "Docs/Art/Costumes/bob_wig/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4843,
+    "balance_after": 4792
+  },
+  {
+    "time": "2026-11-18 21:06 UTC",
+    "kind": "candidates",
+    "costume": "tiara",
+    "round": 1,
+    "generation": "1f1e393d-8ee9-6c90-b8fe-1c1923b3b470",
+    "seed": 1220882578,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A chunky tiara in pale silver-white clay: a thick curved headband with three big rounded points rising at the front, the middle point tallest, each point topped with a big round smooth bead. Bold and simple, no small gems, no filigree. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/tiara/candidate_1.png",
+      "Docs/Art/Costumes/tiara/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4809,
+    "balance_after": 4792
+  },
+  {
+    "time": "2026-11-18 21:16 UTC",
+    "kind": "candidates",
+    "costume": "fedora",
+    "round": 1,
+    "generation": "1f1e3954-490f-6960-b9e4-be8431b20c10",
+    "seed": 2128992056,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A classic fedora in dark charcoal gray clay: a crown with a deep pinch at the front and a long crease along the top, a thick band, and a medium brim snapped down at the front and up at the back. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/fedora/candidate_1.png",
+      "Docs/Art/Costumes/fedora/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4792,
+    "balance_after": 4775
+  },
+  {
+    "time": "2026-11-18 21:16 UTC",
+    "kind": "candidates",
+    "costume": "horned_helmet_beard",
+    "round": 1,
+    "generation": "1f1e3954-aa36-6310-a539-aa97c6cbcc13",
+    "seed": 281803000,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A dwarf costume piece in clay: a round iron-gray helmet with a thick rim and two big curved horns, joined at both sides by thick cheek straps to a huge bushy ginger beard sculpted as one solid rounded mass, with a wide empty gap between the helmet rim and the beard where a face would show. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/candidate_1.png",
+      "Docs/Art/Costumes/horned_helmet_beard/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4775,
+    "balance_after": 4758
+  },
+  {
+    "time": "2026-11-18 21:16 UTC",
+    "kind": "candidates",
+    "costume": "dino_hood",
+    "round": 1,
+    "generation": "1f1e3954-f287-6600-bd8d-1d2e4e7657ad",
+    "seed": 2050014947,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A dinosaur costume hood in grass green clay: a big friendly cartoon dinosaur head with its jaws wide open, a row of big rounded white teeth on the upper and lower jaw, two round eyes on top, small rounded spikes down the back, and a wide empty opening inside the open mouth where a face would look out. Cute, not scary. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/dino_hood/candidate_1.png",
+      "Docs/Art/Costumes/dino_hood/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4758,
+    "balance_after": 4741
+  },
+  {
+    "time": "2026-11-18 21:16 UTC",
+    "kind": "candidates",
+    "costume": "beanie",
+    "round": 1,
+    "generation": "1f1e3955-3d07-6a40-97db-a413c6e0615f",
+    "seed": 2121235831,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A snug knit beanie in gray-blue clay: a short rounded dome with a thick folded cuff at the bottom and a few broad vertical ribs, and one big round pompom on top. Short and round, not tall. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table",
+    "files": [
+      "Docs/Art/Costumes/beanie/candidate_1.png",
+      "Docs/Art/Costumes/beanie/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4741,
+    "balance_after": 4724
+  },
+  {
+    "time": "2026-11-18 21:17 UTC",
+    "kind": "candidates",
+    "costume": "saucepan_helmet",
+    "round": 1,
+    "generation": "1f1e3956-c8c1-6cb0-a4e6-c526cb8f2ec8",
+    "seed": 25291224,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A silly homemade costume helmet in matte black clay: a short round cooking pot turned upside down so its flat round bottom is on top and its open mouth faces down, a thick rolled rim around the bottom edge, and one long thick straight pan handle sticking out horizontally from the rim to the side. Shaped like a dome helmet, not a real film helmet. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table, frying pan, skillet, lid, knob, plunger, upright pot, open top",
+    "files": [
+      "Docs/Art/Costumes/saucepan_helmet/candidate_1.png",
+      "Docs/Art/Costumes/saucepan_helmet/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4724,
+    "balance_after": 4707
+  },
+  {
+    "time": "2026-11-18 21:17 UTC",
+    "kind": "candidates",
+    "costume": "horned_helmet_beard",
+    "round": 1,
+    "generation": "1f1e3957-125f-6020-8a23-3a60f924eaff",
+    "seed": 2082892322,
+    "model": "lucid-origin",
+    "size": [
+      1024,
+      1024
+    ],
+    "count": 2,
+    "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. An empty dwarf costume set in clay, front view: a round iron-gray helmet with a thick rim and two big curved horns, and a huge bushy ginger beard sculpted as one solid rounded mass, joined to the helmet by thick gray straps down both sides. Between the helmet rim and the top of the beard there is a big empty hole, and the plain gray background shows through it. Nothing inside the hole. Shown on its own, worn by no one. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+    "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, head, face, mannequin, person, robot, character, body, glow, transparent, reflections, multiple objects, cropped, hands, table, nose, eyes, ears, skin, cheeks, face, mouth, head inside",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/candidate_1.png",
+      "Docs/Art/Costumes/horned_helmet_beard/candidate_2.png"
+    ],
+    "nominal_cost": 17.0,
+    "balance_before": 4707,
+    "balance_after": 4690
+  },
+  {
+    "time": "2026-11-18 21:34 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit_test",
+    "generation": "1f1e397c-bb80-6e40-9af3-853cbfb30bcd",
+    "source": "Docs/Art/Costumes/_canvas/lineup_tall.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chestnut clay bob wig from the second image on all five characters in the first image, so it fits each head's own shape, like a stop-motion costume fitting. 1) The three round robots on the left (pale blue, orange, lime): the wig sits snugly on the round dome of the head, the fringe just above the dark screen face, the sides falling to the jaw and tucked in front of the ear pods, so the whole face screen, eyes, glasses and mouth stay visible. The orange robot's amber light on its stalk still pokes up through the top of the wig. 2) The silver android, fourth: the wig goes over its slicked black hair and covers it completely, the fringe above its black glasses, the sides falling past its ears to the jaw; face, glasses and smile stay visible. 3) The teal cardboard box character on the right: remake the wig for a cube head, not a round one: a boxy bob with a flat top that sits flat on the box's lid, straight square sides that hang down from the box's top edges, and a straight fringe across the top of the box's front, above the two eye slots; the eye slots, the drawn smile and the ping-pong ball on its straw stay visible, the ball poking up through the wig's top. Keep everything else exactly as it is: the five characters, their faces, colors, bodies, poses, sizes and places, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit_test/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4690,
+    "balance_after": 4664
+  },
+  {
+    "time": "2026-11-18 21:35 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit_test2_ais",
+    "generation": "1f1e397f-355c-6f50-9ce7-6c63b1e51390",
+    "source": "Docs/Art/Costumes/_canvas/ais.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig_ais.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chestnut clay bob wig from the second image on each of the four characters in the first image, one wig per character, all four, fitted to each head like a stop-motion costume fitting. Character 1, far left, the pale blue robot: the wig sits snugly on its round dome, the fringe just above its dark screen face, the sides falling to the jaw in front of its ear pods. Character 2, the orange robot with gold glasses: the same wig on its round head, the fringe above the glasses, the amber light on its stalk poking up through the top of the wig. Character 3, the lime robot with the long nose: the same wig on its round head, the fringe above its dark visor and cocked brow. Character 4, the silver android: the wig covers its slicked black hair completely, the fringe above its black glasses, the sides past its ears to the jaw. On every character the face, screen, eyes, glasses, nose and mouth stay fully visible. Keep everything else exactly as it is: the four characters, their faces, colors, bodies, poses, sizes and places, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit_test2_ais/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4664,
+    "balance_after": 4638
+  },
+  {
+    "time": "2026-11-18 21:35 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit_test2_you",
+    "generation": "1f1e397f-ee28-6160-9b48-c90d5a5138bc",
+    "source": "Docs/Art/Costumes/_canvas/you_canvas.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig_you.png"
+    ],
+    "count": 1,
+    "prompt": "Remake the chestnut clay bob wig from the second image for a cube head, and show it twice. Left: the teal cardboard box character wears it. The cube version is boxy, not round: a flat square top that sits flat on the box's lid, four flat straight sides that hang straight down from the box's top edges to just below the box's bottom edge, with square corners, and a straight thick fringe across the top of the box's front that ends above the two eye slots. The two eye slots with the eyes, the drawn smile and the ping-pong ball on its straw stay fully visible; the straw and ball poke up through the wig's flat top. Right, on the plain light gray background: the same cube-version wig on its own, worn by no one, in a three-quarter front view, whole, centered, with a square opening at the front, no cast shadow. Keep the box character, its colors, body, pose, size and place, the red curtain and the wooden stage exactly as they are. Same matte clay style.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit_test2_you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4638,
+    "balance_after": 4612
+  },
+  {
+    "time": "2026-11-18 21:36 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit_test3_badcrop",
+    "generation": "1f1e3981-71d5-6b10-9c75-8579e199f05a",
+    "source": "Docs/Art/Costumes/_canvas/pair_openai_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig_you.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chestnut clay bob wig from the second image on both robots in the first image, one wig each. Left, the pale blue robot: the wig sits snugly on its round dome, the fringe just above its dark screen face, the sides falling to the jaw in front of its cream ear pods. Right, the orange robot with gold glasses: the same wig on its round head, the fringe above the glasses, the sides in front of its ear pods, and the amber light on its stalk poking up through the top of the wig. Both faces, screens, eyes, glasses and mouths stay fully visible. Keep everything else exactly as it is: both robots, their colors, bodies, poses, sizes and places, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit_test3_badcrop/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4612,
+    "balance_after": 4586,
+    "note": "Folder renamed from fit_test3_pair: the source was cropped wrong (sips -c ignores its offset)."
+  },
+  {
+    "time": "2026-11-18 21:37 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit_test4_pair",
+    "generation": "1f1e3983-62f7-6510-889a-76577d4a9413",
+    "source": "Docs/Art/Costumes/_canvas/pair_openai_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig_you.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chestnut clay bob wig from the second image on both robots in the first image, one wig each. Left, the pale blue robot: the wig sits snugly on its round dome, the fringe just above its dark screen face, the sides falling to the jaw in front of its cream ear pods. Right, the orange robot with gold glasses: the same wig on its round head, the fringe above the glasses, the sides in front of its ear pods, and the amber light on its stalk poking up through the top of the wig. Both faces, screens, eyes, glasses and mouths stay fully visible. Keep everything else exactly as it is: both robots, their colors, bodies, poses, sizes and places, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit_test4_pair/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4586,
+    "balance_after": 4560
+  },
+  {
+    "time": "2026-11-18 22:49 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fix",
+    "generation": "1f1e3a25-1c30-6b20-b61e-218c0c519e72",
+    "source": "Docs/Art/Costumes/horned_helmet_beard/r1_candidate_1.png",
+    "refs": [],
+    "count": 1,
+    "prompt": "Take the face out of this dwarf costume piece: remove the nose, the cheeks, the eyes, the ears and all skin, and leave an empty open gap between the helmet's rim and the top of the beard, where the plain light gray background shows through. Join the helmet to the beard with a thick gray strap down each side where the ears were. Keep the helmet, its two curved horns, the big ginger beard and moustache, their colors and matte clay look exactly as they are, and keep the plain light gray background and the soft even light. Single object, whole in frame, no cast shadow.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fix/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4534,
+    "balance_after": 4456
+  },
+  {
+    "time": "2026-11-18 22:49 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/hood/fix",
+    "generation": "1f1e3a25-30ff-6d80-8cfe-668dda07392a",
+    "source": "Docs/Art/Costumes/hood/candidate_2.png",
+    "refs": [],
+    "count": 1,
+    "prompt": "Shorten this clay hood's cape: cut it off so it ends just past the shoulders, a short shoulder cape that would end at the top of the chest, with a softly rounded hem. Keep the hood itself exactly as it is: its shape, its peak, its deep empty face opening, its moss green color and matte clay look. Keep the plain light gray background and the soft even light. Single object, whole in frame, no cast shadow.",
+    "files": [
+      "Docs/Art/Costumes/hood/fix/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4534,
+    "balance_after": 4456
+  },
+  {
+    "time": "2026-11-18 22:49 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/saucepan_helmet/fix",
+    "generation": "1f1e3a25-3fb4-67e0-9509-d4f44ea9f093",
+    "source": "Docs/Art/Costumes/saucepan_helmet/candidate_1.png",
+    "refs": [],
+    "count": 1,
+    "prompt": "Move the handle: take the long handle off the top of this upside-down black clay pot and attach it to the side of the pot's rolled bottom rim instead, sticking straight out horizontally to the right, long and thick, like a saucepan handle. The top of the pot becomes a smooth flat round bottom with nothing on it. Keep the pot's dome shape, its rolled rim, its matte black clay look, the plain light gray background and the soft even light. Single object, whole in frame, no cast shadow.",
+    "files": [
+      "Docs/Art/Costumes/saucepan_helmet/fix/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4534,
+    "balance_after": 4456
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/top_hat/fit/openai",
+    "generation": "1f1e3a2a-84ea-6710-a719-24006ba67492",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_top_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the purple clay top hat from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The top hat sits on top of the round dome, a little tilted, its brim resting on the head above the screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/top_hat/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4456,
+    "balance_after": 4326
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/top_hat/fit/you",
+    "generation": "1f1e3a2a-91bb-6b10-9345-162c9f1db272",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_top_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the purple clay top hat from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the top hat for a cube head, not a round one: a squared top hat whose crown and brim are rounded squares, its flat square base sitting flat on the box's flat lid. The straw and ping-pong ball poke up out of the top of the hat. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/top_hat/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4456,
+    "balance_after": 4326
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/top_hat/fit/spacexai",
+    "generation": "1f1e3a2a-852c-65c0-8fa2-5cfae6c5b4ed",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_top_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the purple clay top hat from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The top hat sits on top of the round dome, a little tilted, its brim resting on the head above the screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/top_hat/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4456,
+    "balance_after": 4326
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/top_hat/fit/meta",
+    "generation": "1f1e3a2a-8516-6630-9d16-9f912d571cc8",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_top_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the purple clay top hat from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The top hat sits on its slicked hair, its brim above the glasses. The top hat sits on its slicked hair, its brim above the glasses. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/top_hat/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4456,
+    "balance_after": 4326
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/top_hat/fit/anthropic",
+    "generation": "1f1e3a2a-92a8-6820-952e-d0083d91cc1d",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_top_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the purple clay top hat from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The top hat sits on top of the round dome, a little tilted, its brim resting on the head above the screen face. The face, eyes and mouth stay fully visible. The amber light's stalk is longer now, so the light pokes up out of the top of the hat. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/top_hat/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4456,
+    "balance_after": 4326
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit/openai",
+    "generation": "1f1e3a2c-1e56-6740-9c66-008f19c5e7c4",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chestnut clay bob wig from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The wig sits snugly on the round dome, the fringe just above the dark screen face, the sides falling to the jaw in front of the ear pods. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4326,
+    "balance_after": 4222
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit/meta",
+    "generation": "1f1e3a2c-21d8-6e40-b2c7-fd6e723daf80",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chestnut clay bob wig from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The wig covers its slicked black hair completely, the fringe above its black glasses, the sides falling past its ears to the jaw. The face, glasses and smile stay visible. The wig covers its slicked black hair completely, the fringe above its black glasses, the sides falling past its ears to the jaw. The face, glasses and smile stay visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4326,
+    "balance_after": 4222
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit/anthropic",
+    "generation": "1f1e3a2c-245d-66c0-8e92-e8a5f594e9d6",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chestnut clay bob wig from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The wig sits snugly on the round dome, the fringe just above the dark screen face, the sides falling to the jaw in front of the ear pods. The face, eyes and mouth stay fully visible. The fringe sits above its gold glasses, and the amber light on its stalk pokes up through the top of the wig. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4326,
+    "balance_after": 4222
+  },
+  {
+    "time": "2026-11-18 22:52 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/fit/spacexai",
+    "generation": "1f1e3a2c-3a03-66a0-b81a-fcb69107d685",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_bob_wig.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chestnut clay bob wig from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The wig sits snugly on the round dome, the fringe just above the dark screen face, the sides falling to the jaw in front of the ear pods. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4326,
+    "balance_after": 4222
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/hood/fit/meta",
+    "generation": "1f1e3a2c-e38c-64b0-8499-f09f54360dbd",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the moss green clay hood with its short shoulder cape from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The hood goes over its hair and ears, its opening framing the whole face and glasses, and the short cape resting on the shoulders. The hood goes over its hair and ears, its opening framing the whole face and glasses, and the short cape resting on the shoulders. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/hood/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4222,
+    "balance_after": 4092
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/hood/fit/spacexai",
+    "generation": "1f1e3a2c-e0fb-68e0-8aab-4a31208c183e",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the moss green clay hood with its short shoulder cape from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The hood goes over the whole round head, its opening framing the whole dark screen face, the ear pods inside the hood, and the short cape resting on the shoulders. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/hood/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4222,
+    "balance_after": 4092
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/hood/fit/openai",
+    "generation": "1f1e3a2c-e166-6fa0-b119-43bebda6c3d0",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the moss green clay hood with its short shoulder cape from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The hood goes over the whole round head, its opening framing the whole dark screen face, the ear pods inside the hood, and the short cape resting on the shoulders. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/hood/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4222,
+    "balance_after": 4092
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/hood/fit/anthropic",
+    "generation": "1f1e3a2c-e764-62e0-a567-b35a111b7028",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the moss green clay hood with its short shoulder cape from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The hood goes over the whole round head, its opening framing the whole dark screen face, the ear pods inside the hood, and the short cape resting on the shoulders. The face, eyes and mouth stay fully visible. The amber light on its stalk pokes out through the top of the hood. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/hood/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4222,
+    "balance_after": 4092
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/hood/fit/you",
+    "generation": "1f1e3a2c-fe34-6060-931d-221563916007",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the moss green clay hood with its short shoulder cape from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the hood for a cube head, not a round one: a boxy hood with a flat top and square corners that fits over the box head, its big square opening framing the box's whole front with both eye slots and the drawn smile, and the short cape resting on the box body's shoulders. The straw and ping-pong ball poke up through the hood's top. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/hood/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4222,
+    "balance_after": 4092
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dark_shades/fit/meta",
+    "generation": "1f1e3a2d-a1f0-6870-a051-01e852822fb5",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dark_shades.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chunky dark clay shades from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The shades replace its black glasses: take the black glasses off. The shades sit over its eyes, the arms over its ears. The shades replace its black glasses: take the black glasses off. The shades sit over its eyes, the arms over its ears. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dark_shades/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4092,
+    "balance_after": 3962
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dark_shades/fit/anthropic",
+    "generation": "1f1e3a2d-9eb2-6730-a38b-8181bb005380",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dark_shades.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chunky dark clay shades from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The shades sit across the dark screen face over both eyes; the mouth below stays visible. The shades replace its round gold glasses: take the gold glasses off. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dark_shades/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4092,
+    "balance_after": 3962
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dark_shades/fit/you",
+    "generation": "1f1e3a2d-a171-6930-a099-e111645d9e1a",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dark_shades.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chunky dark clay shades from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the shades for a cube head, not a round one: flat, wide, rectangular shades with square corners, as wide as the box's front, sitting flat across both eye slots, the arms reaching straight back along the box's flat sides. The drawn smile stays visible below. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dark_shades/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4092,
+    "balance_after": 3962
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dark_shades/fit/openai",
+    "generation": "1f1e3a2d-9fcd-6a70-b110-d108272e5f10",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dark_shades.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chunky dark clay shades from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The shades sit across the dark screen face over both eyes; the mouth below stays visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dark_shades/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4092,
+    "balance_after": 3962
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dark_shades/fit/spacexai",
+    "generation": "1f1e3a2d-a410-6f60-a55a-5c1dfa4ae680",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dark_shades.png"
+    ],
+    "count": 1,
+    "prompt": "Put the chunky dark clay shades from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The shades sit across the dark screen face over both eyes; the mouth below stays visible. The shades sit over its dark visor; the long nose and the grin stay visible below them. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dark_shades/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 4092,
+    "balance_after": 3962
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/ball_cap/fit/anthropic",
+    "generation": "1f1e3a2e-9d16-6f60-a516-b1622c139fd5",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "count": 1,
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The cap's crown fits snugly over the top of the round dome, the peak pointing forward above the dark screen face. The face, eyes and mouth stay fully visible. The amber light on its stalk pokes up through the cap's button. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/ball_cap/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3962,
+    "balance_after": 3832
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/ball_cap/fit/openai",
+    "generation": "1f1e3a2e-9ef7-6eb0-a4b8-318947c9776a",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "count": 1,
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The cap's crown fits snugly over the top of the round dome, the peak pointing forward above the dark screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/ball_cap/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3962,
+    "balance_after": 3832
+  },
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/ball_cap/fit/meta",
+    "generation": "1f1e3a2e-9ee1-6f20-aa85-43bef745dfd4",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "count": 1,
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The cap sits on its slicked hair, the peak forward above its glasses. The cap sits on its slicked hair, the peak forward above its glasses. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/ball_cap/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3962,
+    "balance_after": 3832
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/ball_cap/fit/spacexai",
+    "generation": "1f1e3a2e-a900-6470-b2c1-03ab45981c97",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "count": 1,
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The cap's crown fits snugly over the top of the round dome, the peak pointing forward above the dark screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/ball_cap/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3962,
+    "balance_after": 3832
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/ball_cap/fit/you",
+    "generation": "1f1e3a2e-9e43-6410-95d7-0fd45872e9ff",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "count": 1,
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the cap for a cube head, not a round one: a boxy cap with a flat square crown that fits down over the box's top edges, and the peak sticking straight forward from the box's top front edge, above the eye slots. The straw and ping-pong ball poke up through the top. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/ball_cap/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3962,
+    "balance_after": 3832
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wide_brim_hat/fit/meta",
+    "generation": "1f1e3a2f-7ee9-6050-b90d-30191d6942a5",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wide_brim_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the straw-yellow clay wide-brim hat from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The hat sits on its slicked hair, the brim above its glasses. The hat sits on its slicked hair, the brim above its glasses. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wide_brim_hat/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3832,
+    "balance_after": 3650
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wide_brim_hat/fit/anthropic",
+    "generation": "1f1e3a2f-7f7d-6f20-a67b-d107b08d124a",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wide_brim_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the straw-yellow clay wide-brim hat from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The hat sits on top of the round dome, its wide brim level above the screen face, which stays fully visible. The amber light's stalk is longer now, so the light pokes up out of the top of the hat. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wide_brim_hat/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3832,
+    "balance_after": 3650
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wide_brim_hat/fit/spacexai",
+    "generation": "1f1e3a2f-7fe9-65e0-84a8-3a825a66ab89",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wide_brim_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the straw-yellow clay wide-brim hat from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The hat sits on top of the round dome, its wide brim level above the screen face, which stays fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wide_brim_hat/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3832,
+    "balance_after": 3650
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wide_brim_hat/fit/you",
+    "generation": "1f1e3a2f-7fdf-69a0-a1c4-0b8bc6321694",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wide_brim_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the straw-yellow clay wide-brim hat from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the hat for a cube head, not a round one: its crown has a square base that sits flat on the box's flat lid, with the wide round brim level around it, above the eye slots. The straw and ping-pong ball poke up out of the top of the hat. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wide_brim_hat/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3832,
+    "balance_after": 3650
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wide_brim_hat/fit/openai",
+    "generation": "1f1e3a2f-81f6-6450-949f-d829ee4caf59",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wide_brim_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the straw-yellow clay wide-brim hat from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The hat sits on top of the round dome, its wide brim level above the screen face, which stays fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wide_brim_hat/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3832,
+    "balance_after": 3650
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/saucepan_helmet/fit/meta",
+    "generation": "1f1e3a30-56b7-69a0-987b-f2ba0fc7d349",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_saucepan_helmet.png"
+    ],
+    "count": 1,
+    "prompt": "Put the black clay saucepan helmet from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The pot sits over its slicked hair like a helmet, the rim above its glasses, the handle out to its right. The pot sits over its slicked hair like a helmet, the rim above its glasses, the handle out to its right. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/saucepan_helmet/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3650,
+    "balance_after": 3520
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/saucepan_helmet/fit/openai",
+    "generation": "1f1e3a30-58b5-6db0-9f72-09a18c571c3b",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_saucepan_helmet.png"
+    ],
+    "count": 1,
+    "prompt": "Put the black clay saucepan helmet from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The upside-down pot sits over the round dome like a helmet, its rolled rim resting on the forehead above the dark screen face, and its handle sticking out to the robot's right. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/saucepan_helmet/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3650,
+    "balance_after": 3520
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/saucepan_helmet/fit/spacexai",
+    "generation": "1f1e3a30-55ec-6f70-891a-5082d6aaeca8",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_saucepan_helmet.png"
+    ],
+    "count": 1,
+    "prompt": "Put the black clay saucepan helmet from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The upside-down pot sits over the round dome like a helmet, its rolled rim resting on the forehead above the dark screen face, and its handle sticking out to the robot's right. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/saucepan_helmet/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3650,
+    "balance_after": 3520
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/saucepan_helmet/fit/you",
+    "generation": "1f1e3a30-5926-6290-92b7-d71c406d77b3",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_saucepan_helmet.png"
+    ],
+    "count": 1,
+    "prompt": "Put the black clay saucepan helmet from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the saucepan for a cube head, not a round one: a square pot turned upside down that fits snugly over the box's top like a lid, its rolled square rim around the box's top edges, above the eye slots, and its long handle sticking out to the right. The straw and ping-pong ball poke up through the pot's flat top. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/saucepan_helmet/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3650,
+    "balance_after": 3520
+  },
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/saucepan_helmet/fit/anthropic",
+    "generation": "1f1e3a30-716b-68a0-b243-f8ede508bb52",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_saucepan_helmet.png"
+    ],
+    "count": 1,
+    "prompt": "Put the black clay saucepan helmet from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The upside-down pot sits over the round dome like a helmet, its rolled rim resting on the forehead above the dark screen face, and its handle sticking out to the robot's right. The face, eyes and mouth stay fully visible. The amber light's stalk is longer now, so the light pokes up out of the pot's flat top. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/saucepan_helmet/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3650,
+    "balance_after": 3520
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wizard_hat/fit/spacexai",
+    "generation": "1f1e3a31-1c40-6730-af34-ca09eb12a367",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wizard_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dusty gray clay wizard hat from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The wizard hat sits on top of the round dome, its brim resting on the head above the screen face, the floppy tip leaning to one side. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wizard_hat/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3520,
+    "balance_after": 3390
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wizard_hat/fit/openai",
+    "generation": "1f1e3a31-1e83-6100-b84d-ea97fde016bf",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wizard_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dusty gray clay wizard hat from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The wizard hat sits on top of the round dome, its brim resting on the head above the screen face, the floppy tip leaning to one side. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wizard_hat/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3520,
+    "balance_after": 3390
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wizard_hat/fit/meta",
+    "generation": "1f1e3a31-1fc7-6c50-ace6-9adc824e49b5",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wizard_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dusty gray clay wizard hat from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The hat sits on its slicked hair, the brim above its glasses. The hat sits on its slicked hair, the brim above its glasses. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wizard_hat/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3520,
+    "balance_after": 3390
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wizard_hat/fit/anthropic",
+    "generation": "1f1e3a31-1f30-6670-b319-54371ef121c0",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wizard_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dusty gray clay wizard hat from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The wizard hat sits on top of the round dome, its brim resting on the head above the screen face, the floppy tip leaning to one side. The face, eyes and mouth stay fully visible. The amber light's stalk is longer now, so the light pokes out of the hat's side near its top. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wizard_hat/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3520,
+    "balance_after": 3390
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/wizard_hat/fit/you",
+    "generation": "1f1e3a31-1c71-6470-adb9-debf11dc78c6",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wizard_hat.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dusty gray clay wizard hat from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the wizard hat for a cube head, not a round one: the cone rises from a square base that sits flat on the box's flat lid, the wide brim level around it above the eye slots, the floppy tip leaning to one side. The straw and ping-pong ball poke up beside the cone. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/wizard_hat/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3520,
+    "balance_after": 3390
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/tiara/fit/openai",
+    "generation": "1f1e3a31-ed7c-6e70-82c9-8128672177e9",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_tiara.png"
+    ],
+    "count": 1,
+    "prompt": "Put the pale silver-white clay tiara from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The tiara's band sits over the top of the round dome, its three points standing up at the front, above the screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/tiara/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3390,
+    "balance_after": 3260
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/tiara/fit/meta",
+    "generation": "1f1e3a31-ee2a-63e0-a21f-1e6c4504872a",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_tiara.png"
+    ],
+    "count": 1,
+    "prompt": "Put the pale silver-white clay tiara from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The tiara sits on its slicked hair, the points at the front. The tiara sits on its slicked hair, the points at the front. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/tiara/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3390,
+    "balance_after": 3260
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/tiara/fit/anthropic",
+    "generation": "1f1e3a32-098b-6850-81ad-4f7548f6af83",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_tiara.png"
+    ],
+    "count": 1,
+    "prompt": "Put the pale silver-white clay tiara from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The tiara's band sits over the top of the round dome, its three points standing up at the front, above the screen face. The face, eyes and mouth stay fully visible. The amber light on its stalk stays behind the tiara's points. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/tiara/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3390,
+    "balance_after": 3260
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/tiara/fit/you",
+    "generation": "1f1e3a31-eedc-6770-ace8-0df47e9a06e6",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_tiara.png"
+    ],
+    "count": 1,
+    "prompt": "Put the pale silver-white clay tiara from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the tiara for a cube head, not a round one: a straight flat band along the box's top front edge, its ends bending round the top corners along the sides, and the three points standing straight up above the lid. The straw and ping-pong ball stay behind the points. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/tiara/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3390,
+    "balance_after": 3260
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/tiara/fit/spacexai",
+    "generation": "1f1e3a31-f1ff-6b00-8311-0a4842d671b7",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_tiara.png"
+    ],
+    "count": 1,
+    "prompt": "Put the pale silver-white clay tiara from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The tiara's band sits over the top of the round dome, its three points standing up at the front, above the screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/tiara/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3390,
+    "balance_after": 3260
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/fedora/fit/meta",
+    "generation": "1f1e3a32-c448-6b20-a8a0-f85c8e125053",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_fedora.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dark charcoal clay fedora from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The fedora sits on its slicked hair, the brim above its glasses. The fedora sits on its slicked hair, the brim above its glasses. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/fedora/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3260,
+    "balance_after": 3130
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/fedora/fit/anthropic",
+    "generation": "1f1e3a32-c5c7-6ff0-bf21-43088c3f0d0c",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_fedora.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dark charcoal clay fedora from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The fedora sits on top of the round dome, a little tilted, its brim snapped down at the front above the screen face. The face, eyes and mouth stay fully visible. The amber light's stalk is longer now, so the light pokes up out of the hat's crown. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/fedora/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3260,
+    "balance_after": 3130
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/fedora/fit/you",
+    "generation": "1f1e3a32-c4fa-6eb0-b95a-347cde8d336e",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_fedora.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dark charcoal clay fedora from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the fedora for a cube head, not a round one: its crown has a square base that sits flat on the box's flat lid, the brim snapped down at the front above the eye slots. The straw and ping-pong ball poke up out of the crown. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/fedora/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3260,
+    "balance_after": 3130
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/fedora/fit/openai",
+    "generation": "1f1e3a32-c718-6e90-81e2-027495823e3d",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_fedora.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dark charcoal clay fedora from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The fedora sits on top of the round dome, a little tilted, its brim snapped down at the front above the screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/fedora/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3260,
+    "balance_after": 3130
+  },
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/fedora/fit/spacexai",
+    "generation": "1f1e3a32-cad5-6f10-a547-8f730d67f410",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_fedora.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dark charcoal clay fedora from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The fedora sits on top of the round dome, a little tilted, its brim snapped down at the front above the screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/fedora/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3260,
+    "balance_after": 3130
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fit/meta",
+    "generation": "1f1e3a33-8faa-6200-bbd0-3a5c0398e015",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin; the face, glasses and smile show through the gap. The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin; the face, glasses and smile show through the gap. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3130,
+    "balance_after": 3000
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fit/you",
+    "generation": "1f1e3a33-8f85-6810-974c-d7c762454fc8",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the dwarf piece for a cube head, not a round one: a boxy helmet with a flat top and square corners that fits over the box's top edges, the horns on its sides, flat straps down the box's sides, and the beard hanging from the box's bottom front edge, below the drawn smile. The eye slots and the smile show through the gap. The straw and ping-pong ball poke up between the horns. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3130,
+    "balance_after": 3000
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fit/anthropic",
+    "generation": "1f1e3a33-8fe7-6290-8c20-83f183b53f3e",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The helmet sits on the round dome above the screen face, the straps run down the sides past the ear pods, and the beard hangs from under the screen down over the chest. The whole screen face, eyes and mouth show through the gap. The amber light's stalk is longer now, so the light pokes up out of the helmet's top, between the horns. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3130,
+    "balance_after": 3000
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fit/spacexai",
+    "generation": "1f1e3a33-90e9-6f30-bf61-f04710b2ee62",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The helmet sits on the round dome above the screen face, the straps run down the sides past the ear pods, and the beard hangs from under the screen down over the chest. The whole screen face, eyes and mouth show through the gap. The beard starts under its grin, so the long nose and the grin stay visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3130,
+    "balance_after": 3000
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fit/openai",
+    "generation": "1f1e3a33-9079-6a50-b5bd-b1d842609544",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The helmet sits on the round dome above the screen face, the straps run down the sides past the ear pods, and the beard hangs from under the screen down over the chest. The whole screen face, eyes and mouth show through the gap. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3130,
+    "balance_after": 3000
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dino_hood/fit/openai",
+    "generation": "1f1e3a34-33e8-6060-a830-de9f6f3d843c",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dino_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the grass green clay dino hood from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The dino head goes over the whole round head, and the robot's face looks out from between the open jaws: the whole dark screen face, eyes and mouth show inside the open mouth, the lower jaw under the chin. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dino_hood/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3000,
+    "balance_after": 2870
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dino_hood/fit/meta",
+    "generation": "1f1e3a34-3497-6ce0-938b-8e85cfcfba3a",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dino_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the grass green clay dino hood from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The dino head goes over its head and hair, and its face and glasses look out from between the open jaws, the lower jaw under its chin. The dino head goes over its head and hair, and its face and glasses look out from between the open jaws, the lower jaw under its chin. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dino_hood/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3000,
+    "balance_after": 2870
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dino_hood/fit/spacexai",
+    "generation": "1f1e3a34-3438-6970-ad43-3e43fc1db7a5",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dino_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the grass green clay dino hood from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The dino head goes over the whole round head, and the robot's face looks out from between the open jaws: the whole dark screen face, eyes and mouth show inside the open mouth, the lower jaw under the chin. The long nose and the grin show inside the open jaws. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dino_hood/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3000,
+    "balance_after": 2870
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dino_hood/fit/you",
+    "generation": "1f1e3a34-34c1-64f0-a66c-f03b912800bb",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dino_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the grass green clay dino hood from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the dino hood for a cube head, not a round one: a boxy dino head with flat sides and square corners that fits over the box head, its open jaws framing the box's whole front, so both eye slots and the drawn smile show inside the mouth. The straw and ping-pong ball poke up through the top. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dino_hood/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3000,
+    "balance_after": 2870
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dino_hood/fit/anthropic",
+    "generation": "1f1e3a34-46e2-66c0-a66f-d89f59fec4d9",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dino_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the grass green clay dino hood from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The dino head goes over the whole round head, and the robot's face looks out from between the open jaws: the whole dark screen face, eyes and mouth show inside the open mouth, the lower jaw under the chin. The amber light on its stalk pokes up through the top of the dino head. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dino_hood/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 3000,
+    "balance_after": 2870
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/beanie/fit/meta",
+    "generation": "1f1e3a34-e6a2-66b0-bf3d-0295a377b645",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_beanie.png"
+    ],
+    "count": 1,
+    "prompt": "Put the gray-blue clay knit beanie from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The beanie is pulled over its slicked hair, the cuff above its glasses and ears. The beanie is pulled over its slicked hair, the cuff above its glasses and ears. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/beanie/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2870,
+    "balance_after": 2740
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/beanie/fit/anthropic",
+    "generation": "1f1e3a34-e868-6850-9820-8f98aa1959f3",
+    "source": "Docs/Art/Costumes/_canvas/panel_anthropic.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_beanie.png"
+    ],
+    "count": 1,
+    "prompt": "Put the gray-blue clay knit beanie from the second image on the character in the first image, the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head, fitted to its head like a stop-motion costume fitting. The beanie is pulled snugly over the top of the round dome, its cuff just above the dark screen face. The face, eyes and mouth stay fully visible. The amber light on its stalk pokes up beside the pompom. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/beanie/fit/anthropic/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2870,
+    "balance_after": 2740
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/beanie/fit/openai",
+    "generation": "1f1e3a34-e780-6960-8a4b-c1a85fe7263b",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_beanie.png"
+    ],
+    "count": 1,
+    "prompt": "Put the gray-blue clay knit beanie from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The beanie is pulled snugly over the top of the round dome, its cuff just above the dark screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/beanie/fit/openai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2870,
+    "balance_after": 2740
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/beanie/fit/spacexai",
+    "generation": "1f1e3a34-edb1-60f0-9b11-0e5820d7d9f5",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_beanie.png"
+    ],
+    "count": 1,
+    "prompt": "Put the gray-blue clay knit beanie from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The beanie is pulled snugly over the top of the round dome, its cuff just above the dark screen face. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/beanie/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2870,
+    "balance_after": 2740
+  },
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/beanie/fit/you",
+    "generation": "1f1e3a34-ee3c-6380-a4e5-390757cb6390",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_beanie.png"
+    ],
+    "count": 1,
+    "prompt": "Put the gray-blue clay knit beanie from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the beanie for a cube head, not a round one: a boxy knit beanie with a flat top and square corners, pulled down over the box's top edges, its cuff straight across above the eye slots, the pompom on top. The straw and ping-pong ball poke up beside the pompom. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/beanie/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2870,
+    "balance_after": 2740
+  },
+  {
+    "time": "2026-11-18 22:58 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/ball_cap/fit/you",
+    "generation": "1f1e3a39-9aaa-6d70-88d5-fd98e5b0a77a",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "count": 1,
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the cap for a cube head, not a round one: a boxy cap with a flat square crown that fits down over the box's top edges, and the peak pointing straight forward toward the viewer from the box's top front edge, over the eye slots, not to the side. The straw and ping-pong ball poke up through the top. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/ball_cap/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2740,
+    "balance_after": 2610
+  },
+  {
+    "time": "2026-11-18 22:58 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dino_hood/fit/you",
+    "generation": "1f1e3a39-9bb9-6d60-83cf-593492e8777c",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dino_hood.png"
+    ],
+    "count": 1,
+    "prompt": "Put the grass green clay dino hood from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the dino hood for a cube head, not a round one: a boxy dino head with flat sides and square corners that fits over the box head and faces straight forward, the same way as the box's face. Its open jaws open straight toward the viewer and frame the box's whole front, so both eye slots and the whole drawn smile show inside the mouth, upper teeth above the eye slots and lower teeth below the smile. The straw and ping-pong ball poke up through the top. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/dino_hood/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2740,
+    "balance_after": 2610
+  },
+  {
+    "time": "2026-11-18 22:58 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fit/spacexai",
+    "generation": "1f1e3a39-9977-6390-b999-d20d204211fe",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The helmet sits on the round dome above the screen face, the straps run down the sides past the ear pods, and the beard hangs from under the screen down over the chest. The whole screen face, eyes and mouth show through the gap. The beard starts below its toothy grin and hangs from its chin down over its chest: the long nose and the whole grin stay fully visible above the beard. No moustache. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fit/spacexai/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2740,
+    "balance_after": 2610
+  },
+  {
+    "time": "2026-11-18 22:58 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fit/meta",
+    "generation": "1f1e3a39-9968-6930-987d-98c70cf989d7",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin, below its smile: the face, glasses and the whole smile stay fully visible above the beard. No moustache. The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin, below its smile: the face, glasses and the whole smile stay fully visible above the beard. No moustache. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fit/meta/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2740,
+    "balance_after": 2610
+  },
+  {
+    "time": "2026-11-18 22:59 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/fit/you",
+    "generation": "1f1e3a39-989b-67f0-ba0f-e6cf396c5e12",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "count": 1,
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the dwarf piece for a cube head, not a round one: a boxy helmet with a flat top and square corners that fits over the box's top edges, the horns on its sides, flat straps down the box's sides, and the beard hanging from the box head's bottom edge, entirely below the drawn smile: both eye slots and the whole drawn smile stay fully visible above the beard. No moustache. The straw and ping-pong ball poke up between the horns. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/fit/you/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2740,
+    "balance_after": 2610
+  },
+  {
+    "time": "2026-11-18 23:00 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/beanie/view_cube",
+    "generation": "1f1e3a3d-0ec0-6860-9639-9bc3428ba8ba",
+    "source": "Docs/Art/Costumes/_canvas/cubehead_beanie.png",
+    "refs": [],
+    "count": 1,
+    "prompt": "Remove the cardboard box character completely: its box head, eye slots, eyes, drawn smile, straw and ping-pong ball, ear knobs, scarf, sleeves and box body. Leave only the boxy gray-blue knit beanie with its pompom that it wears on its head, on its own, worn by no one, keeping exactly the same square boxy shape, proportions, size, color and matte clay look, with an empty hollow where the head was. Replace the red curtain and everything else with a plain light gray background, soft even studio light, no cast shadow. Single object, centered, whole in frame, seen from the front and a little from one side.",
+    "files": [
+      "Docs/Art/Costumes/beanie/view_cube/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2576,
+    "balance_after": 2446
+  },
+  {
+    "time": "2026-11-18 23:00 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/hood/view_cube",
+    "generation": "1f1e3a3d-0f0c-6350-adb8-af066f80cb5a",
+    "source": "Docs/Art/Costumes/_canvas/cubehead_hood.png",
+    "refs": [],
+    "count": 1,
+    "prompt": "Remove the cardboard box character completely: its box head, eye slots, eyes, drawn smile, straw and ping-pong ball, ear knobs, scarf, sleeves and box body. Leave only the boxy moss green hood with its short cape that it wears on its head, on its own, worn by no one, keeping exactly the same square boxy shape, proportions, size, color and matte clay look, with an empty hollow where the head was. Replace the red curtain and everything else with a plain light gray background, soft even studio light, no cast shadow. Single object, centered, whole in frame, seen from the front and a little from one side.",
+    "files": [
+      "Docs/Art/Costumes/hood/view_cube/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2576,
+    "balance_after": 2446
+  },
+  {
+    "time": "2026-11-18 23:00 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/bob_wig/view_cube",
+    "generation": "1f1e3a3d-0e4b-6560-8632-9de0e5b91bef",
+    "source": "Docs/Art/Costumes/_canvas/cubehead_bob_wig.png",
+    "refs": [],
+    "count": 1,
+    "prompt": "Remove the cardboard box character completely: its box head, eye slots, eyes, drawn smile, straw and ping-pong ball, ear knobs, scarf, sleeves and box body. Leave only the boxy chestnut bob wig that it wears on its head, on its own, worn by no one, keeping exactly the same square boxy shape, proportions, size, color and matte clay look, with an empty hollow where the head was. Replace the red curtain and everything else with a plain light gray background, soft even studio light, no cast shadow. Single object, centered, whole in frame, seen from the front and a little from one side.",
+    "files": [
+      "Docs/Art/Costumes/bob_wig/view_cube/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2576,
+    "balance_after": 2446
+  },
+  {
+    "time": "2026-11-18 23:00 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/dino_hood/view_cube",
+    "generation": "1f1e3a3d-0f86-6470-8268-f5aefabd4d34",
+    "source": "Docs/Art/Costumes/_canvas/cubehead_dino_hood.png",
+    "refs": [],
+    "count": 1,
+    "prompt": "Remove the cardboard box character completely: its box head, eye slots, eyes, drawn smile, straw and ping-pong ball, ear knobs, scarf, sleeves and box body. Leave only the boxy green dino hood that it wears on its head, on its own, worn by no one, keeping exactly the same square boxy shape, proportions, size, color and matte clay look, with an empty hollow where the head was. Replace the red curtain and everything else with a plain light gray background, soft even studio light, no cast shadow. Single object, centered, whole in frame, seen from the front and a little from one side.",
+    "files": [
+      "Docs/Art/Costumes/dino_hood/view_cube/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2576,
+    "balance_after": 2446
+  },
+  {
+    "time": "2026-11-18 23:00 UTC",
+    "kind": "edit",
+    "out": "Docs/Art/Costumes/horned_helmet_beard/view_cube",
+    "generation": "1f1e3a3d-0f8d-69a0-b32c-a93ca0134af4",
+    "source": "Docs/Art/Costumes/_canvas/cubehead_horned_helmet_beard.png",
+    "refs": [],
+    "count": 1,
+    "prompt": "Remove the cardboard box character completely: its box head, eye slots, eyes, drawn smile, straw and ping-pong ball, ear knobs, scarf, sleeves and box body. Leave only the boxy horned iron-gray helmet with its straps and ginger beard that it wears on its head, on its own, worn by no one, keeping exactly the same square boxy shape, proportions, size, color and matte clay look, with an empty hollow where the head was. Replace the red curtain and everything else with a plain light gray background, soft even studio light, no cast shadow. Single object, centered, whole in frame, seen from the front and a little from one side.",
+    "files": [
+      "Docs/Art/Costumes/horned_helmet_beard/view_cube/edit_1.png"
+    ],
+    "nominal_cost": 26,
+    "balance_before": 2576,
+    "balance_after": 2446
+  }
+]

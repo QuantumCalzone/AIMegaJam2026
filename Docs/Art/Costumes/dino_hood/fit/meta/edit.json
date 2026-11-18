@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "generation": "1f1e3a34-3497-6ce0-938b-8e85cfcfba3a",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_dino_hood.png"
+    ],
+    "prompt": "Put the grass green clay dino hood from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The dino head goes over its head and hair, and its face and glasses look out from between the open jaws, the lower jaw under its chin. The dino head goes over its head and hair, and its face and glasses look out from between the open jaws, the lower jaw under its chin. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

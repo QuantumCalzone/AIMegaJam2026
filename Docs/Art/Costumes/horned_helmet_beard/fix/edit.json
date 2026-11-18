@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 22:49 UTC",
+    "generation": "1f1e3a25-1c30-6b20-b61e-218c0c519e72",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/horned_helmet_beard/r1_candidate_1.png",
+    "refs": [],
+    "prompt": "Take the face out of this dwarf costume piece: remove the nose, the cheeks, the eyes, the ears and all skin, and leave an empty open gap between the helmet's rim and the top of the beard, where the plain light gray background shows through. Join the helmet to the beard with a thick gray strap down each side where the ears were. Keep the helmet, its two curved horns, the big ginger beard and moustache, their colors and matte clay look exactly as they are, and keep the plain light gray background and the soft even light. Single object, whole in frame, no cast shadow.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

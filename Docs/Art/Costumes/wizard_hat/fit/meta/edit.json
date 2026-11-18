@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:55 UTC",
+    "generation": "1f1e3a31-1fc7-6c50-ace6-9adc824e49b5",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_meta.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_wizard_hat.png"
+    ],
+    "prompt": "Put the dusty gray clay wizard hat from the second image on the character in the first image, the silver android with slicked-back black hair, small ears and thick black glasses, fitted to its head like a stop-motion costume fitting. The hat sits on its slicked hair, the brim above its glasses. The hat sits on its slicked hair, the brim above its glasses. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

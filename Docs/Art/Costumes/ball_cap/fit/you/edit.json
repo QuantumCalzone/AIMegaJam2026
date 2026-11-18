@@ -1,0 +1,30 @@
+[
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "generation": "1f1e3a2e-9e43-6410-95d7-0fd45872e9ff",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the cap for a cube head, not a round one: a boxy cap with a flat square crown that fits down over the box's top edges, and the peak sticking straight forward from the box's top front edge, above the eye slots. The straw and ping-pong ball poke up through the top. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  },
+  {
+    "time": "2026-11-18 22:58 UTC",
+    "generation": "1f1e3a39-9aaa-6d70-88d5-fd98e5b0a77a",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_you.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_ball_cap.png"
+    ],
+    "prompt": "Put the cherry red clay ball cap from the second image on the character in the first image, the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top, fitted to its head like a stop-motion costume fitting. Remake the cap for a cube head, not a round one: a boxy cap with a flat square crown that fits down over the box's top edges, and the peak pointing straight forward toward the viewer from the box's top front edge, over the eye slots, not to the side. The straw and ping-pong ball poke up through the top. On the right, on the plain light gray background: the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

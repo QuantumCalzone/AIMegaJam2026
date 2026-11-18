@@ -1,0 +1,30 @@
+[
+  {
+    "time": "2026-11-18 22:56 UTC",
+    "generation": "1f1e3a33-90e9-6f30-bf61-f04710b2ee62",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The helmet sits on the round dome above the screen face, the straps run down the sides past the ear pods, and the beard hangs from under the screen down over the chest. The whole screen face, eyes and mouth show through the gap. The beard starts under its grin, so the long nose and the grin stay visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  },
+  {
+    "time": "2026-11-18 22:58 UTC",
+    "generation": "1f1e3a39-9977-6390-b999-d20d204211fe",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_spacexai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_horned_helmet_beard.png"
+    ],
+    "prompt": "Put the dwarf piece: horned iron-gray clay helmet with its ginger clay beard from the second image on the character in the first image, the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one, fitted to its head like a stop-motion costume fitting. The helmet sits on the round dome above the screen face, the straps run down the sides past the ear pods, and the beard hangs from under the screen down over the chest. The whole screen face, eyes and mouth show through the gap. The beard starts below its toothy grin and hangs from its chin down over its chest: the long nose and the whole grin stay fully visible above the beard. No moustache. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -72,15 +72,17 @@ The surfaces: crimson velvet, bright gold, dark wood, stage planks, cream and ho
 
 ### Costumes
 
-**Being redrawn in T96 (concepts) and T104 (models), in the direction above.** Until then, this section describes the headpieces as built.
+**Concepts approved in T96 (2026-11-18); T104 builds the models from them.** Until then the game shows the headpieces as built on 2026-11-15. The picks, the fit sheets, the model views and every round are in [Docs/Art/Costumes/](../Art/Costumes/README.md).
 
-Thirteen clay headpieces dress all 35 roles. Each role wears one, in its own color: one model per piece, and the color comes from its clay material.
+![The 13 approved costumes, each fitted on all five characters in seat order: hood, dark shades, top hat, bob wig, ball cap, wide-brim hat, saucepan helmet, wizard hat, tiara, fedora, horned helmet with beard, dino hood and beanie](../Art/Costumes/approved.png)
 
-- At Scene Prep each bot puts on its role's headpiece. The antenna topper pokes up through it.
+- Thirteen clay costumes dress all 35 roles, each role in its own color: one model per costume version, and the color comes from its clay material. A costume is a headpiece, worn over the robot's own parts. It never hides the face, the mouth, the seat color or the name tag. A cut robot keeps the costume it wore.
+- Every costume fits every head. One round version fits the three round heads and Meta, where it sits over the solid hair cap. The soft pieces have a boxy version made for the player's cube: the hood, the bob wig, the ball cap, the saucepan, the dwarf's helmet and beard, the dino hood and the beanie. Hats with a crown and brim sit flat on the cube's lid.
+- Anthropic's antenna light and the player's ping-pong ball poke up through or beside any costume. The shades hide Anthropic's and Meta's own glasses. The dwarf's beard hangs below the mouth.
 - Homemade parody versions only: a black saucepan helmet, never a film's real villain helmet.
 - In Scene Prep, before the costumes go on, the bots stand bare-headed in their seat colors.
 
-| Headpiece | Roles (story: color) |
+| Costume | Roles (story: color) |
 | --- | --- |
 | Hood | slacker (bowling: oatmeal) · ranger (ring: moss green) · youngest son (wedding: olive) · boxer (diner: red, gold trim) · hermit (space: brown) |
 | Dark shades | adviser (wedding) · lawyer (dino) · agent (office) · chatty errand man (diner) · smuggler (space) |
@@ -95,10 +97,6 @@ Thirteen clay headpieces dress all 35 roles. Each role wears one, in its own col
 | Horned helmet with beard | dwarf (iron gray, ginger beard) |
 | Dino hood | runaway dinosaur (grass green) |
 | Beanie | office worker (gray-blue) |
-
-The 13 headpiece models (Meshy renders), in neutral clay. Each role's color comes from its clay material.
-
-![Renders of the 13 headpiece models: hood, dark shades, top hat, bob wig, ball cap, wide-brim hat, saucepan helmet, wizard hat, tiara, fedora, horned helmet with beard, dino hood and beanie](images/ArtInspiration/headpieces.jpg)
 
 ### Props and backdrops
 

@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 22:53 UTC",
+    "generation": "1f1e3a2c-e166-6fa0-b119-43bebda6c3d0",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Costumes/_canvas/panel_openai.png",
+    "refs": [
+      "Docs/Art/Costumes/_canvas/ref_hood.png"
+    ],
+    "prompt": "Put the moss green clay hood with its short shoulder cape from the second image on the character in the first image, the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater, fitted to its head like a stop-motion costume fitting. The hood goes over the whole round head, its opening framing the whole dark screen face, the ear pods inside the hood, and the short cape resting on the shoulders. The face, eyes and mouth stay fully visible. On the right, on the plain light gray background: the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow. Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

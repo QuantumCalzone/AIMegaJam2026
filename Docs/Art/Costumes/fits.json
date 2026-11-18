@@ -1,0 +1,137 @@
+{
+  "_readme": [
+    "T96's fit prompts. fit.py makes one edit per costume and character: the source is the character's panel of the approved lineup (Docs/Art/Cast/lineup.png, with headroom added by canvas.swift pad) on the left of a 614 x 864 canvas, plain gray on the right; the reference is the costume's pick.png on a canvas of the same shape.",
+    "The prompt is: 'Put the <costume> from the second image on <character>' + the costume's fit for that head shape (round, meta or cube, with the character's own note if it has one) + 'On the right, on the plain gray: ' + the standalone line + the keep line.",
+    "The edit model dresses only one character per call reliably (T96's bob wig test), so every panel is its own edit.",
+    "Round 2 changed the dwarf's spacexai, meta and cube notes (the beard hid the mouth), the dino hood's cube note (twisted, hid an eye slot) and the cap's cube note (peak to the side)."
+  ],
+  "characters": {
+    "openai": {
+      "shape": "round",
+      "panel": 0,
+      "desc": "the pale blue round-headed robot with a dark screen face and cream ear pods, in a gray sweater"
+    },
+    "anthropic": {
+      "shape": "round",
+      "panel": 1,
+      "desc": "the orange round-headed robot with round gold glasses on its dark screen face, cream ear pods, and an amber light on a short stalk on top of its head"
+    },
+    "spacexai": {
+      "shape": "round",
+      "panel": 2,
+      "desc": "the lime round-headed robot with a dark visor, a cocked brow, a long cream nose, a toothy grin and cream ear pods. It has no antenna and no light on its head; do not add one"
+    },
+    "meta": {
+      "shape": "meta",
+      "panel": 3,
+      "desc": "the silver android with slicked-back black hair, small ears and thick black glasses"
+    },
+    "you": {
+      "shape": "cube",
+      "panel": 4,
+      "desc": "the teal cardboard box character, whose head is a cube with two eye slots, a smile drawn in marker, and a ping-pong ball on a straw on top"
+    }
+  },
+  "standalone": {
+    "round": "the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow.",
+    "meta": "the same piece on its own, worn by no one, as it is fitted on the left, in a three-quarter front view, whole and centered, no cast shadow.",
+    "cube": "the exact cube version that the box character wears on the left, lifted off and shown on its own, worn by no one, with its square shape, in a three-quarter front view, whole and centered, no cast shadow."
+  },
+  "keep": "Keep the character exactly as it is: its face, colors, body, pose, size and place, the red curtain and the wooden stage. Same matte clay style, same lighting.",
+  "costumes": {
+    "hood": {
+      "name": "moss green clay hood with its short shoulder cape",
+      "round": "The hood goes over the whole round head, its opening framing the whole dark screen face, the ear pods inside the hood, and the short cape resting on the shoulders. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The amber light on its stalk pokes out through the top of the hood.",
+      "meta": "The hood goes over its hair and ears, its opening framing the whole face and glasses, and the short cape resting on the shoulders.",
+      "cube": "Remake the hood for a cube head, not a round one: a boxy hood with a flat top and square corners that fits over the box head, its big square opening framing the box's whole front with both eye slots and the drawn smile, and the short cape resting on the box body's shoulders. The straw and ping-pong ball poke up through the hood's top."
+    },
+    "dark_shades": {
+      "name": "chunky dark clay shades",
+      "round": "The shades sit across the dark screen face over both eyes; the mouth below stays visible.",
+      "anthropic": "The shades replace its round gold glasses: take the gold glasses off.",
+      "spacexai": "The shades sit over its dark visor; the long nose and the grin stay visible below them.",
+      "meta": "The shades replace its black glasses: take the black glasses off. The shades sit over its eyes, the arms over its ears.",
+      "cube": "Remake the shades for a cube head, not a round one: flat, wide, rectangular shades with square corners, as wide as the box's front, sitting flat across both eye slots, the arms reaching straight back along the box's flat sides. The drawn smile stays visible below."
+    },
+    "top_hat": {
+      "name": "purple clay top hat",
+      "round": "The top hat sits on top of the round dome, a little tilted, its brim resting on the head above the screen face. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The amber light's stalk is longer now, so the light pokes up out of the top of the hat.",
+      "meta": "The top hat sits on its slicked hair, its brim above the glasses.",
+      "cube": "Remake the top hat for a cube head, not a round one: a squared top hat whose crown and brim are rounded squares, its flat square base sitting flat on the box's flat lid. The straw and ping-pong ball poke up out of the top of the hat."
+    },
+    "bob_wig": {
+      "name": "chestnut clay bob wig",
+      "round": "The wig sits snugly on the round dome, the fringe just above the dark screen face, the sides falling to the jaw in front of the ear pods. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The fringe sits above its gold glasses, and the amber light on its stalk pokes up through the top of the wig.",
+      "meta": "The wig covers its slicked black hair completely, the fringe above its black glasses, the sides falling past its ears to the jaw. The face, glasses and smile stay visible.",
+      "cube": "Remake the wig for a cube head, not a round one: a boxy bob with a flat square top that sits flat on the box's lid, four flat straight sides that hang straight down from the box's top edges, with square corners, and a straight thick fringe across the top of the box's front, above the two eye slots. The eye slots, the drawn smile and the straw with its ping-pong ball stay visible; the ball pokes up through the wig's flat top."
+    },
+    "ball_cap": {
+      "name": "cherry red clay ball cap",
+      "round": "The cap's crown fits snugly over the top of the round dome, the peak pointing forward above the dark screen face. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The amber light on its stalk pokes up through the cap's button.",
+      "meta": "The cap sits on its slicked hair, the peak forward above its glasses.",
+      "cube": "Remake the cap for a cube head, not a round one: a boxy cap with a flat square crown that fits down over the box's top edges, and the peak pointing straight forward toward the viewer from the box's top front edge, over the eye slots, not to the side. The straw and ping-pong ball poke up through the top."
+    },
+    "wide_brim_hat": {
+      "name": "straw-yellow clay wide-brim hat",
+      "round": "The hat sits on top of the round dome, its wide brim level above the screen face, which stays fully visible.",
+      "anthropic": "The amber light's stalk is longer now, so the light pokes up out of the top of the hat.",
+      "meta": "The hat sits on its slicked hair, the brim above its glasses.",
+      "cube": "Remake the hat for a cube head, not a round one: its crown has a square base that sits flat on the box's flat lid, with the wide round brim level around it, above the eye slots. The straw and ping-pong ball poke up out of the top of the hat."
+    },
+    "saucepan_helmet": {
+      "name": "black clay saucepan helmet",
+      "round": "The upside-down pot sits over the round dome like a helmet, its rolled rim resting on the forehead above the dark screen face, and its handle sticking out to the robot's right. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The amber light's stalk is longer now, so the light pokes up out of the pot's flat top.",
+      "meta": "The pot sits over its slicked hair like a helmet, the rim above its glasses, the handle out to its right.",
+      "cube": "Remake the saucepan for a cube head, not a round one: a square pot turned upside down that fits snugly over the box's top like a lid, its rolled square rim around the box's top edges, above the eye slots, and its long handle sticking out to the right. The straw and ping-pong ball poke up through the pot's flat top."
+    },
+    "wizard_hat": {
+      "name": "dusty gray clay wizard hat",
+      "round": "The wizard hat sits on top of the round dome, its brim resting on the head above the screen face, the floppy tip leaning to one side. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The amber light's stalk is longer now, so the light pokes out of the hat's side near its top.",
+      "meta": "The hat sits on its slicked hair, the brim above its glasses.",
+      "cube": "Remake the wizard hat for a cube head, not a round one: the cone rises from a square base that sits flat on the box's flat lid, the wide brim level around it above the eye slots, the floppy tip leaning to one side. The straw and ping-pong ball poke up beside the cone."
+    },
+    "tiara": {
+      "name": "pale silver-white clay tiara",
+      "round": "The tiara's band sits over the top of the round dome, its three points standing up at the front, above the screen face. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The amber light on its stalk stays behind the tiara's points.",
+      "meta": "The tiara sits on its slicked hair, the points at the front.",
+      "cube": "Remake the tiara for a cube head, not a round one: a straight flat band along the box's top front edge, its ends bending round the top corners along the sides, and the three points standing straight up above the lid. The straw and ping-pong ball stay behind the points."
+    },
+    "fedora": {
+      "name": "dark charcoal clay fedora",
+      "round": "The fedora sits on top of the round dome, a little tilted, its brim snapped down at the front above the screen face. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The amber light's stalk is longer now, so the light pokes up out of the hat's crown.",
+      "meta": "The fedora sits on its slicked hair, the brim above its glasses.",
+      "cube": "Remake the fedora for a cube head, not a round one: its crown has a square base that sits flat on the box's flat lid, the brim snapped down at the front above the eye slots. The straw and ping-pong ball poke up out of the crown."
+    },
+    "horned_helmet_beard": {
+      "name": "dwarf piece: horned iron-gray clay helmet with its ginger clay beard",
+      "round": "The helmet sits on the round dome above the screen face, the straps run down the sides past the ear pods, and the beard hangs from under the screen down over the chest. The whole screen face, eyes and mouth show through the gap.",
+      "anthropic": "The amber light's stalk is longer now, so the light pokes up out of the helmet's top, between the horns.",
+      "spacexai": "The beard starts below its toothy grin and hangs from its chin down over its chest: the long nose and the whole grin stay fully visible above the beard. No moustache.",
+      "meta": "The helmet sits on its slicked hair above the glasses, the straps run past its ears, and the beard hangs from under its chin, below its smile: the face, glasses and the whole smile stay fully visible above the beard. No moustache.",
+      "cube": "Remake the dwarf piece for a cube head, not a round one: a boxy helmet with a flat top and square corners that fits over the box's top edges, the horns on its sides, flat straps down the box's sides, and the beard hanging from the box head's bottom edge, entirely below the drawn smile: both eye slots and the whole drawn smile stay fully visible above the beard. No moustache. The straw and ping-pong ball poke up between the horns."
+    },
+    "dino_hood": {
+      "name": "grass green clay dino hood",
+      "round": "The dino head goes over the whole round head, and the robot's face looks out from between the open jaws: the whole dark screen face, eyes and mouth show inside the open mouth, the lower jaw under the chin.",
+      "anthropic": "The amber light on its stalk pokes up through the top of the dino head.",
+      "spacexai": "The long nose and the grin show inside the open jaws.",
+      "meta": "The dino head goes over its head and hair, and its face and glasses look out from between the open jaws, the lower jaw under its chin.",
+      "cube": "Remake the dino hood for a cube head, not a round one: a boxy dino head with flat sides and square corners that fits over the box head and faces straight forward, the same way as the box's face. Its open jaws open straight toward the viewer and frame the box's whole front, so both eye slots and the whole drawn smile show inside the mouth, upper teeth above the eye slots and lower teeth below the smile. The straw and ping-pong ball poke up through the top."
+    },
+    "beanie": {
+      "name": "gray-blue clay knit beanie",
+      "round": "The beanie is pulled snugly over the top of the round dome, its cuff just above the dark screen face. The face, eyes and mouth stay fully visible.",
+      "anthropic": "The amber light on its stalk pokes up beside the pompom.",
+      "meta": "The beanie is pulled over its slicked hair, the cuff above its glasses and ears.",
+      "cube": "Remake the beanie for a cube head, not a round one: a boxy knit beanie with a flat top and square corners, pulled down over the box's top edges, its cuff straight across above the eye slots, the pompom on top. The straw and ping-pong ball poke up beside the pompom."
+    }
+  }
+}
