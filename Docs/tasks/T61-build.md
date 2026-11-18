@@ -619,7 +619,7 @@ One branch in `UIStyle.UIColor`, in `Graphs/UIStyle/UIColor.txt` after `Raised`:
 - Linear values from `#FF9EC4` (the 0x9E channel is 0.3419, as in `Amber`'s green).
 - Contrast: luminance 0.497 against the ink panel's ~0.007, about 9.6:1. Measure it from a screenshot, as T33 did.
 - `UIStyle.uasset` is outside T61's Touches: lock it, and name it in the commit message.
-- **The doc:** the Art Inspiration tab's palette table has no row for it. Per the build note "The design doc follows the game", show my person the row "Earpiece | #FF9EC4 | The stagehand's tips, only on your screen" and add it after their OK.
+- **The doc:** the Art Inspiration tab's palette table (since T90, the table under "#### Palette and type" in `Docs/Design/ArtInspiration.md`) has no row for it. Per the build note "The design doc follows the game", show my person the row "Earpiece | #FF9EC4 | The stagehand's tips, only on your screen" and add it after their OK.
 
 ## 9. `Tools/check_prompts.py`
 

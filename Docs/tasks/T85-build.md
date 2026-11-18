@@ -18,7 +18,7 @@ Back to [T85](T85.md). A PC prep session wrote this on 2026-11-15, without the e
    - T84's question 1 (the lower panel in the Scene Preps of scenes 2 on, 640 wide or hidden): either way `LowerSize` drops out of the keep-out list when it is collapsed, so nothing here changes.
 2. **The graphs with no file** that T85 reads in the editor (part 0): `BP_Show.StageSetup`, `StartScene`, `ShowPrep`, and `WBP_Stage.ShowCast`. Check that nobody wrote a file for them since.
 3. **T34-build 2.1** (the name tags drawn in screen space) is T34's, after T85. Nothing to re-check; part 7 tells T34 what it can reuse.
-4. **The design doc.** Read the Rules tab again. T84 rewrites the Scene Prep bullet `.8385`; question 1's edit is written as a change to whatever T84 left (part 6).
+4. **The design doc.** Read `Docs/Design/Rules.md` again (T90 moved the doc's Rules tab there). T84 rewrites the Scene Prep bullet `.8385`; question 1's edit is written as a change to whatever T84 left (part 6).
 
 ## In short
 
@@ -538,7 +538,9 @@ T85 adds one sentence to the turn line T84 leaves. T84-build part 4 writes "Read
 
 ## 6. The design doc (question 1)
 
-Read at Rules rev 59. **T84 rewrites `.8385` first** (T84-build 5a, its question 2), so this edit is written against T84's new text. Before asking, read the tab: if T84's OKed text differs, make the same two changes to it (drop the cast from the card, add the pointing sentence) and show my person the result.
+Read at Rules rev 59. **T84 rewrites `.8385` first** (T84-build 5a, its question 2), so this edit is written against T84's new text. Before asking, read the file: if T84's OKed text differs, make the same two changes to it (drop the cast from the card, add the pointing sentence) and show my person the result.
+
+**Where these places are now (T90):** the node ids and revisions in this part are from the old Claude Doc. In `Docs/Design/Rules.md`, `.8385` is the last bullet under "## Scene Prep", `.8620` the first bullet under "## The Scene & acting", and `.6880` the Scene Prep row of the table under "### What the player sees, and when". The Art Inspiration tab is `Docs/Design/ArtInspiration.md`; its UI rows are under "## UI".
 
 1. **Scene Prep, the pause** (`.8385`).
    - After T84 (T84-build 5a's new text): "Scene Prep is a pause. The scene and the stage’s places and props show in a panel in the middle of your screen, with Start the scene under them. Your card on the right shows your role and your want, the note’s clue, and the cast with their roles and wants. The scene starts when you press Start the scene."
@@ -549,7 +551,7 @@ Read at Rules rev 59. **T84 rewrites `.8385` first** (T84-build 5a, its question
    - New: "During the scene, your screen shows only your own card: your role, your want and the note’s clue. Point at another robot to see its role and want."
 3. **Left as they are:** the onboarding table's Scene Prep row (`.6880`) lists only my card's rows, which stay. T84's Art Inspiration edits (T84-build 5b: "your part and the note’s clue stay on the card", the screens table's "The scene in the middle, then your part and the note’s clue") name no cast, so they stay true. This sheet didn't read the rest of the Art Inspiration tab: read its UI rows in T85 and, if one lists the cast on the card, add it to the question with the same change.
 
-T85 saves the edit with the Claude Docs connector after my person's OK, as straight edits, and copies the answer into `T85.md`'s findings.
+T85 makes the edit in `Docs/Design/Rules.md` after my person's OK, in T85's commit, and copies the answer into `T85.md`'s findings.
 
 ## 7. Notes for later tasks (copy into `T85.md`'s "For later tasks")
 
