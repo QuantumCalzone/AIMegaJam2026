@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top. T93 (the title's Play button) has its work pushed and waits only for the relay deploy (its `Waiting:` line); it is done with the design doc, so T90 (the design doc moves into the repo) comes next. Then come the new audio and the new art (T100, T94, T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T84, T85, T87 and T61 wait for T90, and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top. T93 (the title's Play button) has its work pushed and waits only for the relay deploy (its `Waiting:` line); it is done with the design doc, so T90 (the design doc moves into the repo) comes next. Then come the new audio and the new art (T94, T101, T95 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T84, T85, T87 and T61 wait for T90, and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -133,13 +133,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** the Claude Docs connector, to read the doc (the doc is edited only in T90's step 7, with my OK); no session editing the doc while T90 copies it (`Agents/status/`); my answers on the doc's open suggestions and comments; my OK on the retirement line in step 7.
   - **Touches:** new `Docs/Design/` (one `.md` per tab, and `images/`), `Docs/GameDesign.md` (becomes the index), `CLAUDE.md`, `README.md`, `Docs/Plan.md` (the build note "The design doc follows the game"), `Docs/UIStyle.md`, `Docs/tasks/T25.md` (its link), `Content/NHOS/Data/personas.json` and `prompts.json` (`_readme` only), the open tasks' files and build sheets that say to use the connector (T84, T85, T87, T61, T34), a new note in `Agents/messages/`, `Docs/tasks/T90.md`; outside the repo: my memory notes that point at the Claude Doc.
   - **Details:** [Docs/tasks/T90.md](tasks/T90.md)
-
-- [ ] **T100 New audio, part 1: music that fits each scene and sits in the background, picked by me**
-  - **Model and effort:** Opus 5.5, high. Licensed music for seven film-parody stories and the show's phases, judged only from what each source says until I listen.
-  - **Depends on:** T71 (the 13 music slots and how `BPC_ShowAudio` picks a track; done). It needs no editor and changes no asset, so it can run on either machine, beside the chain.
-  - **Needs:** my answers on the sources and on what "more background" means; my pick for each slot, on a private Artifact page; my OK on the terms and cost, and my own sign-up, if an AI music service is used.
-  - **Touches:** `SourceAssets/Audio/Music/` (the picks), `Docs/AudioShortlist.md` (the music section), `Docs/tasks/T100.md`; outside the repo: `Local/audio/candidates/` and a private Artifact page.
-  - **Details:** [Docs/tasks/T100.md](tasks/T100.md)
 
 - [ ] **T94 New art, part 1: the art direction, approved by me**
   - **Model and effort:** Opus 5.5, high. The direction and the style guide that every later art task follows, from a list of every art asset in the game.
@@ -434,6 +427,8 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Details:** [Docs/tasks/T88.md](tasks/T88.md)
 - [x] **T89 Builds go to itch.io with butler from an editor menu**
   - **Details:** [Docs/tasks/T89.md](tasks/T89.md)
+- [x] **T100 New audio, part 1: music that fits each scene and sits in the background, picked by me**
+  - **Details:** [Docs/tasks/T100.md](tasks/T100.md)
 
 ## Not planned yet
 

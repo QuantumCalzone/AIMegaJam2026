@@ -1,0 +1,12 @@
+T100 music: 16 loops generated with Stable Audio 3 (model stable-audio-3) by Stability AI,
+through the Stability AI API (https://platform.stability.ai), on 2026-11-17, from prompts in
+Docs/AudioShortlist.md ("Music (T100)").
+
+License: Stability AI Terms of Service, effective 2026-09-30
+(https://stability.ai/terms-of-service): as between Stability and the user, the user owns the
+Output, to the extent permitted by applicable law. Stable Audio's pricing page
+(https://stableaudio.com/pricing) lists a commercial license on every plan; a company that makes
+over $1M a year needs an enterprise license. No credit is required. Do not remove any watermark
+or provenance mark that Stability adds.
+
+Courtesy credit: "Music generated with Stable Audio by Stability AI."
