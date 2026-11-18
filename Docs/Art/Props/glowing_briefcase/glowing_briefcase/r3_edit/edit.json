@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 19:29 UTC",
+    "generation": "1f1e3864-3be8-6c00-9b50-fab1f76895c9",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Props/glowing_briefcase/glowing_briefcase/candidate_2.png",
+    "refs": [],
+    "prompt": "Make the briefcase a slim, wide lawyer's attache case: much flatter and wider, a thin hard-shell rectangular case with rounded corners, two old-gold latches and a handle on its long side, still lying flat with its lid swung wide open and the same warm golden god rays pouring up out of it. Keep everything else exactly as it is: the matte black clay, the claymation look, the gold latches, the golden glow and rays, the three-quarter view and the plain light gray background.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

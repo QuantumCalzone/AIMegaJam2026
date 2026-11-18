@@ -1,0 +1,860 @@
+[
+  {
+    "time": "2026-11-18 18:17 UTC",
+    "generation": "1f1e37c3-9d07-6a50-af1c-a050996d6315",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A little toy robot built from a dented tin can: a fat cylindrical can body in warm matte silver-gray clay with one big round dent and a few dark rust-brown patches, two big round bolt eyes, a small funnel hat on top, two short chunky bent arms and two stubby wheel feet. Cute and homemade. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 495949472,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "space_plans",
+    "prop": "tin_can_robot",
+    "name": "tin-can robot",
+    "folder": "space_plans/tin_can_robot",
+    "balance_before": 886,
+    "balance_after": 869,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:17 UTC",
+    "generation": "1f1e37c4-986b-61d0-9c3d-d05f4331769f",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A homemade toy sword: a long, thick, straight glow-stick tube for a blade, rounded at the tip, in pale mint green matte clay, taped with two wide cream tape bands onto a chunky dark gray flashlight handle with one round red button. The blade is as thick as a broom handle. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1350068408,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "space_plans",
+    "prop": "glow_stick_sword",
+    "name": "glow-stick sword",
+    "folder": "space_plans/glow_stick_sword",
+    "balance_before": 713,
+    "balance_after": 696,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:17 UTC",
+    "generation": "1f1e37c5-1ace-6050-b227-10bd2a6a8cbe",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A chunky toy ray gun: a fat rounded body in deep cherry red, a big round bulb muzzle in cream, three stubby rounded fins along the top, and a thick cream grip with a big trigger. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 185883977,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "space_plans",
+    "prop": "toy_blaster",
+    "name": "toy blaster",
+    "folder": "space_plans/toy_blaster",
+    "balance_before": 696,
+    "balance_after": 679,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:17 UTC",
+    "generation": "1f1e37c5-6e82-63e0-a4dc-0c9eed9af7a5",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A round fat piggy bank in dusty muted pink clay, with a wide coin slot on its back, two triangle ears, a flat round snout, four stubby legs and a thick curly tail. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1347171917,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "space_plans",
+    "prop": "piggy_bank",
+    "name": "piggy bank",
+    "folder": "space_plans/piggy_bank",
+    "balance_before": 679,
+    "balance_after": 662,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:18 UTC",
+    "generation": "1f1e37c6-b1ab-6bc0-87d8-665bfb15e6da",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A single chunky, oversized finger ring standing upright on its edge: a thick, smooth, rounded band in old-gold clay with a satin sheen, and one big rounded dark red stone set on top. The ring is empty: no finger and no hand inside it. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1645554524,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "mine_bridge",
+    "prop": "cursed_ring",
+    "name": "cursed ring",
+    "folder": "mine_bridge/cursed_ring",
+    "balance_before": 610,
+    "balance_after": 567,
+    "credits": 43,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:18 UTC",
+    "generation": "1f1e37c7-6b9e-6460-883c-b1febd0f5cc7",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A tall, chunky wizard's walking staff standing upright: a thick, slightly crooked dark brown wooden pole with knobbly bumps, its top curling around one big rounded pale icy-white crystal. The crystal is solid matte clay. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 2000432437,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "mine_bridge",
+    "prop": "glowing_staff",
+    "name": "glowing staff",
+    "folder": "mine_bridge/glowing_staff",
+    "balance_before": 567,
+    "balance_after": 550,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:19 UTC",
+    "generation": "1f1e37c8-06ad-6190-890b-4a3610e1af79",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. An old wooden bucket of chunky warm brown staves with two thick dark iron-gray bands and a thick rope handle arched over the top, filled almost to the brim with deep slate-blue clay water with a rounded wavy surface. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1188038481,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "mine_bridge",
+    "prop": "water_bucket",
+    "name": "water bucket",
+    "folder": "mine_bridge/water_bucket",
+    "balance_before": 550,
+    "balance_after": 481,
+    "credits": 69,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:19 UTC",
+    "generation": "1f1e37c8-a397-6ff0-ab8f-5c7e42a6cb9b",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A chunky charcoal-black cast-iron frying pan with a thick rounded rim and a long, thick, straight handle with a round hole at its end. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1316584257,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "mine_bridge",
+    "prop": "frying_pan",
+    "name": "frying pan",
+    "folder": "mine_bridge/frying_pan",
+    "balance_before": 481,
+    "balance_after": 464,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:23 UTC",
+    "generation": "1f1e37d1-34a4-6e50-9b64-f1d1816b3a9c",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A big oval dinosaur egg standing upright, cream colored with big dusty olive-green spots, and one bold zigzag crack near the top. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1769424264,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "dino_island",
+    "prop": "dino_egg",
+    "name": "dino egg",
+    "folder": "dino_island/dino_egg",
+    "balance_before": 464,
+    "balance_after": 447,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:23 UTC",
+    "generation": "1f1e37d1-bed2-66e0-aeb1-e57ec06ba341",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A giant cartoon roast meat drumstick: a big round chunk of roasted reddish-brown meat on a thick cream bone that ends in two round knobs. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 128528597,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "dino_island",
+    "prop": "meaty_drumstick",
+    "name": "meaty drumstick",
+    "folder": "dino_island/meaty_drumstick",
+    "balance_before": 447,
+    "balance_after": 430,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:23 UTC",
+    "generation": "1f1e37d2-08a7-6cc0-b9e9-8ca7dcbd5a82",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A chunky brown clipboard with a thick gray clip at the top holding a thick stack of long cream paper pages, with a big round dark red wax seal on the front page and a few wavy gray lines instead of writing. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1034342301,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "dino_island",
+    "prop": "safety_waiver",
+    "name": "safety waiver",
+    "folder": "dino_island/safety_waiver",
+    "balance_before": 430,
+    "balance_after": 413,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:23 UTC",
+    "generation": "1f1e37d2-5604-67c0-98c0-308a69374035",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A cuddly plush toy tyrannosaur sitting upright: a chubby muted moss-green body with a cream belly patch, a big round head with two black button eyes and a wide stitched smile, two tiny arms and a thick tail. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 995196149,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "dino_island",
+    "prop": "dino_plush",
+    "name": "dino plush",
+    "folder": "dino_island/dino_plush",
+    "balance_before": 413,
+    "balance_after": 396,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:49 UTC",
+    "generation": "1f1e380c-76af-62b0-ae7c-68c8aae31ccc",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A cute plush toy horse head, cut off neatly at the neck like a stuffed toy with a flat cream base: a chunky, rounded, cuddly chestnut-brown head with a cream muzzle, two round black button eyes, two rounded ears, and a mane made as one thick solid rounded dark brown ridge. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 681659295,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "favor_father",
+    "prop": "plush_horse_head",
+    "name": "plush horse head",
+    "folder": "favor_father/plush_horse_head",
+    "balance_before": 188,
+    "balance_after": 171,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:49 UTC",
+    "generation": "1f1e380c-ed85-6880-92ee-63eebe0775ef",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A round flat serving tray in pale silver-gray matte clay, piled with six chunky cannoli pastries: thick golden-brown tube shells with white cream filling showing at both ends. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 437132796,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "favor_father",
+    "prop": "cannoli_tray",
+    "name": "cannoli tray",
+    "folder": "favor_father/cannoli_tray",
+    "balance_before": 171,
+    "balance_after": 154,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:49 UTC",
+    "generation": "1f1e380d-3cf6-6720-9c64-21eaf73e3d14",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A fat cream wedding-card envelope, plump as if stuffed full, its flap sealed with a big round dark red wax seal, and tied with a thick crimson ribbon in a big bow. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 753801095,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "favor_father",
+    "prop": "wedding_envelope",
+    "name": "wedding envelope",
+    "folder": "favor_father/wedding_envelope",
+    "balance_before": 154,
+    "balance_after": 137,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 18:50 UTC",
+    "generation": "1f1e380d-bc16-6640-8dc0-982e69a7962c",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A wide, shallow cream bowl piled high with five big round deep tangerine-orange oranges, with two chunky green leaves on top. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1391877156,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "favor_father",
+    "prop": "bowl_of_oranges",
+    "name": "bowl of oranges",
+    "folder": "favor_father/bowl_of_oranges",
+    "balance_before": 137,
+    "balance_after": 120,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:07 UTC",
+    "generation": "1f1e3835-28ae-6010-a01c-f533120aa2a9",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A chunky black briefcase with rounded corners, two big old-gold latches and a thick handle, its lid propped open a crack, with a solid wedge of pale warm yellow clay filling the gap where light spills out. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1032947819,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "glowing_briefcase",
+    "prop": "glowing_briefcase",
+    "name": "glowing briefcase",
+    "folder": "glowing_briefcase/glowing_briefcase",
+    "balance_before": 6364,
+    "balance_after": 6347,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:07 UTC",
+    "generation": "1f1e3835-7257-66d0-9130-92bc6d65ee66",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A chunky old-gold pocket watch standing up, its round lid open, a plain cream face with two thick black hands and no numbers, and a round winding knob with a thick ring loop on top. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1180760005,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "glowing_briefcase",
+    "prop": "gold_pocket_watch",
+    "name": "gold pocket watch",
+    "folder": "glowing_briefcase/gold_pocket_watch",
+    "balance_before": 6347,
+    "balance_after": 6330,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:08 UTC",
+    "generation": "1f1e3836-2137-67e0-b704-0b2a98cf0f9a",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A tall, chunky diner milkshake glass made of solid opaque pale cream clay, filled with a pink shake, topped with a big swirl of whipped cream, one round red cherry and a thick red-and-white striped straw. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 715830745,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "glowing_briefcase",
+    "prop": "giant_milkshake",
+    "name": "giant milkshake",
+    "folder": "glowing_briefcase/giant_milkshake",
+    "balance_before": 6330,
+    "balance_after": 6313,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:08 UTC",
+    "generation": "1f1e3836-e1e3-6390-9cec-ab45a2117677",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A giant chunky cheeseburger: a tall domed golden-brown bun with a few big cream sesame seeds, a thick brown patty, a melted yellow cheese slice drooping at the corners, a wavy green lettuce layer and thick red tomato slices. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1412084476,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "glowing_briefcase",
+    "prop": "giant_cheeseburger",
+    "name": "giant cheeseburger",
+    "folder": "glowing_briefcase/giant_cheeseburger",
+    "balance_before": 6261,
+    "balance_after": 6192,
+    "credits": 69,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:08 UTC",
+    "generation": "1f1e3837-360a-6310-afed-6c47cfb6952d",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A rolled-up rug: a long, thick cylinder of rug rolled tight, deep red with a big simple mustard diamond pattern, tied with two thick cream cords, with a rounded spiral showing at each end. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 121401279,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "league_night",
+    "prop": "rolled_up_rug",
+    "name": "rolled-up rug",
+    "folder": "league_night/rolled_up_rug",
+    "balance_before": 6192,
+    "balance_after": 6175,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:08 UTC",
+    "generation": "1f1e3837-b1ff-6970-a261-f9a651dec986",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A bowling ball in deep plum purple with a few soft swirls of lighter purple, with three round finger holes. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1829119032,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "league_night",
+    "prop": "bowling_ball",
+    "name": "bowling ball",
+    "folder": "league_night/bowling_ball",
+    "balance_before": 6175,
+    "balance_after": 6158,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:09 UTC",
+    "generation": "1f1e3838-18bf-64d0-88fc-f27edaaccc6a",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A lumpy, bulging tan canvas money sack tied at the top with a thick rope, with a few plain green paper bills sticking out of the top. No writing and no symbols. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1503055832,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "league_night",
+    "prop": "ransom_bag",
+    "name": "ransom bag",
+    "folder": "league_night/ransom_bag",
+    "balance_before": 6158,
+    "balance_after": 6141,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:09 UTC",
+    "generation": "1f1e3838-abc6-6760-9f06-732cdc178c7e",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A milk carton with a gable top, white with a muted dusty blue band around the middle and a blank cream label. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1883317008,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "league_night",
+    "prop": "milk_carton",
+    "name": "milk carton",
+    "folder": "league_night/milk_carton",
+    "balance_before": 6141,
+    "balance_after": 6124,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:09 UTC",
+    "generation": "1f1e3838-fcb1-6cb0-865c-991de0a788a0",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A single big, chunky medicine capsule pill lying on its side: a smooth rounded capsule made of two halves in two shades of deep cherry red. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 771091147,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "pick_a_pill",
+    "prop": "red_pill",
+    "name": "red pill",
+    "folder": "pick_a_pill/red_pill",
+    "balance_before": 6124,
+    "balance_after": 6107,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:09 UTC",
+    "generation": "1f1e3839-4486-6770-9d36-65a53991f872",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A single big, chunky medicine capsule pill lying on its side: a smooth rounded capsule made of two halves in two shades of deep navy cobalt blue. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1878492335,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "pick_a_pill",
+    "prop": "blue_pill",
+    "name": "blue pill",
+    "folder": "pick_a_pill/blue_pill",
+    "balance_before": 6107,
+    "balance_after": 6090,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:09 UTC",
+    "generation": "1f1e3839-ef40-6850-9ab3-d3810a5ce3cc",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. An old rotary desk telephone in charcoal black with a big cream dial with round finger holes, its chunky handset knocked crooked on the cradle, one end tilted up as if the phone is jumping while it rings. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1003332441,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "pick_a_pill",
+    "prop": "ringing_phone",
+    "name": "ringing phone",
+    "folder": "pick_a_pill/ringing_phone",
+    "balance_before": 6090,
+    "balance_after": 6073,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:10 UTC",
+    "generation": "1f1e383a-82e8-6d00-bbeb-4998fdc7e169",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A big, chunky spoon in pale silver-gray matte clay lying on its back, its thick handle bent up at a sharp angle halfway along while the round bowl rests flat. One spoon, in one piece. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 607526760,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "pick_a_pill",
+    "prop": "bent_spoon",
+    "name": "bent spoon",
+    "folder": "pick_a_pill/bent_spoon",
+    "balance_before": 6073,
+    "balance_after": 6056,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:20 UTC",
+    "generation": "1f1e3852-60ed-6da0-87a8-9fa2ef65df16",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A chunky black briefcase with rounded corners, two big old-gold latches and a thick handle, lying flat on its side with its lid swung wide open, and bright warm golden god rays of light pouring up out of it. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 869749913,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "glowing_briefcase",
+    "prop": "glowing_briefcase",
+    "name": "glowing briefcase",
+    "folder": "glowing_briefcase/glowing_briefcase",
+    "balance_before": 5874,
+    "balance_after": 5857,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:31 UTC",
+    "generation": "1f1e386a-e2fd-6850-b56a-9415ee9ea095",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A slim, flat lawyer's attache case in matte black clay: wide and long but very thin, only as deep as a hardcover book, with rounded corners, two old-gold latches and a short handle on its long side. It lies flat on its back with its thin lid hinged wide open, and warm golden god rays of light pour straight up out of its shallow inside. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1525483847,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "glowing_briefcase",
+    "prop": "glowing_briefcase",
+    "name": "glowing briefcase",
+    "folder": "glowing_briefcase/glowing_briefcase",
+    "balance_before": 5753,
+    "balance_after": 5736,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:37 UTC",
+    "generation": "1f1e3878-44fa-6be0-b25d-e104c7d76e28",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A big, chunky spoon in pale silver-gray matte clay, bent sharply in the middle into a V shape like a spoon bent by mind power: the round bowl lies flat on the ground and the thick handle rises steeply up into the air at a sharp angle from a clear kink halfway along. One spoon, in one piece. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 900511725,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "pick_a_pill",
+    "prop": "bent_spoon",
+    "name": "bent spoon",
+    "folder": "pick_a_pill/bent_spoon",
+    "balance_before": 5684,
+    "balance_after": 5667,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:40 UTC",
+    "generation": "1f1e387f-38b9-6fa0-94e7-5aa795e8be9e",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A slim, flat attache case in matte black clay lying flat on the ground and opened wide, seen from the front and a little above: the thin lid swings up almost upright, joined to the base along the back edge, and the front of the base faces the viewer with a chunky handle in the middle and two old-gold latches. The shallow inside is lined in warm gold clay, and bright warm golden god rays of light pour straight up out of it. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 1490914870,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "glowing_briefcase",
+    "prop": "glowing_briefcase",
+    "name": "glowing briefcase",
+    "folder": "glowing_briefcase/glowing_briefcase",
+    "balance_before": 5641,
+    "balance_after": 5624,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  },
+  {
+    "time": "2026-11-18 19:45 UTC",
+    "generation": "1f1e3889-b5c9-6770-aca5-d7dfc7a4be19",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A big, chunky spoon in pale silver-gray matte clay standing upright on the end of its straight handle, with its neck bent sharply sideways just below the bowl, so the round bowl tips over to one side at an angle like a spoon bent by mind power. One spoon, in one piece. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+    },
+    "api_credit_cost": null,
+    "seed": 2109761442,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ],
+    "card": "pick_a_pill",
+    "prop": "bent_spoon",
+    "name": "bent spoon",
+    "folder": "pick_a_pill/bent_spoon",
+    "balance_before": 5624,
+    "balance_after": 5607,
+    "credits": 17,
+    "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table"
+  }
+]

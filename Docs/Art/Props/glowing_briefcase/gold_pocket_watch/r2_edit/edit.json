@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 19:37 UTC",
+    "generation": "1f1e3876-a7e0-6590-afaa-329c63d87df3",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Props/glowing_briefcase/gold_pocket_watch/candidate_1.png",
+    "refs": [],
+    "prompt": "Remove all the numbers from the watch face, leaving a plain cream face with only the two thick black hands. Keep everything else exactly as it is: the old-gold case, the winding knob and ring loop, the claymation look, the view and the plain light gray background.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

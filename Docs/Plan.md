@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T96, T97, T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T96, T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T97 approved the props that T105 builds on: `Docs/Art/Props/README.md`. T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -134,13 +134,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** `Local/leonardo_key.json`; my OK on the estimated cost before the first paid call; my pick for each costume and my approval of each fit sheet; my OK on the design doc edit.
   - **Touches:** new `Docs/Art/Costumes/` (with the role table that T104 writes the data from), the design doc's Art Inspiration tab (Costumes), `Docs/tasks/T96.md`.
   - **Details:** [Docs/tasks/T96.md](tasks/T96.md)
-
-- [ ] **T97 New art, part 4: concepts for the story props, approved by me**
-  - **Model and effort:** Opus 5.5, high. 28 props, approved card by card as sets, each with a clean view and its size for image-to-3D.
-  - **Depends on:** T94 (the direction and the style guide). It needs no editor and changes no asset, so it can run on either machine, beside the chain.
-  - **Needs:** `Local/leonardo_key.json`; my OK on the estimated cost before the first paid call; my approval of each prop and each card's set; my OK on the design doc edit.
-  - **Touches:** new `Docs/Art/Props/`, the design doc's Art Inspiration tab (props) and Stories tab (the props strips), `Docs/tasks/T97.md`.
-  - **Details:** [Docs/tasks/T97.md](tasks/T97.md)
 
 - [ ] **T99 New art, part 6: the backdrops, the stagehand's portrait and the burning bills, approved by me and imported**
   - **Model and effort:** Sonnet 5.5, medium. 2D art where the approved image is the final one, reimported over textures that keep their names.
@@ -412,6 +405,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T98 New art, part 5: concepts for the theater, its set pieces and the audience, approved by me**
   - **Details:** [Docs/tasks/T98.md](tasks/T98.md)
+
+- [x] **T97 New art, part 4: concepts for the story props, approved by me**
+  - **Details:** [Docs/tasks/T97.md](tasks/T97.md)
 
 ## Not planned yet
 

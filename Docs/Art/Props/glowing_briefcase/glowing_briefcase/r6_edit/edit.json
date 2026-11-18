@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 19:36 UTC",
+    "generation": "1f1e3875-c76d-6da0-b3c0-d0298bb0c684",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Props/glowing_briefcase/glowing_briefcase/candidate_2.png",
+    "refs": [],
+    "prompt": "Open the briefcase's lid slightly: tilt the top half up a little at the back, so a thin wedge-shaped gap shows between the lid and the base along the back and sides, with warm golden light inside the gap. Keep everything else exactly as it is: the slim flat black case, its gold latches and handle, the golden god rays fanning up, the claymation look, the view and the plain light gray background.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -1,0 +1,66 @@
+{
+  "_readme": "T97 picks: per card, the candidate my person picked for each prop, and their words. model_view.png in each prop folder is the pick (or its edit).",
+  "space_plans": {
+    "words": "1 for all",
+    "picks": {
+      "tin_can_robot": 1,
+      "glow_stick_sword": 1,
+      "toy_blaster": 1,
+      "piggy_bank": 1
+    }
+  },
+  "mine_bridge": {
+    "words": "All 1",
+    "picks": {
+      "cursed_ring": 1,
+      "glowing_staff": 1,
+      "water_bucket": 1,
+      "frying_pan": 1
+    }
+  },
+  "dino_island": {
+    "words": "All 2",
+    "picks": {
+      "dino_egg": 2,
+      "meaty_drumstick": 2,
+      "safety_waiver": 2,
+      "dino_plush": 2
+    }
+  },
+  "favor_father": {
+    "words": "All 2 except cannoli should be 1",
+    "picks": {
+      "plush_horse_head": 2,
+      "cannoli_tray": 1,
+      "wedding_envelope": 2,
+      "bowl_of_oranges": 2
+    }
+  },
+  "league_night": {
+    "words": "All 1 (Recommended)",
+    "picks": {
+      "rolled_up_rug": 1,
+      "bowling_ball": 1,
+      "ransom_bag": 1,
+      "milk_carton": 1
+    }
+  },
+  "glowing_briefcase": {
+    "words": "Briefcase: \"The brief case should be on it's side, be open, and be glowing god rays out.\", \"2 needs to be more like a briefcase. So flatter but wide. Think of a lawyers case in NY\", \"Reduce the height of the case.\", \"Do 2 but have the case's lid slightly open\", \"The brief case is hinging on the wrong side.\", a reference photo of an open attache case, then \"Take 1, approve card 5\". The set as recommended otherwise: watch 1 with its numbers cleared (\"Raise the cap to 700\"), milkshake 2, burger 2.",
+    "picks": {
+      "glowing_briefcase": "round 8 take 1 (concept.png; model_view.png is an edit without the rays)",
+      "gold_pocket_watch": "1, edited (r2_edit/edit_1.png)",
+      "giant_milkshake": 2,
+      "giant_cheeseburger": 2
+    }
+  },
+  "pick_a_pill": {
+    "words": "Pills 2, phone 1, redo the spoon (Recommended); then \"The spoon should be bent like this\" with a reference; then \"30\u00b0, approve card 7 (Recommended)\"",
+    "picks": {
+      "red_pill": 2,
+      "blue_pill": 2,
+      "ringing_phone": 1,
+      "bent_spoon": "round 3 take 1, bent 30\u00b0 at the neck by bend_spoon.swift (r4_bend/bend_30.png)"
+    }
+  }
+}

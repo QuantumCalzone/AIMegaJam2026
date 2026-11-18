@@ -1,0 +1,175 @@
+{
+  "_readme": [
+    "T97's prop prompts. gen.py builds each Leonardo prompt as style + subject + ref_suffix, and the negative prompt as negative + the prop's extra_negative.",
+    "style, ref_suffix and negative are the style guide's lines (Docs/Art/Direction/README.md), word for word, with T97's additions to the negative at its end.",
+    "size_cm is the prop's real size for T105 (its longest side), taken from Content/NHOS/Data/props.json unless the prop's entry in README.md says why it changed.",
+    "Palette rules from the style guide: no seat color at full strength (pale blue, orange, lime, blue, teal), nothing glowing, see-through or reflective. A prop named glowing is drawn with its glowing part in a pale matte clay color, and T105 makes that part emissive."
+  ],
+  "style": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house.",
+  "ref_suffix": "Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+  "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, glow, light rays, see-through glass, transparent, reflections, multiple objects, cropped, hands, table",
+  "cards": {
+    "space_plans": {
+      "tin_can_robot": {
+        "name": "tin-can robot",
+        "size_cm": 45,
+        "subject": "A little toy robot built from a dented tin can: a fat cylindrical can body in warm matte silver-gray clay with one big round dent and a few dark rust-brown patches, two big round bolt eyes, a small funnel hat on top, two short chunky bent arms and two stubby wheel feet. Cute and homemade."
+      },
+      "glow_stick_sword": {
+        "name": "glow-stick sword",
+        "size_cm": 70,
+        "subject": "A homemade toy sword: a long, thick, straight glow-stick tube for a blade, rounded at the tip, in pale mint green matte clay, taped with two wide cream tape bands onto a chunky dark gray flashlight handle with one round red button. The blade is as thick as a broom handle."
+      },
+      "toy_blaster": {
+        "name": "toy blaster",
+        "size_cm": 32,
+        "subject": "A chunky toy ray gun: a fat rounded body in deep cherry red, a big round bulb muzzle in cream, three stubby rounded fins along the top, and a thick cream grip with a big trigger."
+      },
+      "piggy_bank": {
+        "name": "piggy bank",
+        "size_cm": 32,
+        "subject": "A round fat piggy bank in dusty muted pink clay, with a wide coin slot on its back, two triangle ears, a flat round snout, four stubby legs and a thick curly tail."
+      }
+    },
+    "mine_bridge": {
+      "cursed_ring": {
+        "name": "cursed ring",
+        "size_cm": 12,
+        "subject": "A single chunky, oversized finger ring standing upright on its edge: a thick, smooth, rounded band in old-gold clay with a satin sheen, and one big rounded dark red stone set on top. The ring is empty: no finger and no hand inside it."
+      },
+      "glowing_staff": {
+        "name": "glowing staff",
+        "size_cm": 90,
+        "subject": "A tall, chunky wizard's walking staff standing upright: a thick, slightly crooked dark brown wooden pole with knobbly bumps, its top curling around one big rounded pale icy-white crystal. The crystal is solid matte clay."
+      },
+      "water_bucket": {
+        "name": "water bucket",
+        "size_cm": 35,
+        "subject": "An old wooden bucket of chunky warm brown staves with two thick dark iron-gray bands and a thick rope handle arched over the top, filled almost to the brim with deep slate-blue clay water with a rounded wavy surface."
+      },
+      "frying_pan": {
+        "name": "frying pan",
+        "size_cm": 42,
+        "subject": "A chunky charcoal-black cast-iron frying pan with a thick rounded rim and a long, thick, straight handle with a round hole at its end."
+      }
+    },
+    "dino_island": {
+      "dino_egg": {
+        "name": "dino egg",
+        "size_cm": 32,
+        "subject": "A big oval dinosaur egg standing upright, cream colored with big dusty olive-green spots, and one bold zigzag crack near the top."
+      },
+      "meaty_drumstick": {
+        "name": "meaty drumstick",
+        "size_cm": 32,
+        "subject": "A giant cartoon roast meat drumstick: a big round chunk of roasted reddish-brown meat on a thick cream bone that ends in two round knobs."
+      },
+      "safety_waiver": {
+        "name": "safety waiver",
+        "size_cm": 30,
+        "subject": "A chunky brown clipboard with a thick gray clip at the top holding a thick stack of long cream paper pages, with a big round dark red wax seal on the front page and a few wavy gray lines instead of writing."
+      },
+      "dino_plush": {
+        "name": "dino plush",
+        "size_cm": 36,
+        "subject": "A cuddly plush toy tyrannosaur sitting upright: a chubby muted moss-green body with a cream belly patch, a big round head with two black button eyes and a wide stitched smile, two tiny arms and a thick tail."
+      }
+    },
+    "favor_father": {
+      "plush_horse_head": {
+        "name": "plush horse head",
+        "size_cm": 40,
+        "subject": "A cute plush toy horse head, cut off neatly at the neck like a stuffed toy with a flat cream base: a chunky, rounded, cuddly chestnut-brown head with a cream muzzle, two round black button eyes, two rounded ears, and a mane made as one thick solid rounded dark brown ridge."
+      },
+      "cannoli_tray": {
+        "name": "cannoli tray",
+        "size_cm": 42,
+        "subject": "A round flat serving tray in pale silver-gray matte clay, piled with six chunky cannoli pastries: thick golden-brown tube shells with white cream filling showing at both ends."
+      },
+      "wedding_envelope": {
+        "name": "wedding envelope",
+        "size_cm": 26,
+        "subject": "A fat cream wedding-card envelope, plump as if stuffed full, its flap sealed with a big round dark red wax seal, and tied with a thick crimson ribbon in a big bow."
+      },
+      "bowl_of_oranges": {
+        "name": "bowl of oranges",
+        "size_cm": 30,
+        "subject": "A wide, shallow cream bowl piled high with five big round deep tangerine-orange oranges, with two chunky green leaves on top."
+      }
+    },
+    "glowing_briefcase": {
+      "glowing_briefcase": {
+        "name": "glowing briefcase",
+        "size_cm": 45,
+        "subject": "A slim, flat attache case in matte black clay lying flat on the ground and opened wide, seen from the front and a little above: the thin lid swings up almost upright, joined to the base along the back edge, and the front of the base faces the viewer with a chunky handle in the middle and two old-gold latches. The shallow inside is lined in warm gold clay, and bright warm golden god rays of light pour straight up out of it.",
+        "subject_round1": "A chunky black briefcase with rounded corners, two big old-gold latches and a thick handle, its lid propped open a crack, with a solid wedge of pale warm yellow clay filling the gap where light spills out.",
+        "negative": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, see-through glass, transparent, reflections, multiple objects, cropped, hands, table",
+        "note": "Round 2, my person's words: \"The brief case should be on it's side, be open, and be glowing god rays out.\" The rays are for the concept; the model view is an edit without them, and T105 makes the glow and the rays in the engine. Round 3 and 4 were edits on round 2's take 2 (\"2 needs to be more like a briefcase. So flatter but wide. Think of a lawyers case in NY\", then \"Reduce the height of the case.\"); both kept it deep. Round 5 redraws it from text. Rounds 6 and 7 were edits that tried to open round 5's take 2 a little; both broke the lid (\"The brief case is hinging on the wrong side.\"). Round 8 redraws it from text after the reference my person sent (a stock photo of an open attache case seen from the front, lid upright, hinged at the back), described in words only, since it is a watermarked stock image.",
+        "subject_round2": "A chunky black briefcase with rounded corners, two big old-gold latches and a thick handle, lying flat on its side with its lid swung wide open, and bright warm golden god rays of light pouring up out of it.",
+        "subject_round5": "A slim, flat lawyer's attache case in matte black clay: wide and long but very thin, only as deep as a hardcover book, with rounded corners, two old-gold latches and a short handle on its long side. It lies flat on its back with its thin lid hinged wide open, and warm golden god rays of light pour straight up out of its shallow inside."
+      },
+      "gold_pocket_watch": {
+        "name": "gold pocket watch",
+        "size_cm": 14,
+        "subject": "A chunky old-gold pocket watch standing up, its round lid open, a plain cream face with two thick black hands and no numbers, and a round winding knob with a thick ring loop on top."
+      },
+      "giant_milkshake": {
+        "name": "giant milkshake",
+        "size_cm": 45,
+        "subject": "A tall, chunky diner milkshake glass made of solid opaque pale cream clay, filled with a pink shake, topped with a big swirl of whipped cream, one round red cherry and a thick red-and-white striped straw."
+      },
+      "giant_cheeseburger": {
+        "name": "giant cheeseburger",
+        "size_cm": 40,
+        "subject": "A giant chunky cheeseburger: a tall domed golden-brown bun with a few big cream sesame seeds, a thick brown patty, a melted yellow cheese slice drooping at the corners, a wavy green lettuce layer and thick red tomato slices."
+      }
+    },
+    "league_night": {
+      "rolled_up_rug": {
+        "name": "rolled-up rug",
+        "size_cm": 80,
+        "subject": "A rolled-up rug: a long, thick cylinder of rug rolled tight, deep red with a big simple mustard diamond pattern, tied with two thick cream cords, with a rounded spiral showing at each end."
+      },
+      "bowling_ball": {
+        "name": "bowling ball",
+        "size_cm": 26,
+        "subject": "A bowling ball in deep plum purple with a few soft swirls of lighter purple, with three round finger holes."
+      },
+      "ransom_bag": {
+        "name": "ransom bag",
+        "size_cm": 36,
+        "subject": "A lumpy, bulging tan canvas money sack tied at the top with a thick rope, with a few plain green paper bills sticking out of the top. No writing and no symbols."
+      },
+      "milk_carton": {
+        "name": "milk carton",
+        "size_cm": 26,
+        "subject": "A milk carton with a gable top, white with a muted dusty blue band around the middle and a blank cream label."
+      }
+    },
+    "pick_a_pill": {
+      "red_pill": {
+        "name": "red pill",
+        "size_cm": 12,
+        "subject": "A single big, chunky medicine capsule pill lying on its side: a smooth rounded capsule made of two halves in two shades of deep cherry red."
+      },
+      "blue_pill": {
+        "name": "blue pill",
+        "size_cm": 12,
+        "subject": "A single big, chunky medicine capsule pill lying on its side: a smooth rounded capsule made of two halves in two shades of deep navy cobalt blue."
+      },
+      "ringing_phone": {
+        "name": "ringing phone",
+        "size_cm": 26,
+        "subject": "An old rotary desk telephone in charcoal black with a big cream dial with round finger holes, its chunky handset knocked crooked on the cradle, one end tilted up as if the phone is jumping while it rings."
+      },
+      "bent_spoon": {
+        "name": "bent spoon",
+        "size_cm": 20,
+        "subject": "A big, chunky spoon in pale silver-gray matte clay standing upright on the end of its straight handle, with its neck bent sharply sideways just below the bowl, so the round bowl tips over to one side at an angle like a spoon bent by mind power. One spoon, in one piece.",
+        "subject_round1": "A big, chunky spoon in pale silver-gray matte clay lying on its back, its thick handle bent up at a sharp angle halfway along while the round bowl rests flat. One spoon, in one piece.",
+        "note": "Round 2: neither round 1 spoon was bent. My person: \"Pills 2, phone 1, redo the spoon (Recommended)\". Round 3, my person: \"The spoon should be bent like this\", with a reference sticker of an upright spoon bent at the neck below the bowl (described in words only).",
+        "subject_round2": "A big, chunky spoon in pale silver-gray matte clay, bent sharply in the middle into a V shape like a spoon bent by mind power: the round bowl lies flat on the ground and the thick handle rises steeply up into the air at a sharp angle from a clear kink halfway along. One spoon, in one piece."
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@ Backdrop (`desert_planet`): A desert at dusk under two suns, with a rusty dome h
 
 Props: tin-can robot, glow-stick sword, toy blaster; spare: piggy bank.
 
-![Renders of the space saga props: tin-can robot, glow-stick sword, toy blaster, and the spare piggy bank](images/Stories/space_plans.jpg)
+![T97's concept art of the space saga props: tin-can robot, glow-stick sword, toy blaster, and the spare piggy bank](images/Stories/space_plans.jpg)
 
 | Role | Want | Headpiece |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ Backdrop (`dwarf_mine`): A huge old dwarf mine: carved stone pillars, a deep cha
 
 Props: cursed ring, glowing staff, water bucket; spare: frying pan.
 
-![Renders of the ring quest props: cursed ring, glowing staff, water bucket, and the spare frying pan](images/Stories/mine_bridge.jpg)
+![T97's concept art of the ring quest props: cursed ring, glowing staff, water bucket, and the spare frying pan](images/Stories/mine_bridge.jpg)
 
 | Role | Want | Headpiece |
 | --- | --- | --- |
@@ -52,7 +52,7 @@ Backdrop (`jungle_park`): A steamy island jungle with a sagging electric fence, 
 
 Props: dino egg, meaty drumstick, safety waiver; spare: dino plush.
 
-![Renders of the dino park props: dino egg, meaty drumstick, safety waiver, and the spare dino plush](images/Stories/dino_island.jpg)
+![T97's concept art of the dino park props: dino egg, meaty drumstick, safety waiver, and the spare dino plush](images/Stories/dino_island.jpg)
 
 | Role | Want | Headpiece |
 | --- | --- | --- |
@@ -72,7 +72,7 @@ Backdrop (`garden_wedding`): A sunny garden wedding: a striped party tent, paper
 
 Props: plush horse head, cannoli tray, wedding envelope; spare: bowl of oranges.
 
-![Renders of the crime family props: plush horse head, cannoli tray, wedding envelope; the spare bowl of oranges has no model yet](images/Stories/favor_father.jpg)
+![T97's concept art of the crime family props: plush horse head, cannoli tray, wedding envelope, and the spare bowl of oranges](images/Stories/favor_father.jpg)
 
 | Role | Want | Headpiece |
 | --- | --- | --- |
@@ -92,7 +92,7 @@ Backdrop (`retro_diner`): A retro diner: a chrome counter with cherry-red stools
 
 Props: glowing briefcase, gold pocket watch, giant milkshake; spare: giant cheeseburger.
 
-![Renders of the diner props: glowing briefcase, gold pocket watch, giant milkshake, and the spare giant cheeseburger](images/Stories/glowing_briefcase.jpg)
+![T97's concept art of the diner props: glowing briefcase, gold pocket watch, giant milkshake, and the spare giant cheeseburger](images/Stories/glowing_briefcase.jpg)
 
 | Role | Want | Headpiece |
 | --- | --- | --- |
@@ -112,7 +112,7 @@ Backdrop (`bowling_lanes`): A retro bowling alley on league night: shiny wooden 
 
 Props: rolled-up rug, bowling ball, ransom bag; spare: milk carton.
 
-![Renders of the bowling props: rolled-up rug, bowling ball, ransom bag, and the spare milk carton](images/Stories/league_night.jpg)
+![T97's concept art of the bowling props: rolled-up rug, bowling ball, ransom bag, and the spare milk carton](images/Stories/league_night.jpg)
 
 | Role | Want | Headpiece |
 | --- | --- | --- |
@@ -132,7 +132,7 @@ Backdrop (`midnight_cubicles`): A gray office after midnight: rows of clay cubic
 
 Props: red pill, blue pill, ringing phone; spare: bent spoon.
 
-![Renders of the simulation props: red pill, blue pill, ringing phone, and the spare bent spoon](images/Stories/pick_a_pill.jpg)
+![T97's concept art of the simulation props: red pill, blue pill, ringing phone, and the spare bent spoon](images/Stories/pick_a_pill.jpg)
 
 | Role | Want | Headpiece |
 | --- | --- | --- |

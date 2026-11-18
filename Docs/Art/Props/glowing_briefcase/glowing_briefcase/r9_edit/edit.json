@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 19:45 UTC",
+    "generation": "1f1e388a-3ba0-6290-a148-0d08804ba05d",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Props/glowing_briefcase/glowing_briefcase/concept.png",
+    "refs": [],
+    "prompt": "Remove the beam of light and the glow: no light rays and no glow anywhere, and make the inside of the case a flat, plain matte warm gold clay lining. Keep everything else exactly as it is: the black case, the open lid, its gold latches and handle, the claymation look, the view and the plain light gray background.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

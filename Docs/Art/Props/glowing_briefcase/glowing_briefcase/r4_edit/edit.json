@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 19:31 UTC",
+    "generation": "1f1e3869-dc7d-6d00-bd71-17b046071f6b",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Props/glowing_briefcase/glowing_briefcase/r3_edit/edit_1.png",
+    "refs": [],
+    "prompt": "Reduce the height of the case: make the case's bottom half and its open lid each only half as deep as now, so it becomes a thin, flat, wide briefcase about as deep as a hardcover book. Keep everything else exactly as it is: the width, the matte black clay, the gold latches and handle, the open lid, the golden glow and god rays, the three-quarter view and the plain light gray background.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

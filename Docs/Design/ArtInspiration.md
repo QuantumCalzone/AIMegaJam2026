@@ -102,27 +102,27 @@ The 13 headpiece models (Meshy renders), in neutral clay. Each role's color come
 
 ### Props and backdrops
 
-**Being redrawn: the props in T97 (concepts) and T105 (models), and the backdrops in T99, in the direction above.** Until then, this section describes them as built.
+**The props are redrawn: T97's concepts, approved on 2026-11-18, are in `Docs/Art/Props/`, each with a clean model view and its size; T105 makes the models from them. The backdrops are being redrawn in T99.** Until T105 imports the models, the game shows the old ones.
 
 Each story brings four clay props to the Prop Table (three core, the last a spare) and drops in its own painted backdrop. The AI actors may only name the props on the current card.
 
-| Story | Props (spare last) | Needs a generated model | Backdrop |
-| --- | --- | --- | --- |
-| Space saga | tin-can robot, glow-stick sword, toy blaster, piggy bank | none | `desert_planet`: dusk under two suns, a rusty dome hut, a battered space truck, a suspicious gray moon |
-| Ring quest | cursed ring, glowing staff, water bucket, frying pan | cursed ring | `dwarf_mine`: carved stone pillars, a thin stone bridge over a chasm, an orange glow from below |
-| Dino park | dino egg, meaty drumstick, safety waiver, dino plush | dino plush | `jungle_park`: steamy jungle, a sagging electric fence, a tilted warning sign, giant muddy footprints |
-| Crime family | plush horse head, cannoli tray, wedding envelope, bowl of oranges | plush horse head | `garden_wedding`: a striped party tent, paper lanterns, lemon trees, a tiered cake, a pink villa |
-| Diner | glowing briefcase, gold pocket watch, giant milkshake, giant cheeseburger | none | `retro_diner`: a chrome counter, cherry-red stools, a checkered floor, a big wall clock |
-| Bowling | rolled-up rug, bowling ball, ransom bag, milk carton | ransom bag | `bowling_lanes`: shiny lanes, rows of white pins, a ball return, a starry ceiling |
-| Simulation | red pill, blue pill, ringing phone, bent spoon | ringing phone | `midnight_cubicles`: gray clay cubicles, one buzzing light, old screens dripping green light |
+| Story | Props (spare last) | Backdrop |
+| --- | --- | --- |
+| Space saga | tin-can robot, glow-stick sword, toy blaster, piggy bank | `desert_planet`: dusk under two suns, a rusty dome hut, a battered space truck, a suspicious gray moon |
+| Ring quest | cursed ring, glowing staff, water bucket, frying pan | `dwarf_mine`: carved stone pillars, a thin stone bridge over a chasm, an orange glow from below |
+| Dino park | dino egg, meaty drumstick, safety waiver, dino plush | `jungle_park`: steamy jungle, a sagging electric fence, a tilted warning sign, giant muddy footprints |
+| Crime family | plush horse head, cannoli tray, wedding envelope, bowl of oranges | `garden_wedding`: a striped party tent, paper lanterns, lemon trees, a tiered cake, a pink villa |
+| Diner | glowing briefcase, gold pocket watch, giant milkshake, giant cheeseburger | `retro_diner`: a chrome counter, cherry-red stools, a checkered floor, a big wall clock |
+| Bowling | rolled-up rug, bowling ball, ransom bag, milk carton | `bowling_lanes`: shiny lanes, rows of white pins, a ball return, a starry ceiling |
+| Simulation | red pill, blue pill, ringing phone, bent spoon | `midnight_cubicles`: gray clay cubicles, one buzzing light, old screens dripping green light |
 
-- "None" means the draft says engine shapes can build it. A prop that looks poor from shapes gets a generated model instead.
+- Glow is an engine part, never part of a model: the glow-stick blade, the staff's crystal, and the briefcase's lining with its god rays. The briefcase lies open wide, lid upright; the bent spoon is bent at the neck.
 - Each backdrop is one painted image in a clay-relief diorama style, on the existing backdrop flat. No characters, text or logos.
 - Open question: three director's notes assume the old shared table. "Mention the rubber chicken" names a prop that is gone, and "hold a prop all scene" and "give something every turn" need enough props for five actors.
 
-Each story's props, one row per story in the table's order, spare last (Meshy renders of the models). The bowl of oranges has no model yet.
+Each story's props, one row per story in the table's order, spare last (T97's approved concept art, with each prop's size).
 
-![Renders of the 27 prop models in seven rows, one per story, with the spare marked in each row](images/ArtInspiration/props.jpg)
+![T97's concept art of the 28 story props in seven rows, one per story, each labeled with its size and the spare marked](images/ArtInspiration/props.jpg)
 
 ### Stories
 
