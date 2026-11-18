@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 19:16 UTC",
+    "generation": "1f1e3848-63f2-6730-89d5-0d7fb64757de",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Set/pieces/s4_audience_fix/edit_1_noantenna.png",
+    "refs": [],
+    "prompt": "Make the small robots look more like robots and less like babies. On the robot on the left, which faces us, replace the painted face with a dark screen visor across the front of its head showing two big round glowing-white LED eyes and a small white smile. On all the robots, make the body one smooth, chunky capsule with simple round robot joints at the shoulders and hips, and keep the same pose. Keep everything else exactly as it is: the smooth dome heads with no antenna, the two round cream ear pods, the dusty rose clay color, the cream lower half, the stubby arms and round feet, the bowler hat, the plain gray background and the light. Matte modeling clay, stop-motion claymation style, no text.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

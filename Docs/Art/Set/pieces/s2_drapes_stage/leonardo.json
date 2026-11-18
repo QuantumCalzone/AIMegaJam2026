@@ -1,0 +1,20 @@
+[
+  {
+    "time": "2026-11-18 19:06 UTC",
+    "generation": "1f1e3833-04ea-6f40-9cf7-77d580c3439a",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A product sheet of four separate theater set pieces standing side by side in one row, with wide empty space between them: 1) a tall crimson velvet clay side curtain hanging in thick rounded pleats, gathered at its middle by a thick bright gold rope tie-back with a fat tassel, 2) a wide crimson velvet clay valance section with two deep swags trimmed in thick bright gold bands, with fat gold tassels between them, 3) a low, wide stage riser: a box platform of warm dark brown wood clay with a thick bright gold trim along its top edge and one wide step in front, 4) a small round table covered to the floor with a cream clay tablecloth in thick soft folds. Each object whole and in frame, three-quarter front view, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1920,
+      "height": 1080,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, people, room, floor scene, overlapping objects"
+    },
+    "api_credit_cost": null,
+    "seed": 882388981,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ]
+  }
+]

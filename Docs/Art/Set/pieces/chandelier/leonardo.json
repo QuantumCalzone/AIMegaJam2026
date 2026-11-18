@@ -1,0 +1,20 @@
+[
+  {
+    "time": "2026-11-18 19:06 UTC",
+    "generation": "1f1e3833-0508-6400-b28b-7641b7c825cd",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A big round hanging opera-house chandelier of bright gold clay, hanging from a short thick gold chain at the top: three stacked rings of thick curled arms getting wider toward the bottom, fat cream clay candles on every arm, a plump gold ball and a teardrop finial at the bottom, chunky and solid with no thin parts and no crystals. Single object, centered, three-quarter front view, whole object in frame, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, people, room, floor scene, overlapping objects, standing candelabra, floor stand, table"
+    },
+    "api_credit_cost": null,
+    "seed": 161819480,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ]
+  }
+]

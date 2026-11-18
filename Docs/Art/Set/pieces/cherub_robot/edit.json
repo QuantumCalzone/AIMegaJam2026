@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 19:06 UTC",
+    "generation": "1f1e3833-0c65-6040-bb21-994fc0fe83b2",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Set/pieces/cherub_robot/source_crop.png",
+    "refs": [],
+    "prompt": "Make the cherub a robot cherub: give it a round robot head with a smooth dome, two round ear pods on its sides, a dark screen face with two big round glowing-white eyes and a small smile, and make its body smooth and toy-like, with simple rounded robot joints. Keep everything else exactly as it is: its plump seated pose, the horn it plays, its small wings, its gold clay color and matte clay look, and the plinth under it. Remove the candelabra on the left and the column on the right, leaving a plain light gray background. No antenna, no text.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "time": "2026-11-18 18:18 UTC",
+    "generation": "1f1e37c6-a111-63f0-9d57-eda60d4cf233",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Set/house/collage.png",
+    "refs": [
+      "Docs/Art/Direction/board.png"
+    ],
+    "prompt": "Repaint the first image completely in the style of the second image: a stop-motion claymation scene where everything is hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms and saturated, slightly chalky colors, like the clay opera house in the second image. Keep the first image's camera angle and layout: the stage in the middle with its plank floor and footlights, the five robots where they stand in the same order and colors, the small platform and the small table behind them, the chandelier at the top center, the curtains on both sides, the audience boxes at the left and right edges, and the two cherubs at the stage's front corners. Remove the red rectangles behind the robots, the ring of dots over the pale blue robot and the yellow zigzag over the lime robot. Fill the floor at the bottom with four raked rows of red velvet seats seen from behind, full of small clay robots seen from behind: smooth dome heads with round cream ear pods and no antennas, in muted rose, plum, mustard, brick and lilac, most in black top hats or bowler hats. They are small, no bigger than the robots on stage, and the rows nearer the camera are darker. The backdrop is a plain, soft pink and peach painted sky. No text. The theater is cozy crimson and dark wood: dark brown wood walls and box fronts, deep crimson velvet curtains and drapes, and gold only on the box rails, the cherubs and the chandelier. The house is dim and warm, so the stage glows.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "time": "2026-11-18 18:58 UTC",
+    "generation": "1f1e3821-0fc7-6470-b90c-8a8606c81e0e",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A product sheet of four separate theater set pieces standing side by side in one row, with wide empty space between them: 1) a big round three-tier chandelier of bright gold clay with thick curled arms and fat cream clay candles, 2) a plump gold clay cherub sitting on a square warm dark brown clay plinth, playing a short horn, 3) a tall flat wall pilaster of warm dark brown clay with one big, thick, bright gold clay scroll moulding running up its face, 4) a horseshoe theater box balcony: a rounded warm dark brown clay front with a thick bright gold rail and a gold scroll on it, thick crimson velvet drapes inside. Each object whole and in frame, three-quarter front view, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1920,
+      "height": 1080,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, people, room, floor scene, overlapping objects"
+    },
+    "api_credit_cost": null,
+    "seed": 2021518264,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ]
+  }
+]

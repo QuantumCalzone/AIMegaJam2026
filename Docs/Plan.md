@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T96 to T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T101, T96, T97, T99, T102, T103 to T106), where each concept and each pick waits for my approval. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T84, T85 and T61 come next (T90 is done, so the design doc is in `Docs/Design/`), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -142,13 +142,6 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Touches:** new `Docs/Art/Props/`, the design doc's Art Inspiration tab (props) and Stories tab (the props strips), `Docs/tasks/T97.md`.
   - **Details:** [Docs/tasks/T97.md](tasks/T97.md)
 
-- [ ] **T98 New art, part 5: concepts for the theater, its set pieces and the audience, approved by me**
-  - **Model and effort:** Opus 5.5, high. The house-camera view first, then every piece that T106 must make, with sizes and material notes.
-  - **Depends on:** T94 (the direction and the style guide). It needs no editor and changes no asset, so it can run on either machine, beside the chain.
-  - **Needs:** `Local/leonardo_key.json`; my OK on the estimated cost before the first paid call; my approval of the house view and of each piece; my OK on the design doc edit.
-  - **Touches:** new `Docs/Art/Set/`, the design doc's Art Inspiration tab (The stage), `Docs/tasks/T98.md`.
-  - **Details:** [Docs/tasks/T98.md](tasks/T98.md)
-
 - [ ] **T99 New art, part 6: the backdrops, the stagehand's portrait and the burning bills, approved by me and imported**
   - **Model and effort:** Sonnet 5.5, medium. 2D art where the approved image is the final one, reimported over textures that keep their names.
   - **Depends on:** T94 (the direction), T98 (the approved house, which the backdrops sit in); T35, T36, T48 and T61 (the textures it replaces; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine.
@@ -162,6 +155,13 @@ These hold for every task, and for editor work outside the task list too. If one
   - **Needs:** editor + Unreal MCP running, a free autoplay show in a game window for the recordings, my OK on the mix from those recordings.
   - **Touches:** `Content/NHOS/Audio/**` (reimports, three new music loops, and deletes of sounds T101 left out), `Content/NHOS/Audio/SC_Music.uasset`, `SC_Effects.uasset` and `SC_Voice.uasset`, `Content/NHOS/Core/BPC_ShowAudio.uasset` (levels, ducking, and the three new music keys in `PhaseKey` and `TrackFor`), `Graphs/BPC_ShowAudio/` files for the graphs it writes, `Content/NHOS/Core/BP_Show.uasset` (one pin in `OpenPrep`), `Graphs/BP_Show/OpenPrep.txt`, `Docs/Assets.md`, `Docs/AudioShortlist.md`, `Docs/ItchPage.md` (credits), `Docs/tasks/T102.md`.
   - **Details:** [Docs/tasks/T102.md](tasks/T102.md)
+
+- [ ] **T108 Meta's seat color becomes mustard, in the UI and on the robot**
+  - **Model and effort:** Sonnet 5.5, medium. One color value in each of two Blueprints, the docs that list the seat colors, and a free PIE check.
+  - **Depends on:** T95 (my pick of mustard for Meta; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine. It locks `BP_Robot.uasset`, as T103 does, so the two never run at once.
+  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE check, my pick of the exact hex, my OK on the design doc and style guide edits.
+  - **Touches:** `Content/NHOS/UI/Style/UIStyle.uasset` (`SeatColor`), `Content/NHOS/Stage/BP_Robot.uasset` (`SetPersona`), any other asset that holds Meta's blue, `Graphs/UIStyle/SeatColor.txt`, `Graphs/BP_Robot/SetPersona.txt`, `Docs/Design/ArtInspiration.md` (the bots table and the UI section's palette), `Docs/Art/Direction/README.md` (the palette), `Docs/tasks/T108.md`.
+  - **Details:** [Docs/tasks/T108.md](tasks/T108.md)
 
 - [ ] **T103 New art, part 7: the cast's models, generated from the approved concepts**
   - **Model and effort:** Opus 5.5, high. Five robots generated and swapped into `BP_Robot`, keeping the sockets, the face and every hook the show uses.
@@ -409,6 +409,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T95 New art, part 2: concepts for the cast, me included, approved by me**
   - **Details:** [Docs/tasks/T95.md](tasks/T95.md)
+
+- [x] **T98 New art, part 5: concepts for the theater, its set pieces and the audience, approved by me**
+  - **Details:** [Docs/tasks/T98.md](tasks/T98.md)
 
 ## Not planned yet
 

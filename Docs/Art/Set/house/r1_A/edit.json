@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 18:17 UTC",
+    "generation": "1f1e37c4-5e93-6fc0-83b8-fb8e8d386fd9",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Set/house/collage.png",
+    "refs": [],
+    "prompt": "Repaint this whole picture as one stop-motion claymation scene: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors. Keep the camera, the framing and the layout exactly as they are: the stage in the middle with its wooden plank floor and the footlights along its front edge, the five robots standing where they are in the same order with the same colors and shapes (pale blue, orange with round glasses, the teal cardboard box costume with a scarf, lime, and the blue one with a gold chain), the small raised platform behind the left robots, the small table behind the right robots, the chandelier at the top center, the red curtains on both sides, the audience boxes on the left and right edges, and the cherub statues at the front corners of the stage. Remove the floating ROBOT words, the black balls behind the robots, the ring of dots above the pale blue robot and the yellow zigzag above the lime robot. Replace the castle backdrop with a plain, softly painted pink and peach sunset sky. Fill the dark floor at the bottom of the picture with four raked rows of red velvet theater seats seen from behind, full of small clay capsule robots seen from behind: smooth hairless dome heads with two round cream ear pods and no antennas, bodies in muted rose, plum, mustard, brick and lilac, most wearing black top hats or bowler hats; the rows nearer the camera are dimmer. The robots on stage stay the brightest things in the picture. No text anywhere. The theater is a grand gold and crimson 19th-century opera house: thick chunky old-gold clay columns with rounded mouldings frame the stage, plump gold cherubs, heavy crimson velvet curtains with gold tassels and a gold-fringed valance, horseshoe boxes with cream and gold fronts and crimson drapes, and a warm gold chandelier with glowing candles.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

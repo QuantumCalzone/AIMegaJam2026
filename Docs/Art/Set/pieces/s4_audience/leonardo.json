@@ -1,0 +1,20 @@
+[
+  {
+    "time": "2026-11-18 18:58 UTC",
+    "generation": "1f1e3821-0f43-6710-a557-10f1a22c5b17",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A character sheet of one small clay audience robot and its two hats, side by side in one row, with wide empty space between them: 1) the robot seen from the front, 2) the same robot seen from the side, 3) the same robot seen from behind, 4) a black clay top hat with a dark red band, 5) a black clay bowler hat with a dark red band. The robot is a chunky capsule shape in muted dusty rose clay with a cream lower half, a smooth hairless dome head with two round cream ear pods on its sides and no antenna, a dark screen face with two big round white eyes, short stubby arms and two small round feet, sitting upright as if in a theater seat. Each object whole and in frame, three-quarter front view, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1920,
+      "height": 1080,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, people, room, floor scene, overlapping objects, antennas, antenna, ears like a human"
+    },
+    "api_credit_cost": null,
+    "seed": 119953146,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ]
+  }
+]

@@ -48,26 +48,27 @@ The colors are the UI's seat colors, so a bot, its name tag and its chat bar alw
 
 ### The stage
 
-**Being redrawn in T98 (concepts) and T106 (the build), in the direction above.** Until then, this section describes the house as built. On T94's board the audience bots have smooth dome heads with cream ear pods, no antennas, and top hats or bowler hats.
+**Redrawn in T98 (concepts, approved 2026-11-18); T106 builds it.** Each piece's view, size and material, the swatches and every round are in [Docs/Art/Set/README.md](../Art/Set/README.md).
 
 - One stage for every story: a grand 19th-century opera house, sculpted in clay.
-- A gold clay proscenium arch with chubby clay cherubs, red velvet clay curtains with gold tassels, and footlights along the front edge.
-- A clay chandelier hangs over the house. Horseshoe boxes on both sides and four raked rows of red stalls below the stage hold the clay audience: small capsule bots, most in top hats, some in fedoras or beanies, some with opera glasses. From the house camera the stalls fill the bottom of the frame, seen from behind, dimmer toward the camera.
-- The places stay as they are (Center, Left, Right, Front, Back, the Riser and the Prop Table). The Riser and the Prop Table become clay too.
+- Warm dark wood walls and box fronts with big, bright gold scroll mouldings. Heavy crimson velvet curtains with gold tie-backs, a crimson valance with gold swags and tassels, and footlights in gold shell hoods along the front edge.
+- Two plump gold robot cherubs with screen faces sit on dark wood plinths at the stage's front corners.
+- A gold chandelier hangs over the house. Two tiers of horseshoe boxes on each side and four raked rows of crimson stalls below the stage hold the clay audience: small capsule robots with smooth dome heads, two cream ear pods, screen faces and no antennas, in muted rose, plum, mustard, brick and lilac, most in black top hats or bowlers. From the house camera the stalls fill the bottom of the frame, seen from behind, dimmer toward the camera.
+- The places stay as they are (Center, Left, Right, Front, Back, the Riser and the Prop Table). The Riser is a dark wood platform with a gold trim and a step; the Prop Table is a round table under a cream cloth.
 - Each story drops in its own painted backdrop behind the stage.
 - The Cut: a trapdoor opens under the cut bot and it drops out of sight in a puff of clay dust. (Proposal; a curtain drop is the fallback.)
 
-The stage from the house camera, as built on 2026-11-15. The castle backdrop and the shared prop table are older pieces, not yet replaced.
+The approved house from the house camera. The robots and the pink backdrop are placeholders: T95 draws the cast and T99 the backdrops.
 
-![The clay opera stage from the house camera: five bots on the boards, red curtains, gold cherubs, the chandelier, audience boxes and a row of stalls with top-hat bots](images/ArtInspiration/stage.jpg)
+![The approved house from the house camera: warm brown walls and boxes with big bright gold scrolls, crimson curtains and a gold-swagged valance, a gold chandelier, five robots on the plank stage, gold cherubs at the corners, and the clay robot audience in top hats and bowlers in the stalls](../Art/Set/house.png)
 
-Close up: a cherub at the apron's corner, the horseshoe boxes with their top-hat audience, and the chandelier.
+The pieces T106 makes: the chandelier, a robot cherub on its plinth, a wall pilaster, a theater box, a side curtain, the valance, the Riser, the prop table, a stalls seat, a footlight, the audience robot from the front and back, and its top hat and bowler.
 
-![Close-ups of the left audience boxes and a gold cherub beside the curtain, and of the gold chandelier over the house](images/ArtInspiration/stage-closeups.jpg)
+![The 14 set piece views on one sheet, each on a plain gray background](../Art/Set/pieces/sheet.png)
 
-The three generated set pieces (Meshy renders of the models).
+The surfaces: crimson velvet, bright gold, dark wood, stage planks, cream and house black.
 
-![Renders of the chandelier, cherub and theater box models](images/ArtInspiration/set-pieces.jpg)
+![Six clay surface swatches: crimson velvet, bright gold, dark wood, stage planks, cream and house black](../Art/Set/swatches/sheet.png)
 
 ### Costumes
 

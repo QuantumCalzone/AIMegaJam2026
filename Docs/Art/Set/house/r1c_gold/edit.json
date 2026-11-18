@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 18:19 UTC",
+    "generation": "1f1e37c8-4d5f-63e0-9c3d-95de43c1a5f8",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Set/house/r1b_B/edit_1.png",
+    "refs": [],
+    "prompt": "Change only the theater's walls, columns and box fronts: make them a grand gold and crimson opera house, with thick chunky old-gold clay columns and box fronts in cream and gold with rounded gold mouldings. Keep everything else exactly as it is: the camera and framing, the stage floor, the footlights, the five robots, the pink sky backdrop, the chandelier, the curtains' shape and place, the boxes' places at the left and right edges, the two cherubs, and the audience in the seats with their hats. Stop-motion claymation style, matte modeling clay, no text.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

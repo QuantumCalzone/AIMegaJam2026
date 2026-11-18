@@ -1,0 +1,19 @@
+[
+  {
+    "time": "2026-11-18 19:06 UTC",
+    "generation": "1f1e3833-050f-6930-af89-c18bed66affa",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A product sheet of two separate theater pieces side by side with wide empty space between them: 1) one chunky theater stalls seat with a tall rounded back and a folded-down seat, upholstered in crimson velvet clay, on a short warm dark brown wood clay base, 2) a footlight for the front edge of a stage: a rounded scallop-shell hood of bright gold clay over a round cream clay bulb. Each object whole and in frame, three-quarter front view, plain light gray background, soft even studio light, no cast shadow, no text, no logos.",
+      "width": 1920,
+      "height": 1080,
+      "quantity": 1,
+      "negative_prompt": "text, letters, words, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, people, room, floor scene, overlapping objects"
+    },
+    "api_credit_cost": null,
+    "seed": 1511028964,
+    "images": [
+      "candidate_1.png"
+    ]
+  }
+]

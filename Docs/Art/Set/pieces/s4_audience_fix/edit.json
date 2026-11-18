@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 19:07 UTC",
+    "generation": "1f1e3833-0dc7-6050-8848-983fc6bff340",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Set/pieces/s4_audience/candidate_2.png",
+    "refs": [],
+    "prompt": "Remove the thin antenna with a ball on top of each of the three robots' heads, leaving their smooth round dome heads. Keep everything else exactly as it is: the three robots, their colors, faces, cream ear pods, cream bellies, arms and feet, the two hats, the plain gray background and the light. No text.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 18:27 UTC",
+    "generation": "1f1e37da-72b0-6e70-a6b0-ac6212f77fc1",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Set/house/r1_pick_retouched.png",
+    "refs": [],
+    "prompt": "Make three changes. 1: Repaint the pink sky backdrop and the wooden stage floor behind the five robots smoothly, with no outlines or patches around the robots. 2: On the stage floor, behind and between the pale blue robot and the orange robot, against the backdrop, add a low, wide, knee-high box platform of dark wood clay with a thin gold trim. 3: In the audience seats, every robot whose head is dark and plain gets a smooth clay dome head in muted rose, plum, mustard, brick or lilac with two round cream ear pods, like the robots around it. Keep everything else exactly as it is: the camera and framing, the cream walls with gold scrolls, the boxes, the crimson curtains, the chandelier, the cherubs, the five robots and their places, the small table on the right, the footlights, the front of the stage, and the audience's seats and hats. Stop-motion claymation style, matte modeling clay, no text.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 18:37 UTC",
+    "generation": "1f1e37f2-0212-61b0-b26c-8463bf90e5df",
+    "model": "gemini-2.5-flash-image",
+    "source": "Docs/Art/Set/house/r1_pick_retouched.png",
+    "refs": [],
+    "prompt": "Change only two things. 1: Make the cream walls, columns and box fronts of the theater a darker color: warm dark brown, like dark polished wood sculpted in clay. 2: Make the gold scroll mouldings and the gold trims on the walls and boxes a brighter, richer, warmer gold, so they stand out against the dark brown. Keep everything else exactly as it is: the camera and framing, the crimson curtains, the chandelier, the cherubs, the five robots and their places, the small table on the right, the stage floor, the footlights, the pink sky backdrop, and the audience in the seats with their hats. Stop-motion claymation style, matte modeling clay, no text.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]
