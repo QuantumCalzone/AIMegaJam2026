@@ -1,5 +1,6 @@
-; T20: one music loop at a time. "title" plays the title loop, anything else the quieter show loop.
-; The same key twice does nothing, so every header cue can ask for the show music.
+; T20: one music loop at a time. The same key twice does nothing, so every header cue can ask for the show music.
+; T102: a new key also starts a new recording in a game started with -NHOSRec (RecPhase).
 (fn PlayMusic (Key)
   (if (not (streq Key (V MusicKey)))
+    (CallFunction|RecPhase :Key Key)
     (CallFunction|SwapMusic :Key Key)))

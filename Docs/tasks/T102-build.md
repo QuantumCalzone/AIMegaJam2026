@@ -259,24 +259,34 @@ run(PICKS[0:4])
 - **If a property name fails** (`looping`, `sound_class_object`, `volume`, `duration`, `num_channels`), read the names on `S_MusicCut` first with `get_editor_property` and fix the script. These are the Python names of `bLooping`, `SoundClassObject`, `Volume`, `Duration` and `NumChannels`.
 - **Afterwards:** `BPC_ShowAudio` compiles with no warning, and `find_package_referencers_for_asset` on two replaced assets (`S_MusicCut`, `S_MusicTitle`) still lists `BPC_ShowAudio`.
 
-### 2b. GAP: T101's picks (the show, robot and UI sounds and the bots' voices)
+### 2b. T101's picks (the show, robot and UI sounds and the bots' voices)
 
-**T101 hadn't picked them when this sheet was written.** Fill this table from "For T102" in `Docs/tasks/T101.md` and T101's rows in `Docs/AudioShortlist.md`. Then run part 3's command on T101's folders (`SourceAssets/Audio/Show`, `Robot`, `UI` and `voices/<provider>`, as T101 names them) and take each Volume from part 3c's formula.
+Filled by T102 on 2026-11-19 from "For T102" in `Docs/tasks/T101.md` and its rows in `Docs/AudioShortlist.md`, with the numbers from part 3's command on T101's folders. The source folders are lowercase (`show/`, `robot/`, `ui/`, `voices/<Provider>/`), one WAV per asset, named for it.
 
-| Asset (all exist today) | Sound class | Looping | Plays from | Group in part 3c |
-|---|---|---|---|---|
-| `Show/S_DrumRoll` | `SC_Effects` | off | `StartDrum` | Drum roll |
-| `Show/S_StingHuman`, `Show/S_StingAI` | `SC_Effects` | off | `Reveal` → `Sfx` | Show |
-| `Show/S_Applause`, `Show/S_ApplauseWin`, `Show/S_Laughs` | `SC_Effects` | off | `Crowd`, `EndCheer`, the `tie` cue → `Sfx` | Show |
-| `UI/S_Click`, `UI/S_Hover` | `SC_Effects` | off | every button (`UIStyle.MakeButton`) | Robot and UI |
-| `Robot/S_Step0` to `S_Step4`, `S_Grab`, `S_Throw`, `S_Land` | `SC_Effects` | off | `BP_Robot.Snd` | Robot and UI |
-| `Robot/S_TalkBlip` | `SC_Voice` | off | `Sfx "blip"`, `BP_Show.LineBlip` | Voice, or delete (below) |
-| `Voice/<Provider>/S_Voice<Provider>_NN` (41 clips) | `SC_Voice` | off | `Syllable` | Voice |
-| `Voice/Me/S_VoiceMe_00` to `_11` | `SC_Voice` | off | `Syllable` | Voice: **the files stay as they are** (Done-when 1) |
+| Asset | Source file | Sound class | Looping | Plays from | Group in part 3c | Measured | Volume |
+|---|---|---|---|---|---|---|---|
+| `Show/S_DrumRoll` | `show/S_DrumRoll.wav` (12 s loop) | `SC_Effects` | **on** (new: T101 cut it as a loop) | `StartDrum` | Drum roll | -27.7 LUFS | 0.858 |
+| `Show/S_StingHuman` | `show/S_StingHuman.wav` | `SC_Effects` | off | `Reveal` → `Sfx` | Show | -22.0 LUFS | 0.560 |
+| `Show/S_StingAI` | `show/S_StingAI.wav` | `SC_Effects` | off | `Reveal` → `Sfx` | Show | -23.7 LUFS | 0.684 |
+| `Show/S_Applause` | `show/S_Applause.wav` | `SC_Effects` | off | `Crowd` → `Sfx` | Show | -21.4 LUFS | 0.523 |
+| `Show/S_ApplauseWin` | `show/S_ApplauseWin.wav` | `SC_Effects` | off | `EndCheer` → `Sfx` | Show | -24.1 LUFS | 0.714 |
+| `Show/S_Laughs` | `show/S_Laughs.wav` | `SC_Effects` | off | `Crowd`, `EndCheer`, the `tie` cue → `Sfx` | Show | -25.8 LUFS | 0.875 |
+| `Robot/S_Step0` to `S_Step3` | `robot/S_Step0.wav` to `S_Step3.wav` | `SC_Effects` | off | `BP_Robot.Snd` | Robot and UI | -20.0 u | 0.282 |
+| `Robot/S_Step4` | `robot/S_Step4.wav` | `SC_Effects` | off | `BP_Robot.Snd` | Robot and UI | -20.2 u | 0.289 |
+| `Robot/S_Grab`, `S_Throw` | `robot/S_Grab.wav`, `S_Throw.wav` | `SC_Effects` | off | `BP_Robot.Snd` | Robot and UI | -20.0 u | 0.282 |
+| `Robot/S_Land` | `robot/S_Land.wav` | `SC_Effects` | off | `BP_Robot.Snd` | Robot and UI | -22.1 u | 0.359 |
+| `UI/S_Click` | `ui/S_Click.wav` | `SC_Effects` | off | every button (`UIStyle.MakeButton`) | Robot and UI | -20.8 u | 0.308 |
+| `UI/S_Hover` | `ui/S_Hover.wav` (mono) | `SC_Effects` | off | every button | **Hover: 10 dB under the click** (T101: "a really soft hint"), -44 in the game | -30.0 u | 0.282 |
+| `Voice/OpenAI/S_VoiceOpenAI_00` to `_09` | `voices/OpenAI/` (mono, T101's set B) | `SC_Voice` | off | `Syllable` | Voice | -25.7 to -26.0 u | 1.0 |
+| `Voice/SpaceXAI/S_VoiceSpaceXAI_00` to `_10` | `voices/SpaceXAI/` (set B) | `SC_Voice` | off | `Syllable` | Voice | -25.7 to -26.0 u | 1.0 |
+| `Voice/Meta/S_VoiceMeta_00` to `_09` | `voices/Meta/` (set B) | `SC_Voice` | off | `Syllable` | Voice | -25.6 to -25.9 u | 1.0 |
+| `Voice/Anthropic/S_VoiceAnthropic_00` to `_09` | unchanged (T72's set A, which my person picked) | `SC_Voice` | off | `Syllable` | Voice | -25.4 to -25.9 u | 1.0, **no reimport** |
+| `Voice/Me/S_VoiceMe_00` to `_11` | unchanged (Done-when 1) | `SC_Voice` | off | `Syllable` | Voice | -23.8 to -26.1 u | 1.0, **no reimport** |
+| `Robot/S_TalkBlip` | none: **delete** | | | nothing (T73 removed its callers; only `Sfx`'s "blip" branch names it) | | | |
 
-- **Import in place** with the same `AssetImportTask` as part 2a (`replace_existing` on, the asset's folder and name), with `looping` off and the sound class above.
-- **A new clip count for a bot's voice** changes `Syllable`'s offsets (`_start`, `_count`: OpenAI 0-9, Anthropic 10-19, SpaceXAI 20-30, Meta 31-40, me 41-52) and `LoadVoices`. If T101 changes a count, rewrite both from their files and fix the numbers.
-- **Delete an asset T101 left out only after a reference check** (`find_package_referencers_for_asset`). `S_TalkBlip` is still named in `Sfx`'s `"blip"` branch, and `Sfx` has no splice. If nothing calls `Sfx "blip"` or `Blip` any more, take out that branch and the `Blip` call first, then delete the asset.
+- **Import in place** with the same `AssetImportTask` as part 2a (`replace_existing` on, the asset's folder and name), with `looping` set as above and the sound class above. The voice counts are unchanged (10, 10, 11, 10, 12), so `Syllable` and `LoadVoices` need no change.
+- **Every Volume** is part 3c's formula: the Show group at -27 integrated, the drum roll at -29, the robot sounds and the click at -31 `ungated`, the hover at -41. Every peak stays at -14 dBFS or lower in the game.
+- **`S_TalkBlip`:** take the "blip" branch out of `Sfx` (and its lines in `Graphs/BPC_ShowAudio/Sfx.txt`), compile, check `find_package_referencers_for_asset` lists nothing, then delete the asset and its row in `Docs/Assets.md`.
 
 ## 3. Loudness
 

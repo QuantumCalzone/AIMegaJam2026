@@ -1,6 +1,8 @@
 ; T20: the cut: the drum stops, the stinger says who it was, the crowd follows 1.5 s later.
 ; T71: the Cut loop stops with the drum, so nothing plays under the stinger.
+; T102: notes when the stinger played, so the Reactions loop can wait for it (PlayPhase).
 (fn Reveal (IsHuman)
+  (set RevealAt (Utilities|Time|GetRealTimeSeconds))
   (set LastHuman IsHuman)
   (CallFunction|StopDrum)
   (CallFunction|StopMusic)

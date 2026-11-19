@@ -1,6 +1,9 @@
 ; T20: the end screen: the music stops; a win gets the long applause, a loss the laughs.
-; T71: 3 s in, the win or lose loop starts (EndMusic).
+; T71: 3 s in, the win or lose loop starts (EndMusic). T102: a Reactions loop still waiting (ReactLater) never starts,
+; and a game started with -NHOSRec records the end screen (RecPhase).
 (fn EndCheer (Win)
+  (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "ReactLater")
+  (CallFunction|RecPhase :Key "end")
   (CallFunction|StopMusic)
   (set EndWin Win)
   (CallFunction|Sfx :Key (select Win "applause_win" "laughs") :Pitch 1.0)

@@ -149,59 +149,58 @@ Made with Leonardo.ai through its paid API (private generations) in six rounds o
 
 ## Audio
 
-Imported in T20 (2026-11-15) from `SourceAssets/Audio/` (see `Docs/AudioShortlist.md`) into `Content/NHOS/Audio/`. No AI audio tools were used. Kenney's packs are CC0, so no credit is needed; optional credit: "Kenney (www.kenney.nl)". The two CC BY files need the credit lines below in the credits and on the itch.io page.
+Every sound in `Content/NHOS/Audio/` was replaced in T102 (2026-11-19), from the picks my person made by ear in T100 (the music) and T101 (every other sound and three of the four robot voices). Each was reimported over the asset it replaces, under the same name, so every reference stays. The source files are in `SourceAssets/Audio/music/t100/`, `show/`, `robot/`, `ui/` and `voices/<set>/`. How each was picked, every prompt and my person's words are in `Docs/AudioShortlist.md`; the loudness targets and the levels of the mix are there too.
+
+- **Stable Audio** (model `stable-audio-3`, Stability AI, through the Stability AI API on my person's own account) made the 16 music loops and most of the show and robot sounds, from prompts written with Claude. Stability AI's Terms of Service (effective 2026-09-30) give us the output ("you own the Output"), Stable Audio's plans include a commercial license, and no credit is required. The terms forbid removing any watermark or provenance mark.
+- **Two files are CC BY 3.0 and need their credit lines** wherever the game's credits are shown (`Docs/ItchPage.md`): the applause and the laughs.
+- `S_TalkBlip` was deleted in T102: nothing had played it since T73.
 
 | Asset | What it is | Source | License |
 |---|---|---|---|
-| `Content/NHOS/Audio/Music/S_MusicTitle` | Title music loop (24 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Swinging Pants.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicShow` | Show music loop under the scenes (12 s, played quiet) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Wacky Waiting.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Show/S_DrumRoll` | Drum roll under the vote (18.8 s, ends on a cymbal; cut short at the reveal) | "Long Drum Roll with Cymbal Crash at End" by Ddis tts, Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Long_Drum_Roll_with_Cymbal_Crash_at_End.wav | CC0 1.0 |
-| `Content/NHOS/Audio/Show/S_StingHuman` | Reveal stinger when the human is cut | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Idents/Serious ident.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Show/S_StingAI` | Reveal stinger when an AI is cut | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Retro/Retro Comedy.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Show/S_Applause` | Applause after every cut | "applause-2" by Sandermotions (Freesound 277021), Wikimedia Commons: https://commons.wikimedia.org/wiki/File:277021_sandermotions_applause-2.wav | CC0 1.0 |
-| `Content/NHOS/Audio/Show/S_ApplauseWin` | Long applause at a win | "Applaudissements" by Thomas Bresson, Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Thomas_Bresson_-_Applaudissements.mp3 | CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Credit needed: "Applaudissements" by Thomas Bresson, CC BY 4.0. |
-| `Content/NHOS/Audio/Show/S_Laughs` | Laughs after an AI is cut, and at a loss | "approx 800 laughter and clapter 1" by lonemonk (https://freesound.org/people/lonemonk/packs/4695/), Wikimedia Commons: https://commons.wikimedia.org/wiki/File:72844_lonemonk_approx-800-laughter-and-clapter-1.wav | CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Credit needed: "approx 800 laughter and clapter 1" by lonemonk, CC BY 3.0. |
-| `Content/NHOS/Audio/UI/S_Click` | Button press, on every button through `UIStyle.MakeButton` | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Interface Sounds", `click_001.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/UI/S_Hover` | Button hover, on every button through `UIStyle.MakeButton` | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "UI Audio", `rollover1.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Robot/S_TalkBlip` | Talk blip when a line plays, pitched per provider | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Interface Sounds", `pluck_001.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Robot/S_Step0` to `S_Step4` | Robot footsteps, one picked at random | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Impact Sounds", `footstep_concrete_000.ogg` to `_004.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Robot/S_Grab` | A robot picks up a prop | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "RPG Audio", `cloth1.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Robot/S_Throw` | A robot throws a prop | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Foley Sounds", `Woosh/woosh1.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Robot/S_Land` | A thrown prop lands | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Impact Sounds", `impactSoft_medium_000.ogg` | CC0 1.0 |
+| `Content/NHOS/Audio/Music/S_MusicTitle` | Title screen loop: a Mozart-style comic opera overture (69 s) | Stable Audio 3, prompt in `Docs/AudioShortlist.md` (`01_title.flac`, take B, seed 3247519507), 2026-11-18 (T100) | Ours (Stability AI terms); no credit needed |
+| `Content/NHOS/Audio/Music/S_MusicScenePrep` | Scene Prep loop, every card: quiet symphonic underscore (70 s). New in T102 | Stable Audio 3 (`02_scene_prep.flac`, take B, seed 3596362908) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicSpacePlans` | The Scene, `space_plans`: symphonic space-adventure underscore (63 s) | Stable Audio 3 (`03_space_plans.flac`, take B, seed 3754550674) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicMineBridge` | The Scene, `mine_bridge`: dark symphonic fantasy underscore (82 s) | Stable Audio 3 (`04_mine_bridge.flac`, take B, seed 288248621) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicDinoIsland` | The Scene, `dino_island`: adventurous symphonic underscore (74 s) | Stable Audio 3 (`05_dino_island.flac`, take B, seed 599893121) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicFavorFather` | The Scene, `favor_father`: symphonic Italian wedding waltz (84 s) | Stable Audio 3 (`06_favor_father.flac`, take B, seed 1716905050) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicGlowingBriefcase` | The Scene, `glowing_briefcase`: 1960s surf rock and soul pop (90 s) | Stable Audio 3 (`07_glowing_briefcase.flac`, take B, seed 1363824617) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicLeagueNight` | The Scene, `league_night`: 1960s folk (82 s) | Stable Audio 3 (`08_league_night.flac`, take B, seed 566761696) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicPickAPill` | The Scene, `pick_a_pill`: cyberpunk drum and bass (61 s) | Stable Audio 3 (`09_pick_a_pill.flac`, take B, seed 2488681773) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicFreeTalk` | Free Talk: sneaky chamber-orchestra whodunit (82 s) | Stable Audio 3 (`10_free_talk.flac`, take C, seed 2083969685) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicLastWord` | Last Word: hushed symphonic tension (69 s). New in T102 | Stable Audio 3 (`11_last_word.flac`, take F, seed 2298393024) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicCut` | The Cut, low under the drum roll: a symphonic "thinking clock" (86 s) | Stable Audio 3 (`12_cut.flac`, take C, seed 3704110694) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicReactions` | Reactions: wry, light symphonic underscore (77 s). New in T102 | Stable Audio 3 (`13_reactions.flac`, take B, seed 2832459487) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicWin` | End screen after a win: triumphant symphonic finale (77 s) | Stable Audio 3 (`14_win.flac`, take D, seed 3144764042) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicLose` | End screen after a loss: a wry, deflated symphonic shrug (80 s) | Stable Audio 3 (`15_lose.flac`, take C, seed 3852197593) (T100) | Ours |
+| `Content/NHOS/Audio/Music/S_MusicShow` | Fallback loop for a card with no loop of its own: light symphonic underscore (79 s) | Stable Audio 3 (`16_show.flac`, take B, seed 3480459292) (T100) | Ours |
+| `Content/NHOS/Audio/Show/S_DrumRoll` | Drum roll under the vote: an orchestral snare roll over soft timpani, a 12 s loop | Stable Audio 3 (take B, seed 101021, 20 s take, three bars cut into a loop) (T101) | Ours |
+| `Content/NHOS/Audio/Show/S_StingHuman` | Reveal sting when the human is cut: strings sink into a dark minor chord (3.9 s) | Stable Audio 3 (round 2 take E, seed 101005) (T101) | Ours |
+| `Content/NHOS/Audio/Show/S_StingAI` | Reveal sting when an AI is cut: a cheeky fanfare with a comic boing (3.1 s) | Stable Audio 3 (round 2 take F, seed 101016) (T101) | Ours |
+| `Content/NHOS/Audio/Show/S_Applause` | Applause after every cut (8 s) | "Applause-2" by RHumphries (Freesound 1921), Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Applause-2.ogg (T101) | CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). **Credit needed** (below) |
+| `Content/NHOS/Audio/Show/S_ApplauseWin` | Standing ovation at a win (25 s) | Stable Audio 3 (take B, seed 101041) (T101) | Ours |
+| `Content/NHOS/Audio/Show/S_Laughs` | Laughs after an AI is cut, at a tie and at a loss (10 s) | "approx 800 laughter only 1" by lonemonk (Freesound pack 4695), Wikimedia Commons: https://commons.wikimedia.org/wiki/File:72843_lonemonk_approx-800-laughter-only-1.wav (T101) | CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). **Credit needed** (below) |
+| `Content/NHOS/Audio/Robot/S_Step0` to `S_Step4` | Clay-robot steps on a wooden stage, one picked at random (0.28 s each) | Stable Audio 3 (take C, seed 101061; five hits cut from one take) (T101) | Ours |
+| `Content/NHOS/Audio/Robot/S_Grab` | A robot picks up a prop: a clay squeeze (0.3 s) | Stable Audio 3 (take C, seed 101071) (T101) | Ours |
+| `Content/NHOS/Audio/Robot/S_Throw` | A robot throws a prop: a short swish (0.13 s) | `swish-3.wav` from "Swishes sound pack" by artisticdude: https://opengameart.org/content/swishes-sound-pack (T101) | CC0; courtesy credit "artisticdude" |
+| `Content/NHOS/Audio/Robot/S_Land` | A thrown prop lands: a clay thud on wood (0.65 s) | Stable Audio 3 (take C, seed 101091) (T101) | Ours |
+| `Content/NHOS/Audio/UI/S_Click` | Button press, on every button through `UIStyle.MakeButton` (0.1 s) | `click.9.ogg` from "10 clicks and switches" by StarNinjas: https://opengameart.org/content/10-clicks-and-switches (T101) | CC0; courtesy credit "StarNinjas" |
+| `Content/NHOS/Audio/UI/S_Hover` | Button hover: a tiny rising whoosh of air (0.1 s) | Ours: made by Claude's script (band-passed noise, seed 10103) (T101) | Ours |
 
-Sound classes `SC_Music`, `SC_Effects` and `SC_Voice` in `Content/NHOS/Audio/` are copies of the engine's `/Engine/EngineSounds/Music` and `SFX` classes (Unreal Engine 5.8), with no parent.
+Sound classes `SC_Music`, `SC_Effects` and `SC_Voice` in `Content/NHOS/Audio/` are copies of the engine's `/Engine/EngineSounds/Music` and `SFX` classes (Unreal Engine 5.8), with no parent. T102 set their volumes (see "The mix (T102)" in `Docs/AudioShortlist.md`).
 
 Credit lines for the CC BY files:
 
-- "Applaudissements" by Thomas Bresson, CC BY 4.0, via Wikimedia Commons.
-- "approx 800 laughter and clapter 1" by lonemonk, CC BY 3.0, via Wikimedia Commons.
+- "Applause-2" by RHumphries, CC BY 3.0, via Wikimedia Commons.
+- "approx 800 laughter only 1" by lonemonk, CC BY 3.0, via Wikimedia Commons.
 
-### Music for each place and each scene (T71)
+### Voices (T72, T101)
 
-Imported in T71 (2026-11-15) from `SourceAssets/Audio/music/` (see `Docs/tasks/T71-build.md`) into `Content/NHOS/Audio/Music/`. No AI audio tools were used. Kenney's packs are CC0, so no credit is needed; optional credit: "Kenney (www.kenney.nl)". `S_MusicTitle` stays on the title, and `S_MusicShow` now plays only for a card with no loop of its own.
-
-| Asset | What it is | Source | License |
-|---|---|---|---|
-| `Content/NHOS/Audio/Music/S_MusicSpacePlans` | Music loop for the `space_plans` card (24 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Space Cadet.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicMineBridge` | Music loop for the `mine_bridge` card (12 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Infinite Descent.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicDinoIsland` | Music loop for the `dino_island` card (15 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Drumming Sticks.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicFavorFather` | Music loop for the `favor_father` card (30 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Italian Mom.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicGlowingBriefcase` | Music loop for the `glowing_briefcase` card (12 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Cheerful Annoyance.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicLeagueNight` | Music loop for the `league_night` card (15 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Alpha Dance.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicPickAPill` | Music loop for the `pick_a_pill` card (48 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Retro/Retro Mystic.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicFreeTalk` | Music loop under Free Talk (32 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Mishief Stroll.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicCut` | Music loop under The Cut, low under the drum roll (11 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Mission Plausible.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicWin` | Music loop on the end screen after a win (16 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Polka Train.ogg` | CC0 1.0 |
-| `Content/NHOS/Audio/Music/S_MusicLose` | Music loop on the end screen after a loss (10 s) | Kenney Game Assets All-in-1 3.8.0 (https://kenney.itch.io/kenney-game-assets), pack "Music Loops", `Loops/Game Over.ogg` | CC0 1.0 |
-
-### Voices (T72)
-
-Made in T72 (2026-11-15). Each speaker's set of short gibberish syllables, played one per syllable by `BPC_ShowAudio.Syllable` (T73 calls it as a line types out). The four robot sets are made by our own script, with no outside audio and no AI audio tool. My own set is my own recording. All are 44.1 kHz, 16-bit mono, on `SC_Voice` at wave volume 0.6 (0.3 effective, the same as the talk blip), and set to the talk blip's loudness. The source wavs are in `SourceAssets/Audio/voices/<set>/`.
+Each speaker's set of short gibberish syllables, played one per syllable by `BPC_ShowAudio.Syllable` (T73 calls it as a line types out). The four robot sets are made by our own script, `Tools/make_voices.py`, with no outside audio and no AI audio tool; T101 replaced three of them (my person's picks), and T102 reimported those. My own set is my own recording. All are 44.1 kHz, 16-bit mono, on `SC_Voice`. The source wavs are in `SourceAssets/Audio/voices/<set>/`.
 
 | Asset | What it is | Source | License |
 |---|---|---|---|
-| `Content/NHOS/Audio/Voice/OpenAI/S_VoiceOpenAI_00` to `_09` | OpenAI's voice: a clean, bright chirp (soft sine harmonics, front vowels, a calm upward glide), 0.08 to 0.12 s | Ours: `python Tools/make_voices.py` (seed 7272; base pitch 201 Hz, formants × 1.15, a +6 dB shelf at 2 kHz, a faint 23 ms echo) | Ours |
-| `Content/NHOS/Audio/Voice/Anthropic/S_VoiceAnthropic_00` to `_09` | Anthropic's voice: a warm, round vowel (a glottal pulse, rounded vowels, a low-pass at 2.2 kHz, a 9 Hz nervous flutter, a falling end), 0.09 to 0.13 s | Ours: `python Tools/make_voices.py` (seed 7272; base pitch 149 Hz) | Ours |
-| `Content/NHOS/Audio/Voice/SpaceXAI/S_VoiceSpaceXAI_00` to `_10` | SpaceXAI's voice: a crunchy, bit-crushed buzz (square and saw, driven into clipping, crushed to 3 bits at 7.35 kHz, jumpy pitch steps), 0.08 to 0.11 s | Ours: `python Tools/make_voices.py` (seed 7272; base pitch 228 Hz) | Ours |
-| `Content/NHOS/Audio/Voice/Meta/S_VoiceMeta_00` to `_09` | Meta's voice: a low, wobbly drone (a dark saw with a nasal hum, an 8 Hz vibrato of 7% with tremolo, a flat monotone), 0.10 to 0.15 s | Ours: `python Tools/make_voices.py` (seed 7272; base pitch 122 Hz) | Ours |
+| `Content/NHOS/Audio/Voice/OpenAI/S_VoiceOpenAI_00` to `_09` | OpenAI's voice: an airy whistle (few harmonics, a lot of breath, a slightly sharp doubled copy, a slow rise, soft h and w onsets), 0.09 to 0.12 s | Ours: `python Tools/make_voices.py` (`syl_openai_b`, seed 72731) (T101) | Ours |
+| `Content/NHOS/Audio/Voice/Anthropic/S_VoiceAnthropic_00` to `_09` | Anthropic's voice: a warm, round vowel (a glottal pulse, rounded vowels, a low-pass at 2.2 kHz, a 9 Hz nervous flutter, a falling end), 0.09 to 0.13 s | Ours: `python Tools/make_voices.py` (`syl_anthropic`, seed 7272; base pitch 149 Hz) (T72) | Ours |
+| `Content/NHOS/Audio/Voice/SpaceXAI/S_VoiceSpaceXAI_00` to `_10` | SpaceXAI's voice: an overclocked chiptune (a bare square wave leaping through a fast three-note arpeggio, crushed to 4 bits), 0.08 to 0.11 s | Ours: `python Tools/make_voices.py` (`syl_spacex_b`, seed 72733) (T101) | Ours |
+| `Content/NHOS/Audio/Voice/Meta/S_VoiceMeta_00` to `_09` | Meta's voice: a rigid machine monotone (an exactly flat dark saw, ring-modulated at 55 Hz, switched on and off), 0.10 to 0.14 s | Ours: `python Tools/make_voices.py` (`syl_meta_b`, seed 72734) (T101) | Ours |
 | `Content/NHOS/Audio/Voice/Me/S_VoiceMe_00` to `_11` | My voice: a human doing a flat robot impression ("beep", "boop", "bzzt", "dee", "doo", "bop", "kshh", "blip", "zap", "bleep", "dah", "wub"), 0.22 to 0.25 s | Recorded by the project owner on 2026-11-15 (`SourceAssets/Audio/voices/Me/source/recording.wav`), cut by `python Tools/make_voices.py --me SourceAssets/Audio/voices/Me/source/recording.wav --first 12 --max-len 0.25` | Ours |

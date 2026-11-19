@@ -152,12 +152,12 @@ Made by **[YOU: team name and members]** for the 2026 Epic AI MegaJam, in Unreal
 - **Built with** Claude Code (Claude Opus 5.5, Claude Fable 5.2 and Claude Sonnet 5.5) driving the Unreal Editor through Unreal MCP.
 - **Font:** Roboto by Google and Droid Sans Fallback, shipped with Unreal Engine (Apache License 2.0).
 - **Art:** made in the editor from the engine's basic shapes, with no outside or generated art.
-- **Audio [T20: rebuild this list from `Docs/Assets.md`]:**
-  - Music, stingers and sound effects by Kenney (www.kenney.nl), CC0.
-  - "Long Drum Roll with Cymbal Crash at End" by Ddis tts, CC0, via Wikimedia Commons.
-  - "applause-2" by Sandermotions, CC0, via Wikimedia Commons.
-  - "Applaudissements" by Thomas Bresson, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), via Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Thomas_Bresson_-_Applaudissements.mp3
-  - "approx 800 laughter and clapter 1" by lonemonk, CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/), via Wikimedia Commons: https://commons.wikimedia.org/wiki/File:72844_lonemonk_approx-800-laughter-and-clapter-1.wav
+- **Audio** (from `Docs/Assets.md`, T102):
+  - Music and most sound effects generated with Stable Audio by Stability AI, from prompts written with Claude, picked by the team.
+  - "Applause-2" by RHumphries, CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/), via Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Applause-2.ogg
+  - "approx 800 laughter only 1" by lonemonk, CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/), via Wikimedia Commons: https://commons.wikimedia.org/wiki/File:72843_lonemonk_approx-800-laughter-only-1.wav
+  - Throw swish by artisticdude, click by StarNinjas (CC0, via OpenGameArt).
+  - The robots' gibberish voices are made by our own script; the human's is the team's own recording.
 - **Made before the jam:** only the project and repo setup (the Unreal project from Epic's Blank Blueprint template, its config, the git setup and the agents' instruction files), on Nov 10 and 11. No game content. **[YOU: add anything from open question 6 in `Submission.md`]**
 - **Dev log:** [YOU: dev log link]
 

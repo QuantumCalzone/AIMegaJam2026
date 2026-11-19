@@ -1,8 +1,11 @@
-; T71: the loop for each music key. A key with no track of its own ("show", or a card added later) gets T20's show loop.
+; T71: the loop for each music key. A key with no track of its own ("show", or a card added later) gets the show loop.
 ; Every track is named here, so the cook packs each one.
+; T102: Scene Prep, Last Word and Reactions have their own loops (T100's picks): 15 keys, 15 tracks, plus the fallback.
 (fn TrackFor (Key)
   (if (streq Key "title")
     (return "/Game/NHOS/Audio/Music/S_MusicTitle.S_MusicTitle"))
+  (if (streq Key "scene_prep")
+    (return "/Game/NHOS/Audio/Music/S_MusicScenePrep.S_MusicScenePrep"))
   (if (streq Key "space_plans")
     (return "/Game/NHOS/Audio/Music/S_MusicSpacePlans.S_MusicSpacePlans"))
   (if (streq Key "mine_bridge")
@@ -19,8 +22,12 @@
     (return "/Game/NHOS/Audio/Music/S_MusicPickAPill.S_MusicPickAPill"))
   (if (streq Key "free_talk")
     (return "/Game/NHOS/Audio/Music/S_MusicFreeTalk.S_MusicFreeTalk"))
+  (if (streq Key "last_word")
+    (return "/Game/NHOS/Audio/Music/S_MusicLastWord.S_MusicLastWord"))
   (if (streq Key "cut")
     (return "/Game/NHOS/Audio/Music/S_MusicCut.S_MusicCut"))
+  (if (streq Key "reactions")
+    (return "/Game/NHOS/Audio/Music/S_MusicReactions.S_MusicReactions"))
   (if (streq Key "win")
     (return "/Game/NHOS/Audio/Music/S_MusicWin.S_MusicWin"))
   (if (streq Key "lose")

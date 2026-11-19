@@ -1,10 +1,7 @@
 ; T20: plays one effect by key. Volumes live on the sound waves and their sound classes.
+; T102: the "blip" key is gone with S_TalkBlip: nothing played it since T73.
 (fn Sfx (Key Pitch)
-  (if (not (streq Key "blip"))
-    (print (cat "NHOS: SOUND " Key)))
-  (if (streq Key "blip")
-    (Audio|PlaySound2D :Sound "/Game/NHOS/Audio/Robot/S_TalkBlip.S_TalkBlip" :PitchMultiplier Pitch)
-    (return))
+  (print (cat "NHOS: SOUND " Key))
   (if (streq Key "sting_human")
     (Audio|PlaySound2D :Sound "/Game/NHOS/Audio/Show/S_StingHuman.S_StingHuman" :PitchMultiplier Pitch)
     (return))

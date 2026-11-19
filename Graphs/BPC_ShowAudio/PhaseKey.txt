@@ -1,14 +1,20 @@
 ; T71: the music key for the header a "phase" cue carries (BP_Show.CueHeader).
 ; "card" means the card in play. "" means no track of its own: the loop that plays goes on.
-; Headers: "SCENE PREP: SCENE n", "THE SCENE: SCENE n, ...", "FREE TALK: SCENE n...",
-; "...FREE TALK IS OVER", "THE CUT: ...", "REACTIONS: SCENE n", "THE SHOW IS OVER". T58 adds "LAST WORD: SCENE n".
+; Headers: "SCENE PREP: SCENE n", "THE SCENE: SCENE n, ...", "FREE TALK: SCENE n...", "LAST WORD: SCENE n",
+; "SCENE n: FREE TALK IS OVER", "THE CUT: ...", "REACTIONS: SCENE n", "THE SHOW IS OVER", "THE REVEAL" (T87).
+; T102: Scene Prep, Last Word and Reactions have their own loops. No phase cue carries "SCENE PREP" today:
+; OpenPrep asks for "scene_prep" itself. "SCENE n: FREE TALK IS OVER", "THE SHOW IS OVER" and "THE REVEAL" give "".
 (fn PhaseKey (Text)
   (if (Utilities|String|StartsWith :SourceString Text :InPrefix "SCENE PREP")
-    (return "card"))
+    (return "scene_prep"))
   (if (Utilities|String|StartsWith :SourceString Text :InPrefix "THE SCENE")
     (return "card"))
   (if (Utilities|String|StartsWith :SourceString Text :InPrefix "FREE TALK")
     (return "free_talk"))
+  (if (Utilities|String|StartsWith :SourceString Text :InPrefix "LAST WORD")
+    (return "last_word"))
   (if (Utilities|String|StartsWith :SourceString Text :InPrefix "THE CUT")
     (return "cut"))
+  (if (Utilities|String|StartsWith :SourceString Text :InPrefix "REACTIONS")
+    (return "reactions"))
   (return ""))

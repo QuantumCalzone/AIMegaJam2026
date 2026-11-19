@@ -1,0 +1,4 @@
+; T102: starts the Reactions loop late (PlayPhase). If other music started first (the next Scene Prep), it stays out of the way.
+(fn ReactLater ()
+  (if (Utilities|String|IsEmpty (V MusicKey))
+    (CallFunction|PlayMusic :Key "reactions")))

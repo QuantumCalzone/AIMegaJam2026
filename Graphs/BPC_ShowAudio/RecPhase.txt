@@ -1,0 +1,14 @@
+; T102: records the game's own audio, one WAV per music phase, only in a game started with -NHOSRec (step 6's recordings).
+; A recording stops at the next phase or after 60 s (The Cut's must reach the reveal). The end screen's recording starts at EndCheer and keeps going under
+; the win or lose loop. A player's game never records.
+(fn RecPhase (Key)
+  (if (not (Utilities|HasLaunchOption :OptionToCheck "NHOSRec"))
+    (return))
+  (if (or (streq Key "win") (streq Key "lose"))
+    (return))
+  (CallFunction|RecStop)
+  (set RecN (+ (V RecN) 1))
+  (set RecName (cat (str (V RecN)) "_" Key))
+  (Audio|Recording|StartRecordingOutput :ExpectedDuration 60.0)
+  (set RecLive true)
+  (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "RecStop" :Time 60.0 :bLooping false))

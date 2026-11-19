@@ -4,7 +4,7 @@ Files picked for T20, chosen without the editor. The picks and their backups are
 
 The picks were made by name, length and license, without listening. T20's listening pass makes the final choice; swap in the backup or a nearby file from the same pack if a pick sounds wrong.
 
-The music for every phase and every scene card was replaced in T100: see "Music (T100)" first. Every other sound and three of the four robot voice sets were replaced in T101: see "Show, robot and button sounds, and the bots' voices (T101)". The rest of this file is T20's shortlist, kept as the record of how T20 chose. All of its rows are superseded: the music by T100, everything else by T101.
+The music for every phase and every scene card was replaced in T100: see "Music (T100)" first. T102 put every pick in the game and set the levels: see "The mix (T102)". Every other sound and three of the four robot voice sets were replaced in T101: see "Show, robot and button sounds, and the bots' voices (T101)". The rest of this file is T20's shortlist, kept as the record of how T20 chose. All of its rows are superseded: the music by T100, everything else by T101.
 
 ## Music (T100)
 
@@ -132,6 +132,34 @@ Courtesy lines, not required:
 
 - "Sound effects generated with Stable Audio by Stability AI." (Together with T100's line: "Music and sound effects generated with Stable Audio by Stability AI.")
 - "Throw swish by artisticdude, click by StarNinjas (CC0, via OpenGameArt)."
+
+## The mix (T102)
+
+T102 imported every pick above in place (2026-11-19) and set the mix by measured loudness (BS.1770, `Tools/measure_loudness.py`; numbers in `Docs/tasks/T102-build.md` part 3b). The files stay as T100 and T101 made them: every level is on the sound wave's **Volume** and the sound class's **Volume**, so a change by ear is one number. The rows above now live in `Docs/Assets.md`.
+
+**How a level is set:** loudness in the game = the file's loudness + 20·log10(wave Volume × class Volume). Wave Volume = 10^((wave-level target − measured)/20). Integrated LUFS for the music and the show sounds; ungated for the short robot sounds, the click, the hover and the syllables.
+
+| Group | Sound class (Volume) | In the game | Wave-level target |
+|---|---|---|---|
+| Voices (the syllables) | `SC_Voice` 1.0 (was 0.5) | -26 | -26 |
+| Show sounds (stingers, applause, laughs) | `SC_Effects` 0.71 (was 0.8) | -30 | -27 |
+| Drum roll | `SC_Effects` 0.71 | -32 | -29 |
+| Robot sounds and the click | `SC_Effects` 0.71 | -34 | -31 |
+| Hover (10 dB under the click: T101's "a really soft hint") | `SC_Effects` 0.71 | -44 | -41 |
+| Music, all 16 loops (one target, the title and end screens too) | `SC_Music` 0.5 (was 0.35) | -36 | -30 |
+
+So the music sits 10 dB under the talk, and the effects sit between the two. Before T102 the music played 9 to 16 dB louder than the syllables.
+
+**Wave volumes:**
+
+- **Music:** title 0.167, scene_prep 0.168, space_plans 0.232, mine_bridge 0.154, dino_island 0.159, favor_father 0.154, glowing_briefcase 0.154, league_night 0.152, pick_a_pill 0.152, free_talk 0.165, last_word 0.145, cut 0.158, reactions 0.164, win 0.169, lose 0.155, show 0.142. All loop.
+- **Show:** `S_DrumRoll` 0.858 (now loops), `S_StingHuman` 0.560, `S_StingAI` 0.684, `S_Applause` 0.523, `S_ApplauseWin` 0.714, `S_Laughs` 0.875.
+- **Robot and UI:** `S_Step0` to `S_Step3` 0.282, `S_Step4` 0.289, `S_Grab` 0.282, `S_Throw` 0.282, `S_Land` 0.359, `S_Click` 0.308, `S_Hover` 0.282.
+- **Voices:** every set 1.0 (was 0.6), my own clips too. Only the OpenAI, SpaceXAI and Meta sets were reimported.
+
+**Kept from T71:** the duck under the drum roll (`DuckMusic`, to 0.4) and the 1 s cross-fade between loops. No extra duck while a line types out.
+
+**Measured in the game (T102's recordings, Mac):** music alone between lines reads -42.4 LUFS short-term, and the talk passages about 6 dB higher. **Mac plays every sound 6 dB lower** than these targets (`PlatformHeadroomDB=-6` in the engine's `BaseMacEngine.ini`; Windows has no such line). With that taken off, the music reads -36.4 against a target of -36.
 
 ## Sources
 

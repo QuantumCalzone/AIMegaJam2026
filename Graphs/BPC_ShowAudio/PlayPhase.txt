@@ -1,9 +1,16 @@
 ; T71: the one call RunCue's "phase" cue makes. The card id comes from BP_Show's CardId, which only
 ; changes inside ScenePrep, and ScenePrep runs at its own cue's turn (T30), so it is never ahead of the queue.
+; T102: the Reactions loop waits until 3 s after the stinger (Reveal sets RevealAt), so it doesn't start under it.
+; At a slow pace the header comes later than that, and the loop starts at once. The 3.0 is the one number to tune by ear
+; (a literal: a new variable's default doesn't reach the Audio component BP_Show already holds).
 (fn PlayPhase (Text CardId)
   (bind _k (CallFunction|PhaseKey :Text Text))
+  (bind _wait (- (+ (V RevealAt) 3.0) (Utilities|Time|GetRealTimeSeconds)))
   (if (streq _k "card")
     (CallFunction|PlayMusic :Key CardId)
+    (return))
+  (if (and (streq _k "reactions") (> _wait 0.05))
+    (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "ReactLater" :Time _wait :bLooping false)
     (return))
   (if (not (Utilities|String|IsEmpty _k))
     (CallFunction|PlayMusic :Key _k)))

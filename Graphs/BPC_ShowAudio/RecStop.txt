@@ -1,0 +1,6 @@
+; T102: ends the recording RecPhase started and writes it as <RecName>.wav (Path empty: the engine's folder for bounced files).
+(fn RecStop ()
+  (if (V RecLive)
+    (set RecLive false)
+    (Utilities|Time|ClearTimerbyFunctionName :Object self :FunctionName "RecStop")
+    (Audio|Recording|FinishRecordingOutput :ExportType "WavFile" :Name (V RecName) :Path "")))
