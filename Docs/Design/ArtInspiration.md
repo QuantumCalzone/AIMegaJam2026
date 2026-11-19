@@ -48,7 +48,7 @@ The colors are the UI's seat colors, so a bot, its name tag and its chat bar alw
 
 ### The stage
 
-**Redrawn in T98 (concepts, approved 2026-11-18); T106 builds it.** Each piece's view, size and material, the swatches and every round are in [Docs/Art/Set/README.md](../Art/Set/README.md).
+**Redrawn in T98 (concepts, approved 2026-11-18) and built in the game by T106 (2026-11-19).** Each piece's view, size and material, the swatches, every round and the game's house are in [Docs/Art/Set/README.md](../Art/Set/README.md).
 
 - One stage for every story: a grand 19th-century opera house, sculpted in clay.
 - Warm dark wood walls and box fronts with big, bright gold scroll mouldings. Heavy crimson velvet curtains with gold tie-backs, a crimson valance with gold swags and tassels, and footlights in gold shell hoods along the front edge.
@@ -61,6 +61,10 @@ The colors are the UI's seat colors, so a bot, its name tag and its chat bar alw
 The approved house from the house camera. The robots and the pink backdrop are placeholders: T95 draws the cast, and T99's backdrops (under Props and backdrops) replace the pink sky.
 
 ![The approved house from the house camera: warm brown walls and boxes with big bright gold scrolls, crimson curtains and a gold-swagged valance, a gold chandelier, five robots on the plank stage, gold cherubs at the corners, and the clay robot audience in top hats and bowlers in the stalls](../Art/Set/house.png)
+
+The house in the game (T106), from the house camera at 1600 × 900:
+
+![The game's house from the house camera: dark wood and gold theater boxes with audience robots at the edges, gold scroll reliefs on dark boards beside the crimson curtains, the crimson valance and the gold chandelier at the top, five robots on the plank stage with gold robot cherubs on dark plinths at the corners and footlights in gold shell hoods, and the audience robots in top hats and bowlers in the crimson stalls](../Art/Set/game_house_1600.png)
 
 The pieces T106 makes: the chandelier, a robot cherub on its plinth, a wall pilaster, a theater box, a side curtain, the valance, the Riser, the prop table, a stalls seat, a footlight, the audience robot from the front and back, and its top hat and bowler.
 
