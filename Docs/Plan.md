@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T102, T104, T109, T106), where each concept and each pick waits for my approval. T102 is built and waits only for my OK on the mix (its `Waiting:` line), so T85 can build on its `BP_Show`. T109 re-fits the cast's arms, which float beside their bodies, after T104 frees `BP_Robot`. T101 picked the new sounds and voices that T102 imports: "Show, robot and button sounds, and the bots' voices (T101)" in `Docs/AudioShortlist.md`. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T103 put it in the game as Hyper3D models; T104 fits the costumes to its new heads from "For T104" in `Docs/tasks/T103.md`. T98 approved the theater that T106 builds on: `Docs/Art/Set/README.md`, and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new art (T104, T109, T106), where each concept and each pick waits for my approval. T102 put the new music, sounds and voices in the game with a quieter mix (my OK on 2026-11-19); "The mix (T102)" in `Docs/AudioShortlist.md` has every level. T109 re-fits the cast's arms, which float beside their bodies, after T104 frees `BP_Robot`. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T103 put it in the game as Hyper3D models; T104 fits the costumes to its new heads from "For T104" in `Docs/tasks/T103.md`. T98 approved the theater that T106 builds on: `Docs/Art/Set/README.md`, and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -120,14 +120,6 @@ These hold for every task, and for editor work outside the task list too. If one
 ### Open
 
 
-
-- [ ] **T102 New audio, part 3: import the picks and set a quieter mix**
-  - **Model and effort:** Opus 5.5, high. Measured loudness, a mix set without hearing it, and recordings of each phase for my OK.
-  - **Depends on:** T100 and T101 (the picks); T20 and T71 (`BPC_ShowAudio` and the sound classes; done). It changes one pin in `BP_Show`'s `OpenPrep`, so that Scene Prep plays its own loop (my call on 2026-11-17). So while the two-machine setup is active, it belongs to the chain machine.
-  - **Needs:** editor + Unreal MCP running, a free autoplay show in a game window for the recordings, my OK on the mix from those recordings.
-  - **Touches:** `Content/NHOS/Audio/**` (reimports, three new music loops, and deletes of sounds T101 left out), `Content/NHOS/Audio/SC_Music.uasset`, `SC_Effects.uasset` and `SC_Voice.uasset`, `Content/NHOS/Core/BPC_ShowAudio.uasset` (levels, ducking, and the three new music keys in `PhaseKey` and `TrackFor`), `Graphs/BPC_ShowAudio/` files for the graphs it writes, `Content/NHOS/Core/BP_Show.uasset` (one pin in `OpenPrep`), `Graphs/BP_Show/OpenPrep.txt`, `Docs/Assets.md`, `Docs/AudioShortlist.md`, `Docs/ItchPage.md` (credits), `Docs/tasks/T102.md`.
-  - **Details:** [Docs/tasks/T102.md](tasks/T102.md)
-  - **Waiting:** built and pushed: every pick imported in place, the three new music keys, `OpenPrep`'s pin, the recorder and the class volumes. Two free autoplay game windows reach `NHOS: SHOW END` with the music keys in order and no audio error. Take 2 has the crowd 3 dB lower, after my first listen. Left: my OK on take 2's mix from the recordings on https://claude.ai/artifact/HKJAjB12T8R2rAXhmj7owN.
 
 - [ ] **T104 New art, part 8: the costumes' models, fitted to every character**
   - **Model and effort:** Opus 5.5, high. A model per costume version, a fit per character in a new `costumes.json`, and a test switch to check every costume on every robot.
@@ -388,6 +380,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T103 New art, part 7: the cast's models, generated from the approved concepts**
   - **Details:** [Docs/tasks/T103.md](tasks/T103.md)
+
+- [x] **T102 New audio, part 3: import the picks and set a quieter mix**
+  - **Details:** [Docs/tasks/T102.md](tasks/T102.md)
 
 ## Not planned yet
 
