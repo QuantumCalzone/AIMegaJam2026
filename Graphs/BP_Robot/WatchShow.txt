@@ -5,6 +5,9 @@
 ; "scene prep", that is when the scene starts. SceneNum, not Phase alone, because an autoplay show
 ; passes Scene Prep inside one frame, so a tick never sees Phase at "scene prep" there.
 (fn WatchShow ()
+  ; T104: costume_test dresses the robots itself, so a show leaves them alone while it runs.
+  (if (V CostTest)
+    (return))
   (Utilities|IsValid (V ShowRef)
     (:"Is Valid"
       (bind _n (Class|BPShow|GetSceneNum :self (V ShowRef)))

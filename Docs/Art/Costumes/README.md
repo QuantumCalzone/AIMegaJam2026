@@ -117,3 +117,11 @@ One row per role, in each card's seat order in `Content/NHOS/Data/scenes.json`. 
 - **A beard goes over the mouth.** The model kept hanging the beard from just under the eyes. Stronger words ("starts below the grin", "no moustache") made it leave the costume off instead.
 - **`sips -c` ignores `--cropOffset`** and crops from the centre. One test edit went to the wrong characters because of it. Crop with `canvas.swift crop`.
 - **A wait loop that greps for its own command line never ends** (`pgrep -f` matches the shell running the loop).
+
+## In the game (T104)
+
+T104 made the models from these views and fitted each one to each character. Each version's folder (`<costume>/round/`, `<costume>/cube/`, and `horned_helmet_beard/beard/`) holds its `model.glb`, `thumbnail.png`, `turntable.png` and `log.json` (the Hyper3D generation id, the prompt and the settings). They were imported into `Content/NHOS/Stage/Costumes/<costume>/`; `Content/NHOS/Data/costumes.json` has each one's fit per character.
+
+- [game_fit_grid.png](game_fit_grid.png): every costume on every character, close up, in the game (`costume_test`).
+- [game_house_sheet.png](game_house_sheet.png): each costume on all five at the house camera.
+- What changed from the fit sheets, and why, is under "Findings" in [Docs/tasks/T104.md](../../tasks/T104.md).

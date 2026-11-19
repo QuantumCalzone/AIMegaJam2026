@@ -1,5 +1,5 @@
 ; T47: costumes.json, read once per robot. A missing or broken file leaves CostObj empty, so every
-; headpiece is "unknown" and the robot stays bare-headed.
+; costume is "unknown" and the robot stays bare-headed. T104: the costumes are under "costumes".
 (fn LoadCostumes ()
   (if (V CostLoaded)
     (return))
@@ -8,5 +8,5 @@
   (if (not _ok)
     (print "NHOS: COSTUME costumes.json missing or not valid JSON")
     (return))
-  (bind _h (Json|GetField _o "headpieces"))
+  (bind _h (Json|GetField _o "costumes"))
   (set CostObj _h))

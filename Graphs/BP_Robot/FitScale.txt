@@ -1,0 +1,9 @@
+; T104: the scale of this robot's fit (CFit): scale3 [x, y, z] if it has one, else Def on all three axes.
+(fn FitScale (Def)
+  (if (not (Json|HasField (V CFit) "scale3"))
+    (return (Math|Vector|MakeVector :X Def :Y Def :Z Def)))
+  (bind _s3 (Json|GetField (V CFit) "scale3"))
+  (set HS3A _s3)
+  (if (< (len (V HS3A)) 3)
+    (return (Math|Vector|MakeVector :X Def :Y Def :Z Def)))
+  (return (Math|Vector|MakeVector :X (get (V HS3A) 0) :Y (get (V HS3A) 1) :Z (get (V HS3A) 2))))

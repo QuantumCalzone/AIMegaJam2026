@@ -130,10 +130,12 @@ answer from another phase. --log fails a scene whose last words (NHOS: LOG
 scene n, last word) aren't exactly the actors on stage that someone else named
 with @ in its final round, one each, as NHOS: LASTWORDS says.
 
-Costumes (T47): each seat names a headpiece from costumes.json and a hex
-color. The file check fails an unknown headpiece, a color that isn't #RRGGBB,
-a headpiece mesh that isn't on disk, a headpiece without its fit numbers and a
-model no seat wears. The game never sends these fields to the AIs.
+Costumes (T47, T104): each seat names a costume from costumes.json and a hex
+color. The file check fails an unknown costume, a color that isn't #RRGGBB, a
+version mesh that isn't on disk, a costume without a test_color or without a
+fit for every persona (naming one of its versions, with a scale, x, y, z, yaw
+and top), an extra part without its mesh, color and fits, and a costume no seat
+wears. The game never sends these fields to the AIs.
 
 One rule set for every action (T62): every actor takes 0 or 1 action in a scene
 turn and none in a reaction; a grab takes a prop nobody holds, a throw or give a
@@ -996,37 +998,86 @@ FIT_KEYS = ("scale", "x", "y", "z", "yaw", "top")
 
 
 def costume_problems(cards, cdata) -> list[str]:
-    """costumes.json and each seat's costume (T47): every seat names a known headpiece and a hex
-    color; every headpiece has a mesh on disk and a fit; every headpiece model is worn by some seat."""
+    """costumes.json and each seat's costume (T47, T104): every seat names a known costume and a hex
+    color; every costume has a mesh on disk per version, a test_color, and a fit for every persona
+    that names one of its versions; an extra part has a mesh on disk, a color and a fit per persona;
+    every costume is worn by some seat."""
     def num(v):
         return isinstance(v, (int, float)) and not isinstance(v, bool)
-    out, heads = [], cdata.get("headpieces", {})
-    if not isinstance(heads, dict) or not heads:
-        return ["costumes.json: needs a 'headpieces' object keyed by id"]
-    for hid, h in heads.items():
-        h = h if isinstance(h, dict) else {}
-        mesh = h.get("mesh", "")
+
+    def mesh_problem(where, mesh):
         if not isinstance(mesh, str) or not re.fullmatch(r"/Game/[\w/]+\.\w+", mesh):
-            out.append(f"costumes.json: headpiece {hid!r} needs a mesh object path (/Game/.../SM_X.SM_X)")
-        elif not (ROOT / "Content" / (mesh[6:].rsplit(".", 1)[0] + ".uasset")).exists():
-            out.append(f"costumes.json: headpiece {hid!r}'s mesh {mesh} is not in Content/")
-        if not all(num(h.get(k)) for k in FIT_KEYS) or not h.get("scale", 0) > 0 or h.get("top", 0) < 0:
-            out.append(f"costumes.json: headpiece {hid!r} needs a scale above 0, a top of 0 or more and numbers for {', '.join(FIT_KEYS[1:])}")
-        for pid, o in (h.get("on") or {}).items():
-            if pid not in PERSONA_IDS or not isinstance(o, dict) or not o or set(o) - set(FIT_KEYS) or not all(num(v) for v in o.values()):
-                out.append(f"costumes.json: headpiece {hid!r}'s 'on' needs persona ids ({', '.join(sorted(PERSONA_IDS))}) with numbers for scale, x, y, z or top")
+            return f"{where} needs a mesh object path (/Game/.../SM_X.SM_X)"
+        if not (ROOT / "Content" / (mesh[6:].rsplit(".", 1)[0] + ".uasset")).exists():
+            return f"{where}'s mesh {mesh} is not in Content/"
+        return None
+
+    def fit_problems(where, f, versions):
+        f = f if isinstance(f, dict) else {}
+        errs = []
+        if versions is not None and f.get("mesh") not in versions:
+            errs.append(f"{where} needs mesh, one of {', '.join(sorted(versions))}")
+        s3 = f.get("scale3")
+        if s3 is not None and not (isinstance(s3, list) and len(s3) == 3 and all(num(v) and v > 0 for v in s3)):
+            errs.append(f"{where}'s scale3 needs three numbers above 0")
+        if not (num(f.get("scale")) and f["scale"] > 0):
+            errs.append(f"{where} needs a scale above 0")
+        if not all(num(f.get(k)) for k in ("x", "y", "z", "yaw")) or ("roll" in f and not num(f["roll"])):
+            errs.append(f"{where} needs numbers for x, y, z and yaw (and roll, if it has one)")
+        if versions is not None and not (num(f.get("top")) and f["top"] >= 0):
+            errs.append(f"{where} needs a top of 0 or more")
+        extra = set(f) - set(FIT_KEYS) - {"scale3", "roll", "mesh"}
+        if versions is None:
+            extra |= set(f) & {"mesh", "top"}
+        if extra:
+            errs.append(f"{where} has fields the robot doesn't read: {', '.join(sorted(extra))}")
+        return errs
+
+    hexcol = re.compile(r"#[0-9A-Fa-f]{6}")
+    out, costs = [], cdata.get("costumes", {})
+    if not isinstance(costs, dict) or not costs:
+        return ["costumes.json: needs a 'costumes' object keyed by id"]
+    for cid, c in costs.items():
+        c = c if isinstance(c, dict) else {}
+        meshes = c.get("meshes")
+        if not isinstance(meshes, dict) or not meshes:
+            out.append(f"costumes.json: costume {cid!r} needs meshes, an object of version: mesh path")
+            meshes = {}
+        for ver, m in meshes.items():
+            p = mesh_problem(f"costumes.json: costume {cid!r} version {ver!r}", m)
+            if p:
+                out.append(p)
+        if not hexcol.fullmatch(c.get("test_color") or ""):
+            out.append(f"costumes.json: costume {cid!r} needs a test_color like #A8CCFF")
+        fit = c.get("fit") if isinstance(c.get("fit"), dict) else {}
+        if set(fit) != PERSONA_IDS:
+            out.append(f"costumes.json: costume {cid!r} needs a fit for each of {', '.join(sorted(PERSONA_IDS))}, and no other")
+        for pid, f in fit.items():
+            out += fit_problems(f"costumes.json: costume {cid!r} fit {pid!r}", f, set(meshes))
+        if "extra" in c:
+            x = c["extra"] if isinstance(c["extra"], dict) else {}
+            p = mesh_problem(f"costumes.json: costume {cid!r} extra", x.get("mesh"))
+            if p:
+                out.append(p)
+            if not hexcol.fullmatch(x.get("color") or ""):
+                out.append(f"costumes.json: costume {cid!r} extra needs a color like #B4532A")
+            xfit = x.get("fit") if isinstance(x.get("fit"), dict) else {}
+            if set(xfit) != PERSONA_IDS:
+                out.append(f"costumes.json: costume {cid!r} extra needs a fit for each of {', '.join(sorted(PERSONA_IDS))}, and no other")
+            for pid, f in xfit.items():
+                out += fit_problems(f"costumes.json: costume {cid!r} extra fit {pid!r}", f, None)
     worn = set()
     for c in cards:
         for x in c.get("seats", []):
             hp, col = x.get("headpiece"), x.get("color", "")
-            if hp not in heads:
+            if hp not in costs:
                 out.append(f"scenes.json: {c.get('id')}'s seat {x.get('role')!r} needs a headpiece from costumes.json, not {hp!r}")
             else:
-                worn.add(heads[hp].get("mesh"))
-            if not re.fullmatch(r"#[0-9A-Fa-f]{6}", col or ""):
+                worn.add(hp)
+            if not hexcol.fullmatch(col or ""):
                 out.append(f"scenes.json: {c.get('id')}'s seat {x.get('role')!r} needs a color like #A8CCFF")
-    for m in sorted({h.get("mesh") for h in heads.values() if isinstance(h, dict)} - worn):
-        out.append(f"costumes.json: no seat wears {m}")
+    for cid in sorted(set(costs) - worn):
+        out.append(f"costumes.json: no seat wears {cid}")
     return out
 
 

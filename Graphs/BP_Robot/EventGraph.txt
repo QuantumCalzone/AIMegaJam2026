@@ -2,7 +2,9 @@
   (CallFunction|InitHome)
   ; T75: the emotion parts, then the emote_test switch.
   (CallFunction|FaceSetup)
-  (CallFunction|EmoteTestInit))
+  (CallFunction|EmoteTestInit)
+  ; T104: the costume_test switch.
+  (CallFunction|CostumeTestInit))
 
 (event EventTick (DeltaSeconds)
   (Variables|Default|SetClock (+ (Variables|Default|GetClock) DeltaSeconds))

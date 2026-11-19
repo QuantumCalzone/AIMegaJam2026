@@ -1,0 +1,16 @@
+; T104: each frame (TickActs calls it): the costume_test cycle. Every robot starts at the first id
+; and steps on together, so all five wear the same costume at once.
+(fn CostumeTick ()
+  (if (not (and (V CostTest) (>= (V Clock) (V CostTestNext))))
+    (return))
+  (set CostTestNext (+ (V CostTestNext) (V CostTestStep)))
+  (set CostTestId (get (V CostIds) (V CostTestIdx)))
+  (bind _e (Json|GetField (V CostObj) (V CostTestId)))
+  (set CEntry _e)
+  (bind _tc (Json|GetField (V CEntry) "test_color"))
+  (set CostTestCol _tc)
+  (print (cat "NHOS: COSTUME TEST " (V CostTestId)))
+  (set CostTestIdx (+ (V CostTestIdx) 1))
+  (if (>= (V CostTestIdx) (len (V CostIds)))
+    (set CostTestIdx 0))
+  (CallFunction|SetHeadpiece :Id (V CostTestId) :Color (V CostTestCol)))

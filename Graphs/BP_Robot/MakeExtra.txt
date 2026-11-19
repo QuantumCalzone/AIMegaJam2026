@@ -1,0 +1,11 @@
+; T104: the Extra component (a costume's second part, the dwarf's beard), made once at run time on
+; HeadSocket, as MakeHat makes Hat.
+(fn MakeExtra ()
+  (Utilities|IsValid (V Extra)
+    (:"Is Valid")
+    (:"Is Not Valid"
+      (bind _c (Game|AddComponentbyClass self "/Script/Engine.StaticMeshComponent"))
+      (set Extra _c)
+      (Transformation|AttachComponentToComponent :self (V Extra) :Parent (V HeadSocket) :LocationRule "KeepRelative" :RotationRule "KeepRelative" :ScaleRule "KeepRelative" :bWeldSimulatedBodies false)
+      (Collision|SetCollisionEnabled :self (V Extra) :NewType "NoCollision")
+      (Rendering|SetVisibility :self (V Extra) :bNewVisibility false :bPropagateToChildren false))))
