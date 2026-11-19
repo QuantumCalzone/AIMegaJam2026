@@ -1,0 +1,18 @@
+; WBP_Stage.SetVoteOptions(Names): the ballot, one ticket per name in PickSeats order (T09, T26). An empty list hides it.
+; T34 (row 3): each ticket is a paper ticket (StyleStage) with a seat-color bar left of the name (VoteBar, UIStyle.SeatColor
+; by name, the doc's Ballot) and no HUMAN? stamp until a pick (SetVotePick). T33-1: the first ticket takes the keyboard
+; focus when the ballot shows while my input is closed; Tab moves between tickets and Enter picks.
+(fn SetVoteOptions (Names)
+  (bind _n (Utilities|Array|Length Names))
+  (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetVoteRow) :bInIsEnabled true)
+  (if (> _n 0)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetVoteRow) :InVisibility "Visible")
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetVoteRow) :InVisibility "Collapsed")))
+  (CallFunction|VoteTicket :I 0 :Names Names :Btn (Variables|WBP_Stage|GetVoteBtn0) :Ring (Variables|WBP_Stage|GetVoteRing0) :Lbl (Variables|WBP_Stage|GetVoteLbl0) :Bar (Variables|WBP_Stage|GetVoteBar0))
+  (CallFunction|VoteTicket :I 1 :Names Names :Btn (Variables|WBP_Stage|GetVoteBtn1) :Ring (Variables|WBP_Stage|GetVoteRing1) :Lbl (Variables|WBP_Stage|GetVoteLbl1) :Bar (Variables|WBP_Stage|GetVoteBar1))
+  (CallFunction|VoteTicket :I 2 :Names Names :Btn (Variables|WBP_Stage|GetVoteBtn2) :Ring (Variables|WBP_Stage|GetVoteRing2) :Lbl (Variables|WBP_Stage|GetVoteLbl2) :Bar (Variables|WBP_Stage|GetVoteBar2))
+  (CallFunction|VoteTicket :I 3 :Names Names :Btn (Variables|WBP_Stage|GetVoteBtn3) :Ring (Variables|WBP_Stage|GetVoteRing3) :Lbl (Variables|WBP_Stage|GetVoteLbl3) :Bar (Variables|WBP_Stage|GetVoteBar3))
+  (CallFunction|SetVotePick :Index -1)
+  (if (and (> _n 0) (not (V LastCanType)))
+    (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetVoteBtn0))))

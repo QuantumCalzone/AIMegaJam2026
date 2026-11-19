@@ -5,7 +5,11 @@
 ; T66: the turn timer follows my input (TickTimer).
 ; T78: the face chip follows my input (SyncFace).
 ; T85: the cast's hover card follows the mouse over the robots (TipTick).
+; T34: the turn line is gold on my move and quiet otherwise, from UIStyle (row 5); the focus ring follows the keyboard
+; focus (RingTick, T33-1); the robots' name tags follow their robots (TagTick, row 2), and mine bounces when my input
+; opens (TagBounce). The stage hides itself while the title or end screen is up (HideCheck).
 (fn SetPrompt (Turn Hint CanType)
+  (CallFunction|HideCheck)
   (Widget|SetRenderOpacity :self (Variables|WBP_Stage|GetHintLabel) :InOpacity (select (Utilities|Text|TextIsEmpty :InText (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox))) 1.0 0.0))
   (if (not (Utilities|String|EqualExactly(String) Turn (Variables|Default|GetLastTurn)))
     (Variables|Default|SetLastTurn Turn)
@@ -15,13 +19,17 @@
     (Class|Text|SetText :Text (Utilities|Text|ToText(String) Hint) :self (Variables|WBP_Stage|GetHintLabel)))
   (if (xor CanType (Variables|Default|GetLastCanType))
     (Variables|Default|SetLastCanType CanType)
+    (bind cGold (Class|UIStyle|UIColor :Role "Gold"))
+    (bind cQuiet (Class|UIStyle|UIColor :Role "Quiet"))
     (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetInputBox) :bInIsEnabled CanType)
     (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetSendButton) :bInIsEnabled (and CanType (not (V LastBlock))))
     (Widget|SetIsEnabled :self (Variables|WBP_Stage|GetPassButton) :bInIsEnabled (and CanType (Variables|Default|GetPassOn)))
     (Class|WBPActionBuilder|SetLive :self (Variables|WBP_Stage|GetActionBuilder) :On CanType)
-    (Class|Text|SetColorandOpacity :ColorAndOpacity (Utilities|Struct|MakeSlateColor (select CanType (Utilities|Struct|MakeLinearColor 1.0 0.85 0.45 1.0) (Utilities|Struct|MakeLinearColor 0.8 0.83 0.9 1.0))) :self (Variables|WBP_Stage|GetTurnText))
+    (Class|Text|SetColorandOpacity :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (select CanType cGold cQuiet)) :self (Variables|WBP_Stage|GetTurnText))
     (if CanType
       (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetInputBox))
+      (set TagBounceT 0.0)
+      (CallFunction|TagBounce)
       (else
         (CallFunction|AtDraw :Open false))))
   (CallFunction|SyncAction)
@@ -29,4 +37,6 @@
   (CallFunction|HoldFocus :CanType CanType)
   (CallFunction|TickTimer :CanType CanType)
   (CallFunction|SyncFace :CanType CanType)
-  (CallFunction|TipTick))
+  (CallFunction|TipTick)
+  (CallFunction|RingTick)
+  (CallFunction|TagTick))

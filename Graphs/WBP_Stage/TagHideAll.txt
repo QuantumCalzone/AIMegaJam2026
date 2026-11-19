@@ -1,0 +1,6 @@
+; T34 (row 2): no tags (no show yet).
+(fn TagHideAll ()
+  (if (not (V TagReady))
+    (return))
+  (for _s (range 5)
+    (CallFunction|TagShow :S _s :On false)))

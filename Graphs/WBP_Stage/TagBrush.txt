@@ -1,0 +1,10 @@
+; T34 (row 2): the plate's brush, a TagRadius pill in the seat color. The outline is InkSolid, or a double-width Gold
+; while the mouse points at that robot (TipSeat, T85's card): the robots had no sign that they can be pointed at.
+(fn TagBrush (S Seat Glow)
+  (bind r (Class|UIStyle|UISize :Role "TagRadius"))
+  (bind w (Class|UIStyle|UISize :Role "InputOutline"))
+  (bind ink (Class|UIStyle|UIColor :Role "InkSolid"))
+  (bind gold (Class|UIStyle|UIColor :Role "Gold"))
+  (Class|Border|SetBrushColor :self (get (V TagFrames) S) :BrushColor (Utilities|Struct|MakeLinearColor :R 1.0 :G 1.0 :B 1.0 :A 1.0))
+  (bind b (Class|UIStyle|Brush :Fill Seat :Outline (select Glow gold ink) :Width (select Glow (* 2.0 w) w) :Radius r))
+  (Appearance|SetBrush :self (get (V TagFrames) S) :InBrush b))

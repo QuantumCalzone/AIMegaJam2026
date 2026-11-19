@@ -1,0 +1,8 @@
+; T34 (row 2): the speaker's tag grows 20% (the doc's Name tags), from its bottom center (the pivot is (0.5, 1)), only on a
+; change. My tag's bounce (TagBounce) owns my tag's scale while it runs.
+(fn TagSpk (S On)
+  (if (not (xor On (get (V TagSpkA) S)))
+    (return))
+  (Utilities|Array|SetArrayElem (V TagSpkA) S On)
+  (bind _k (select On 1.2 1.0))
+  (Widget|Transform|SetRenderScale :self (get (V TagFrames) S) :Scale (Math|Vector2D|MakeVector2D :X _k :Y _k)))

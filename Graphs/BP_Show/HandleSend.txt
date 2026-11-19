@@ -1,0 +1,19 @@
+; BP_Show.HandleSend(Line): every line from WBP_Stage's OnSend. "#vote <i>" picks ballot i; otherwise the line goes to
+; whatever my turn is (a scene turn takes the builder's action, T64), or does nothing when it isn't my turn.
+; T34 (T32's row 1): the ballot index is parsed from the line, so every ticket picks its own name. It was "#vote 0" -> 0,
+; "#vote 1" -> 1, anything else -> 2, so the fourth ticket (T26) voted for the third name.
+(fn HandleSend (Line)
+  (if (Utilities|String|StartsWith Line "#vote ")
+    (CallFunction|PickVote :Index (Utilities|String|StringToInteger :InString (Utilities|String|RightChop :SourceString Line :Count 6)))
+    (elif (not (Variables|Default|GetReady))
+      (Class|WBPStage|ShowBanner :self (Variables|Default|GetStage) :Line (Utilities|String|Append "AI service unavailable: " (Variables|Default|GetWhy)))
+      (elif (and (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "scene") (not (Variables|Default|GetHumanSent)))
+        (bind (_verb _item _target _ready) (Class|WBPStage|TakeAction :self (Variables|Default|GetStage)))
+        (CallFunction|SendHumanTurn :Verb _verb :Item _item :Target _target :Line Line)
+        (elif (and (and (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "free talk") (== (Variables|Default|GetTalkSeat) (Variables|Default|GetHumanSeat))) (not (Variables|Default|GetHumanSent)))
+          (CallFunction|SendHumanTalk :Line Line)
+          (elif (and (and (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "reactions") (== (Variables|Default|GetReactSeat) (Variables|Default|GetHumanSeat))) (not (Variables|Default|GetHumanSent)))
+            (CallFunction|SendHumanReact :Line Line)
+            (elif (and (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "the cut") (not (Variables|Default|GetHumanSent)))
+              (if (not (< (Variables|Default|GetHumanPick) 0))
+                (CallFunction|SendHumanVote :Line Line)))))))))

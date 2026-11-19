@@ -1,0 +1,12 @@
+; WBP_Stage.SetContinue(Visible): "See the results" after the last reactions (T10; BP_Show calls it).
+; T34 (T33-1): it shows inside its focus ring, ContinueRing, which shows and hides with it (so the input row keeps no gap
+; for it), and it takes the keyboard focus, so Enter opens the results. My input is closed by then, so HoldFocus never
+; takes it back.
+(fn SetContinue (Visible)
+  (if Visible
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetContinueRing) :InVisibility "SelfHitTestInvisible")
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetContinueButton) :InVisibility "Visible")
+    (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetContinueButton))
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetContinueRing) :InVisibility "Collapsed")
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetContinueButton) :InVisibility "Collapsed"))))

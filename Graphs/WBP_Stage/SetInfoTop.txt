@@ -1,0 +1,12 @@
+; WBP_Stage.SetInfoTop(Me, MeColor, Role, Want, Note, Scene): my card and the scene's text, at each Scene Prep (ShowPrep).
+; T34 (C3, row 7): my role is the card's headline (CardTitle, no "Your role:"), my want under it, and who the cast thinks I
+; am is a quiet caption above, "The cast knows you as Player 1" (the card's big "Player 1" read like my name). MeColor is
+; no longer used: teal on paper is 1.9:1. The scene line drops the "." that ShowPrep adds after a title that ends in "?"
+; or "!" (T84's "What's in the Glowing Briefcase?.").
+(fn SetInfoTop (Me MeColor Role Want Note Scene)
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetMeText) :Text (Utilities|Text|ToText(String) (cat "The cast knows you as " Me)))
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetRoleText) :Text (Utilities|Text|ToText(String) Role))
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetWantText) :Text (Utilities|Text|ToText(String) (cat "You want: " Want)))
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetNoteText) :Text (Utilities|Text|ToText(String) Note))
+  (bind _dbl (or (Utilities|String|EndsWith :SourceString Scene :InSuffix "?." :SearchCase "IgnoreCase") (Utilities|String|EndsWith :SourceString Scene :InSuffix "!." :SearchCase "IgnoreCase")))
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetSceneText) :Text (Utilities|Text|ToText(String) (select _dbl (Utilities|String|LeftChop :SourceString Scene :Count 1) Scene))))

@@ -1,0 +1,10 @@
+; T34 (row 2): if shown tags I and J overlap, I moves up over J (TagStack).
+(fn TagPush (I J Gap)
+  (if (not (and (get (V TagOnA) I) (get (V TagOnA) J)))
+    (return))
+  (bind _ax (get (V TagX) I))
+  (bind _ay (get (V TagY) I))
+  (bind _bx (get (V TagX) J))
+  (bind _by (get (V TagY) J))
+  (if (and (and (< _ax (+ _bx (get (V TagW) J))) (> (+ _ax (get (V TagW) I)) _bx)) (and (< _ay (+ _by (get (V TagH) J))) (> (+ _ay (get (V TagH) I)) _by)))
+    (Utilities|Array|SetArrayElem (V TagY) I (- (- _by Gap) (get (V TagH) I)))))

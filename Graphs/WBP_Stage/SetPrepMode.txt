@@ -3,17 +3,19 @@
 ; T65: the word counter shows with Action! and Pass, and hides in Scene Prep.
 ; T66: Scene Prep hides the turn timer and gives up its wide panel.
 ; T78: the face chip's row is the play side (FaceRowOn); Scene Prep hides the chip and its list and resets the pick.
-; T84: Scene Prep shows the scene, the stage and Start the scene in the middle panel (PrepSize); PrepBox keeps only the
-; cast on the card. In scene 1's Scene Prep the whole lower panel is collapsed (no chat line yet, the field is greyed and
-; Start the scene has moved); in the Scene Preps of scenes 2 on it shows at LowerPrep (640), so the middle panel clears
-; it. The play side gives it back at LowerWide. The width goes after FitBuilder, which would set LowerWide on a change.
-; LowerSize is Visible at design time, so that is the value both branches give back.
+; T84: Scene Prep shows the scene, the stage and Start the scene in the middle panel (PrepSize). In scene 1's Scene Prep
+; the whole lower panel is collapsed (no chat line yet, the field is greyed and Start the scene has moved); in the Scene
+; Preps of scenes 2 on it shows at LowerPrep (640), so the middle panel clears it. The play side gives it back at
+; LowerWide. The width goes after FitBuilder, which would set LowerWide on a change. LowerSize is Visible at design
+; time, so that is the value both branches give back.
+; T34: Start the scene takes the keyboard focus (T33-1: Enter starts the scene; my input is closed in Scene Prep, so
+; HoldFocus never takes it back). The card's PrepBox is gone (T85 moved the cast to the hover cards). A cast card the
+; arrow keys forced (CastKey) goes when the scene starts, so it doesn't cover the first bubbles.
 (fn SetPrepMode (Prep)
   (if Prep
     (bind _n (Class|BPShow|GetSceneNum :self (CallFunction|ShowRef)))
     (CallFunction|PrepInit)
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepSize) :InVisibility "SelfHitTestInvisible")
-    (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "SelfHitTestInvisible")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetStartButton) :InVisibility "Visible")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Collapsed")
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Collapsed")
@@ -28,14 +30,17 @@
     (Class|WBPActionBuilder|ResetFace :self (Variables|WBP_Stage|GetActionBuilder))
     (Class|WBPActionBuilder|Close :self (Variables|WBP_Stage|GetActionBuilder))
     (CallFunction|FitBuilder)
+    (Widget|SetKeyboardFocus :self (Variables|WBP_Stage|GetStartButton))
     (if (<= _n 1)
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetLowerSize) :InVisibility "Collapsed")
       (else
         (Widget|SetVisibility :self (Variables|WBP_Stage|GetLowerSize) :InVisibility "Visible")
         (Layout|SizeBox|SetWidthOverride :self (Variables|WBP_Stage|GetLowerSize) :InWidthOverride (V LowerPrep))))
     (else
+      (if (V TipKeyOn)
+        (set TipForce "")
+        (set TipKeyOn false))
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepSize) :InVisibility "Collapsed")
-      (Widget|SetVisibility :self (Variables|WBP_Stage|GetPrepBox) :InVisibility "Collapsed")
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetStartButton) :InVisibility "Collapsed")
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetSendButton) :InVisibility "Visible")
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetPassButton) :InVisibility "Visible")

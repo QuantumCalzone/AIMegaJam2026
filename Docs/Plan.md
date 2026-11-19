@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top. T110 makes each scene's props fly in from the wing beside the Prop Table, and the last scene's go out (my OK on 2026-11-19). The new art is all in the game. T102 put the new music, sounds and voices in the game with a quieter mix (my OK on 2026-11-19); "The mix (T102)" in `Docs/AudioShortlist.md` has every level. T104 put the costume models in the game, fitted to every character (my OK on 2026-11-19; `Docs/Art/Costumes/game_fit_grid.png`). T109 re-fitted the cast's arms so they no longer float beside their bodies (my OK on 2026-11-19; `Docs/Art/Cast/arms_game_sheet.png`). T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T103 put it in the game as Hyper3D models; T104 fits the costumes to its new heads from "For T104" in `Docs/tasks/T103.md`. T98 approved the theater, and T106 built it in the game (my OK on 2026-11-19; `Docs/Art/Set/game_house_compare.png`): `Docs/Art/Set/README.md`; and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 shows the cast's roles and wants on a card when I point at a robot, so the card on the right no longer scrolls (my OK on 2026-11-19). T61 comes next, and T34 after it in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: T61, the stagehand's earpiece, which is half built (see its `Waiting:` line) and places the earpiece on the screen T34 left ("For T61" in `Docs/tasks/T34.md`). T34 fixed the in-show screen (2026-11-19): the fourth ballot ticket votes for the fourth name, a show plays by keyboard, the name tags are on-screen seat-color plates, and every panel, button and the stamp come from `UIStyle`. T110 makes each scene's props fly in from the wing beside the Prop Table, and the last scene's go out (my OK on 2026-11-19). The new art is all in the game. T102 put the new music, sounds and voices in the game with a quieter mix (my OK on 2026-11-19); "The mix (T102)" in `Docs/AudioShortlist.md` has every level. T104 put the costume models in the game, fitted to every character (my OK on 2026-11-19; `Docs/Art/Costumes/game_fit_grid.png`). T109 re-fitted the cast's arms so they no longer float beside their bodies (my OK on 2026-11-19; `Docs/Art/Cast/arms_game_sheet.png`). T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T103 put it in the game as Hyper3D models; T104 fits the costumes to its new heads from "For T104" in `Docs/tasks/T103.md`. T98 approved the theater, and T106 built it in the game (my OK on 2026-11-19; `Docs/Art/Set/game_house_compare.png`): `Docs/Art/Set/README.md`; and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 shows the cast's roles and wants on a card when I point at a robot, so the card on the right no longer scrolls (my OK on 2026-11-19). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -120,13 +120,6 @@ These hold for every task, and for editor work outside the task list too. If one
 ### Open
 
 
-
-- [ ] **T34 Fix the in-show screen**
-  - **Model and effort:** Opus 5.5, high. Hierarchy and state judgment on the busiest screen.
-  - **Depends on:** T32, T30, T38 (the line pacing, its typing line, the speech bubbles and the chat button are in, so this task polishes the final screen). If T38 is cut, take it off this line. Also T50, T53, T57 (the note category on my card, the clapperboard and the "passed" marker are on the screen it polishes), and T64, T65, T66, T78 (the action builder, the preview line, the speech field, the timer and the emotion chip are in the input row it polishes), and T73 (the lines type out on the screen it polishes), and T84, T85 (Scene Prep's middle panel and the cast's hover cards; they settle T34-build's 2.9 and the names in Scene Prep from its 2.1), and T87 (the reactions to a win play on the screen it polishes), and T88 (each scene's clue on my card), and T107 (the banner timing: T34-build's `NextBanner` rewrite in 2.6 starts from T107's version and keeps what T107's findings say it must).
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows.
-  - **Touches:** `Content/NHOS/UI/WBP_Stage.uasset`, `WBP_SpeechBubble.uasset`, `WBP_ChatLine.uasset` and `WBP_MoneyBurn.uasset` if T32 left a row for either, `Content/NHOS/Core/BP_Show.uasset` only if a widget's call must change (for example `SetPrompt`), `Graphs/WBP_Stage/` files, `Docs/tasks/T34.md` and the audit table in `Docs/tasks/T32.md`.
-  - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
 
 - [ ] **T61 Stagehand onboarding: earpiece tips, a tips toggle and How to play**
   - **Model and effort:** Opus 5.5, high. A new system with its own data file, component and widgets, called from the show at eight moments.
@@ -370,6 +363,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T110 Each scene's props come in from the wing, and the last scene's props go out**
   - **Details:** [Docs/tasks/T110.md](tasks/T110.md)
+
+- [x] **T34 Fix the in-show screen**
+  - **Details:** [Docs/tasks/T34.md](tasks/T34.md)
 
 ## Not planned yet
 

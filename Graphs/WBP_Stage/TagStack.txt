@@ -1,0 +1,11 @@
+; T34 (row 2): robots that stand close get tags that would overlap (T32's row 2; the doc: "close robots stack them"). Twice
+; over, in seat order, a shown tag that overlaps an earlier shown one moves up over it by its height and S1. Then each is
+; placed with its render translation in TagLayer.
+(fn TagStack ()
+  (bind _g (Class|UIStyle|UISize :Role "S1"))
+  (for _pass (range 2)
+    (for _i (range 5)
+      (for _j (range _i)
+        (CallFunction|TagPush :I _i :J _j :Gap _g))))
+  (for _k (range 5)
+    (Widget|Transform|SetRenderTranslation :self (get (V TagFrames) _k) :Translation (Math|Vector2D|MakeVector2D :X (- (get (V TagX) _k) (.x (V TagVTL))) :Y (- (get (V TagY) _k) (.y (V TagVTL)))))))

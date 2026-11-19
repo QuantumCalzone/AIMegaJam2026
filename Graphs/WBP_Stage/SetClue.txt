@@ -3,11 +3,13 @@
 ; engine's Noto Color Emoji, my person's answer 3) at 26, since emoji read small at 18; every other kind in F_UI Regular
 ; 18, the card's body text. Never run the clue through CleanText: it drops the blocks, the ellipsis and every emoji.
 ; A clue with blocks (the two key kinds) is drawn in T50's near-black bar ink, so each block reads as a blacked-out
-; word, not a white blank; every other clue is in the note box's cream ink.
+; word, not a white blank; every other clue is in the note box's ink.
+; T34 (C2): the note box is UIStyle's gold Note panel now, so the clue's ink is PaperText (9.7:1 on gold), not cream.
 (fn SetClue (Clue UseMono UseEmoji)
   (Class|Text|SetText :self (Variables|WBP_Stage|GetClueText) :Text (Utilities|Text|ToText(String) Clue))
   (bind _dark (Utilities|String|Contains :SearchIn Clue :Substring "█"))
-  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetClueText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (select _dark (Utilities|Struct|MakeLinearColor 0.01 0.008 0.006 1.0) (Utilities|Struct|MakeLinearColor 1.0 0.93 0.78 1.0))))
+  (bind cInk (Class|UIStyle|UIColor :Role "PaperText"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetClueText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (select _dark (Utilities|Struct|MakeLinearColor 0.01 0.008 0.006 1.0) cInk)))
   (if UseEmoji
     (Class|Text|SetFont :self (Variables|WBP_Stage|GetClueText) :Font (SlateFont|MakeSlateFontInfo :FontObject "/Game/NHOS/UI/Fonts/F_Emoji.F_Emoji" :TypefaceFontName "Default" :Size 26))
     (return))

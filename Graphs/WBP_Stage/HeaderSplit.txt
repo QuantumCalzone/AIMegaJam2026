@@ -1,0 +1,13 @@
+; T34 (row 4): "PHASE: detail" -> "PHASE", "detail". A text with no ":" is all Left. The one header that puts the scene
+; first ("SCENE 3: FREE TALK IS OVER") gives its right part as the phase, since the clapperboard shows the scene.
+; The forms seen in a full show: THE SCENE: SCENE n, TURN n OF n / FREE TALK: SCENE n, ROUND n OF n / LAST WORD: SCENE n /
+; SCENE n: FREE TALK IS OVER / THE CUT: SCENE n / REACTIONS: SCENE n / THE REVEAL / THE SHOW IS OVER.
+(fn HeaderSplit (Text)
+  (bind (_l _r _ok) (Utilities|String|Split :SourceString Text :InStr ":" :SearchCase "IgnoreCase" :SearchDir "FromStart"))
+  (if (not _ok)
+    (return Text ""))
+  (bind _l2 (Utilities|String|Trim _l))
+  (bind _r2 (Utilities|String|Trim _r))
+  (if (Utilities|String|StartsWith :SourceString _l2 :InPrefix "SCENE " :SearchCase "IgnoreCase")
+    (return _r2 ""))
+  (return _l2 _r2))

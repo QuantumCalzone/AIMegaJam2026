@@ -1,7 +1,11 @@
 ; T65: WBP_Stage sees each key before the speech field does (a preview event tunnels down to the focused widget).
 ; SpeechKey decides; Handled stops the key here. An override of UserWidget's OnPreviewKeyDown (add_function_graph).
+; T34: in Scene Prep, Left and Right step the cast's hover card through the robots (CastKey), for a keyboard player.
 (fn OnPreviewKeyDown (MyGeometry InKeyEvent)
   (bind _key (Utilities|String|ToString(Text) (Input|Key|GetKeyDisplayName (Input|KeyEvent|GetKey InKeyEvent))))
+  (bind _c (CallFunction|CastKey :Key _key))
+  (if _c
+    (return (Widget|EventReply|Handled)))
   (bind _h (CallFunction|SpeechKey :Key _key))
   (if _h
     (return (Widget|EventReply|Handled)))

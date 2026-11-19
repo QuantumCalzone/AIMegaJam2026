@@ -1,0 +1,8 @@
+; WBP_Stage.SetVotePick(Index): my pick on the ballot (BP_Show.ShowVotePick); -1 clears it.
+; T34 (row 3, the doc's Ballot): a red HUMAN? stamp lands on the picked ticket and the others dim to 80% (at 60% their
+; names measured 2.7:1, and they stay clickable, since I can still change my pick). Was: the others' background at 35% gray (T09), which barely showed.
+(fn SetVotePick (Index)
+  (CallFunction|VotePickOne :I 0 :Index Index :Btn (Variables|WBP_Stage|GetVoteBtn0) :Stamp (Variables|WBP_Stage|GetVoteStampBg0))
+  (CallFunction|VotePickOne :I 1 :Index Index :Btn (Variables|WBP_Stage|GetVoteBtn1) :Stamp (Variables|WBP_Stage|GetVoteStampBg1))
+  (CallFunction|VotePickOne :I 2 :Index Index :Btn (Variables|WBP_Stage|GetVoteBtn2) :Stamp (Variables|WBP_Stage|GetVoteStampBg2))
+  (CallFunction|VotePickOne :I 3 :Index Index :Btn (Variables|WBP_Stage|GetVoteBtn3) :Stamp (Variables|WBP_Stage|GetVoteStampBg3)))

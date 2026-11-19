@@ -1,0 +1,8 @@
+; T34 (row 3): one ticket's pick state (SetVotePick).
+(fn VotePickOne (I Index Btn Stamp)
+  (bind _picked (== I Index))
+  (Widget|SetRenderOpacity :self Btn :InOpacity (select (or (< Index 0) _picked) 1.0 0.8))
+  (if _picked
+    (Widget|SetVisibility :self Stamp :InVisibility "HitTestInvisible")
+    (else
+      (Widget|SetVisibility :self Stamp :InVisibility "Collapsed"))))

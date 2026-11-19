@@ -1,6 +1,7 @@
 ; T58: during the last words the turn line and the hint say so. PrepPrompt calls this at its end, so it
 ; runs after ComputePrompt and before LinePrompt (UpdatePrompt). ComputePrompt's Free Talk text is right
-; for every other moment, and "Free Talk. Your line is on its way..." after I send.
+; for every other moment, and "Your line is on its way..." after I send.
+; T34 (rows 4, 12): shorter, so the hint fits the field, and Enter passes (T33-1).
 (fn LastWordPrompt ()
   (if (not (V LastWordOn))
     (return))
@@ -9,8 +10,8 @@
   (if (== (V TalkSeat) (V HumanSeat))
     (if (V HumanSent)
       (return))
-    (set PTurn "Last word. You were named. One last line before the vote, or press Pass.")
-    (set PHint "Answer who named you, like: @Meta, I only grabbed the rose for the story.")
+    (set PTurn "YOUR LAST WORD: you were named. Answer, or press Enter to pass.")
+    (set PHint "Answer who named you.")
     (return))
   (if (>= (V TalkSeat) 0)
     (set PTurn (cat "Last word. Waiting for " (get (V SeatLabel) (V TalkSeat)) " to answer..."))))

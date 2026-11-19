@@ -1,0 +1,11 @@
+; T34 (row 2): shows or hides slot S's tag, only on a change. Placed with its render translation in TagLayer (a
+; CanvasPanel that fills the window from its top left), so its slot never changes, as T85's card is.
+(fn TagShow (S On)
+  (if (not (xor On (get (V TagOnA) S)))
+    (return))
+  (Utilities|Array|SetArrayElem (V TagOnA) S On)
+  (Utilities|Array|SetArrayElem (V TagDimA) S false)
+  (if On
+    (Widget|SetVisibility :self (get (V TagFrames) S) :InVisibility "HitTestInvisible")
+    (else
+      (Widget|SetVisibility :self (get (V TagFrames) S) :InVisibility "Collapsed"))))

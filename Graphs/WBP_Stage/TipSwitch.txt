@@ -1,8 +1,10 @@
 ; T85: Local/switches.json's cast_tip, a seat id ("worrier") or a screen name ("Anthropic"), keeps that robot's card
 ; shown for screenshots; "" or missing is off. Read at each new scene (TipTick), so it can change between scenes. Read
 ; the way BPC_NoteClue.ReadSwitches reads its switches (T88).
+; T34: a card the arrow keys forced (CastKey) ends with the scene too.
 (fn TipSwitch ()
   (set TipForce "")
+  (set TipKeyOn false)
   (bind (_sw _swok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectDirectory) "Local/switches.json"))))
   (if (not _swok)
     (return))

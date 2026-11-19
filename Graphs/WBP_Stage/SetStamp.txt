@@ -1,0 +1,29 @@
+; WBP_Stage.SetStamp(Stamp): the reveal stamp over the stage (T09, T26; BP_Show.CutActor passes "META: AI" or "YOU: HUMAN").
+; An empty stamp hides it. EventTick slams it in from about 3x, holds it 3.5 s and fades it over 1 s (StampAnim, StampHold).
+; T34 (row 17): the doc's rubber stamp. The words in plain English (StampWords: "META IS AN AI", "YOU ARE THE HUMAN"), so
+; GameMsgs and NHOS: CUT keep CutActor's form; ink on Amber for an AI (8.4:1), white on Red for the human (5.7:1), in the
+; Stamp type (120, on two lines: StampWords), with a double inked edge in the text's color, tilted -8 (the designer). The
+; edges are nested fills (StampFrame ink, StampInner fill, StampLine ink, StampCore fill), not brush outlines: EventTick
+; fades the stamp by render opacity, and Slate draws a rounded box's outline at full strength whatever the opacity.
+(fn SetStamp (Stamp)
+  (if (Utilities|String|IsEmpty Stamp)
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetStampFrame) :InVisibility "Collapsed")
+    (return))
+  (bind (_words _human) (CallFunction|StampWords :Stamp Stamp))
+  (bind cFill (select _human (Class|UIStyle|UIColor :Role "Red") (Class|UIStyle|UIColor :Role "Amber")))
+  (bind cInk (select _human (Class|UIStyle|UIColor :Role "Text") (Class|UIStyle|UIColor :Role "PaperText")))
+  (bind clear (Utilities|Struct|MakeLinearColor :R 0.0 :G 0.0 :B 0.0 :A 0.0))
+  (bind w (Class|UIStyle|UISize :Role "ButtonOutline"))
+  (bind r (Class|UIStyle|UISize :Role "PanelRadius"))
+  (bind fStamp (Class|UIStyle|UIFont :Role "Stamp"))
+  (CallFunction|StampFill :Box (Variables|WBP_Stage|GetStampFrame) :Fill cInk :Radius r)
+  (CallFunction|StampFill :Box (Variables|WBP_Stage|GetStampInner) :Fill cFill :Radius (- r 3.0))
+  (CallFunction|StampFill :Box (Variables|WBP_Stage|GetStampLine) :Fill cInk :Radius (- r 8.0))
+  (CallFunction|StampFill :Box (Variables|WBP_Stage|GetStampCore) :Fill cFill :Radius (- r 11.0))
+  (Class|Text|SetText :self (Variables|WBP_Stage|GetStampText) :Text (Utilities|Text|ToText(String) _words))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Stage|GetStampText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor cInk))
+  (Class|Text|SetFont :self (Variables|WBP_Stage|GetStampText) :Font fStamp)
+  (Widget|SetRenderOpacity :self (Variables|WBP_Stage|GetStampFrame) :InOpacity 0.0)
+  (Widget|SetVisibility :self (Variables|WBP_Stage|GetStampFrame) :InVisibility "HitTestInvisible")
+  (Variables|Default|SetStampHold 0.0)
+  (Variables|Default|SetStampAnim 0.0))

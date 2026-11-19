@@ -1,0 +1,8 @@
+; T34 (T33-2): each robot's TextRender label stays hidden; TagTick draws its tag in WBP_Stage instead, so the tags vanish
+; with this widget under the title and end screens, which the 3D labels didn't. BP_Robot sets the label's text and color
+; but never its visibility, so one hide holds. Not propagated: T38's bubble (a WidgetComponent) is attached to the label
+; and keeps showing. TagTick calls this when the Robots array changes size (the first frame with a show).
+(fn HideLabels ()
+  (for _rb (Class|BPShow|GetRobots :self (V Show))
+    (if (!= _rb (V NullRobot))
+      (Rendering|SetVisibility :self (Class|BPRobot|GetLabel :self _rb) :bNewVisibility false :bPropagateToChildren false))))

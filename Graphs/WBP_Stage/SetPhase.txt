@@ -2,8 +2,13 @@
 ; T64: also opens or closes the action builder (PhaseShown: open right after BuilderTurn, closed at any other header)
 ; and fits the lower panel to it (FitBuilder).
 ; T66: Pass hides in my scene turns, and the last turn's timer gives up its space (ShapeRow).
+; T34 (row 4): the header shows only the phase, the part before the first ":" ("THE SCENE: SCENE 2, TURN 1 OF 3" ->
+; "THE SCENE"); a scene turn's "TURN n OF 3" shows as pips under it (SetPips); the scene number is on the clapperboard (T53).
+; BP_Show's header texts don't change: BPC_Analytics.CuePhase reads them (T68).
 (fn SetPhase (Phase)
-  (Class|Text|SetText :Text (Utilities|Text|ToText(String) Phase) :self (Variables|WBP_Stage|GetPhaseHeader))
+  (bind (_l _r) (CallFunction|HeaderSplit :Text Phase))
+  (Class|Text|SetText :Text (Utilities|Text|ToText(String) _l) :self (Variables|WBP_Stage|GetPhaseHeader))
+  (CallFunction|SetPips :Detail _r)
   (bind _typed (Utilities|String|ToString(Text) (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox))))
   (Class|WBPActionBuilder|PhaseShown :self (Variables|WBP_Stage|GetActionBuilder) :Text _typed)
   (CallFunction|ShapeRow)

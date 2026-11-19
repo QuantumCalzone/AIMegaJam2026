@@ -51,7 +51,7 @@ Everything that happens in one show, from casting to the last cut.
 1. Every actor votes in secret, all at once, for who they think is human. You can’t vote for yourself.
 2. Whoever gets the most votes is cut. Each vote is then shown with a one-line reason.
 3. On a tie, nobody is cut, and the scene still counts against the clock. No one outside the cast ever breaks a tie.
-4. Reveal: a big stamp with the cut bot’s provider, such as “OPENAI: AI”, or “YOU: HUMAN” if it was you.
+4. Reveal: a big stamp with the cut bot’s provider, such as “OPENAI IS AN AI”, or “YOU ARE THE HUMAN” if it was you.
 5. Reactions: the cut actor reacts first, then each remaining bot, then you, one line each. You get 15 seconds; when time runs out, what you typed is sent, and an empty field is a pass. Reactions go into the log, so how you react is evidence.
 6. Repeat from Scene Prep until two actors remain or the last scene ends. A clapperboard on screen shows the count, such as SCENE 2 / 4.
 

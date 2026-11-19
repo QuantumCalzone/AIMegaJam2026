@@ -1,0 +1,13 @@
+; T34: the title and end screens hide the stage by setting this widget's render opacity to 0 (WBP_Title, WBP_EndScreen).
+; Slate draws a rounded box's outline at full strength whatever the render opacity, so since UIStyle's panels have outlines
+; (StyleStage) their trims and the input box's edge showed through the title. While the opacity is under 0.5, RootBox is
+; Hidden too (and back to Visible, its design-time value, after). SetPrompt calls this every frame; it acts on a change.
+(fn HideCheck ()
+  (bind _hid (< (Widget|GetRenderOpacity :self self) 0.5))
+  (if (not (xor _hid (V StageHid)))
+    (return))
+  (set StageHid _hid)
+  (if _hid
+    (Widget|SetVisibility :self (Variables|WBP_Stage|GetRootBox) :InVisibility "Hidden")
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_Stage|GetRootBox) :InVisibility "Visible"))))

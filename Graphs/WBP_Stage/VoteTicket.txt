@@ -1,0 +1,12 @@
+; T34 (row 3): ticket I of the ballot: shown with Names[I] and its seat-color bar, or hidden (with its ring) past the list.
+(fn VoteTicket (I Names Btn Ring Lbl Bar)
+  (if (>= I (Utilities|Array|Length Names))
+    (Widget|SetVisibility :self Ring :InVisibility "Collapsed")
+    (return))
+  (bind _name (Utilities|Array|Get(acopy) Names I))
+  (Class|Text|SetText :self Lbl :Text (Utilities|Text|ToText(String) _name))
+  (bind _fb (Class|UIStyle|UIColor :Role "PaperQuiet"))
+  (bind _sc (Class|UIStyle|SeatColor :Name _name :Fallback _fb))
+  (Class|Border|SetBrushColor :self Bar :BrushColor _sc)
+  (Widget|SetVisibility :self Ring :InVisibility "SelfHitTestInvisible")
+  (Widget|SetVisibility :self Btn :InVisibility "Visible"))

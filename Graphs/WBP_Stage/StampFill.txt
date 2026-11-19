@@ -1,0 +1,6 @@
+; T34 (row 17): one layer of the stamp: a plain rounded fill (no outline, so it fades with the stamp's render opacity).
+(fn StampFill (Box Fill Radius)
+  (bind clear (Utilities|Struct|MakeLinearColor :R 0.0 :G 0.0 :B 0.0 :A 0.0))
+  (Class|Border|SetBrushColor :self Box :BrushColor (Utilities|Struct|MakeLinearColor :R 1.0 :G 1.0 :B 1.0 :A 1.0))
+  (bind b (Class|UIStyle|Brush :Fill Fill :Outline clear :Width 0.0 :Radius (Math|Float|Max(Float) Radius 2.0)))
+  (Appearance|SetBrush :self Box :InBrush b))

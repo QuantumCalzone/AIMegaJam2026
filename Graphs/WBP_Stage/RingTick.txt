@@ -1,0 +1,9 @@
+; T34 (T33-1): the gold ring follows the keyboard focus. SetPrompt calls this every frame. A ring's brush is written only
+; when its state changes (RingOn), so a frame costs six HasKeyboardFocus calls.
+(fn RingTick ()
+  (CallFunction|RingInit)
+  (for _i (range 6)
+    (bind _on (Widget|HasKeyboardFocus :self (get (V RingBtns) _i)))
+    (if (xor _on (get (V RingOn) _i))
+      (Utilities|Array|SetArrayElem (V RingOn) _i _on)
+      (CallFunction|ShowRing :Ring (get (V RingFrames) _i) :On _on))))

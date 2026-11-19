@@ -1,0 +1,9 @@
+; T34 (row 2): slot S's seat color: UIStyle.SeatColor by its screen name (SeatLabel), BP_Show's SeatColors as fallback.
+(fn TagColor (S)
+  (bind _labels (Class|BPShow|GetSeatLabel :self (V Show)))
+  (bind _cols (Class|BPShow|GetSeatColors :self (V Show)))
+  (bind _paper (Class|UIStyle|UIColor :Role "Paper"))
+  (if (or (>= S (len _labels)) (>= S (len _cols)))
+    (return _paper))
+  (bind _c (Class|UIStyle|SeatColor :Name (get _labels S) :Fallback (get _cols S)))
+  (return _c))

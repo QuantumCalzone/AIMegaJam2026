@@ -1,0 +1,22 @@
+; T34 (row 2): writes a tag's words and plate only when they change, then measures it (TagW, TagH). The plate is the seat
+; color by screen name (ColorKey; UIStyle.SeatColor, BP_Show's SeatColors as fallback). A marked tag (passed, or cut on a
+; win) shows its mark over the name and its name at 75%, so it reads as out of this round.
+(fn TagWords (S Name Mark ColorKey)
+  (if (and (streq Name (get (V TagTxt) S)) (streq Mark (get (V TagMk) S)))
+    (return))
+  (Utilities|Array|SetArrayElem (V TagTxt) S Name)
+  (Utilities|Array|SetArrayElem (V TagMk) S Mark)
+  (Class|Text|SetText :self (get (V TagNames) S) :Text (Utilities|Text|ToText(String) Name))
+  (Class|Text|SetText :self (get (V TagMarks) S) :Text (Utilities|Text|ToText(String) Mark))
+  (if (Utilities|String|IsEmpty Mark)
+    (Widget|SetVisibility :self (get (V TagMarks) S) :InVisibility "Collapsed")
+    (else
+      (Widget|SetVisibility :self (get (V TagMarks) S) :InVisibility "HitTestInvisible")))
+  (Widget|SetRenderOpacity :self (get (V TagNames) S) :InOpacity (select (Utilities|String|IsEmpty Mark) 1.0 0.75))
+  (Utilities|Array|SetArrayElem (V TagGlowA) S false)
+  (bind _seat (CallFunction|TagColor :S S))
+  (CallFunction|TagBrush :S S :Seat _seat :Glow false)
+  (Widget|ForceLayoutPrepass :self (get (V TagFrames) S))
+  (bind _sz (Widget|GetDesiredSize :self (get (V TagFrames) S)))
+  (Utilities|Array|SetArrayElem (V TagW) S (.x _sz))
+  (Utilities|Array|SetArrayElem (V TagH) S (.y _sz)))

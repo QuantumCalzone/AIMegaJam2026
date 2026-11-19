@@ -1,0 +1,24 @@
+; T34 (row 2): T38 found a two- or three-line bubble covers the tags of the robots beside it. The tags draw over the
+; bubbles, so the other way round: a tag that overlaps another robot's showing bubble hides while it does (at 25% it
+; still showed through the bubble's words; Hidden, not opacity 0, since its outline ignores opacity), and the
+; line stays readable. Its own robot's bubble moves it just under the bubble instead (TagOwnHit), so the speaker keeps
+; its name. The tag of the robot under the mouse (TipSeat) glows gold.
+(fn TagDim (S)
+  (if (not (get (V TagOnA) S))
+    (return))
+  (set TagHit false)
+  (set TagOwnHit false)
+  (for _j (range (len (Class|BPShow|GetRobots :self (V Show))))
+    (CallFunction|TagBubbleHit :S S :J _j))
+  (if (xor (V TagHit) (get (V TagDimA) S))
+    (Utilities|Array|SetArrayElem (V TagDimA) S (V TagHit))
+    (CallFunction|TagHide :S S :Hid (V TagHit)))
+  (if (and (V TagOwnHit) (not (V TagHit)))
+    (bind _g (Class|UIStyle|UISize :Role "S1"))
+    (Utilities|Array|SetArrayElem (V TagY) S (+ (V TagOwnBot) _g))
+    (Widget|Transform|SetRenderTranslation :self (get (V TagFrames) S) :Translation (Math|Vector2D|MakeVector2D :X (- (get (V TagX) S) (.x (V TagVTL))) :Y (- (get (V TagY) S) (.y (V TagVTL))))))
+  (bind _glow (and (V TipShown) (== (V TipSeat) S)))
+  (if (xor _glow (get (V TagGlowA) S))
+    (Utilities|Array|SetArrayElem (V TagGlowA) S _glow)
+    (bind _seat (CallFunction|TagColor :S S))
+    (CallFunction|TagBrush :S S :Seat _seat :Glow _glow)))

@@ -1,12 +1,28 @@
+; WBP_Stage.NextBanner: shows the banner in BannerQueue (T107: at most one) at full opacity and starts its hold;
+; FadeBanner fades it over 0.5 s, then calls this again, which hides the banner when the queue is empty.
+; T34 (row 7, George's answer on 2026-11-19): the hold is UIStyle's Banner time (4 s), or 1.5 s plus one second for
+; every 3.5 words for a banner over 12 words (the reading rate of T30's pacing), so a 20-word note holds about 7 s.
+; Only the last banner of a run holds that long: a new banner replaces it at once (T107's ShowBanner).
+; The line, its word count and the hold go in variables (BannerNow, BannerWords, BannerHoldT) before RemoveIndex: a bound
+; pure Get is read again after the remove, and read an empty queue.
+; A banner over six words is set in Header type (32), not Banner (48): at 48 the tie's 12-word banner took four lines
+; and covered the robots at 1280 x 720. The banner box spans the gap between the header and my card (the designer).
 (fn NextBanner ()
   (if (> (Utilities|Array|Length (Variables|Default|GetBannerQueue)) 0)
+    (set BannerNow (Utilities|Array|Get(acopy) (Variables|Default|GetBannerQueue) 0))
+    (set BannerWords (len (Utilities|String|ParseIntoArray :SourceString (V BannerNow) :Delimiter " " :CullEmptyStrings true)))
+    (bind tBanner (Class|UIStyle|UITime :Role "Banner"))
+    (bind fBig (Class|UIStyle|UIFont :Role "Banner"))
+    (bind fLong (Class|UIStyle|UIFont :Role "Header"))
+    (Class|Text|SetFont :self (Variables|WBP_Stage|GetBannerText) :Font (select (> (V BannerWords) 6) fLong fBig))
+    (set BannerHoldT (select (> (V BannerWords) 12) (Math|Float|Max(Float) tBanner (+ 1.5 (/ (Math|Conversions|ToFloat(Integer) (V BannerWords)) 3.5))) tBanner))
     (Variables|Default|SetBannerBusy true)
     (Variables|Default|SetBannerAlpha 1.0)
-    (Class|Text|SetText :Text (Utilities|Text|ToText(String) (Utilities|Array|Get(acopy) (Variables|Default|GetBannerQueue) 0)) :self (Variables|WBP_Stage|GetBannerText))
+    (Class|Text|SetText :Text (Utilities|Text|ToText(String) (V BannerNow)) :self (Variables|WBP_Stage|GetBannerText))
     (Utilities|Array|RemoveIndex (Variables|Default|GetBannerQueue) 0)
     (Widget|SetRenderOpacity :self (Variables|WBP_Stage|GetEventBanner) :InOpacity 1.0)
     (Widget|SetVisibility :self (Variables|WBP_Stage|GetEventBanner) :InVisibility "HitTestInvisible")
-    (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "FadeBanner" :Time 3.5 :bLooping false)
+    (Utilities|Time|SetTimerbyFunctionName :Object self :FunctionName "FadeBanner" :Time (V BannerHoldT) :bLooping false)
     (else
       (Variables|Default|SetBannerBusy false)
       (Widget|SetVisibility :self (Variables|WBP_Stage|GetEventBanner) :InVisibility "Collapsed"))))

@@ -41,6 +41,7 @@ The turn panel sits at the bottom of the screen. From top to bottom: a preview l
 ## Sending the turn
 
 - Press Action! or Enter. No action with an empty line is allowed: you just stand there.
+- In Free Talk, a last word or a reaction, Enter on an empty field passes, like the Pass button.
 - When the 30-second timer runs out, the turn sends itself:
   - A finished action goes as built.
   - An unfinished action (picked, but its targets incomplete) becomes “looks around”, the same fallback a bot gets when its command fails.

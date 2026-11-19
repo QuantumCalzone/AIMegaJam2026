@@ -1,0 +1,9 @@
+; T34 (row 3): a ticket's red HUMAN? stamp (the doc's Ballot): white Button type on a Red pill (5.7:1), tilted -8.
+(fn StyleVoteStamp (Bg Txt)
+  (bind red (Class|UIStyle|UIColor :Role "Red"))
+  (bind clear (Utilities|Struct|MakeLinearColor :R 0.0 :G 0.0 :B 0.0 :A 0.0))
+  (bind r (Class|UIStyle|UISize :Role "ButtonRadius"))
+  (Class|Border|SetBrushColor :self Bg :BrushColor (Utilities|Struct|MakeLinearColor :R 1.0 :G 1.0 :B 1.0 :A 1.0))
+  (Appearance|SetBrush :self Bg :InBrush (Class|UIStyle|Brush :Fill red :Outline clear :Width 0.0 :Radius r))
+  (Class|Text|SetFont :self Txt :Font (Class|UIStyle|UIFont :Role "Button"))
+  (Class|Text|SetColorandOpacity :self Txt :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text"))))

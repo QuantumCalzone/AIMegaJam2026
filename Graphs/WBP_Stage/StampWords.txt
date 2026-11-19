@@ -1,0 +1,16 @@
+; T34 (row 17): BP_Show.CutActor's stamp ("META: AI", "YOU: HUMAN", T26) in plain words for the screen: "META IS AN AI",
+; "YOU ARE THE HUMAN", and "<NAME> IS THE HUMAN" (can't happen; costs nothing). Human picks the stamp's red.
+; Two lines (a newline in the literal: the name, then "IS AN AI"), so "ANTHROPIC IS AN AI" fits at 120 at 1280 x 720.
+(fn StampWords (Stamp)
+  (bind _human (Utilities|String|EndsWith :SourceString Stamp :InSuffix "HUMAN" :SearchCase "IgnoreCase"))
+  (bind (_who _what _ok) (Utilities|String|Split :SourceString Stamp :InStr ":" :SearchCase "IgnoreCase" :SearchDir "FromStart"))
+  (if (not _ok)
+    (return Stamp _human))
+  (bind _w (Utilities|String|ToUpper (Utilities|String|Trim _who)))
+  (if (streq _w "YOU")
+    (return (select _human "YOU ARE
+THE HUMAN" "YOU ARE
+AN AI") _human))
+  (return (cat _w (select _human "
+IS THE HUMAN" "
+IS AN AI")) _human))

@@ -2,12 +2,16 @@
 ; TipPlace. No card while the mouse is over a panel (TipInPanel): the robots are never behind one (T27), so this only
 ; stops a card popping up while I read my card or type. The mouse, the controller and the camera are read once here.
 ; GetMousePositionOnViewport keeps the last position when the mouse leaves the window.
+; T34: a card that the arrow keys forced (CastKey, TipKeyOn) goes when the mouse moves more than 4 units.
 (fn TipPick ()
   (set TipInPanel false)
   (set TipBest -1)
   (set BestD 1.0e9)
-  (set TipForceOn (not (Utilities|String|IsEmpty (V TipForce))))
   (set TipMouse (Viewport|GetMousePositiononViewport))
+  (if (and (V TipKeyOn) (> (Math|Vector2D|Distance2D :V1 (V TipMouse) :V2 (V TipMouseKey)) 4.0))
+    (set TipForce "")
+    (set TipKeyOn false))
+  (set TipForceOn (not (Utilities|String|IsEmpty (V TipForce))))
   (for i (range (len (V TipKTL)))
     (bind ktl (get (V TipKTL) i))
     (bind kbr (get (V TipKBR) i))

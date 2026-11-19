@@ -6,6 +6,8 @@
 ; T65: a SetText from the game fires no OnTextChanged, so the clear runs the speech field's change chain itself
 ; (SpeechChanged): the counter goes back to 0/15 and the @ list closes.
 ; T66: a timeout (ForceSend) sends an unfinished action too; HandleSend gets it as a look around.
+; T34 (T33-1): Enter on an empty field passes while Pass is enabled (Free Talk, a last word, a reaction), as the Pass
+; button and T66's TimeUp do; with the builder up (a scene turn) an empty line is No action, as before.
 (fn SubmitInput ()
   (bind _blk (Class|WBPActionBuilder|Blocks :self (Variables|WBP_Stage|GetActionBuilder)))
   (if (and _blk (not (V ForceSend)))
@@ -13,6 +15,10 @@
     (return))
   (bind _bon (Class|WBPActionBuilder|IsOn :self (Variables|WBP_Stage|GetActionBuilder)))
   (bind _text (Utilities|String|Trim (Utilities|String|TrimTrailing (Utilities|String|ToString(Text) (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox))))))
+  (if (and (and (Utilities|String|IsEmpty _text) (not _bon)) (and (Variables|Default|GetPassOn) (Variables|Default|GetLastCanType)))
+    (print "NHOS: TYPED pass")
+    (Default|CallOnSend self "pass")
+    (return))
   (if (or (not (Utilities|String|IsEmpty _text)) _bon)
     (print (cat "NHOS: TYPED " _text))
     (Default|CallOnSend self _text))
