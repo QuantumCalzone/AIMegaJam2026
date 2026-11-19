@@ -3,15 +3,20 @@
 ; It only reads in the construction script; with FaceReady it also moves the new parts onto this head.
 (fn FaceRest ()
   (CallFunction|FaceParts)
-  ; The shared head's screen (Visor) and shell as ellipsoids on Face, for ScreenX. T82: the shell is the
-  ; Hyper3D model (RShell), whose outside is close to an ellipsoid 64 deep, 70 wide and 66.8 tall around z 124.6.
+  ; The shared head's screen (Visor) and shell as ellipsoids on Face, for ScreenX. T103: each head is its own model
+  ; now, with its screen flush in its shell, so the Visor sits inside the head and the shell is an ellipsoid fitted to
+  ; the front of each model (centre z and radii in the Rig: OpenAI 116 and 41 x 46 x 44, Anthropic 119 and 40 x 44 x 42,
+  ; SpaceXAI 125 and 28 x 34 x 34 without its nose, Meta 112 and 28 x 38 x 46).
+  (bind _pw (streq (V PersonaId) "worrier"))
+  (bind _po (streq (V PersonaId) "overclocker"))
+  (bind _pm (streq (V PersonaId) "copycat"))
   (bind _fl (Class|SceneComponent|GetRelativeLocation :self (V Face)))
   (bind _vl (Class|SceneComponent|GetRelativeLocation :self (V Visor)))
   (bind _vs (Class|SceneComponent|GetRelativeScale3D :self (V Visor)))
   (set ScrC (Math|Vector|MakeVector :X (- (.x _vl) (.x _fl)) :Y 0.0 :Z (- (.z _vl) (.z _fl))))
   (set ScrR (Math|Vector|MakeVector :X (* (.x _vs) 50.0) :Y (* (.y _vs) 50.0) :Z (* (.z _vs) 50.0)))
-  (set ShC (Math|Vector|MakeVector :X (- 0.0 (.x _fl)) :Y 0.0 :Z (- 124.6 (.z _fl))))
-  (set ShR (Math|Vector|MakeVector :X 32.0 :Y 35.0 :Z 33.4))
+  (set ShC (Math|Vector|MakeVector :X (- 0.0 (.x _fl)) :Y 0.0 :Z (- (select _pw 119.0 (select _po 125.0 (select _pm 112.0 116.0))) (.z _fl))))
+  (set ShR (select _pw (Math|Vector|MakeVector :X 40.0 :Y 44.0 :Z 42.0) (select _po (Math|Vector|MakeVector :X 28.0 :Y 34.0 :Z 34.0) (select _pm (Math|Vector|MakeVector :X 28.0 :Y 38.0 :Z 46.0) (Math|Vector|MakeVector :X 41.0 :Y 46.0 :Z 44.0)))))
   (set RestEyeLocL (Class|SceneComponent|GetRelativeLocation :self (V PEyeL)))
   (set RestEyeRotL (Class|SceneComponent|GetRelativeRotation :self (V PEyeL)))
   (set RestEyeScaleL (Class|SceneComponent|GetRelativeScale3D :self (V PEyeL)))

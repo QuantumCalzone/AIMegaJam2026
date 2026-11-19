@@ -15,33 +15,40 @@
   ; T79: OpenAI, Anthropic and SpaceXAI wear the shared round head. T80: Meta has its doll head and I wear a cardboard box.
   (bind _r (or _v (or _w _o)))
   (Variables|Default|SetBaseColor (select _v (Utilities|Struct|MakeLinearColor :R 0.392 :G 0.604 :B 1.0 :A 1.0) (select _w (Utilities|Struct|MakeLinearColor :R 0.807 :G 0.25 :B 0.068 :A 1.0) (select _o (Utilities|Struct|MakeLinearColor :R 0.687 :G 0.871 :B 0.068 :A 1.0) (select _p (Utilities|Struct|MakeLinearColor :R 0.578 :G 0.413 :B 0.006 :A 1.0) (select _h (Utilities|Struct|MakeLinearColor :R 0.05 :G 0.631 :B 0.584 :A 1.0) (Variables|Default|GetBaseColor)))))))
-  ; T79: OpenAI's idle bob becomes a slow hover, 8 cm up, with its hands pressed together at rest.
+  ; T79: OpenAI's idle bob is slow, with its hands pressed together at rest. T103: it stands on its feet now (T95), so no robot hovers.
   (Variables|Default|SetBobSpeed (select _v 1.1 (select _w 6.0 (select _o 4.5 (select _p 0.7 2.0)))))
   (Variables|Default|SetBobAmp (select _v 3.5 (select _w 1.0 (select _o 4.0 (select _p 0.6 2.5)))))
-  (Variables|Default|SetHoverZ (select _v 8.0 0.0))
+  (Variables|Default|SetHoverZ 0.0)
   (Variables|Default|SetFoldPitch (select _v 70.0 0.0))
   (Variables|Default|SetFoldRoll (select _v 33.0 0.0))
   ; T79: eyes: wide and round (OpenAI), half-closed (Anthropic), small dots (SpaceXAI). T80: round 10 cm eyes for Meta and me.
-  (bind _es (select _v (Math|Vector|MakeVector :X 0.1 :Y 0.12 :Z 0.12) (select _w (Math|Vector|MakeVector :X 0.1 :Y 0.11 :Z 0.07) (select _o (Math|Vector|MakeVector :X 0.1 :Y 0.09 :Z 0.09) (select _h (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.1) (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.1))))))
+  ; T103: the new heads are bigger, so OpenAI's and Anthropic's eyes grow, and each head spaces its eyes for its own screen, glasses or slots.
+  (bind _es (select _v (Math|Vector|MakeVector :X 0.1 :Y 0.14 :Z 0.14) (select _w (Math|Vector|MakeVector :X 0.1 :Y 0.12 :Z 0.09) (select _o (Math|Vector|MakeVector :X 0.1 :Y 0.09 :Z 0.09) (select _p (Math|Vector|MakeVector :X 0.1 :Y 0.11 :Z 0.11) (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.1))))))
+  (bind _ey (select _v 13.0 (select _w 16.0 (select _o 12.0 (select _p 16.0 12.3)))))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetEyeL) :NewLocation (Math|Vector|MakeVector :X 33.0 :Y (- _ey) :Z 135.0))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetEyeR) :NewLocation (Math|Vector|MakeVector :X 33.0 :Y _ey :Z 135.0))
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetEyeL) :NewScale3D _es)
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetEyeR) :NewScale3D _es)
-  ; T80: each head's face. Meta's doll face and my box's eyes behind their slots. T82: the shared round head's face moves with the Visor into the model's screen recess. T83: my box is the Hyper3D model, shallower, with its eye slots lower, so my face moves back and down behind them.
-  (Transformation|SetRelativeLocation :self (Variables|Default|GetFace) :NewLocation (select _r (Math|Vector|MakeVector :X -5.0 :Y 0.0 :Z -4.0) (select _p (Math|Vector|MakeVector :X -4.0 :Y 0.0 :Z -1.0) (Math|Vector|MakeVector :X -11.6 :Y 0.0 :Z -0.4))))
-  (Transformation|SetRelativeLocation :self (Variables|Default|GetMouth) :NewLocation (select _h (Math|Vector|MakeVector :X 35.9 :Y 0.0 :Z 119.0) (select _p (Math|Vector|MakeVector :X 33.2 :Y 0.0 :Z 122.0) (Math|Vector|MakeVector :X 34.5 :Y 0.0 :Z 123.0))))
-  ; T80: LED eyes on the shared head (light blue) and on Meta (gold); my eyes are eyes. Only the shared head's mouth is an LED.
-  (Variables|Default|SetEyeColor (select _p (Utilities|Struct|MakeLinearColor :R 1.0 :G 0.62 :B 0.08 :A 1.0) (select _h (Utilities|Struct|MakeLinearColor :R 0.78 :G 0.76 :B 0.7 :A 1.0) (Utilities|Struct|MakeLinearColor :R 0.55 :G 0.85 :B 1.0 :A 1.0))))
-  (Variables|Default|SetLedEyes (not _h))
+  ; T103: each new head's face, measured on its model: the eyes 3 cm under the surface of OpenAI's and Anthropic's screens and of SpaceXAI's visor,
+  ; Meta's behind its glasses (its head sits 7 cm lower, on its short neck), mine behind the box's slots. SpaceXAI's grin sits under its nose.
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetFace) :NewLocation (select _v (Math|Vector|MakeVector :X 3.2 :Y 0.0 :Z -16.0) (select _w (Math|Vector|MakeVector :X 1.0 :Y 0.0 :Z -11.0) (select _o (Math|Vector|MakeVector :X -9.9 :Y 0.0 :Z -8.0) (select _p (Math|Vector|MakeVector :X -11.0 :Y 0.0 :Z -31.0) (Math|Vector|MakeVector :X -11.9 :Y 0.0 :Z 3.0))))))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetMouth) :NewLocation (select _v (Math|Vector|MakeVector :X 36.7 :Y 0.0 :Z 122.0) (select _w (Math|Vector|MakeVector :X 38.0 :Y 0.0 :Z 121.0) (select _o (Math|Vector|MakeVector :X 27.4 :Y 0.0 :Z 107.0) (select _p (Math|Vector|MakeVector :X 37.2 :Y 0.0 :Z 124.5) (Math|Vector|MakeVector :X 35.9 :Y 0.0 :Z 119.0))))))
+  ; T80: LED eyes on the shared head (light blue); my eyes are eyes. Only the shared head's mouth is an LED. T103: Meta's eyes are pale yellow with black pupils (T95), not LEDs.
+  (Variables|Default|SetEyeColor (select _p (Utilities|Struct|MakeLinearColor :R 0.86 :G 0.78 :B 0.3 :A 1.0) (select _h (Utilities|Struct|MakeLinearColor :R 0.78 :G 0.76 :B 0.7 :A 1.0) (Utilities|Struct|MakeLinearColor :R 0.55 :G 0.85 :B 1.0 :A 1.0))))
+  (Variables|Default|SetLedEyes (not (or _h _p)))
   (Variables|Default|SetLedMouth _r)
-  ; T79: the shoulders of each body. T80: Meta's tee and my body box. T82: OpenAI's and SpaceXAI's model bodies are wider, so their shoulders move out; Anthropic's arms angle out from its egg instead (AArmXL/AArmXR). T83: Meta's arms sit on its model tee's sleeves, mine just outside the model body box.
-  (bind _sy (select _v 24.0 (select _w 30.0 (select _o 35.0 (select _p 27.0 34.0)))))
-  (bind _sz (select _v 80.0 (select _w 76.0 (select _o 74.0 (select _p 82.0 94.0)))))
+  ; T103: the shoulders of each new body, 4 cm under each arm's top, which sits where the turnaround has it, just outside the body. Anthropic's arms angle 20 degrees out from its egg (AArmXL/AArmXR).
+  (bind _sy (select _v 30.0 (select _w 34.0 (select _o 39.0 (select _p 30.0 33.0)))))
+  (bind _sz (select _v 72.8 (select _w 74.0 (select _o 81.0 (select _p 66.0 94.0)))))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotL) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y (- _sy) :Z _sz))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotR) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y _sy :Z _sz))
-  ; T80: each body's head socket, placed and scaled so T47's headpieces fit every head (T80's Findings has the final numbers), and its back socket. HandSocket rides on the right arm pivot.
-  (Transformation|SetRelativeLocation :self (Variables|Default|GetHeadSocket) :NewLocation (select _h (Math|Vector|MakeVector :X -2.0 :Y 0.0 :Z 162.0) (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 158.0)))
+  ; T80: each body's head socket, placed and scaled so T47's headpieces fit every head (T80's Findings has the final numbers), and its back socket. T103: Meta's head top is at 151 now.
+  ; HandSocket rides on the right arm pivot, at the centre of each new arm's hand.
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetHandSocket) :NewLocation (select _v (Math|Vector|MakeVector :X 0.1 :Y 1.6 :Z -36.3) (select _w (Math|Vector|MakeVector :X 0.6 :Y 15.7 :Z -42.4) (select _o (Math|Vector|MakeVector :X -0.3 :Y 0.7 :Z -37.2) (select _p (Math|Vector|MakeVector :X 10.7 :Y -1.5 :Z -29.5) (Math|Vector|MakeVector :X 9.0 :Y 5.7 :Z -59.9))))))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetHeadSocket) :NewLocation (select _h (Math|Vector|MakeVector :X -2.0 :Y 0.0 :Z 162.0) (select _p (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 151.0) (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 158.0))))
   (bind _hs (select _p 0.9 (select _h 1.1 1.0)))
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetHeadSocket) :NewScale3D (Math|Vector|MakeVector :X _hs :Y _hs :Z _hs))
-  (Transformation|SetRelativeLocation :self (Variables|Default|GetBackSocket) :NewLocation (select _v (Math|Vector|MakeVector :X -30.0 :Y 0.0 :Z 60.0) (select _w (Math|Vector|MakeVector :X -34.0 :Y 0.0 :Z 52.0) (select _o (Math|Vector|MakeVector :X -33.0 :Y 0.0 :Z 62.0) (select _p (Math|Vector|MakeVector :X -16.0 :Y 0.0 :Z 72.0) (Math|Vector|MakeVector :X -26.0 :Y 0.0 :Z 70.0))))))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetBackSocket) :NewLocation (select _v (Math|Vector|MakeVector :X -24.0 :Y 0.0 :Z 55.0) (select _w (Math|Vector|MakeVector :X -37.0 :Y 0.0 :Z 52.0) (select _o (Math|Vector|MakeVector :X -31.0 :Y 0.0 :Z 62.0) (select _p (Math|Vector|MakeVector :X -17.0 :Y 0.0 :Z 55.0) (Math|Vector|MakeVector :X -28.0 :Y 0.0 :Z 75.0))))))
   ; T75: read the new persona's resting face, after the eyes are set.
   (CallFunction|FaceRest)
   (CallFunction|ResetLook))

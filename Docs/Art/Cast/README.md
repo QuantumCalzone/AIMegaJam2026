@@ -9,7 +9,7 @@ The concept art for the five characters in T94's clay opera house direction: the
 Each character's folder holds:
 
 - `approved.png`: the approved concept.
-- `turnaround.png`: the approved front and side views on plain gray, for Meshy and Hyper3D. `front.png` and `side.png` are its two halves (672 × 768 each).
+- `turnaround.png`: the approved front and side views on plain gray, for Meshy and Hyper3D. `side.png` is its right half (672 × 768). `front.png` is not its left half: it is a 672 × 768 cut from the middle of the canvas, with the front view half cut off, so crop the front view from `turnaround.png` (x 0 to 671) instead, as T103's prep did.
 - `r1/`, `r2/` ...: every round, with its takes and its log (`leonardo.json` for a text generation, `edit.json` for an edit, each with the full prompt). `turn/` (and Meta's `turn2/`) hold the turnaround edits and `canvas.png`, the input each was drawn from.
 
 `lineup.png` is `lineup/collage_v3.png`. The scripts, run from the repo root, are `sheet.swift` (the side-by-side review sheets, which were not kept), `recolor.swift` (SpaceXAI's free hue shift), `lineup.swift` (the lineup collage) and `turn_canvas.swift` (the turnaround input). Leonardo serves JPEG data under a `.png` name, so every take was converted with `sips -s format png`.
@@ -72,3 +72,7 @@ All text generations are Leonardo `lucid-origin`, 864 × 1152, four takes. All e
 - **Several changes in one edit work** when they are numbered and the prompt names everything to keep (Meta round 3: all six changes landed in take 2). That is one softening pass instead of six.
 - **The Leonardo balance is shared.** T95, T97 and T98 ran at once on caps of 800, 600 and 700, against 1,202 credits. The balance ran out mid-run: a failed call costs nothing, but the run stops. Check the balance against every running task's cap before a batch.
 - **A turnaround from a 16:9 canvas** (the concept on the left half, gray on the right) gives a matched front and side view in one edit, at one image's price.
+
+## The models (T103)
+
+Each character's parts are in `<character>/<part>/` (`head`, `body`, `arm`, and Meta's `glasses`): the Hyper3D Rodin model (`model.glb`), its textures, the crops sent to Rodin, a thumbnail, a turntable, `mesh_stats.json` and `log.json` (tool, settings, prompt, generation id, the dropped tries and the credits). My person approved all five on `models_sheet.png` on 2026-11-18; `models_parts.png` turns every part. [T103-build.md](../../tasks/T103-build.md) has each part's notes and suggested fit, and [T103.md](../../tasks/T103.md) the fits as built and what T104 needs to know about each head. In the game they are `Content/NHOS/Stage/Cast/<character>/SM_<Character>_<Part>`, each on its `MI_<Character>_<Part>` (a `M_CastModel` instance).
