@@ -142,7 +142,8 @@ T102 imported every pick above in place (2026-11-19) and set the mix by measured
 | Group | Sound class (Volume) | In the game | Wave-level target |
 |---|---|---|---|
 | Voices (the syllables) | `SC_Voice` 1.0 (was 0.5) | -26 | -26 |
-| Show sounds (stingers, applause, laughs) | `SC_Effects` 0.71 (was 0.8) | -30 | -27 |
+| Stingers | `SC_Effects` 0.71 (was 0.8) | -30 | -27 |
+| The crowd: applause, win applause, laughs (3 dB under the stingers: my person's check, take 2) | `SC_Effects` 0.71 | -33 | -30 |
 | Drum roll | `SC_Effects` 0.71 | -32 | -29 |
 | Robot sounds and the click | `SC_Effects` 0.71 | -34 | -31 |
 | Hover (10 dB under the click: T101's "a really soft hint") | `SC_Effects` 0.71 | -44 | -41 |
@@ -153,7 +154,7 @@ So the music sits 10 dB under the talk, and the effects sit between the two. Bef
 **Wave volumes:**
 
 - **Music:** title 0.167, scene_prep 0.168, space_plans 0.232, mine_bridge 0.154, dino_island 0.159, favor_father 0.154, glowing_briefcase 0.154, league_night 0.152, pick_a_pill 0.152, free_talk 0.165, last_word 0.145, cut 0.158, reactions 0.164, win 0.169, lose 0.155, show 0.142. All loop.
-- **Show:** `S_DrumRoll` 0.858 (now loops), `S_StingHuman` 0.560, `S_StingAI` 0.684, `S_Applause` 0.523, `S_ApplauseWin` 0.714, `S_Laughs` 0.875.
+- **Show:** `S_DrumRoll` 0.858 (now loops), `S_StingHuman` 0.560, `S_StingAI` 0.684, `S_Applause` 0.370, `S_ApplauseWin` 0.505, `S_Laughs` 0.619 (take 2: 3 dB under take 1's 0.523, 0.714 and 0.875, after my person found the crowd a little too loud).
 - **Robot and UI:** `S_Step0` to `S_Step3` 0.282, `S_Step4` 0.289, `S_Grab` 0.282, `S_Throw` 0.282, `S_Land` 0.359, `S_Click` 0.308, `S_Hover` 0.282.
 - **Voices:** every set 1.0 (was 0.6), my own clips too. Only the OpenAI, SpaceXAI and Meta sets were reimported.
 
