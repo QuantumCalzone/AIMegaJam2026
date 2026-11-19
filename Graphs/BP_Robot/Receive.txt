@@ -20,12 +20,12 @@
       (set OldR _p))
     (if (== _s 1)
       (set HeldL true)))
-  ; T79: the right hand is HandSocket; the left keeps T46's slot on its arm pivot.
+  ; T79: the right hand is HandSocket. T109: the left hand is HandSocketL, its mirror on the left arm pivot.
   (if (not (V HeldR))
     (Class|BPProp|FlyToComp :self Prop :Comp (V HandSocket) :Off (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 0.0) :NewHolder self :NewSlot 0 :Dur Dur :Height H)
     (return))
   (if (not (V HeldL))
-    (Class|BPProp|FlyToComp :self Prop :Comp (V ArmPivotL) :Off (Math|Vector|MakeVector :X 0.0 :Y -5.0 :Z -44.0) :NewHolder self :NewSlot 1 :Dur Dur :Height H)
+    (Class|BPProp|FlyToComp :self Prop :Comp (V HandSocketL) :Off (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 0.0) :NewHolder self :NewSlot 1 :Dur Dur :Height H)
     (return))
   (bind _feet (CallFunction|FeetSpot))
   (Class|BPProp|ThrowTo :self (V OldR) :Loc _feet :Dur 0.45 :Height 35.0 :Spin 0.0)

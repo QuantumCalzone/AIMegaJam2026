@@ -37,14 +37,16 @@
   (Variables|Default|SetEyeColor (select _p (Utilities|Struct|MakeLinearColor :R 0.86 :G 0.78 :B 0.3 :A 1.0) (select _h (Utilities|Struct|MakeLinearColor :R 0.78 :G 0.76 :B 0.7 :A 1.0) (Utilities|Struct|MakeLinearColor :R 0.55 :G 0.85 :B 1.0 :A 1.0))))
   (Variables|Default|SetLedEyes (not (or _h _p)))
   (Variables|Default|SetLedMouth _r)
-  ; T103: the shoulders of each new body, 4 cm under each arm's top, which sits where the turnaround has it, just outside the body. Anthropic's arms angle 20 degrees out from its egg (AArmXL/AArmXR).
-  (bind _sy (select _v 30.0 (select _w 34.0 (select _o 39.0 (select _p 30.0 33.0)))))
-  (bind _sz (select _v 72.8 (select _w 74.0 (select _o 81.0 (select _p 66.0 94.0)))))
+  ; T109: each shoulder pivot sits where the arm enters its body (T109-build.md): OpenAI's sleeves come out of the sloping shoulders, Anthropic's ball sinks half into the egg,
+  ; SpaceXAI's spring goes into the body's side socket, Meta's stub goes up under the shirt's shoulder, my sleeves hug the box from its top corners. Each arm's tilt is on its component (xArmXL/xArmXR).
+  (bind _sy (select _v 21.0 (select _w 31.0 (select _o 27.5 (select _p 22.0 27.0)))))
+  (bind _sz (select _v 69.0 (select _w 75.5 (select _o 80.0 (select _p 63.0 98.0)))))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotL) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y (- _sy) :Z _sz))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotR) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y _sy :Z _sz))
   ; T80: each body's head socket, placed and scaled so T47's headpieces fit every head (T80's Findings has the final numbers), and its back socket. T103: Meta's head top is at 151 now.
-  ; HandSocket rides on the right arm pivot, at the centre of each new arm's hand.
-  (Transformation|SetRelativeLocation :self (Variables|Default|GetHandSocket) :NewLocation (select _v (Math|Vector|MakeVector :X 0.1 :Y 1.6 :Z -36.3) (select _w (Math|Vector|MakeVector :X 0.6 :Y 15.7 :Z -42.4) (select _o (Math|Vector|MakeVector :X -0.3 :Y 0.7 :Z -37.2) (select _p (Math|Vector|MakeVector :X 10.7 :Y -1.5 :Z -29.5) (Math|Vector|MakeVector :X 9.0 :Y 5.7 :Z -59.9))))))
+  ; HandSocket rides on the right arm pivot, at the centre of each arm's hand; T109: HandSocketL is its mirror on the left pivot (Receive's slot 1).
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetHandSocket) :NewLocation (select _v (Math|Vector|MakeVector :X 0.1 :Y 11.1 :Z -36.5) (select _w (Math|Vector|MakeVector :X 0.7 :Y 16.1 :Z -42.9) (select _o (Math|Vector|MakeVector :X -0.1 :Y 23.2 :Z -35.6) (select _p (Math|Vector|MakeVector :X 3.9 :Y 5.4 :Z -32.1) (Math|Vector|MakeVector :X 7.8 :Y -0.7 :Z -60.3))))))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetHandSocketL) :NewLocation (select _v (Math|Vector|MakeVector :X 0.1 :Y -11.1 :Z -36.5) (select _w (Math|Vector|MakeVector :X 0.7 :Y -16.1 :Z -42.9) (select _o (Math|Vector|MakeVector :X -0.1 :Y -23.2 :Z -35.6) (select _p (Math|Vector|MakeVector :X 3.9 :Y -5.4 :Z -32.1) (Math|Vector|MakeVector :X 7.8 :Y 0.7 :Z -60.3))))))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetHeadSocket) :NewLocation (select _h (Math|Vector|MakeVector :X -2.0 :Y 0.0 :Z 162.0) (select _p (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 151.0) (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 158.0))))
   (bind _hs (select _p 0.9 (select _h 1.1 1.0)))
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetHeadSocket) :NewScale3D (Math|Vector|MakeVector :X _hs :Y _hs :Z _hs))
