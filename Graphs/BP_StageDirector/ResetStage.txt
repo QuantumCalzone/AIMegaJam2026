@@ -1,6 +1,9 @@
 ; T45: dresses the table with the card in play's props (CardFromShow), in order; an actor past the
-; card's list goes empty. Every prop goes home now, held or not, so no robot carries the old card's
-; prop as a new one. BP_Show reads CardProps afterwards for the state's set.props (T45 step 4).
+; card's list goes empty. BP_Show reads CardProps afterwards for the state's set.props (T45 step 4).
+; T110: the props swap through the wing beside the Prop Table (WingLoc): every prop flies out at once, held,
+; thrown or on the table (0.6 s); each takes its new name in the wing; then they fly in one after another,
+; 0.9 s after the start and 0.25 s apart (0.6 s each), so the table is empty for a moment and the swap takes
+; about 2.25 s. A prop with no name in the card stays in the wing. A grab during the swap waits until it lands.
 (fn ResetStage ()
   (if (not (V Ready))
     (CallFunction|Init))
@@ -10,10 +13,12 @@
   (bind _n (len (V CardProps)))
   (for _i (range (len (V Props)))
     (bind _p (get (V Props) _i))
+    (bind _w (+ 0.9 (* 0.25 (Math|Conversions|ToFloat(Integer) _i))))
     (if (> _n 0)
       (if (< _i _n)
-        (Class|BPProp|SetProp :self _p :Name (get (V CardProps) _i))
+        (Class|BPProp|SwapTo :self _p :Name (get (V CardProps) _i) :Wing (V WingLoc) :Wait _w)
         (else
-          (Class|BPProp|SetProp :self _p :Name ""))))
-    (Class|BPProp|GoTable :self _p :Dur 0.9))
-  (print (cat "NHOS: ACT reset card=" (V CardId) " props=" (Utilities|String|JoinStringArray :SourceArray (V CardProps) :Separator ", "))))
+          (Class|BPProp|SwapTo :self _p :Name "" :Wing (V WingLoc) :Wait _w)))
+      (else
+        (Class|BPProp|SwapTo :self _p :Name (Class|BPProp|GetPropName :self _p) :Wing (V WingLoc) :Wait _w))))
+  (print (cat "NHOS: ACT reset card=" (V CardId) " props=" (Utilities|String|JoinStringArray :SourceArray (V CardProps) :Separator ", ") " swap=wing")))

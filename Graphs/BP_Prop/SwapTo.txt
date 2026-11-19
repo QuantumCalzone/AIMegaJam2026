@@ -1,0 +1,33 @@
+; T110: ResetStage swaps the props through the wing at every Scene Prep. The prop flies out to the wing (from the
+; table, a hand or wherever it was thrown) with its old model, takes the new card's name there out of the frame
+; (TickSwap), and flies in to its place on the table once Wait seconds have passed since the swap started.
+; PropName and Wear change now, so the rules and a grab already find the new prop by its name.
+; A prop already in the wing (scene 1, or no name in the last card) skips the fly out.
+(fn SwapTo (Name Wing Wait)
+  (CallFunction|InitHome)
+  (Transformation|DetachFromActor :LocationRule "KeepWorld" :RotationRule "KeepWorld" :ScaleRule "KeepWorld")
+  (set WingLoc Wing)
+  (set SwapName Name)
+  (set PropName Name)
+  (CallFunction|WearFor :Name Name)
+  (set Slot -1)
+  (set PendGrab false)
+  (set PendThrow false)
+  (set SwapT Wait)
+  (bind _l (Transformation|GetActorLocation))
+  (if (and (< (Math|Vector|Distance2D(Vector) :V1 _l :V2 Wing) 5.0) (< (Math|Float|Absolute(Float) (- (.z _l) (.z Wing))) 5.0))
+    (set Flying false)
+    (CallFunction|SetProp :Name Name)
+    (set Swap 2)
+    (return))
+  (set FlyFrom _l)
+  (set FromRot (Transformation|GetActorRotation))
+  (set FlyTo Wing)
+  (set FlyRot (V FromRot))
+  (set ToComp false)
+  (set FlySpin 0.0)
+  (set FlyT 0.0)
+  (set FlyDur 0.6)
+  (set FlyH 80.0)
+  (set Flying true)
+  (set Swap 1))

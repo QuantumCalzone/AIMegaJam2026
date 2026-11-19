@@ -1,0 +1,12 @@
+; T110: a grab (FlyToComp) or throw (ThrowTo) that came while the prop was swapping plays once it has landed on
+; the table, so no robot gets a prop that hasn't landed. A grab and then a throw play one after the other (Swap 4).
+(fn RunPend ()
+  (if (V PendGrab)
+    (set PendGrab false)
+    (CallFunction|FlyToComp :Comp (V PendComp) :Off (V PendOff) :NewHolder (V PendBot) :NewSlot (V PendSlot) :Dur (V PendDur) :Height (V PendH))
+    (if (V PendThrow)
+      (set Swap 4))
+    (return))
+  (if (V PendThrow)
+    (set PendThrow false)
+    (CallFunction|ThrowTo :Loc (V PendLoc) :Dur (V PendTDur) :Height (V PendTH) :Spin (V PendSpin))))

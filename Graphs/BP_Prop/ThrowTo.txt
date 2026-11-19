@@ -1,4 +1,13 @@
+; T110: during a swap, or while a deferred grab flies to the hand, the throw waits and plays after (RunPend, TickSwap).
 (fn ThrowTo (Loc Dur Height Spin)
+  (if (> (V Swap) 0)
+    (set Slot -1)
+    (set PendLoc Loc)
+    (set PendTDur Dur)
+    (set PendTH Height)
+    (set PendSpin Spin)
+    (set PendThrow true)
+    (return))
   (Transformation|DetachFromActor :LocationRule "KeepWorld" :RotationRule "KeepWorld" :ScaleRule "KeepWorld")
   (set FlyFrom (Transformation|GetActorLocation))
   (set FromRot (Transformation|GetActorRotation))

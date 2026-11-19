@@ -1,0 +1,12 @@
+; T110: the director's BeginPlay sends every prop to the wing beside the Prop Table, so the table starts empty
+; and scene 1's props come in from the wing at its Scene Prep.
+(fn ToWing (Wing)
+  (CallFunction|InitHome)
+  (Transformation|DetachFromActor :LocationRule "KeepWorld" :RotationRule "KeepWorld" :ScaleRule "KeepWorld")
+  (set WingLoc Wing)
+  (set Flying false)
+  (set Swap 0)
+  (set Slot -1)
+  (set PendGrab false)
+  (set PendThrow false)
+  (Transformation|SetActorLocation :NewLocation Wing))

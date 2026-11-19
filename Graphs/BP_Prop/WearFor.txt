@@ -1,0 +1,12 @@
+; T110: the new card's prop is worn where its props.json entry says (or T19's crown and cape) from the moment
+; the swap starts, so a grab during the swap picks the right socket. SetProp sets the same Wear again in the wing.
+(fn WearFor (Name)
+  (CallFunction|LoadProps)
+  (if (and (not (Utilities|String|IsEmpty Name)) (Json|HasField (V PropsObj) Name))
+    (bind _e (Json|GetField (V PropsObj) Name))
+    (set PEntry _e)
+    (bind _w (Json|GetField (V PEntry) "wear"))
+    (set PWear _w)
+    (set Wear (V PWear))
+    (return))
+  (set Wear (select (streq Name "paper crown") "head" (select (streq Name "cape") "back" "hand"))))

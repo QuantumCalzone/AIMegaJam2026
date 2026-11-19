@@ -1,0 +1,8 @@
+; T110: HomeLoc and HomeRot are the prop's place on the Prop Table, where L_Stage puts it. They are read once,
+; by whichever comes first: the prop's BeginPlay or the director's BeginPlay sending it to the wing (ToWing).
+(fn InitHome ()
+  (if (V HomeSet)
+    (return))
+  (set HomeLoc (Transformation|GetActorLocation))
+  (set HomeRot (Transformation|GetActorRotation))
+  (set HomeSet true))

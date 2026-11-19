@@ -1,2 +1,5 @@
+; T110: the table starts empty. Every prop waits in the wing (WingLoc) until scene 1's Scene Prep (ResetStage).
 (event EventBeginPlay
-  (CallFunction|Init))
+  (CallFunction|Init)
+  (for _p (V Props)
+    (Class|BPProp|ToWing :self _p :Wing (V WingLoc))))

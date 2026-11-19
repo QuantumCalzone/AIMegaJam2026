@@ -1,4 +1,13 @@
+; T110: during a swap the prop is on its way to the table anyway: a grab or throw that waits is dropped.
 (fn GoTable (Dur)
+  (if (and (> (V Swap) 0) (< (V Swap) 4))
+    (set Slot -1)
+    (set PendGrab false)
+    (set PendThrow false)
+    (return))
+  (if (== (V Swap) 4)
+    (set Swap 0)
+    (set PendThrow false))
   (bind _l (Transformation|GetActorLocation))
   (if (and (not (V Flying)) (and (< (Math|Vector|Distance2D(Vector) :V1 _l :V2 (V HomeLoc)) 2.0) (< (Math|Float|Absolute(Float) (- (.z _l) (.z (V HomeLoc)))) 2.0)))
     (set Slot -1)
