@@ -1,0 +1,8 @@
+; T61: a stagehand tip that shows when the line queue reaches it, like the header and the banner. StartTurn and
+; StartTalkRound call it right after their CueHeader node (a node edit each; neither has a file), with Kind
+; "scene_turn" or "free_talk"; the key is Kind_<TurnNum or TalkRound> (scene_turn_1, free_talk_2), read here at logic
+; time, as CueHeader reads them. pacing.json has no cue_hold for "tip", so the queue doesn't wait for it; the earpiece
+; keeps its own queue. RunCue's "tip" branch says the key (BPC_Stagehand.Say).
+(fn CueTip (Kind)
+  (bind _n (select (streq Kind "free_talk") (V TalkRound) (V TurnNum)))
+  (Class|BPCLinePlayer|Cue :self (Variables|Default|GetLinePlayer) :Kind "tip" :Text (cat (cat Kind "_") (str _n)) :Num 0))

@@ -64,4 +64,7 @@
   ; Raised.Pressed: #1E1933, raised, darker
   (if (Utilities|String|EqualExactly(String) Role "Raised.Pressed")
     (return (Utilities|Struct|MakeLinearColor 0.0130 0.0097 0.0331 1.00)))
+  ; Earpiece: #FF9EC4, the stagehand's tips, only on your screen (T61: WBP_Earpiece's line and portrait ring)
+  (if (Utilities|String|EqualExactly(String) Role "Earpiece")
+    (return (Utilities|Struct|MakeLinearColor 1.0000 0.3419 0.5520 1.00)))
   (return (Utilities|Struct|MakeLinearColor 1.0 0.0 1.0 1.0)))

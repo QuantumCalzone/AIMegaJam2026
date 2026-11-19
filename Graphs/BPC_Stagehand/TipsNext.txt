@@ -1,7 +1,11 @@
 ; BPC_Stagehand.TipsNext -> Boolean (T61): what the next show will do, from Local/progress.json's "tips".
 ; A missing file, or one without the field, means true (a first show). The title's toggle shows it.
+; Part 2: FileExists first, because LoadJsonfromFile logs a LogScript error ("File not found") for a missing file,
+; and a first show has none.
 (fn TipsNext ()
   (bind _p (cat (Utilities|Paths|GetProjectDirectory) "Local/progress.json"))
+  (if (not (Utilities|Paths|FileExists _p))
+    (return true))
   (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath _p)))
   (if (not _ok)
     (return true))

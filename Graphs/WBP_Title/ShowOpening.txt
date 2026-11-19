@@ -1,0 +1,13 @@
+; WBP_Title.ShowOpening (T61): the three opening lines from stagehand.json's opening_lines, one per row (the join is a
+; line break inside the string literal, T34). If the file can't be read, HowText keeps its design-time text, the same
+; three lines. Docs/ItchPage.md carries them too, and Tools/check_prompts.py holds the page to the file.
+(fn ShowOpening ()
+  (bind (_o _ok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat (Utilities|Paths|GetProjectContentDirectory) "NHOS/Data/stagehand.json"))))
+  (if (not _ok)
+    (return))
+  (bind _l (Json|GetField _o "opening_lines"))
+  (set OpenLines _l)
+  (if (== (len (V OpenLines)) 0)
+    (return))
+  (Widget|SetText(Text) :self (Variables|WBP_Title|GetHowText) :InText (Utilities|Text|ToText(String) (Utilities|String|JoinStringArray (V OpenLines) "
+"))))

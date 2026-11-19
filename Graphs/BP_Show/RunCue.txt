@@ -4,6 +4,8 @@
 ; T71: each header asks BPC_ShowAudio for its phase's music (PlayPhase); OpenPrep starts the card's loop.
 ; T68: the "stat" cue (analytics phase events) and show_end at the end screen.
 ; T87: the "reveal" cue (WinReveal.RiseAll).
+; T61: the "tip" cue (BPC_Stagehand.Say), the_cut with the ballot, and BPC_Stagehand.EndShow at the end screen, with
+; T60's top-reason line (TopLine, set by ShowEndScreen's EndReveal; "" on a win).
 (fn RunCue (Kind Text Num)
   ; T68: a phase's analytics event, queued by CueHeader right before its header (BPC_Analytics.CuePhase).
   (if (streq Kind "stat")
@@ -22,6 +24,7 @@
       (return))
     (Class|BPCShowAudio|StartDrum :self (V Audio))
     (CallFunction|ShowVotePick)
+    (Class|BPCStagehand|Say :self (V Stagehand) :Key "the_cut")
     (return))
   (if (streq Kind "cut")
     (Class|BPCShowAudio|Reveal :self (V Audio) :IsHuman (== Num (V HumanSeat)))
@@ -43,6 +46,10 @@
   (if (streq Kind "unpass")
     (CallFunction|MarkPass :Seat Num :On false)
     (return))
+  ; T61: a stagehand tip, queued by CueTip, says its key when the screen reaches it.
+  (if (streq Kind "tip")
+    (Class|BPCStagehand|Say :self (V Stagehand) :Key Text)
+    (return))
   ; T71: the card's loop starts in OpenPrep, at the end of ScenePrep.
   (if (streq Kind "prep")
     (CallFunction|ScenePrep)
@@ -54,6 +61,7 @@
   (if (streq Kind "end")
     (Class|BPCShowAudio|EndCheer :self (V Audio) :Win (V ShowWin))
     (CallFunction|ShowEndScreen)
+    (Class|BPCStagehand|EndShow :self (V Stagehand) :Win (V ShowWin) :Reason (V TopLine))
     (Class|BPCAnalytics|ShowEnd :self (V Analytics) :Win (V ShowWin) :Reason (V WinReason))
     (return))
   (print (cat "NHOS: CUE unknown " Kind)))

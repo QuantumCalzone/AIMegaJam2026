@@ -1,0 +1,14 @@
+; WBP_Stage.EarSpot (T61): where the stagehand's earpiece (WBP_Earpiece, its own overlay at Z 15, over this widget) sits
+; on this screen now, for WBP_Earpiece.SetSpot. Outputs: AnchorX (0 left, 0.5 center, 1 right edge of the screen's bottom),
+; X (the panel's offset from that anchor; its own edge or center sits at the same fraction), Y (how far above the bottom)
+; and MaxW (its widest; WBP_Earpiece keeps it at least 560). In viewport units, 1080 tall.
+; Scene Prep (PrepSize shown; only scene 1's has tips, and its lower panel is collapsed): bottom left, left of the
+; middle panel (its left edge is near x 740 at 1920 wide), so at most 640 wide from x 24.
+; The scene's phases: bottom right, right of the lower panel (1080 wide from x 24) and of the stamp's middle band, at
+; most 600 wide, and raised above the money burn's bill (bottom right, T35). Change these when a panel moves.
+(fn EarSpot ()
+  (bind _e (Class|UIStyle|UISize :Role "Edge"))
+  (set EarE _e)
+  (if (Widget|IsVisible :self (Variables|WBP_Stage|GetPrepSize))
+    (return 0.0 (V EarE) (V EarE) 640.0))
+  (return 1.0 (- 0.0 (V EarE)) (V EarY) 600.0))

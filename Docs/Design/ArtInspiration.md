@@ -170,6 +170,7 @@ Colors are set by role. Start from these values; if a value changes, keep its ro
 | Text on ink | #FFFFFF; quiet #C9C3DA | Speech; actions, hints and captions |
 | Inset | #0E0B18 | The input box fill |
 | Raised | #2A2342 | Secondary button fill |
+| Earpiece | #FF9EC4 | The stagehand's tips, only on your screen |
 | Seat colors | OpenAI #A8CCFF · Anthropic #E8894A · SpaceXAI #D8F04A · Meta #C8AC12 · You #3FD0C9 | Names, chat bars, name tags, ballot tickets |
 
 - **Gold means act now, teal means you.** Nothing else in the play area is gold. SpaceXAI moves from yellow to lime, and Meta's mustard leans green and sits darker than the gold, so neither reads as gold.

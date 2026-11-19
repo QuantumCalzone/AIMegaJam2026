@@ -1,0 +1,9 @@
+; WBP_HowToPlay.FocusTitle (T61): gives the keyboard focus to the title's How to play button (BP_Show.TitleScreen),
+; when the title is still up. CloseHelp calls it when no opener passed a Back widget.
+(fn FocusTitle ()
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _t (Class|BPShow|GetTitleScreen :self _show))
+  (Utilities|IsValid _t
+    (:"Is Valid"
+      (Widget|SetKeyboardFocus :self (Class|WBPTitle|GetHelpButton :self _t)))
+    (:"Is Not Valid")))

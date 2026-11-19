@@ -1,8 +1,11 @@
-; BPC_Stagehand.ReadSwitches (T61): Autoplay and TmpB (stagehand_tips) from Local/switches.json; both false if it is missing.
+; BPC_Stagehand.ReadSwitches (T61): Autoplay and TmpB (stagehand_tips) from Local/switches.json; both false if it is missing
+; (FileExists first, so a build with no switches file logs no LogScript error from here).
 (fn ReadSwitches ()
   (set Autoplay false)
   (set TmpB false)
   (bind _dir (Utilities|Paths|GetProjectDirectory))
+  (if (not (Utilities|Paths|FileExists (cat _dir "Local/switches.json")))
+    (return))
   (bind (_sw _swok) (Json|LoadJsonfromFile (Utilities|Struct|MakeFilePath (cat _dir "Local/switches.json"))))
   (if (not _swok)
     (return))

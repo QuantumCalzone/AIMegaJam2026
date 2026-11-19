@@ -1,11 +1,9 @@
 ; WBP_Earpiece.EventGraph (T61). The stagehand's line: an ink panel with the stagehand's portrait in a rose ring,
 ; a caption and the line in rose. It never takes a click or keyboard focus (the root is HitTestInvisible).
-; Every font, size and panel comes from UIStyle. The rose (#FF9EC4, linear 1.0 0.3419 0.5520) is the one value not from
-; UIStyle yet: UIStyle has no Earpiece role, and UIStyle.uasset is the PC's. When UIColor gets "Earpiece", swap the
-; MakeLinearColor below for (Class|UIStyle|UIColor :Role "Earpiece").
+; Every color, font, size and panel comes from UIStyle; the rose is UIColor "Earpiece" (#FF9EC4, T61 part 2).
 ; PortraitTex (a Texture2D variable) is the portrait. While it is empty, the portrait and its gap are collapsed.
 (event UserInterface|EventPreConstruct (IsDesignTime)
-  (bind ear (Utilities|Struct|MakeLinearColor 1.0 0.3419 0.5520 1.0))
+  (bind ear (Class|UIStyle|UIColor :Role "Earpiece"))
   (bind quiet (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Quiet")))
   (bind ring (Class|UIStyle|Brush :Fill (Class|UIStyle|UIColor :Role "InkSolid") :Outline ear :Width (Class|UIStyle|UISize :Role "FocusRing") :Radius (Class|UIStyle|UISize :Role "PanelRadius")))
   (Class|UIStyle|StylePanel :Panel (Variables|WBP_Earpiece|GetEarFrame) :Look "Ink")

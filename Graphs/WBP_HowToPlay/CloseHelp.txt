@@ -1,9 +1,12 @@
 ; WBP_HowToPlay.CloseHelp (T61): closes the screen and gives keyboard focus back to Back (set by OpenOver), so Tab
-; reaches the title's buttons again (T33 found the same after Back on the key screen).
+; reaches the title's buttons again (T33 found the same after Back on the key screen). The title opens this screen with
+; AddtoViewport, not OpenOver (write_graph_dsl can't call this widget's functions from WBP_Title), so with no Back it
+; focuses the title's How to play button (FocusTitle).
 (fn CloseHelp ()
   (print "NHOS: HOWTOPLAY close")
   (Widget|RemovefromParent :self self)
   (Utilities|IsValid (V Back)
     (:"Is Valid"
       (Widget|SetKeyboardFocus :self (V Back)))
-    (:"Is Not Valid")))
+    (:"Is Not Valid"
+      (CallFunction|FocusTitle))))

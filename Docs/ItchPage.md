@@ -5,6 +5,7 @@ The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used f
 - **Markers:** **[T19]** (robots act out their actions), **[T20]** (audio), **[T22]** (the packaged build) and **[T24]** (timers, if done) mark text those tasks may change. **[YOU]** marks a blank only you can fill in. Settle every marker, then delete the markers before you paste.
 - Each AI player goes by its provider here, as in the game: OpenAI, Anthropic, SpaceXAI and Meta. The jam page spelled that provider "SpaceXSI". If the game's name for it changes (`name` in `Content/NHOS/Data/personas.json`), change it here too.
 - Everything between the two rules under "Page text" goes into the page's description. The sections before it are the page's settings.
+- The three bold lines at the top of "Page text" are the game's three opening lines (T61), the ones the title screen shows before every show. They come from `opening_lines` in `Content/NHOS/Data/stagehand.json`, and `Tools/check_prompts.py --offline` fails if this page doesn't carry each one word for word. Change them there and here together.
 
 ## Page settings
 
@@ -34,6 +35,12 @@ The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used f
 ---
 
 ## Page text
+
+**You're the only human.**
+
+**Each scene, the cast cuts whoever seems human.**
+
+**Survive to the final two or the last scene.**
 
 ### Tonight: the world's first all-AI improv show
 

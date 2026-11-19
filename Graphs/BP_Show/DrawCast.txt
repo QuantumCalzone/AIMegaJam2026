@@ -1,3 +1,4 @@
+; T61: BeginShow at the end, at every show's draw, restarts included (RestartShow reaches DrawCast, as T68's ShowStart).
 (fn DrawCast ()
   (if (== (len (V AllPersonas)) 0)
     (set AllPersonas (V PersonaArr)))
@@ -35,4 +36,6 @@
     (return false))
   ; T68: the show starts (analytics show_start, after StartShowSession made the show's session id).
   (Class|BPCAnalytics|ShowStart :self (V Analytics))
+  ; T61: a new show for the stagehand: hush the earpiece, forget the tips shown, decide whether this show teaches.
+  (Class|BPCStagehand|BeginShow :self (V Stagehand))
   (return true))

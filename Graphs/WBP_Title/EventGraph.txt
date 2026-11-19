@@ -9,6 +9,10 @@
 ; 3 working providers with budget left (BPC_LLMClient.OnHealth, the same floor as BP_Show.DrawCast); otherwise it
 ; stays greyed out with BPC_LLMClient.TitleLine under it (SetPlay). A click waits for a fresh answer (Checking):
 ; if the answer changed since the last check, the unavailable screen opens as before.
+; T61: How to play became a screen of its own (WBP_HowToPlay, opened by HelpButton). The ink panel beside the playbill is
+; now "Tonight's show": the three opening lines from stagehand.json (ShowOpening), How to play, and the Stagehand tips
+; toggle (TipsButton; ShowTips says what the next show will do, from BPC_Stagehand.TipsNext). The earpiece is at Z 15,
+; under the title (20), so a tip never shows over it.
 (event UserInterface|EventPreConstruct (IsDesignTime)
   (bind fCap (Class|UIStyle|UIFont :Role "Caption"))
   (bind fBody (Class|UIStyle|UIFont :Role "Body"))
@@ -47,6 +51,13 @@
   (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetHowTitle) :ColorAndOpacity cText)
   (Class|Text|SetFont :self (Variables|WBP_Title|GetHowText) :Font fBody)
   (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetHowText) :ColorAndOpacity cText)
+  (bind cQuiet (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Quiet")))
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Title|GetHelpButton) :Label (Variables|WBP_Title|GetHelpLabel) :Kind "Secondary")
+  (Class|UIStyle|StyleButton :Button (Variables|WBP_Title|GetTipsButton) :Label (Variables|WBP_Title|GetTipsLabel) :Kind "Secondary")
+  (Class|Text|SetFont :self (Variables|WBP_Title|GetTipsCap) :Font fCap)
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_Title|GetTipsCap) :ColorAndOpacity cQuiet)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetHelpRing) :On false)
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetTipsRing) :On false)
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetPlayRing) :On false)
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetFreeRing) :On false)
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetKeysRing) :On false)
@@ -60,7 +71,9 @@
   (CallFunction|SetPlay :On false :Line "Checking the AI actors..." :Quiet true)
   (set TitleCheck true)
   (Class|BPCLLMClient|CheckRelay :self (Class|BPShow|GetLLMClient :self _show))
-  (CallFunction|ShowStats))
+  (CallFunction|ShowStats)
+  (CallFunction|ShowOpening)
+  (CallFunction|ShowTips))
 
 (event UserInterface|EventDestruct
   (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
@@ -71,6 +84,8 @@
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetFreeRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetFreeButton)))
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetKeysRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetKeysButton)))
   (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetStatsRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetStatsButton)))
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetHelpRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetHelpButton)))
+  (CallFunction|ShowRing :Ring (Variables|WBP_Title|GetTipsRing) :On (Widget|HasKeyboardFocus :self (Variables|WBP_Title|GetTipsButton)))
   (if (V TitleCheck)
     (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
     (bind _cl (Class|BPShow|GetLLMClient :self _show))
@@ -127,6 +142,23 @@
   (print "NHOS: TITLE click keys")
   (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_Keys.WBP_Keys_C" (Game|GetPlayerController 0)))
   (UserInterface|Viewport|AddtoViewport :self _w :ZOrder 30))
+
+; T61: How to play opens over the title, at Z 30. On Close or Escape it gives the keyboard focus back to this button
+; (WBP_HowToPlay.CloseHelp finds it through BP_Show.TitleScreen; write_graph_dsl can't call WBP_HowToPlay's own
+; functions from another Blueprint, so the title adds it to the viewport itself instead of calling its OpenOver).
+(event OnClicked(HelpButton)
+  (print "NHOS: TITLE click howtoplay")
+  (bind _w (UserInterface|CreateWidget "/Game/NHOS/UI/WBP_HowToPlay.WBP_HowToPlay_C" (Game|GetPlayerController 0)))
+  (UserInterface|Viewport|AddtoViewport :self _w :ZOrder 30))
+
+; T61: the Stagehand tips toggle turns the earpiece's tips on or off for the next show (Local/progress.json). It starts nothing.
+(event OnClicked(TipsButton)
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _sh (Class|BPShow|GetStagehand :self _show))
+  (bind _on (Class|BPCStagehand|TipsNext :self _sh))
+  (Class|BPCStagehand|SetTipsNext :self _sh :On (not _on))
+  (print (cat "NHOS: TITLE click tips=" (select _on "off" "on")))
+  (CallFunction|ShowTips))
 
 ; T68: the Play stats toggle. BPC_Analytics.SetOn sends one last analytics_off when it turns off, then nothing.
 (event OnClicked(StatsButton)

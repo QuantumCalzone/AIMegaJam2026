@@ -227,6 +227,15 @@ REACT (or WIN SKIP) per AI seat and a matching WIN REACTIONS n= before NHOS:
 SHOW END, and a lost show with any of them; WIN REACT lines get the legibility
 check, and each WIN SKIP is a WARN.
 
+Stagehand (T61): stagehand.json, the earpiece tips only the player sees, has
+a line and a spot (stage or end) for every moment in STAGEHAND_MOMENTS, style
+tips keyed only by a key the show raises (STAGEHAND_KEYS), the three opening
+lines and the hold times. No line is over MAX_TIP_WORDS (25) words, no style
+tip over MAX_WORDS, and no line holds a banned name. No tip is in a file the
+AIs' asks are built from, and Docs/ItchPage.md carries the opening lines word
+for word. --log fails a show whose NHOS: LOG, STATE, CLOSING or WIN REACT lines
+hold a tip (NHOS: TIP prints only the key): the tips never reach an AI.
+
 Graph sources (T107): the file check also runs Tools/check_graphs.py over
 Graphs/, so --offline fails a Blueprint graph source with the DSL trap that
 broke T77's StageLine (an if whose body ends in a branching node, with code
@@ -302,6 +311,13 @@ MAX_ATTEMPT_WORDS = 6
 ACTOR_ASKS = ["scene_turn", "free_talk", "last_word", "vote", "reaction", "reaction_cut", "closing", "reaction_win"]
 ALL_ASKS = ACTOR_ASKS + ["input"]
 MAX_WORDS = 15
+# T61: the stagehand's earpiece. The moments stagehand.json must give a line, every key BP_Show
+# and BPC_Stagehand.EndShow raise (a style tip must be keyed by one), and the longest tip.
+STAGEHAND_MOMENTS = ["before_show", "scene_prep", "scene_turn_1", "free_talk_1", "the_cut", "lose", "win"]
+STAGEHAND_KEYS = ["before_show", "scene_prep", "scene_turn_1", "scene_turn_2", "scene_turn_3",
+                  "free_talk_1", "free_talk_2", "free_talk_3", "the_cut", "lose", "win"]
+MAX_TIP_WORDS = 25
+ITCH_PAGE = ROOT / "Docs" / "ItchPage.md"
 
 # T50: the design doc's note rules (Bot Prompts, "Opening prompt: game rules"), word for word.
 DOC_NOTE_LINES = [
@@ -920,6 +936,93 @@ def prewritten_problems(scenes, errors: list[str]) -> list[str]:
                 if words(line) > MAX_WORDS:
                     out.append(f"autoplay.json: {k}[{i}] has {words(line)} words, over {MAX_WORDS}")
     return out
+
+
+def stagehand_tips(data, tells=None) -> list[str]:
+    """T61: the earpiece's tip lines (every moment line and style tip), for the leak checks. A line
+    that is also a tells.json lose-screen line is left out: the end screen shows it in every show."""
+    tell_lines = {t.get("line") for t in (tells or {}).get("tells", []) if isinstance(t, dict)}
+    out = [m.get("line") for m in data.get("moments", {}).values() if isinstance(m, dict)]
+    out += list(data.get("style", {}).values())
+    return [s for s in out if isinstance(s, str) and s.strip() and s not in tell_lines]
+
+
+def stagehand_problems(data, tells, ai_files) -> list[str]:
+    """T61: the earpiece tips. Every moment has a line and a spot, no line runs long, no banned
+    name, no tip in a file the AIs' asks are built from, and the itch page carries the opening lines."""
+    out = []
+    if not isinstance(data, dict):
+        return out  # load_json already reported it
+    moments = data.get("moments")
+    if not isinstance(moments, dict):
+        return ["stagehand.json: needs a 'moments' object"]
+    for key in STAGEHAND_MOMENTS:
+        m = moments.get(key)
+        if not isinstance(m, dict) or not isinstance(m.get("line"), str) or not m["line"].strip():
+            out.append(f"stagehand.json: moment {key} needs a line")
+    tips = []
+    for key, m in moments.items():
+        if key not in STAGEHAND_MOMENTS:
+            out.append(f"stagehand.json: unknown moment {key!r} (BP_Show raises only {', '.join(STAGEHAND_MOMENTS)} as moments)")
+        if not isinstance(m, dict):
+            continue
+        if m.get("spot") not in ("stage", "end"):
+            out.append(f"stagehand.json: moment {key} needs a spot, stage or end")
+        tips.append((f"moment {key}", m.get("line") if isinstance(m.get("line"), str) else ""))
+    style = data.get("style", {})
+    if not isinstance(style, dict):
+        out.append("stagehand.json: 'style' must be an object of key: tip")
+        style = {}
+    for key, v in style.items():
+        if key not in STAGEHAND_KEYS:
+            out.append(f"stagehand.json: style.{key} is keyed by a moment BP_Show never raises")
+        if not isinstance(v, str) or not v.strip():
+            out.append(f"stagehand.json: style.{key} needs a line")
+            continue
+        if words(v) > MAX_WORDS:
+            out.append(f"stagehand.json: style.{key} is {words(v)} words (most {MAX_WORDS})")
+        tips.append((f"style {key}", v))
+    opening = data.get("opening_lines")
+    if not is_lines(opening) or len(opening) != 3:
+        out.append("stagehand.json: opening_lines needs the three lines shown before the show")
+        opening = []
+    for where, line in tips + [("opening line", s) for s in opening]:
+        if words(line) > MAX_TIP_WORDS:
+            out.append(f"stagehand.json: {where} is {words(line)} words (most {MAX_TIP_WORDS})")
+        for w in BANNED + PUN_NAMES:
+            if re.search(r"(?i)\b" + re.escape(w) + r"\b", line):
+                out.append(f"stagehand.json: {where} holds a banned name: {w!r}")
+    hold = data.get("hold", {})
+    if not isinstance(hold, dict) or not all(isinstance(hold.get(k), (int, float)) and not isinstance(hold.get(k), bool)
+                                             for k in ("base", "per_word", "min", "max", "gap")):
+        out.append("stagehand.json: hold needs base, per_word, min, max and gap (seconds)")
+    elif not 0 < hold["min"] <= hold["max"]:
+        out.append("stagehand.json: hold needs 0 < min <= max")
+    # The tips are static text for the player's screen only: none may sit in a file the AIs read.
+    ai_text = json.dumps(ai_files, ensure_ascii=False)
+    for line in stagehand_tips(data, tells):
+        if line in ai_text:
+            out.append(f"stagehand.json: a tip is in a file the AIs' asks are built from: {line!r}")
+    page = ITCH_PAGE.read_text(encoding="utf-8") if ITCH_PAGE.exists() else ""
+    for s in opening:
+        if s not in page:
+            out.append(f"Docs/ItchPage.md: missing the opening line {s!r} (T61: the page carries stagehand.json's opening_lines)")
+    return out
+
+
+def check_stagehand_log(raw, tips) -> int:
+    """T61: no stagehand tip in what an AI reads or says. NHOS: TIP prints only the key, so a tip's
+    text in a LOG, STATE, CLOSING or WIN REACT line is a leak. Returns how many lines leak."""
+    bad = 0
+    for line in raw:
+        m = re.search(r"NHOS: (LOG|STATE|CLOSING|WIN REACT)\b", line)
+        if not m:
+            continue
+        hit = next((t for t in tips if t.lower() in line.lower()), None)
+        if hit:
+            bad += 1
+            print(f"[FAIL] STAGEHAND | a tip reached an AI's {m.group(1)} line: {hit!r}")
+    return bad
 
 
 def card_prop_problems(cards) -> list[str]:
@@ -1602,6 +1705,10 @@ def check_files(errors: list[str]):
     # free_mode.json and autoplay.json: every pre-written line fits the word cap (T59).
     errors.extend(prewritten_problems(scenes, errors))
 
+    # stagehand.json: the earpiece tips, the opening lines and the itch page (T61).
+    stagehand = load_json("stagehand.json", errors)
+    errors.extend(stagehand_problems(stagehand, tells, [prompts, personas, scenes, load_json("free_mode.json", errors)]))
+
     # emotes.json: the emotions each robot can show (T75).
     errors.extend(emote_problems(emotes))
     # T60: free mode pairs one tell with each pre-written vote reason, so Test for Free names a top reason.
@@ -1677,7 +1784,7 @@ def check_files(errors: list[str]):
     if errors:
         return None
     return {"llm": llm, "prompts": prompts, "personas": plist, "scenes": scenes, "emotes": emotes, "tells": tell_ids,
-            "clues": clues}
+            "clues": clues, "stagehand_tips": stagehand_tips(stagehand, tells)}
 
 
 # ---------------------------------------------------------------- sample show
@@ -2398,7 +2505,7 @@ def check_reply(reply, ask, ctx):
 LOG_RE = re.compile(r"NHOS: (SHOW READY|SHOW END|RESTART|SEATS|SETUP|LOG|CLOSING|CUT|TIE|REACTIONS DONE|PASSED|LASTWORDS|ACT|EXTRA|HUMAN|SPELLING|TOP REASON|TELL|RIVALS|WIN REACTIONS|WIN REACT|WIN SKIP)\b ?(.*)$")
 
 
-def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, clues=None) -> int:
+def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, clues=None, tips=()) -> int:
     """Legibility check on the AI lines of PIE shows in an editor log. Returns the exit code."""
     names = {p["id"]: p["name"] for p in personas}
     rival_of = {p["id"]: p.get("rival") for p in personas}  # T60
@@ -2422,6 +2529,8 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, c
     shows = [s for s in shows if any(k == "LOG" for k, _ in s)]
     # T88: the clue lines. A clue_test run (no show) has CLUETEST lines and no LOG line.
     clue_bad, clue_tests, _ = check_clue_log(raw if all_shows or not shows else raw[_last_show_start(raw):], scenes, clues)
+    # T61: no stagehand tip in what an AI reads or says.
+    tip_bad = check_stagehand_log(raw if all_shows or not shows else raw[_last_show_start(raw):], tips)
     if not shows:
         if clue_tests:
             return 1 if clue_bad else 0
@@ -2702,7 +2811,9 @@ def check_log(path: Path, personas, all_shows: bool, tell_ids=(), scenes=None, c
               f"ending = {(end.get('result', '?') + ' ' + end.get('reason', '?')) if end else 'none'}, passes = {len(passes)}, last words = {sum(len(v) for v in lastw.values())}, "
               f"rule fallbacks = {falls}, extras dropped = {extras}, my turns = {humans}, spelling skipped = {skipped}, my emotions = {dict(emo_lines) or 'none'}, top reason = {top_reason or 'none'}, rivals = {'shown' if rivals else 'none'}, reveal lines = {len(wins)}.")
     print(f"\n{n} AI lines in {len(shows)} show(s): {n - bad} legible, {bad} failed.")
-    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad or human_bad or top_bad or clue_bad or win_bad else 0
+    if tip_bad:
+        print(f"{tip_bad} log line(s) an AI reads or writes hold a stagehand tip.")
+    return 1 if bad or clock_bad or vote_bad or end_bad or pass_bad or lw_bad or act_bad or human_bad or top_bad or clue_bad or win_bad or tip_bad else 0
 
 
 def _last_show_start(raw):
@@ -2872,9 +2983,10 @@ def main():
         for e in errors:
             print("FAIL file:", e)
         return 1
-    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, clues.json, errors.json, tells.json, free_mode.json, autoplay.json, input.json, props.json, costumes.json, emotes.json and the relay's allow-list")
+    print("Files OK: llm.json, prompts.json, personas.json, scenes.json, clues.json, errors.json, tells.json, free_mode.json, autoplay.json, input.json, props.json, costumes.json, emotes.json, stagehand.json and the relay's allow-list")
     if args.log:
-        return check_log(Path(args.log), data["personas"], args.all_shows, data["tells"], data["scenes"], data["clues"])
+        return check_log(Path(args.log), data["personas"], args.all_shows, data["tells"], data["scenes"], data["clues"],
+                         data["stagehand_tips"])
 
     show = Show(data)
     jobs = build_jobs(data, show, set(args.ask or ALL_ASKS), args.persona or PERSONAS, args.repeat)

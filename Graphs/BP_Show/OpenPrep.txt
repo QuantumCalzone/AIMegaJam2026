@@ -6,6 +6,8 @@
 ; T85: in scene 1 the robots get their screen names, seat colors and personas here (StageSetup, moved from StartScene),
 ; so the labels read the names from Scene Prep on, not "ROBOT", and the hover card finds them in Robots. ScenePrep has
 ; filled the seats and SeatColors (StagePrep) by now. Nothing else of the scene starts: StageSetup moves no robot.
+; T61: the stagehand's "before_show" and "scene_prep" tips (each once per show, on a teaching show only; a later
+; Scene Prep raises keys already shown, which do nothing). OpenPrep already runs at screen time.
 (fn OpenPrep ()
   (clear (V SeatEmo))
   (if (== (Variables|Default|GetSceneNum) 1)
@@ -14,6 +16,8 @@
   (Class|BPCShowAudio|PlayMusic :self (V Audio) :Key "scene_prep")
   (Development|PrintString (Utilities|String|Append "NHOS: PREP shown scene=" (Utilities|String|ToString(Integer) (Variables|Default|GetSceneNum))) false)
   (Class|BPCAnalytics|SendPhase :self (V Analytics) :Key "scene_prep" :Scene (Variables|Default|GetSceneNum))
+  (Class|BPCStagehand|Say :self (V Stagehand) :Key "before_show")
+  (Class|BPCStagehand|Say :self (V Stagehand) :Key "scene_prep")
   (CallFunction|LoadSwitches)
   (if (Variables|Default|GetAutoplay)
     (CallFunction|StartFromPrep)))

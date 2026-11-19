@@ -26,7 +26,7 @@ Unreal Engine 5.8 game project. It was created from the Blank Blueprint template
 | `Relay/` | The relay: a Cloudflare Worker that holds our provider keys, so players can play without their own. Not part of the Unreal project. See `Relay/README.md`. |
 | `Docs/` | The plan, the design doc (`Design/`, one file per part, listed in `GameDesign.md`), the asset list (`Assets.md`), how to package, check and upload a build (`Builds.md`), how Unreal MCP is set up (`UnrealMCP.md`), the dispatcher's instructions (`LaunchAgents.md`), how two machines work at once (`TwoMachines.md`) and example files for `Local/`. |
 | `Agents/` | Coordination notes. See "Coordinating with other agents". |
-| `Local/` | Per machine, and ignored by git: `llm_key.json` (API keys) and `switches.json` (autoplay, play mode and test switches). Copy each from its example in `Docs/`. A git worktree has no `Local/`. |
+| `Local/` | Per machine, and ignored by git: `llm_key.json` (API keys) and `switches.json` (autoplay, play mode and test switches). Copy each from its example in `Docs/`. The game also writes `progress.json` there, the stagehand's first-show flag (T61); delete it to see the first-show tips again. A git worktree has no `Local/`. |
 
 ## "Next task"
 

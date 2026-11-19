@@ -1,0 +1,6 @@
+; WBP_Title.ShowTips (T61): the Stagehand tips toggle's label says what the next show will do (BPC_Stagehand.TipsNext:
+; Local/progress.json's "tips"; a missing file is a first show, so on).
+(fn ShowTips ()
+  (bind _show (Actor|GetActorOfClass "/Game/NHOS/Core/BP_Show.BP_Show_C"))
+  (bind _on (Class|BPCStagehand|TipsNext :self (Class|BPShow|GetStagehand :self _show)))
+  (Widget|SetText(Text) :self (Variables|WBP_Title|GetTipsLabel) :InText (Utilities|Text|ToText(String) (select _on "Stagehand tips: on" "Stagehand tips: off"))))
