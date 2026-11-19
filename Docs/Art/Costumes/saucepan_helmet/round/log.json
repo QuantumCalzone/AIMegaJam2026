@@ -1,0 +1,97 @@
+{
+ "costume": "saucepan_helmet",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "2786a4e0-dacd-45f8-b757-0f4f597d1bf1",
+ "display_url": "https://hyper3d.ai/workspace/rodin/2786a4e0-dacd-45f8-b757-0f4f597d1bf1",
+ "input": "reference_front.png",
+ "upload": "0PxRVplsKEKd0Do-5EvQeA",
+ "prompt": "An empty black saucepan worn upside down as a helmet, matte modeling clay, worn by no one: a round pot turned bottom up with a rim at its lower edge, and a long handle straight out to one side. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.2932,
+  0.6242,
+  1.9024
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.5805,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 146,
+   "fwd": 0,
+   "yaw": -90,
+   "roll": 0,
+   "size_cm": [
+    75.1,
+    75.1,
+    36.2
+   ]
+  },
+  "anthropic": {
+   "scale": 0.571,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 146,
+   "fwd": 0,
+   "yaw": -90,
+   "roll": 0,
+   "size_cm": [
+    73.8,
+    73.8,
+    35.6
+   ]
+  },
+  "spacexai": {
+   "scale": 0.4756,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 146,
+   "fwd": 0,
+   "yaw": -90,
+   "roll": 0,
+   "size_cm": [
+    61.5,
+    61.5,
+    29.7
+   ]
+  },
+  "meta": {
+   "scale": 0.4764,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 146,
+   "fwd": 0,
+   "yaw": -90,
+   "roll": 0,
+   "size_cm": [
+    61.6,
+    61.6,
+    29.7
+   ]
+  }
+ }
+}

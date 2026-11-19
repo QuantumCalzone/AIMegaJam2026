@@ -1,0 +1,97 @@
+{
+ "costume": "bob_wig",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "0c3f6967-3c4d-44b8-a97a-0a66ec46ad1e",
+ "display_url": "https://hyper3d.ai/workspace/rodin/0c3f6967-3c4d-44b8-a97a-0a66ec46ad1e",
+ "input": "reference_front.png",
+ "upload": "b2fQz1zKBDV6h2mGPLqPVA",
+ "prompt": "An empty bob wig of matte brown modeling clay, worn by no one: blunt straight bangs and a chin-length bob, hollow inside with an open face opening and an open bottom where a head goes. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.8548,
+  1.7793,
+  1.8991
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.5357,
+   "s3": [
+    1,
+    1.12,
+    1.05
+   ],
+   "bottom_z": 69.2,
+   "fwd": -5,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    99.4,
+    106.8,
+    106.8
+   ]
+  },
+  "anthropic": {
+   "scale": 0.5543,
+   "s3": [
+    1,
+    1.12,
+    1.05
+   ],
+   "bottom_z": 80.5,
+   "fwd": -8,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    102.8,
+    110.5,
+    110.5
+   ]
+  },
+  "spacexai": {
+   "scale": 0.4877,
+   "s3": [
+    1,
+    1.12,
+    1.05
+   ],
+   "bottom_z": 80.8,
+   "fwd": -5,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    90.4,
+    97.2,
+    97.2
+   ]
+  },
+  "meta": {
+   "scale": 0.4624,
+   "s3": [
+    1,
+    1.12,
+    1.05
+   ],
+   "bottom_z": 86.8,
+   "fwd": -9,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    85.8,
+    92.2,
+    92.2
+   ]
+  }
+ }
+}

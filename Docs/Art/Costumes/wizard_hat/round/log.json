@@ -1,0 +1,114 @@
+{
+ "costume": "wizard_hat",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "85dac385-90b0-4c23-9cb7-ab8a06e7cfa8",
+ "display_url": "https://hyper3d.ai/workspace/rodin/85dac385-90b0-4c23-9cb7-ab8a06e7cfa8",
+ "input": "reference_front.png",
+ "upload": "4c3Ve4eFhd1n_EPzIZGTNQ",
+ "prompt": "An empty gray wizard hat of matte modeling clay, worn by no one: a tall wrinkled cone that bends over near the tip, and a wide floppy brim. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.8277,
+  1.6374,
+  1.901
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.5034,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    92.0,
+    95.7,
+    82.4
+   ]
+  },
+  "anthropic": {
+   "scale": 0.4952,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    90.5,
+    94.1,
+    81.1
+   ]
+  },
+  "spacexai": {
+   "scale": 0.4124,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    75.4,
+    78.4,
+    67.5
+   ]
+  },
+  "meta": {
+   "scale": 0.4131,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    75.5,
+    78.5,
+    67.6
+   ]
+  },
+  "you": {
+   "scale": 0.3543,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 157,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    64.8,
+    67.3,
+    58.0
+   ]
+  }
+ }
+}

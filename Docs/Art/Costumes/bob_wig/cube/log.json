@@ -1,0 +1,46 @@
+{
+ "costume": "bob_wig",
+ "version": "cube",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "92ca5706-f583-4277-8b64-862105240ce0",
+ "display_url": "https://hyper3d.ai/workspace/rodin/92ca5706-f583-4277-8b64-862105240ce0",
+ "input": "reference_front.png",
+ "upload": "jwmuh_aUYatyldS84FVZ0g",
+ "prompt": "An empty boxy bob wig of matte brown modeling clay, made to fit over a cardboard box head, worn by no one: a flat top, straight square sides, blunt bangs across the front, and a square hollow opening underneath for the box. Stop-motion clay style.",
+ "from_view": "view_cube.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.8987,
+  1.3892,
+  1.8942
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "you": {
+   "scale": 0.3819,
+   "s3": [
+    1,
+    1.15,
+    1.2
+   ],
+   "bottom_z": 118.0,
+   "fwd": -4,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    72.5,
+    86.8,
+    61.0
+   ]
+  }
+ }
+}

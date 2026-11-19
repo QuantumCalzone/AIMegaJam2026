@@ -1,0 +1,114 @@
+{
+ "costume": "horned_helmet_beard",
+ "version": "beard",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "9297198f-7aee-4688-a099-a6711d696f87",
+ "display_url": "https://hyper3d.ai/workspace/rodin/9297198f-7aee-4688-a099-a6711d696f87",
+ "input": "reference_front.png",
+ "upload": "GTIaLSp1VxG-OL4HAGwz_g",
+ "prompt": "A full bushy ginger beard of matte modeling clay, worn by no one, made of chunky ropes of clay: a U shape with a scooped, curved top edge where it meets the chin. No moustache, no face, no helmet. Stop-motion clay style.",
+ "from_view": "pick.png (the beard cut from it); reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.8993,
+  1.833,
+  1.4115
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.4069,
+   "s3": [
+    1,
+    1,
+    0.5
+   ],
+   "bottom_z": 33.4,
+   "fwd": 46.5,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    77.3,
+    28.7,
+    74.6
+   ]
+  },
+  "anthropic": {
+   "scale": 0.4003,
+   "s3": [
+    1,
+    1,
+    0.5
+   ],
+   "bottom_z": 42.6,
+   "fwd": 43.2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    76.0,
+    28.2,
+    73.4
+   ]
+  },
+  "spacexai": {
+   "scale": 0.3651,
+   "s3": [
+    1,
+    1,
+    0.5
+   ],
+   "bottom_z": 39.1,
+   "fwd": 28.0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    69.3,
+    25.8,
+    66.9
+   ]
+  },
+  "meta": {
+   "scale": 0.3498,
+   "s3": [
+    1,
+    1,
+    0.5
+   ],
+   "bottom_z": 41.9,
+   "fwd": 31.8,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    66.4,
+    24.7,
+    64.1
+   ]
+  },
+  "you": {
+   "scale": 0.2591,
+   "s3": [
+    1,
+    1,
+    0.5
+   ],
+   "bottom_z": 69.5,
+   "fwd": 26.8,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    49.2,
+    18.3,
+    47.5
+   ]
+  }
+ }
+}

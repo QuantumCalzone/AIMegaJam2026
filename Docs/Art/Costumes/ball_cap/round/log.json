@@ -1,0 +1,97 @@
+{
+ "costume": "ball_cap",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "7693a100-ee37-4116-9e27-2be767b86e84",
+ "display_url": "https://hyper3d.ai/workspace/rodin/7693a100-ee37-4116-9e27-2be767b86e84",
+ "input": "reference_front.png",
+ "upload": "nhI4TRsl-kMeIPRgSPANvQ",
+ "prompt": "An empty red baseball cap of matte modeling clay, worn by no one: a six-panel crown with a button on top and a curved peak at the front, hollow and open underneath. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.2182,
+  0.9879,
+  1.8958
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.574,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 141,
+   "fwd": 8,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    69.9,
+    108.8,
+    56.7
+   ]
+  },
+  "anthropic": {
+   "scale": 0.5646,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 141,
+   "fwd": 8,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    68.8,
+    107.0,
+    55.8
+   ]
+  },
+  "spacexai": {
+   "scale": 0.4702,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 141,
+   "fwd": 8,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    57.3,
+    89.1,
+    46.5
+   ]
+  },
+  "meta": {
+   "scale": 0.471,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 141,
+   "fwd": 8,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    57.4,
+    89.3,
+    46.5
+   ]
+  }
+ }
+}

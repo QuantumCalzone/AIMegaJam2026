@@ -1,0 +1,53 @@
+{
+ "costume": "dino_hood",
+ "version": "cube",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "f9c5df4e-5fad-405d-8a91-512906bc7b4a",
+ "display_url": "https://hyper3d.ai/workspace/rodin/f9c5df4e-5fad-405d-8a91-512906bc7b4a",
+ "input": "reference_front.png",
+ "upload": "ejCMP2detB84-trYS8ZDOA",
+ "prompt": "An empty boxy green dinosaur costume hood of matte modeling clay, made for a box-shaped head, worn by no one: square flat sides, the face opening is the dinosaur's wide open mouth with white teeth on both jaws, a small crest on top. Hollow inside, open at the bottom. Stop-motion clay style.",
+ "from_view": "view_cube.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.2018,
+  1.7859,
+  1.9006
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [
+  {
+   "generation": "270c06ca-0c4b-4207-a894-42501e0fdadc",
+   "input": "text",
+   "prompt": "a big boxy dinosaur head ... a wide rectangular mouth",
+   "why": "a flat-sided slab with a mouth taller than wide; the first cube take (kept) follows view_cube.png better"
+  }
+ ],
+ "preview_fit": {
+  "you": {
+   "scale": 0.7543,
+   "s3": [
+    1,
+    0.85,
+    1.1
+   ],
+   "bottom_z": 57.5,
+   "fwd": 4,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    90.6,
+    157.7,
+    114.5
+   ]
+  }
+ }
+}

@@ -1,0 +1,104 @@
+{
+ "costume": "dino_hood",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "73caa96b-76a4-4be7-b572-e910431034b2",
+ "display_url": "https://hyper3d.ai/workspace/rodin/73caa96b-76a4-4be7-b572-e910431034b2",
+ "input": "text only",
+ "upload": null,
+ "prompt": "An empty green dinosaur costume hood of matte modeling clay, worn by no one and shown on its own: a big rounded dinosaur head with a small spiky crest on top, its open mouth a wide oval opening at the front, wider than it is tall, ringed with white teeth on the upper and lower jaw, where a face looks out. Hollow inside, and it ends just below the lower jaw. Stop-motion clay style.",
+ "from_view": "text only: a wide-mouthed dino hood like the fit sheets, not pick.png (see tries)",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.4196,
+  1.9018,
+  1.6517
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [
+  {
+   "generation": "6919e1f2-1660-4591-b2cd-6853f76b5f59",
+   "input": "pick.png",
+   "upload": "5nTNxBjiQQGqWg3OQoXVUQ",
+   "why": "true to pick.png, but its mouth is a tall narrow oval and the piece is 1.9 m long front to back; at a size that holds an 80 cm head it reaches down to about z 40, over the body and the arms"
+  }
+ ],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.7518,
+   "s3": [
+    1,
+    0.72,
+    1.05
+   ],
+   "bottom_z": 71.1,
+   "fwd": 2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    106.7,
+    130.4,
+    102.9
+   ]
+  },
+  "anthropic": {
+   "scale": 0.7395,
+   "s3": [
+    1,
+    0.72,
+    1.05
+   ],
+   "bottom_z": 72.7,
+   "fwd": 2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    105.0,
+    128.3,
+    101.3
+   ]
+  },
+  "spacexai": {
+   "scale": 0.6796,
+   "s3": [
+    1,
+    0.72,
+    1.05
+   ],
+   "bottom_z": 80.9,
+   "fwd": 2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    96.5,
+    117.9,
+    93.1
+   ]
+  },
+  "meta": {
+   "scale": 0.6595,
+   "s3": [
+    1,
+    0.72,
+    1.05
+   ],
+   "bottom_z": 83.7,
+   "fwd": 2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    93.6,
+    114.4,
+    90.3
+   ]
+  }
+ }
+}

@@ -1,0 +1,46 @@
+{
+ "costume": "saucepan_helmet",
+ "version": "cube",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "8aaec10b-c29c-4d80-80a2-7a07e1f16e11",
+ "display_url": "https://hyper3d.ai/workspace/rodin/8aaec10b-c29c-4d80-80a2-7a07e1f16e11",
+ "input": "reference_front.png",
+ "upload": "p3t4wKor2FMUfvACk6lY3g",
+ "prompt": "An empty square black saucepan of matte modeling clay: a square pan with straight flat sides and a flat bottom, and a long handle straight out to one side. Stop-motion clay style.",
+ "from_view": "view_cube.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  0.9045,
+  0.525,
+  1.8982
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "you": {
+   "scale": 0.5441,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 154,
+   "fwd": 0,
+   "yaw": 90,
+   "roll": 180,
+   "size_cm": [
+    49.2,
+    49.2,
+    28.6
+   ]
+  }
+ }
+}

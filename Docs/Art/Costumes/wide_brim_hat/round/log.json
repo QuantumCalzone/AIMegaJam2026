@@ -1,0 +1,114 @@
+{
+ "costume": "wide_brim_hat",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "fd19d2bf-b4d5-4319-9d7b-5b911f61ed02",
+ "display_url": "https://hyper3d.ai/workspace/rodin/fd19d2bf-b4d5-4319-9d7b-5b911f61ed02",
+ "input": "reference_front.png",
+ "upload": "wgRfVJ7oNnvsk5juh5qZfA",
+ "prompt": "An empty mustard-yellow wide-brim hat of matte modeling clay, worn by no one: a pinched crown, a band, and a broad flat brim. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.8241,
+  0.6479,
+  1.9032
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.5851,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    106.7,
+    111.3,
+    37.9
+   ]
+  },
+  "anthropic": {
+   "scale": 0.5755,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    105.0,
+    109.5,
+    37.3
+   ]
+  },
+  "spacexai": {
+   "scale": 0.4793,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    87.4,
+    91.2,
+    31.1
+   ]
+  },
+  "meta": {
+   "scale": 0.4801,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    87.6,
+    91.4,
+    31.1
+   ]
+  },
+  "you": {
+   "scale": 0.4118,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 157,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    75.1,
+    78.4,
+    26.7
+   ]
+  }
+ }
+}

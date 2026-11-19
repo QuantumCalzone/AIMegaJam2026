@@ -1,0 +1,65 @@
+{
+ "costume": "hood",
+ "version": "cube",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "45d6c927-e5cd-46c3-8c47-297651dd7d40",
+ "display_url": "https://hyper3d.ai/workspace/rodin/45d6c927-e5cd-46c3-8c47-297651dd7d40",
+ "input": "text only",
+ "upload": null,
+ "prompt": "An empty short hooded cape of matte green modeling clay, worn by no one and shown on its own: the hood is shaped like a square box with softly rounded edges and a large square face opening at the front, hollow inside with nothing in it, and below it a short cape that ends at the shoulders, split at the front. Stop-motion clay style.",
+ "from_view": "the cube panel of ../fit_sheet.png, described in words (view_cube.png is poor; see the README)",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.7613,
+  1.8961,
+  1.1222
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [
+  {
+   "generation": "9be319d0-bcc2-4e96-b10f-3178da116a7f",
+   "input": "text",
+   "prompt": "... made for a person with a cardboard box head ...",
+   "why": "modelled the cardboard box head itself inside the hood, with a kraft liner; \"box head\" in the prompt makes Rodin build the head"
+  },
+  {
+   "generation": "94649cf1-4a28-4a28-8843-d35b42a05676",
+   "input": "text",
+   "prompt": "a big boxy hood ... a very short capelet",
+   "why": "a flat frame only 26 cm deep (0.26 of 1.74 m), not a hood"
+  },
+  {
+   "generation": "14c0b8b9-244b-41d3-bd10-239ea871180c",
+   "input": "text",
+   "prompt": "a big boxy cowl hood ... No cape",
+   "why": "a box frame with openings on all four sides, not only the front"
+  }
+ ],
+ "preview_fit": {
+  "you": {
+   "scale": 0.8529,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 4.3,
+   "fwd": -12,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    150.2,
+    95.7,
+    161.7
+   ]
+  }
+ }
+}

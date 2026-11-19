@@ -1,0 +1,97 @@
+{
+ "costume": "horned_helmet_beard",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "3f2b2a2d-a632-4b06-8307-9dc565b30aea",
+ "display_url": "https://hyper3d.ai/workspace/rodin/3f2b2a2d-a632-4b06-8307-9dc565b30aea",
+ "input": "reference_front.png",
+ "upload": "ogmOpq5y_qwu32VzU4GjUw",
+ "prompt": "An empty iron-gray Viking helmet of matte modeling clay, worn by no one: a round domed cap with a raised ridge down the middle, a rim band, two curved horns on the sides, and a thin open headband ring under the rim with a tab on each side. Hollow and open at the bottom. No beard, no face. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.9001,
+  1.1883,
+  1.3382
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.5423,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 138,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    103.0,
+    72.6,
+    64.4
+   ]
+  },
+  "anthropic": {
+   "scale": 0.5334,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 138,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    101.4,
+    71.4,
+    63.4
+   ]
+  },
+  "spacexai": {
+   "scale": 0.4443,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 138,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    84.4,
+    59.5,
+    52.8
+   ]
+  },
+  "meta": {
+   "scale": 0.445,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 138,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    84.6,
+    59.6,
+    52.9
+   ]
+  }
+ }
+}

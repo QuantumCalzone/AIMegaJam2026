@@ -1,0 +1,46 @@
+{
+ "costume": "beanie",
+ "version": "cube",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "2d5c3ce6-7eb5-45d1-9e93-d08f9514acf7",
+ "display_url": "https://hyper3d.ai/workspace/rodin/2d5c3ce6-7eb5-45d1-9e93-d08f9514acf7",
+ "input": "reference_front.png",
+ "upload": "36dcGbwsFtBf1sUXlWIOkw",
+ "prompt": "An empty boxy blue-gray knitted beanie of matte modeling clay, made for a box-shaped head, worn by no one: a flat-topped square ribbed body, a folded square ribbed cuff and a round pompom on top, hollow and open underneath. Stop-motion clay style.",
+ "from_view": "view_cube.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 3,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.8955,
+  1.5332,
+  1.1796
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "you": {
+   "scale": 0.3143,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 148,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    59.6,
+    37.1,
+    48.2
+   ]
+  }
+ }
+}

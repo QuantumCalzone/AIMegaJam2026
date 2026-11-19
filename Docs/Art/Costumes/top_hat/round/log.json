@@ -1,0 +1,114 @@
+{
+ "costume": "top_hat",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "c3bd0895-3619-4748-a58e-6bb34a95d625",
+ "display_url": "https://hyper3d.ai/workspace/rodin/c3bd0895-3619-4748-a58e-6bb34a95d625",
+ "input": "reference_front.png",
+ "upload": "fg23in_LNDgrR5_9XC45KQ",
+ "prompt": "An empty purple top hat of matte modeling clay, worn by no one. Tall straight crown, a band, and a curled brim. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.7456,
+  1.9005,
+  1.7388
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.4216,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 152,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    73.6,
+    73.3,
+    80.1
+   ]
+  },
+  "anthropic": {
+   "scale": 0.4148,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 152,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    72.4,
+    72.1,
+    78.8
+   ]
+  },
+  "spacexai": {
+   "scale": 0.3454,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 152,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    60.3,
+    60.1,
+    65.7
+   ]
+  },
+  "meta": {
+   "scale": 0.346,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 152,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    60.4,
+    60.2,
+    65.8
+   ]
+  },
+  "you": {
+   "scale": 0.2967,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 157,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    51.8,
+    51.6,
+    56.4
+   ]
+  }
+ }
+}

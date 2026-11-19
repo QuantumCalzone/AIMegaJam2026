@@ -1,0 +1,110 @@
+{
+ "costume": "hood",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "c8d21c04-6697-4e65-bb37-914948ea533e",
+ "display_url": "https://hyper3d.ai/workspace/rodin/c8d21c04-6697-4e65-bb37-914948ea533e",
+ "input": "text only",
+ "upload": null,
+ "prompt": "An empty hood of matte green modeling clay, worn by no one and shown on its own: a big rounded cowl hood with a large, wide face opening at the front and a thin wall, hollow inside with nothing in it, ending at the neck in a short rolled collar. No cape, no cloak, no shoulders. Stop-motion clay style.",
+ "from_view": "text only: a cowl without the cape, which the round heads need (see tries)",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.4424,
+  1.8848,
+  1.4386
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [
+  {
+   "generation": "a8129277-6430-4cec-a5fe-5a5879c8ce38",
+   "input": "pick.png",
+   "upload": "YEXZyeyWoZLckIcazg1qBg",
+   "why": "true to pick.png, but its cape is twice as wide as the hood: at a size whose hood holds an 80 cm head, the cape is about 1.7 m wide, and the heads still stuck out of the hood in the fit preview (my person: a lot wrong with the fit preview). The cowl (kept) holds every head and has no cape"
+  },
+  {
+   "generation": "eca4d652-015d-46b2-8bed-7352a7a4a6e8",
+   "input": "text",
+   "prompt": "a big roomy rounded hood with a very short capelet",
+   "why": "its face opening is a narrow oval (56 cm wide at 1:1), so at a size that frames the 66 cm screens it would be over two metres wide; in the fit preview the round heads stuck out through its front"
+  }
+ ],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.6531,
+   "s3": [
+    1,
+    0.84,
+    1.0
+   ],
+   "bottom_z": 62.6,
+   "fwd": -4,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    94.2,
+    94.0,
+    103.4
+   ]
+  },
+  "anthropic": {
+   "scale": 0.6826,
+   "s3": [
+    1,
+    0.74,
+    0.98
+   ],
+   "bottom_z": 70.8,
+   "fwd": -9,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    98.5,
+    96.2,
+    95.2
+   ]
+  },
+  "spacexai": {
+   "scale": 0.648,
+   "s3": [
+    1,
+    0.76,
+    1.05
+   ],
+   "bottom_z": 72.2,
+   "fwd": -4,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    93.5,
+    97.9,
+    92.8
+   ]
+  },
+  "meta": {
+   "scale": 0.6281,
+   "s3": [
+    1,
+    1.02,
+    1.0
+   ],
+   "bottom_z": 45.2,
+   "fwd": -9,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    90.6,
+    90.4,
+    120.8
+   ]
+  }
+ }
+}

@@ -1,0 +1,114 @@
+{
+ "costume": "tiara",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "50cfb236-57b9-47e8-a9b0-750f933c67fb",
+ "display_url": "https://hyper3d.ai/workspace/rodin/50cfb236-57b9-47e8-a9b0-750f933c67fb",
+ "input": "reference_front.png",
+ "upload": "jzIw7jgz0a1TDkvtrgfENg",
+ "prompt": "An empty cream crown-tiara of matte modeling clay, worn by no one: a round ring band with five pointed spikes, each tipped with a small ball. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.8978,
+  1.534,
+  1.8554
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.3103,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": -2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    58.9,
+    57.6,
+    47.6
+   ]
+  },
+  "anthropic": {
+   "scale": 0.3052,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": -2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    57.9,
+    56.6,
+    46.8
+   ]
+  },
+  "spacexai": {
+   "scale": 0.2542,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": -2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    48.2,
+    47.2,
+    39.0
+   ]
+  },
+  "meta": {
+   "scale": 0.2546,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": -2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    48.3,
+    47.2,
+    39.1
+   ]
+  },
+  "you": {
+   "scale": 0.232,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 157,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    44.0,
+    43.0,
+    35.6
+   ]
+  }
+ }
+}

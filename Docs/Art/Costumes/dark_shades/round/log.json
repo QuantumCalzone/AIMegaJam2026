@@ -1,0 +1,114 @@
+{
+ "costume": "dark_shades",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "e94ccd04-1a34-456c-afca-c28b47012566",
+ "display_url": "https://hyper3d.ai/workspace/rodin/e94ccd04-1a34-456c-afca-c28b47012566",
+ "input": "reference_front.png",
+ "upload": "qhMRW2TVlhXqJ5JrtH6SRw",
+ "prompt": "Empty chunky dark sunglasses of matte black modeling clay, worn by no one: thick square frames, dark opaque lenses, two temple arms straight back. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.8909,
+  0.6102,
+  1.8955
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.3581,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 109.1,
+   "fwd": 11.4,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    67.7,
+    67.9,
+    21.9
+   ]
+  },
+  "anthropic": {
+   "scale": 0.3752,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 112.6,
+   "fwd": 11.0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    71.0,
+    71.1,
+    22.9
+   ]
+  },
+  "spacexai": {
+   "scale": 0.2934,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 117.0,
+   "fwd": 9.2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    55.5,
+    55.6,
+    17.9
+   ]
+  },
+  "meta": {
+   "scale": 0.2939,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 102.0,
+   "fwd": 7.2,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    55.6,
+    55.7,
+    17.9
+   ]
+  },
+  "you": {
+   "scale": 0.3561,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 128.1,
+   "fwd": -3.7,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    67.3,
+    67.5,
+    21.7
+   ]
+  }
+ }
+}

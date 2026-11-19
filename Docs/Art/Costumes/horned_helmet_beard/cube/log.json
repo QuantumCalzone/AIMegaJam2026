@@ -1,0 +1,59 @@
+{
+ "costume": "horned_helmet_beard",
+ "version": "cube",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "b9cba460-fe05-4e1f-a604-e6541e785468",
+ "display_url": "https://hyper3d.ai/workspace/rodin/b9cba460-fe05-4e1f-a604-e6541e785468",
+ "input": "text only",
+ "upload": null,
+ "prompt": "An empty iron-gray Viking helmet of matte modeling clay, worn by no one and shown on its own with nothing under it: a short square cap shaped like an upturned square bucket with softly rounded edges, a raised rim band around its open lower edge, and two curved horns, one on each side. Hollow underneath. Stop-motion clay style.",
+ "from_view": "the cube panel of ../fit_sheet.png, described in words (view_cube.png is poor; see the README)",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.791,
+  1.8898,
+  1.8271
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [
+  {
+   "generation": "d7dfa051-b0dc-4234-88bb-f68f59b51609",
+   "input": "text",
+   "prompt": "... made to fit over a cardboard box head ...",
+   "why": "modelled a cardboard box under the helmet"
+  },
+  {
+   "generation": "bbedb44e-74c7-44c3-82eb-97172ce45929",
+   "input": "text",
+   "prompt": "a shallow, flat square cap, much wider than it is tall",
+   "why": "a wide flat lid on a narrower box with a notch cut in its front; reads as neither a helmet nor the fit sheet"
+  }
+ ],
+ "preview_fit": {
+  "you": {
+   "scale": 0.3471,
+   "s3": [
+    1,
+    0.62,
+    1
+   ],
+   "bottom_z": 147,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    62.2,
+    63.4,
+    40.7
+   ]
+  }
+ }
+}

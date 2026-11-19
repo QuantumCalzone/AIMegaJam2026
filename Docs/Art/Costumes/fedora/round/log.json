@@ -1,0 +1,114 @@
+{
+ "costume": "fedora",
+ "version": "round",
+ "tool": "Hyper3D Rodin (MCP rodin_generate)",
+ "tier": "Gen-2.5-Medium",
+ "mesh_mode": "Raw",
+ "quality_override": 15000,
+ "texture_delight": false,
+ "file": "base_basic_pbr.glb",
+ "generation": "fce31b05-0bc5-4412-a7c6-2a1f256ce6f4",
+ "display_url": "https://hyper3d.ai/workspace/rodin/fce31b05-0bc5-4412-a7c6-2a1f256ce6f4",
+ "input": "reference_front.png",
+ "upload": "SUA0tB_V1XKdAfIvqxrcqQ",
+ "prompt": "An empty charcoal-gray fedora of matte modeling clay, worn by no one: a pinched crown with a centre dent, a black band, and a medium brim. Stop-motion clay style.",
+ "from_view": "pick.png; reference_front.png is the crop sent",
+ "triangles": 15000,
+ "pieces": 1,
+ "open_edges": 0,
+ "size_gltf_m": [
+  1.6529,
+  0.8195,
+  1.8947
+ ],
+ "date": "2026-11-19 (UTC)",
+ "session": "T104 prep (Claude Opus 5.5), started by the Mac dispatcher",
+ "tries": [],
+ "preview_fit": {
+  "openai": {
+   "scale": 0.5343,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    88.3,
+    101.2,
+    43.8
+   ]
+  },
+  "anthropic": {
+   "scale": 0.5256,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    86.9,
+    99.6,
+    43.1
+   ]
+  },
+  "spacexai": {
+   "scale": 0.4378,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    72.4,
+    82.9,
+    35.9
+   ]
+  },
+  "meta": {
+   "scale": 0.4385,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 149,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    72.5,
+    83.1,
+    35.9
+   ]
+  },
+  "you": {
+   "scale": 0.3761,
+   "s3": [
+    1,
+    1,
+    1
+   ],
+   "bottom_z": 157,
+   "fwd": 0,
+   "yaw": 0,
+   "roll": 0,
+   "size_cm": [
+    62.2,
+    71.3,
+    30.8
+   ]
+  }
+ }
+}
