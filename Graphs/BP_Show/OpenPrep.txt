@@ -3,8 +3,13 @@
 ; starts at the first "THE SCENE" cue (BPC_ShowAudio.PlayPhase). ScenePrep has set CardId before it calls OpenPrep.
 ; T68: each Scene Prep sends its analytics phase (and the call counts so far).
 ; T77: a new scene starts with no kept emotion (closing lines keep one that never plays).
+; T85: in scene 1 the robots get their screen names, seat colors and personas here (StageSetup, moved from StartScene),
+; so the labels read the names from Scene Prep on, not "ROBOT", and the hover card finds them in Robots. ScenePrep has
+; filled the seats and SeatColors (StagePrep) by now. Nothing else of the scene starts: StageSetup moves no robot.
 (fn OpenPrep ()
   (clear (V SeatEmo))
+  (if (== (Variables|Default|GetSceneNum) 1)
+    (CallFunction|StageSetup))
   (Class|WBPStage|SetPrepMode :self (Variables|Default|GetStage) :Prep true)
   (Class|BPCShowAudio|PlayMusic :self (V Audio) :Key "scene_prep")
   (Development|PrintString (Utilities|String|Append "NHOS: PREP shown scene=" (Utilities|String|ToString(Integer) (Variables|Default|GetSceneNum))) false)

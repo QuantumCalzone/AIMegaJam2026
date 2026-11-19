@@ -1,0 +1,3 @@
+; T85: the hover card styles itself from UIStyle when it is built. WBP_Stage shows, fills and places it.
+(event UserInterface|EventConstruct
+  (CallFunction|ApplyStyle))

@@ -3,8 +3,9 @@
 ; T88: "the note's clue".
 ; T84: the scene sits in the middle panel now, my part and the clue stay on the card on the right, and the hint names
 ; the scene (the greyed field shows it in the Scene Preps of scenes 2 on).
+; T85: the hover card's hint, before what to press. Shortened so the line stays two lines at 1600 x 900.
 (fn PrepPrompt ()
   (if (and (Variables|Default|GetReady) (Utilities|String|EqualExactly(String) (Variables|Default|GetPhase) "scene prep"))
-    (Variables|Default|SetPTurn "Read the scene in the middle, then your role and the note's clue on the right. Press Start the scene when you are ready.")
+    (Variables|Default|SetPTurn "Read the scene and your card. Point at a robot to see its role and want. Press Start the scene when you are ready.")
     (Variables|Default|SetPHint "Read the scene first."))
   (CallFunction|LastWordPrompt))

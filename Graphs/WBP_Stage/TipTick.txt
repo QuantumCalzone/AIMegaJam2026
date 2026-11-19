@@ -1,0 +1,27 @@
+; T85: the cast's hover card, each frame from SetPrompt. When the mouse is over an AI robot on stage (its box from
+; RobotRect), that robot's card shows beside it; it hides the frame the mouse leaves. Not my robot, not a cut one
+; (TipTry). Nothing before the show is Ready, before scene 1, or while this widget is see-through (the title and end
+; screens set its render opacity to 0). Local/switches.json's cast_tip keeps one robot's card shown (TipSwitch, read at
+; each new scene). NHOS: CASTTIP <seat id> prints when a card appears or moves to another robot, not each frame.
+(fn TipTick ()
+  (CallFunction|ShowRef)
+  (if (== (V Show) (V NullShow))
+    (CallFunction|TipHide)
+    (return))
+  (bind _scene (Class|BPShow|GetSceneNum :self (V Show)))
+  (if (!= _scene (V TipScene))
+    (set TipScene _scene)
+    (CallFunction|TipSwitch))
+  (if (or (or (not (Class|BPShow|GetReady :self (V Show))) (< _scene 1)) (< (Widget|GetRenderOpacity :self self) 0.5))
+    (CallFunction|TipHide)
+    (return))
+  (CallFunction|TipKeepRects)
+  (bind _seat (CallFunction|TipPick))
+  (if (< _seat 0)
+    (CallFunction|TipHide)
+    (return))
+  (if (!= _seat (V TipSeat))
+    (set TipSeat _seat)
+    (CallFunction|TipFill :Seat _seat)
+    (print (cat "NHOS: CASTTIP " (get (Class|BPShow|GetSeatId :self (V Show)) _seat))))
+  (CallFunction|TipPlace :L (V BestL) :T (V BestT) :R (V BestR) :B (V BestB)))

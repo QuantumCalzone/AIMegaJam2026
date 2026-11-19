@@ -1,0 +1,32 @@
+; T85: puts the card beside the robot whose box is (L, T, R, B): on the side toward the screen's middle, its top at
+; the box's top, a gap of S3 from the box; TipFit then moves it inside the window's Edge margin and clear of the
+; panels. If that lands it on its own robot, the other side is tried, and taken if it clears the robot; otherwise the
+; first stays. Both candidates are computed every time and picked with select, so no code follows a branch (T107).
+; The card is moved with its render translation in TipLayer (which fills the window from its top left), so its slot
+; never changes. It never takes a click (HitTestInvisible).
+(fn TipPlace (L T R B)
+  (bind _tip (Variables|WBP_Stage|GetCastTip))
+  (if (not (V TipShown))
+    (set TipShown true)
+    (Widget|SetVisibility :self _tip :InVisibility "HitTestInvisible"))
+  (Widget|ForceLayoutPrepass :self _tip)
+  (bind _sz (Widget|GetDesiredSize :self _tip))
+  (set TipW (.x _sz))
+  (set TipH (.y _sz))
+  (bind _gap (Class|UIStyle|UISize :Role "S3"))
+  (bind _mid (* 0.5 (+ (.x (V TipVTL)) (.x (V TipVBR)))))
+  (bind _rightFirst (< (* 0.5 (+ L R)) _mid))
+  (set TipX1 (select _rightFirst (+ R _gap) (- (- L _gap) (V TipW))))
+  (set TipX2 (select _rightFirst (- (- L _gap) (V TipW)) (+ R _gap)))
+  (bind (_dx1 _dy1) (CallFunction|TipFit :L (V TipX1) :T T :R (+ (V TipX1) (V TipW)) :B (+ T (V TipH))))
+  (set TipAX (+ (V TipX1) _dx1))
+  (set TipAY (+ T _dy1))
+  (bind (_dx2 _dy2) (CallFunction|TipFit :L (V TipX2) :T T :R (+ (V TipX2) (V TipW)) :B (+ T (V TipH))))
+  (set TipBX (+ (V TipX2) _dx2))
+  (set TipBY (+ T _dy2))
+  (bind _overA (and (and (< (V TipAX) R) (> (+ (V TipAX) (V TipW)) L)) (and (< (V TipAY) B) (> (+ (V TipAY) (V TipH)) T))))
+  (bind _overB (and (and (< (V TipBX) R) (> (+ (V TipBX) (V TipW)) L)) (and (< (V TipBY) B) (> (+ (V TipBY) (V TipH)) T))))
+  (bind _useB (and _overA (not _overB)))
+  (bind _x (select _useB (V TipBX) (V TipAX)))
+  (bind _y (select _useB (V TipBY) (V TipAY)))
+  (Widget|Transform|SetRenderTranslation :self _tip :Translation (Math|Vector2D|MakeVector2D :X (- _x (.x (V TipVTL))) :Y (- _y (.y (V TipVTL))))))

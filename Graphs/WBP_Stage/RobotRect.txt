@@ -1,0 +1,16 @@
+; T85: a robot's box on screen, in viewport units: from its label's top (the Label component, which T47's hats raise,
+; plus TipTopZ for the name's own height) down to its feet (the actor's location), TipHalfW cm either side of the line
+; between them along the camera's right (TipCR). T103's heads are up to 98 cm wide with their pods and Anthropic's arms
+; reach about 50 cm out, so TipHalfW is 50. D is the feet's distance from the camera (TipCL), so the nearest robot wins
+; an overlap. Ok is false when a point is behind the camera. TipPick sets TipPC, TipCL and TipCR once a frame.
+(fn RobotRect (Robot)
+  (bind _feet (Transformation|GetActorLocation :self Robot))
+  (bind _lab (Transformation|GetWorldLocation :self (Class|BPRobot|GetLabel :self Robot)))
+  (bind _top (+ _lab (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z (V TipTopZ))))
+  (bind _side (+ _feet (* (V TipCR) (V TipHalfW))))
+  (bind (_pf _okf) (Viewport|ProjectWorldLocationtoWidgetPosition :PlayerController (V TipPC) :WorldLocation _feet :bPlayerViewportRelative true))
+  (bind (_pt _okt) (Viewport|ProjectWorldLocationtoWidgetPosition :PlayerController (V TipPC) :WorldLocation _top :bPlayerViewportRelative true))
+  (bind (_ps _oks) (Viewport|ProjectWorldLocationtoWidgetPosition :PlayerController (V TipPC) :WorldLocation _side :bPlayerViewportRelative true))
+  (bind _hw (Math|Float|Absolute(Float) (- (.x _ps) (.x _pf))))
+  (bind _cx (* 0.5 (+ (.x _pf) (.x _pt))))
+  (return (and _okf (and _okt _oks)) (- _cx _hw) (.y _pt) (+ _cx _hw) (.y _pf) (Math|Vector|Distance(Vector) :V1 _feet :V2 (V TipCL))))

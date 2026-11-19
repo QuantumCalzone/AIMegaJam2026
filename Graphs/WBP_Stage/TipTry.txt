@@ -1,0 +1,24 @@
+; T85: tests robot slot S for TipPick. Only an AI robot on stage counts: an empty slot (Robots has MaxCast slots), my
+; seat (my part is on my card), a seat past SeatCut's end, a cut seat and a fallen robot are skipped, each before any
+; array read that could run past an end (Blueprint's "and" reads both sides). With cast_tip set, that seat wins
+; (TipForce); otherwise a robot whose box holds the mouse, the nearest one when boxes overlap.
+; Its own function, with returns and no exec-branching node, so no code follows a branch (the DSL's else trap, T107).
+(fn TipTry (S)
+  (set TipRobot (get (Class|BPShow|GetRobots :self (V Show)) S))
+  (if (== (V TipRobot) (V NullRobot))
+    (return))
+  (bind _cut (Class|BPShow|GetSeatCut :self (V Show)))
+  (if (or (== S (Class|BPShow|GetHumanSeat :self (V Show))) (>= S (len _cut)))
+    (return))
+  (if (or (get _cut S) (Class|BPRobot|IsDown :self (V TipRobot)))
+    (return))
+  (bind (_ok _l _t _r _b _d) (CallFunction|RobotRect :Robot (V TipRobot)))
+  (bind _hit (and (and (>= (.x (V TipMouse)) _l) (<= (.x (V TipMouse)) _r)) (and (>= (.y (V TipMouse)) _t) (<= (.y (V TipMouse)) _b))))
+  (bind _want (select (V TipForceOn) (streq (get (Class|BPShow|GetSeatId :self (V Show)) S) (V TipForce)) (and _hit (not (V TipInPanel)))))
+  (if (and (and _ok _want) (< _d (V BestD)))
+    (set BestD _d)
+    (set BestL _l)
+    (set BestT _t)
+    (set BestR _r)
+    (set BestB _b)
+    (set TipBest S)))

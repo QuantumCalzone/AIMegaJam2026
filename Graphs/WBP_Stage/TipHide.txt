@@ -1,0 +1,8 @@
+; T85: the card goes away (the mouse left, a cut, the title or end screen). Only acts when it shows. TipSeat goes back
+; to -1, so the next card prints its CASTTIP line again.
+(fn TipHide ()
+  (if (not (V TipShown))
+    (return))
+  (set TipShown false)
+  (set TipSeat -1)
+  (Widget|SetVisibility :self (Variables|WBP_Stage|GetCastTip) :InVisibility "Collapsed"))

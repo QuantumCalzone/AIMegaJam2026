@@ -1,0 +1,18 @@
+; T85: every look comes from UIStyle, like the card on the right and the chat lines: an Ink panel with old-gold trim
+; (the middle panel's and the earpiece's look, so it reads as part of the stage, not as my paper card), the name in the
+; Name font in its seat color with the seat bar, the role in the Action style (quiet italic) and the want in Body white.
+; WrapAt is the widget's own (UIStyle has no wrap width).
+(fn ApplyStyle ()
+  (Class|UIStyle|StylePanel :Panel (Variables|WBP_CastTip|GetPanel) :Look "Ink")
+  (bind s3 (Class|UIStyle|UISize :Role "S3"))
+  (bind s4 (Class|UIStyle|UISize :Role "S4"))
+  (bind bar (Class|UIStyle|UISize :Role "SeatBar"))
+  (Class|Border|SetPadding :self (Variables|WBP_CastTip|GetPanel) :Padding (Utilities|Struct|MakeMargin :Left s4 :Top s3 :Right s4 :Bottom s3))
+  (Class|Spacer|SetSize :self (Variables|WBP_CastTip|GetAccentSize) :Size (Math|Vector2D|MakeVector2D :X bar :Y bar))
+  (Class|Text|SetFont :self (Variables|WBP_CastTip|GetNameText) :Font (Class|UIStyle|UIFont :Role "Name"))
+  (Class|Text|SetFont :self (Variables|WBP_CastTip|GetRoleText) :Font (Class|UIStyle|UIFont :Role "Action"))
+  (Class|Text|SetFont :self (Variables|WBP_CastTip|GetWantText) :Font (Class|UIStyle|UIFont :Role "Body"))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_CastTip|GetRoleText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Quiet")))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_CastTip|GetWantText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor (Class|UIStyle|UIColor :Role "Text")))
+  (Class|TextLayoutWidget|SetWrapTextAt :self (Variables|WBP_CastTip|GetRoleText) :WrapTextAt (V WrapAt))
+  (Class|TextLayoutWidget|SetWrapTextAt :self (Variables|WBP_CastTip|GetWantText) :WrapTextAt (V WrapAt)))

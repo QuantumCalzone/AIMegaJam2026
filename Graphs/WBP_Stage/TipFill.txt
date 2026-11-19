@@ -1,0 +1,8 @@
+; T85: fills the card for Seat from BP_Show's seat arrays, with the words ShowCast wrote in the cast list for an AI seat
+; ("<role>. Wants: <want>"), split in two lines: the role, then "Wants: <want>". A seat with no want shows no want line.
+(fn TipFill (Seat)
+  (bind _name (get (Class|BPShow|GetSeatLabel :self (V Show)) Seat))
+  (bind _col (get (Class|BPShow|GetSeatColors :self (V Show)) Seat))
+  (bind _role (get (Class|BPShow|GetSeatRole :self (V Show)) Seat))
+  (bind _want (get (Class|BPShow|GetSeatWant :self (V Show)) Seat))
+  (Class|WBPCastTip|Fill :self (Variables|WBP_Stage|GetCastTip) :Name _name :Color _col :Role _role :Want (select (Utilities|String|IsEmpty _want) "" (cat "Wants: " _want))))

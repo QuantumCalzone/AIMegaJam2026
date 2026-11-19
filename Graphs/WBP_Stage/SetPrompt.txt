@@ -4,6 +4,7 @@
 ; T65: the speech field keeps the focus while I can type (HoldFocus); the @ list closes with my input.
 ; T66: the turn timer follows my input (TickTimer).
 ; T78: the face chip follows my input (SyncFace).
+; T85: the cast's hover card follows the mouse over the robots (TipTick).
 (fn SetPrompt (Turn Hint CanType)
   (Widget|SetRenderOpacity :self (Variables|WBP_Stage|GetHintLabel) :InOpacity (select (Utilities|Text|TextIsEmpty :InText (Class|TextBox|GetText :self (Variables|WBP_Stage|GetInputBox))) 1.0 0.0))
   (if (not (Utilities|String|EqualExactly(String) Turn (Variables|Default|GetLastTurn)))
@@ -27,4 +28,5 @@
   (CallFunction|FitBuilder)
   (CallFunction|HoldFocus :CanType CanType)
   (CallFunction|TickTimer :CanType CanType)
-  (CallFunction|SyncFace :CanType CanType))
+  (CallFunction|SyncFace :CanType CanType)
+  (CallFunction|TipTick))

@@ -1,0 +1,14 @@
+; T85: one robot's card. Name is its screen name (SeatLabel), Color the fallback for UIStyle.SeatColor (SeatColors),
+; Role and Want the lines exactly as ShowCast wrote them in the cast list (WBP_Stage.TipFill builds them). An empty
+; want hides its line.
+(fn Fill (Name Color Role Want)
+  (bind seat (Class|UIStyle|SeatColor :Name Name :Fallback Color))
+  (Class|Border|SetBrushColor :self (Variables|WBP_CastTip|GetAccent) :BrushColor seat)
+  (Class|Text|SetText :self (Variables|WBP_CastTip|GetNameText) :Text (Utilities|Text|ToText(String) Name))
+  (Class|Text|SetColorandOpacity :self (Variables|WBP_CastTip|GetNameText) :ColorAndOpacity (Utilities|Struct|MakeSlateColor :SpecifiedColor seat))
+  (Class|Text|SetText :self (Variables|WBP_CastTip|GetRoleText) :Text (Utilities|Text|ToText(String) Role))
+  (Class|Text|SetText :self (Variables|WBP_CastTip|GetWantText) :Text (Utilities|Text|ToText(String) Want))
+  (if (Utilities|String|IsEmpty Want)
+    (Widget|SetVisibility :self (Variables|WBP_CastTip|GetWantText) :InVisibility "Collapsed")
+    (else
+      (Widget|SetVisibility :self (Variables|WBP_CastTip|GetWantText) :InVisibility "HitTestInvisible"))))

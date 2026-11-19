@@ -1,0 +1,42 @@
+; T85: the window and the panels the card keeps clear of, in viewport units (as WBP_SpeechBubble.Place measures them):
+; the header (TurnText's third parent), the clapperboard, my card (MeText's fourth parent), the lower panel, the
+; banner, the stamp (BPC_LinePlayer.BubbleKeep's list), the face list and the @ list (T78's and T65's pop-ups) and T84's
+; middle panel (PrepSize, Scene Prep only). The list is built once; the rects are measured each frame, only for the
+; panels that show (IsVisible drops a collapsed one, such as the lower panel in scene 1's Scene Prep).
+; T61's earpiece is its own widget in the viewport (BPC_Stagehand.MakeEar), not part of this one, so it isn't listed.
+(fn TipKeepRects ()
+  (if (== (len (V TipKeepW)) 0)
+    (bind _h1 (Widget|GetParent :self (Variables|WBP_Stage|GetTurnText)))
+    (bind _h2 (Widget|GetParent :self _h1))
+    (bind _h3 (Widget|GetParent :self _h2))
+    (bind _i1 (Widget|GetParent :self (Variables|WBP_Stage|GetMeText)))
+    (bind _i2 (Widget|GetParent :self _i1))
+    (bind _i3 (Widget|GetParent :self _i2))
+    (bind _i4 (Widget|GetParent :self _i3))
+    (add (V TipKeepW) _h3)
+    (add (V TipKeepW) (Variables|WBP_Stage|GetClapperBox))
+    (add (V TipKeepW) _i4)
+    (add (V TipKeepW) (Variables|WBP_Stage|GetLowerSize))
+    (add (V TipKeepW) (Variables|WBP_Stage|GetEventBanner))
+    (add (V TipKeepW) (Variables|WBP_Stage|GetStampText))
+    (add (V TipKeepW) (Variables|WBP_Stage|GetFacePop))
+    (add (V TipKeepW) (Variables|WBP_Stage|GetAtPop))
+    (add (V TipKeepW) (Variables|WBP_Stage|GetPrepSize)))
+  (bind z (Math|Vector2D|MakeVector2D :X 0.0 :Y 0.0))
+  (bind vg (Widget|GetCachedGeometry :self (Variables|WBP_Stage|GetRootBox)))
+  (bind vs (UserInterface|Geometry|GetLocalSize :Geometry vg))
+  (bind (vp0 vtl) (UserInterface|Geometry|LocaltoViewport :Geometry vg :LocalCoordinate z))
+  (bind (vp1 vbr) (UserInterface|Geometry|LocaltoViewport :Geometry vg :LocalCoordinate vs))
+  (set TipVTL vtl)
+  (set TipVBR vbr)
+  (clear (V TipKTL))
+  (clear (V TipKBR))
+  (for p (V TipKeepW)
+    (bind pv (Widget|IsVisible :self p))
+    (if pv
+      (bind pg (Widget|GetCachedGeometry :self p))
+      (bind ps (UserInterface|Geometry|GetLocalSize :Geometry pg))
+      (bind (pp0 ptl) (UserInterface|Geometry|LocaltoViewport :Geometry pg :LocalCoordinate z))
+      (bind (pp1 pbr) (UserInterface|Geometry|LocaltoViewport :Geometry pg :LocalCoordinate ps))
+      (add (V TipKTL) ptl)
+      (add (V TipKBR) pbr))))
