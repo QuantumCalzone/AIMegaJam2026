@@ -19,11 +19,11 @@ Everything that happens in one show, from casting to the last cut.
 - The AIs know you lack the note and see exactly which clue you got. They follow it subtly so you can’t simply copy them, never say it aloud during the scene, and treat anyone who only matches the clue, or copies a turn late, as a suspect.
 - The twelve kinds of clue: the category, the vowels only, the consonants only, the first letters, the words scrambled, Pig Latin, the key word hidden, only the key word, emoji, the opposite rule, a riddle from the director, and the note autocorrected.
 - Notes are mostly physical, so they show on stage and the game can check them against the log. Examples: “throw something whenever someone lies,” “climb onto the Riser at least once.”
-- Scene Prep is a pause. The scene and the stage’s places and props show in a panel in the middle of your screen, with Start the scene under them. Your card on the right shows your role and your want, the note’s clue, and the cast with their roles and wants. The scene starts when you press Start the scene.
+- Scene Prep is a pause. The scene and the stage’s places and props show in a panel in the middle of your screen, with Start the scene under them. Your card on the right shows your role and your want and the note’s clue. Point at any other robot to see its name, role and want; this works in every phase, but not on a robot that has been cut. The scene starts when you press Start the scene.
 
 ## The Scene & acting
 
-- During the scene, your screen shows only your own card: your role, your want and the note’s clue.
+- During the scene, your screen shows only your own card: your role, your want and the note’s clue. Point at another robot to see its role and want.
 - Each scene has 3 turns, with a 30-second timer on yours.
 - You act blind on turn 1. After that, read the AIs’ moves and work out the note. Acting early risks guessing wrong; waiting risks copying late.
 - Every actor submits a turn, then all turns play out at once. The log records them in random order, so you’re never always last.
