@@ -16,6 +16,12 @@ These are the approved concepts for the stage and everything around it, in T94's
 - **A few hatless audience heads are dark** in the house view. Every audience bot is one of the five muted colors, as the piece view shows.
 - **Only the 16:9 frame was drawn.** T106 checks 1440 × 900 too (the camera keeps its 90° horizontal field of view, so a taller window shows more at the top and bottom).
 
+## In the game (T106)
+
+T106 built the house in `L_Stage` on 2026-11-19 from the 12 models in this folder (generated in its prep, `b8b5feb`) and engine parts. Top left: the approved concept; top right: the house camera at 1600 × 900; bottom left: at 1440 × 900 in a PIE show; bottom right: a game window with the UI, at The Cut. `game_house_1600.png` and `game_house_1440.png` are the full frames. How each piece is placed, and what changed from the plan below (the boxes ×1.27, the pilasters on the proscenium columns' inner faces, the valance fitted between the columns), is in [Docs/tasks/T106.md](../../tasks/T106.md); the scripts are in `Docs/tasks/T106-build/`.
+
+![The game's house: dark wood and gold boxes with audience robots at the edges, gold scroll reliefs on dark boards beside the crimson curtains, the valance and gold chandelier at the top, the five robots on the plank stage with gold robot cherubs at the corners and footlights in gold shell hoods, and the audience in top hats and bowlers in the crimson stalls](game_house_compare.png)
+
 ## The pieces T106 makes
 
 ![The 14 piece views on one sheet. Row 1: chandelier, robot cherub on its plinth, wall pilaster, theater box, side curtain. Row 2: valance, Riser, prop table, stalls seat, footlight. Row 3: audience robot front and back, top hat, bowler](pieces/sheet.png)

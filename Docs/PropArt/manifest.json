@@ -1184,6 +1184,7 @@
     {
       "id": "chandelier",
       "kind": "set",
+      "replaced_by": "T106 (2026-11-19): Content/NHOS/Stage/Set/SM_Set_Chandelier, from Docs/Art/Set/. This asset is deleted from Content.",
       "prompt": "A grand opera-house chandelier: tiers of curved gold arms holding cream candle bulbs, with hanging crystal drops. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
       "meshy_model": "meshy-7.1",
       "texture": true,
@@ -1211,6 +1212,7 @@
     {
       "id": "cherub",
       "kind": "set",
+      "replaced_by": "T106 (2026-11-19): Content/NHOS/Stage/Set/SM_Set_Cherub, from Docs/Art/Set/. This asset is deleted from Content.",
       "prompt": "A chubby baby cherub statue with little wings, sitting and blowing a trumpet, in gold. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
       "meshy_model": "meshy-7.1",
       "texture": true,
@@ -1238,6 +1240,7 @@
     {
       "id": "theater_box",
       "kind": "set",
+      "replaced_by": "T106 (2026-11-19): Content/NHOS/Stage/Set/SM_Set_TheaterBox, from Docs/Art/Set/. This asset is deleted from Content.",
       "prompt": "One horseshoe opera-house theater box seen from the front: a curved balcony with a gold balustrade of round posts, a crimson velvet rail cushion and crimson curtains framing the opening. Made of modeling clay in a stop-motion claymation style. Matte clay surface with faint thumbprints, saturated slightly chalky colors, soft even lighting. Three-quarter view from slightly above, the whole object centered and in frame, plain light gray background. A single object, no text, no people.",
       "meshy_model": "meshy-7.1",
       "texture": true,
