@@ -1,0 +1,14 @@
+[
+  {
+    "time": "2026-11-18 22:49 UTC",
+    "generation": "1f1e3a24-64db-61a0-bf68-c3fa3ee0a2d9",
+    "model": "gemini-2.5-flash-image",
+    "source": "Local/art/T99/backdrops/jungle_park/c2.png",
+    "refs": [],
+    "prompt": "Remove the word WARNING and any lettering from the red sign hanging on the wooden fence at the left, so the sign is a plain blank red clay plaque. Keep everything else exactly as it is: the palms, ferns, rope fence, posts, volcano, smoke, clouds, the yellow footprint sign, the footprints in the mud, the colors, the light and the framing.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png"
+    ]
+  }
+]

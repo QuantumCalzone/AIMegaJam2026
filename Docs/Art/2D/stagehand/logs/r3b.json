@@ -1,0 +1,20 @@
+[
+  {
+    "time": "2026-11-18 23:01 UTC",
+    "generation": "1f1e3a40-4c3a-6b70-be60-c5e47e4ee7d1",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. Head-and-shoulders portrait of a cute old-school robot stagehand, a gentle retro model that is still kind to humans. A soft egg-shaped head in pale mint and cream clay, gently scuffed, with a rounded brass trim band around it. Two big round eyes like old dark glass lenses with a warm white highlight dot, kind and calm, not glowing. A small soft smile, little round brass ear bolts, rosy cheek dots, a short stubby antenna with a round ball. A chunky old-fashioned black headset with round ear cups and a short thick microphone boom. Small rounded shoulders in a dark plum work vest with one small gold clay wrench pin. Facing the viewer, centered, the head filling the upper middle of the image. Adorable, gentle, a little shy, like a beloved vintage wind-up toy. Soft warm frontal light, plain flat deep plum background.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, human, skin, nose, teeth, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, creepy, uncanny, glowing eyes, red eyes, angry, binocular eyes, tank treads, square head, multiple characters, frame, border, hands"
+    },
+    "api_credit_cost": null,
+    "seed": 19981399,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ]
+  }
+]

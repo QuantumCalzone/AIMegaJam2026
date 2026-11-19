@@ -1,0 +1,15 @@
+[
+  {
+    "time": "2026-11-18 22:54 UTC",
+    "generation": "1f1e3a2f-b4d9-69d0-8944-eb576f258530",
+    "model": "gemini-2.5-flash-image",
+    "source": "Local/art/T99/backdrops/jungle_park/final.png",
+    "refs": [],
+    "prompt": "On the yellow sign on the wooden post at the right, replace the brown footprint symbol with a simple bold brown dinosaur silhouette warning symbol: a chunky long-necked or T-rex dinosaur shape sculpted in clay relief, centered on the sign. No letters, no words. Keep everything else exactly as it is: the sign's shape, color and post, the palms, ferns, the bare rope fence, the volcano, the smoke, the clouds, the footprints in the mud, the colors, the light and the framing.",
+    "api_credit_cost": null,
+    "images": [
+      "edit_1.png",
+      "edit_2.png"
+    ]
+  }
+]

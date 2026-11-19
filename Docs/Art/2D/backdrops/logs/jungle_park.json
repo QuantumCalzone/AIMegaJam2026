@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "generation": "1f1e393b-7525-6540-bbc6-e91d5f6afd42",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A steamy tropical island jungle: big rounded ferns and fat palm trees in deep green and teal; a sagging electric fence of thick ropes on chunky wooden posts, one post snapped; a tilted blank yellow warning sign showing only a simple three-toed footprint symbol; a trail of giant three-toed footprints pressed into brown mud; soft white puffs of mist; a small orange and brown volcano puffing one round smoke cloud on the far horizon; a warm late-afternoon sky in peach and turquoise. A painted theater backdrop flat in shallow clay relief, wide 2:1 panoramic, seen straight on. Composition: the most interesting scenery sits in the upper left, the upper right and the middle band; the top center is calm and simple; the bottom third is a plain, simple, uncluttered floor or ground with no objects. Soft even frontal light with no strong light direction and no hard cast shadows; warm colors a little softer than the actors who will stand in front of it. No characters, no people, no robots, no animals, no text, no letters, no numbers, no signs, no logos.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, signs, logo, watermark, brand mark, people, characters, person, robot, animals, creatures, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, theater curtains, stage, proscenium, audience, frame, border, blurry"
+    },
+    "api_credit_cost": null,
+    "seed": 303557663,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

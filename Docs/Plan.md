@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T99, T102, T103, T104, T106), where each concept and each pick waits for my approval. T101 picked the new sounds and voices that T102 imports: "Show, robot and button sounds, and the bots' voices (T101)" in `Docs/AudioShortlist.md`. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T99 and T106 build on: `Docs/Art/Set/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new audio and the new art (T102, T103, T104, T106), where each concept and each pick waits for my approval. T101 picked the new sounds and voices that T102 imports: "Show, robot and button sounds, and the bots' voices (T101)" in `Docs/AudioShortlist.md`. T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T98 approved the theater that T106 builds on: `Docs/Art/Set/README.md`, and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -120,13 +120,6 @@ These hold for every task, and for editor work outside the task list too. If one
 ### Open
 
 
-
-- [ ] **T99 New art, part 6: the backdrops, the stagehand's portrait and the burning bills, approved by me and imported**
-  - **Model and effort:** Sonnet 5.5, medium. 2D art where the approved image is the final one, reimported over textures that keep their names.
-  - **Depends on:** T94 (the direction), T98 (the approved house, which the backdrops sit in); T35, T36, T48 and T61 (the textures it replaces; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine.
-  - **Needs:** editor + Unreal MCP running, Test for Free for a PIE show, `Local/leonardo_key.json`, my OK on the estimated cost before the first paid call, my pick of every image, my OK on the design doc edit.
-  - **Touches:** `Content/NHOS/Stage/Backdrops/T_Backdrop_*.uasset`, `Content/NHOS/UI/Stagehand/T_Stagehand_Portrait.uasset`, `Content/NHOS/UI/MoneyBurn/T_*.uasset`, new `Docs/Art/2D/`, `Docs/Assets.md`, the design doc, `Docs/tasks/T99.md`.
-  - **Details:** [Docs/tasks/T99.md](tasks/T99.md)
 
 - [ ] **T102 New audio, part 3: import the picks and set a quieter mix**
   - **Model and effort:** Opus 5.5, high. Measured loudness, a mix set without hearing it, and recordings of each phase for my OK.
@@ -388,6 +381,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T105 New art, part 9: the story props' models, generated from the approved concepts**
   - **Details:** [Docs/tasks/T105.md](tasks/T105.md)
+
+- [x] **T99 New art, part 6: the backdrops, the stagehand's portrait and the burning bills, approved by me and imported**
+  - **Details:** [Docs/tasks/T99.md](tasks/T99.md)
 
 ## Not planned yet
 

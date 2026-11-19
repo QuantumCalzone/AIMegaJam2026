@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 23:04 UTC",
+    "generation": "1f1e3a46-2834-6db0-9ccd-172221de10b9",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. Portrait of a small, old, lovable utility droid that works backstage as a stagehand, an original design. Its head is a battered little vintage theater spotlight in cream and faded brass clay, tilted to one side with curiosity: one big round dark camera-lens eye with a soft white highlight and a curved shutter lid that makes it look happy and sleepy, a smaller round lens beside it, no mouth, no human face. Dents, a strip of gaffer tape patching one side, a few rivets. A chunky old black headset with a thick microphone boom. A small rounded boxy body below in dark plum with a gold clay wrench pin, seen to the shoulders. Head and lens fill the upper middle of the image, centered, facing the viewer. Endearing, gentle, loyal, like a beloved old machine. Soft warm frontal light, plain flat deep plum background.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, human, doll, mouth, nose, cheeks, skin, teeth, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, creepy, glowing red eyes, angry, binocular eyes, tank treads, dome head, multiple characters, frame, border, hands"
+    },
+    "api_credit_cost": null,
+    "seed": 759941145,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

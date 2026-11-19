@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 23:08 UTC",
+    "generation": "1f1e3a4f-84bb-6990-82fc-e23f96310e5a",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A funny little backstage stagehand robot that looks like an old dented metal trash can: a round ribbed bin body in muted galvanized gray-green clay, a flat round lid with a chunky handle on top, a few dents and one patch of gaffer tape. One big round camera lens on the front of the bin as its only eye, with a soft white highlight. A few small extra sensors around it: a little round microphone grille, two tiny indicator bulbs, a short thick stalk with a ball. A chunky black backstage headset with round ear cups worn across the top of the lid, its thick microphone boom curving down in front of the lens, which looks charming and silly. No face, no mouth, no arms, not humanlike at all. Seen from the front, slightly from above, the whole robot from the lid down to the middle of the bin, centered and filling the frame. Soft warm frontal light, plain flat deep plum background.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, human, doll, face, mouth, nose, cheeks, eyebrows, two eyes, arms, hands, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, creepy, glowing red eyes, dome head, blue panels, white and blue, garbage, trash spilling, multiple characters, frame, border"
+    },
+    "api_credit_cost": null,
+    "seed": 179363462,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

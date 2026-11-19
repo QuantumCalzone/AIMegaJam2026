@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "generation": "1f1e393c-640c-6ff0-8c90-96b1e98bfd38",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. Head-and-shoulders portrait of a friendly AI robot stagehand who whispers tips backstage. A big round cream clay head, about a third of the image wide, centered in the upper middle, with a dark rounded screen face (#14121C) showing two big soft rose-pink glowing LED eyes and a warm rose-pink LED smile. A chunky black backstage headset with round ear cups and a short thick microphone boom, a dark plum knit beanie, a black stagehand t-shirt with one small gold clay wrench pin, cream clay shoulders. Facing the viewer, kind, helpful and a little conspiratorial. Soft warm frontal stage light, plain flat deep plum background. Cute, never creepy.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, human, skin, nose, teeth, red eyes, angry, multiple characters, frame, border, hands"
+    },
+    "api_credit_cost": null,
+    "seed": 2029353635,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

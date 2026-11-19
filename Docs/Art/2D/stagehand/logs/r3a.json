@@ -1,0 +1,20 @@
+[
+  {
+    "time": "2026-11-18 23:01 UTC",
+    "generation": "1f1e3a40-4d20-6350-9aae-ca12a596dcec",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. Head-and-shoulders portrait of a sweet little retro tin-toy robot stagehand from the 1950s, an old model that has always loved humans. A big round dome head in soft cream clay, slightly worn, with two large round friendly cartoon eyes: black pupils with a white shine dot, not glowing. Two small rosy pink blush dots on the cheeks, a tiny happy curved mouth, a short stubby antenna with a round ball on top, one small patched rivet plate. A chunky old-fashioned black headset with round ear cups and a short thick microphone boom. Small rounded shoulders in a dark plum work vest with one small gold clay wrench pin. Facing the viewer, centered, the head filling the upper middle of the image. Adorable, gentle, a little shy, like a beloved vintage wind-up toy. Soft warm frontal light, plain flat deep plum background.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 2,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, human, skin, nose, teeth, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, creepy, uncanny, glowing eyes, red eyes, angry, binocular eyes, tank treads, square head, multiple characters, frame, border, hands"
+    },
+    "api_credit_cost": null,
+    "seed": 1987237011,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png"
+    ]
+  }
+]

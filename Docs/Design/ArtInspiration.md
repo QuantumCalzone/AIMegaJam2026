@@ -58,7 +58,7 @@ The colors are the UI's seat colors, so a bot, its name tag and its chat bar alw
 - Each story drops in its own painted backdrop behind the stage.
 - The Cut: a trapdoor opens under the cut bot and it drops out of sight in a puff of clay dust. (Proposal; a curtain drop is the fallback.)
 
-The approved house from the house camera. The robots and the pink backdrop are placeholders: T95 draws the cast and T99 the backdrops.
+The approved house from the house camera. The robots and the pink backdrop are placeholders: T95 draws the cast, and T99's backdrops (under Props and backdrops) replace the pink sky.
 
 ![The approved house from the house camera: warm brown walls and boxes with big bright gold scrolls, crimson curtains and a gold-swagged valance, a gold chandelier, five robots on the plank stage, gold cherubs at the corners, and the clay robot audience in top hats and bowlers in the stalls](../Art/Set/house.png)
 
@@ -100,23 +100,27 @@ The surfaces: crimson velvet, bright gold, dark wood, stage planks, cream and ho
 
 ### Props and backdrops
 
-**The props are redrawn: T97's concepts, approved on 2026-11-18, are in `Docs/Art/Props/`, each with a clean model view and its size; T105 makes the models from them. The backdrops are being redrawn in T99.** Until T105 imports the models, the game shows the old ones.
+**The props are redrawn: T97's concepts, approved on 2026-11-18, are in `Docs/Art/Props/`, each with a clean model view and its size; T105 makes the models from them. The backdrops are redrawn: T99's seven, approved on 2026-11-18, are in `Docs/Art/2D/backdrops/` and in the game.** Until T105 imports the models, the game shows the old ones.
 
 Each story brings four clay props to the Prop Table (three core, the last a spare) and drops in its own painted backdrop. The AI actors may only name the props on the current card.
 
 | Story | Props (spare last) | Backdrop |
 | --- | --- | --- |
-| Space saga | tin-can robot, glow-stick sword, toy blaster, piggy bank | `desert_planet`: dusk under two suns, a rusty dome hut, a battered space truck, a suspicious gray moon |
-| Ring quest | cursed ring, glowing staff, water bucket, frying pan | `dwarf_mine`: carved stone pillars, a thin stone bridge over a chasm, an orange glow from below |
-| Dino park | dino egg, meaty drumstick, safety waiver, dino plush | `jungle_park`: steamy jungle, a sagging electric fence, a tilted warning sign, giant muddy footprints |
-| Crime family | plush horse head, cannoli tray, wedding envelope, bowl of oranges | `garden_wedding`: a striped party tent, paper lanterns, lemon trees, a tiered cake, a pink villa |
-| Diner | glowing briefcase, gold pocket watch, giant milkshake, giant cheeseburger | `retro_diner`: a chrome counter, cherry-red stools, a checkered floor, a big wall clock |
-| Bowling | rolled-up rug, bowling ball, ransom bag, milk carton | `bowling_lanes`: shiny lanes, rows of white pins, a ball return, a starry ceiling |
-| Simulation | red pill, blue pill, ringing phone, bent spoon | `midnight_cubicles`: gray clay cubicles, one buzzing light, old screens dripping green light |
+| Space saga | tin-can robot, glow-stick sword, toy blaster, piggy bank | `desert_planet`: dusk under two suns, one gold and one coral, a rusty dome hut, a battered space truck on landing legs, a sly-faced moon |
+| Ring quest | cursed ring, glowing staff, water bucket, frying pan | `dwarf_mine`: carved stone walls lit by candles, stone stairs, a glowing arched mine mouth in the middle |
+| Dino park | dino egg, meaty drumstick, safety waiver, dino plush | `jungle_park`: palms and ferns, a bare rope fence on posts, a yellow sign with a dinosaur on it, a smoking volcano, giant footprints in the mud |
+| Crime family | plush horse head, cannoli tray, wedding envelope, bowl of oranges | `garden_wedding`: a striped party tent, lanterns on a string, a tiered cake, lemon trees, a pink villa with green shutters |
+| Diner | glowing briefcase, gold pocket watch, giant milkshake, giant cheeseburger | `retro_diner`: a counter with red stools, red booths, a checkered floor, night windows onto a lit city and a full moon |
+| Bowling | rolled-up rug, bowling ball, ransom bag, milk carton | `bowling_lanes`: honey lanes with red balls and white pins, bold triangle panels in teal and tangerine, a starburst-lit ceiling |
+| Simulation | red pill, blue pill, ringing phone, bent spoon | `midnight_cubicles`: dim green cubicles under one buzzing light, glowing green screens, a rainy window onto a dark skyline |
 
 - Glow is an engine part, never part of a model: the glow-stick blade, the staff's crystal, and the briefcase's lining with its god rays. The briefcase lies open wide, lid upright; the bent spoon is bent at the neck.
 - Each backdrop is one painted image in a clay-relief diorama style, on the existing backdrop flat. No characters, text or logos.
 - Open question: three director's notes assume the old shared table. "Mention the rubber chicken" names a prop that is gone, and "hold a prop all scene" and "give something every turn" need enough props for five actors.
+
+The seven backdrops, in the table's order (T99's approved pictures).
+
+![The seven painted clay backdrops in a 4 × 2 grid: desert planet, dwarf mine, jungle park, garden wedding, retro diner, bowling lanes, midnight cubicles](../Art/2D/backdrops/sheet.png)
 
 Each story's props, one row per story in the table's order, spare last (T97's approved concept art, with each prop's size).
 
@@ -128,7 +132,9 @@ Seven film parodies set what gets built: a space saga, a ring quest, a dino park
 
 ## UI
 
-**The UI's 2D art is being redrawn in T99, in the direction above:** the stagehand's portrait, and the burning bills with their badges. The concept, layout, palette, type and components below stay as they are.
+**The UI's 2D art is redrawn (T99, approved 2026-11-18):** the stagehand in the earpiece is a little trash-can droid with one lens eye, two red indicator lights and its headset on the lid: an old machine that is still friendly to humans. The money burn is a sage clay play-money bill with "100" pressed into its rosettes, chunky clay flames and a clay ember, and a badge in the paid provider's seat color with its initial (O, A, S, M). The files and every round are in [Docs/Art/2D/README.md](../Art/2D/README.md). The concept, layout, palette, type and components below stay as they are.
+
+![The stagehand, a gray trash-can droid with one lens eye and a headset on its lid; the clay bill with a badge; the charred bill; the four seat-colored badges O, A, S, M; eight clay flame frames and an ember](../Art/2D/ui_sheet.png)
 
 The UI is the theater's own paperwork: a call sheet, a sealed note, ballot tickets and a rubber stamp, made chunky enough to read from the back row. Legibility beats style every time, and each screen has one thing to look at and one thing to do.
 
@@ -186,7 +192,7 @@ Colors are set by role. Start from these values; if a value changes, keep its ro
 | Banner | Ink strip across the top of the stage, gold display letters. | One moment at a time (a new scene, a tie, the tally, who was cut). Holds 4 s, then fades. |
 | Reveal stamp | Rubber stamp tilted −8°, double outline for an inked edge. Red for YOU: HUMAN, amber for PROVIDER: AI. | Slams in from 3× size in 0.2 s with a small shake, holds 3.5 s, fades over 1 s. |
 | Turn timer | A gold ring around the current turn pip. | Only if timers ship. Turns red for the last 5 s; never flashes. |
-| Money burn | A burning bill, bottom right. | Relay calls only. Never takes a click or the input's focus. |
+| Money burn | A clay bill burning, bottom right, with a badge in the paid provider's seat color and its initial. | Relay calls only. Never takes a click or the input's focus. |
 | Buttons | Display type, 48 px tall, 12 px corners, 3 px outline. | Four kinds: Primary (gold, ink text), Secondary (plum, quiet outline, white text), Danger (curtain red) and Paper (cream, dark text). Hover brightens the fill and lights the outline; pressed darkens it and drops the label 2 px; focused shows the gold ring; disabled drops to 40% opacity and loses its outline. |
 
 #### Screens

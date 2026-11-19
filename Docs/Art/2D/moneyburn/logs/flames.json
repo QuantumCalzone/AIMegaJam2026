@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "generation": "1f1e393c-636b-6dd0-a0e4-9209fd3ef5e5",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A sprite sheet of eight separate small sculpted clay flames, arranged in two neat rows of four, evenly spaced, each flame standing upright on its own with clear empty space around it, all the same size. Each flame is a chunky rounded teardrop tongue of matte clay in layers: deep red outer edge, tangerine orange, golden yellow, and a pale cream hot core near the base, with one to three rounded tips. Every flame has a slightly different flicker shape, leaning a little left or right. Plain flat pure black background, no smoke, no floor, no shadow.",
+      "width": 1920,
+      "height": 1080,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, smoke, candle, wick, torch, logs, wood, floor, ground, shadow, sparks, explosion, overlapping flames"
+    },
+    "api_credit_cost": null,
+    "seed": 768288461,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

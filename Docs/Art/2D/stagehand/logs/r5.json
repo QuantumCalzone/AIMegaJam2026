@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 23:07 UTC",
+    "generation": "1f1e3a4c-5fc8-6b40-b991-1f1a69d7f215",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. Head-and-shoulders portrait of an original droid design with the elegance of 1970s retro-futurist film concept paintings: a smooth, graceful, rounded art-deco shell head shaped like a soft lozenge with gentle bevels and a few sleek grooves, in weathered cream and soft brass clay with sandy scuffs. One large round dark photoreceptor lens as its eye, with a soft warm white highlight, set a little off center, and a tiny second sensor dot beside it. No mouth, no human face. A neat row of vent slits on one cheek. The head is tilted slightly, attentive and kind. A chunky old black headset with a thick microphone boom. Smooth rounded shoulders in dark plum with one small gold clay wrench pin. Centered, the head filling the upper middle of the image. Calm, loyal, gentle, timeless. Soft warm frontal light, plain flat deep plum background.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, human, doll, mouth, nose, cheeks, skin, teeth, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, creepy, glowing red eyes, angry, binocular eyes, tank treads, gold humanoid, dome head on cylinder, multiple characters, frame, border, hands"
+    },
+    "api_credit_cost": null,
+    "seed": 178442467,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

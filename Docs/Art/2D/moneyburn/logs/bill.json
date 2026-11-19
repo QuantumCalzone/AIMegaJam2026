@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "generation": "1f1e393c-63d4-6d80-8b37-eb8b1b4d1b75",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. One play-money banknote sculpted from matte modeling clay, seen flat and straight on from the front, filling almost the whole frame with a thin even margin of plain dark background around it. A muted sage-green bill with softly rounded corners, a raised clay double border, a large round medallion in the exact center with a simple cute round robot head in relief (two square eyes and an antenna), one round rosette left of the medallion and one right of it, thin wavy relief lines across the paper, and the four corners left plain and empty. No real currency's design, no portrait of a person, no currency symbol.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, extra characters, dollar sign, currency symbol, president, portrait of a person, coins, stack of bills, hand, wallet, perspective, tilted, curled"
+    },
+    "api_credit_cost": null,
+    "seed": 1519402606,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

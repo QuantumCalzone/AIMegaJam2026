@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 22:59 UTC",
+    "generation": "1f1e3a3b-84b4-60f0-b8ed-476ec7dc6974",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. Head-and-shoulders portrait of a cute old-fashioned robot stagehand, an older model from the 1950s that is still kind to humans: a chunky rounded-box head like a vintage radio set, in faded cream and soft mint clay with a few scuffs, a dent and one patched rivet plate. Two big round warm rose-pink glowing bulb eyes set side by side in the face, a small rounded speaker-grille mouth curved into a gentle smile, round brass dial ears, one short stubby antenna with a round rose-pink bulb on top. A chunky old-fashioned black headset with a thick microphone boom over one dial ear. Small rounded shoulders, a dark plum work vest with one gold clay wrench pin. Facing the viewer, centered, the head filling the upper middle of the image, looking warm, gentle and a little bashful. Soft warm frontal light, plain flat deep plum background. Cute, toy-like, never creepy.",
+      "width": 1024,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, logo, watermark, brand mark, realistic human face, human, skin, nose, teeth, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, red eyes, angry, binocular eyes, tank treads, multiple characters, frame, border, hands"
+    },
+    "api_credit_cost": null,
+    "seed": 849421126,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]

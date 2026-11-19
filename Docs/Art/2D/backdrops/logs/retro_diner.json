@@ -1,0 +1,22 @@
+[
+  {
+    "time": "2026-11-18 21:05 UTC",
+    "generation": "1f1e393b-7375-6330-b15f-1aa442ac0bbf",
+    "model": "lucid-origin",
+    "parameters": {
+      "prompt": "Stop-motion claymation style: hand-sculpted from matte modeling clay with faint thumbprints, soft rounded chunky forms, bold simple shapes and a clean readable silhouette, saturated slightly chalky colors, from the same world as a gold, crimson and cream 19th-century clay opera house. A cozy retro roadside diner interior at night: a long clay counter with round cherry-red stools on the left, glass pie domes on the counter, a black-and-white checkered floor, turquoise and cream walls, plump red booths on the right, a big round wall clock with no numbers, a rounded jukebox glowing warm amber, wide windows showing a deep blue night sky with a fat clay moon. A painted theater backdrop flat in shallow clay relief, wide 2:1 panoramic, seen straight on. Composition: the most interesting scenery sits in the upper left, the upper right and the middle band; the top center is calm and simple; the bottom third is a plain, simple, uncluttered floor or ground with no objects. Soft even frontal light with no strong light direction and no hard cast shadows; warm colors a little softer than the actors who will stand in front of it. No characters, no people, no robots, no animals, no text, no letters, no numbers, no signs, no logos.",
+      "width": 2048,
+      "height": 1024,
+      "quantity": 4,
+      "negative_prompt": "text, letters, words, numbers, signs, logo, watermark, brand mark, people, characters, person, robot, animals, creatures, realistic human face, hair, fur, thin wires, glossy plastic, chrome, photorealistic, ink outlines, flat 2D illustration, scary, gore, theater curtains, stage, proscenium, audience, frame, border, blurry"
+    },
+    "api_credit_cost": null,
+    "seed": 1925215905,
+    "images": [
+      "candidate_1.png",
+      "candidate_2.png",
+      "candidate_3.png",
+      "candidate_4.png"
+    ]
+  }
+]
