@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new art (T109), where each concept and each pick waits for my approval. T102 put the new music, sounds and voices in the game with a quieter mix (my OK on 2026-11-19); "The mix (T102)" in `Docs/AudioShortlist.md` has every level. T104 put the costume models in the game, fitted to every character (my OK on 2026-11-19; `Docs/Art/Costumes/game_fit_grid.png`). T109 re-fitted the cast's arms so they no longer float beside their bodies; it waits for my OK on its before-and-after sheet (`Docs/Art/Cast/arms_game_sheet.png`). T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T103 put it in the game as Hyper3D models; T104 fits the costumes to its new heads from "For T104" in `Docs/tasks/T103.md`. T98 approved the theater, and T106 built it in the game (my OK on 2026-11-19; `Docs/Art/Set/game_house_compare.png`): `Docs/Art/Set/README.md`; and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T110 comes after T106: each scene's props fly in from the wing beside the Prop Table, and the last scene's go out. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: T110, where each scene's props fly in from the wing beside the Prop Table, and the last scene's go out. The new art is all in the game. T102 put the new music, sounds and voices in the game with a quieter mix (my OK on 2026-11-19); "The mix (T102)" in `Docs/AudioShortlist.md` has every level. T104 put the costume models in the game, fitted to every character (my OK on 2026-11-19; `Docs/Art/Costumes/game_fit_grid.png`). T109 re-fitted the cast's arms so they no longer float beside their bodies (my OK on 2026-11-19; `Docs/Art/Cast/arms_game_sheet.png`). T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T103 put it in the game as Hyper3D models; T104 fits the costumes to its new heads from "For T104" in `Docs/tasks/T103.md`. T98 approved the theater, and T106 built it in the game (my OK on 2026-11-19; `Docs/Art/Set/game_house_compare.png`): `Docs/Art/Set/README.md`; and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -120,14 +120,6 @@ These hold for every task, and for editor work outside the task list too. If one
 ### Open
 
 
-
-- [ ] **T109 Fix the cast's arms, which float beside their bodies**
-  - **Model and effort:** Opus 5.5, high. A re-fit of ten arms on five bodies, measured from the meshes, that keeps every gesture and hold working.
-  - **Depends on:** T103 (the arms and shoulders as built; done), T104 (it holds `BP_Robot` and puts capes, hoods and collars over the arms); T75 and T79 (the gestures, the fold and the cheer; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine.
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE checks, my OK on the before-and-after sheet, and my OK on the estimated cost before any paid call (only if a re-fit can't close a gap).
-  - **Touches:** `Content/NHOS/Stage/BP_Robot.uasset` (`SetPersona`'s shoulders and `HandSocket`, each arm component's transform), `Graphs/BP_Robot/` files for the graphs it writes, maybe new arm parts in `Content/NHOS/Stage/Cast/<character>/` with their files in `Docs/Art/Cast/` and their rows in `Docs/Assets.md`, `Docs/tasks/T109.md`.
-  - **Details:** [Docs/tasks/T109.md](tasks/T109.md)
-  - **Waiting:** built and pushed: the build sheet's re-fit is in `BP_Robot` (new shoulder pivots, each arm's offset and tilt, `HandSocket` moved, new `HandSocketL` for the left hand in `Receive`). In the editor no arm floats or shows a gap, a spring top or a stub at rest, talking, cheering or holding props; emotions, costumes, the fold, the cut fall and rise, grab, give and throw work, and a free autoplay show reached `NHOS: SHOW END`. SpaceXAI's springs are hidden, OpenAI's fold is unchanged and Meta's pale fin is left (see the findings). Left: my OK on the before-and-after sheet (`Docs/Art/Cast/arms_game_sheet.png`, with `arms_game_shoulders.png`).
 
 - [ ] **T110 Each scene's props come in from the wing, and the last scene's props go out**
   - **Model and effort:** Opus 5.5, high. A timed swap of the four prop actors through the wing beside the Prop Table at every Scene Prep, which must land before the first action, in hand-played shows and in autoplay.
@@ -383,6 +375,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T106 New art, part 10: the theater, its set pieces and the audience, built from the approved concepts**
   - **Details:** [Docs/tasks/T106.md](tasks/T106.md)
+
+- [x] **T109 Fix the cast's arms, which float beside their bodies**
+  - **Details:** [Docs/tasks/T109.md](tasks/T109.md)
 
 ## Not planned yet
 
