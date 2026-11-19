@@ -4,7 +4,7 @@ The living plan for our game: the tasks in priority order, how to run one and ho
 
 In this file, "I" and "my" mean the person at the keyboard. "Claude" means the agent doing the task.
 
-**Next up:** "Next task" takes the first free task in "Open", from the top: the new art (T104, T109, T106), where each concept and each pick waits for my approval. T102 put the new music, sounds and voices in the game with a quieter mix (my OK on 2026-11-19); "The mix (T102)" in `Docs/AudioShortlist.md` has every level. T104 put the costume models in the game, fitted to every character; it waits for my OK on its grid and design doc edit, and T109 re-fitted the cast's arms so they no longer float beside their bodies; it waits for my OK on its before-and-after sheet (`Docs/Art/Cast/arms_game_sheet.png`). T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T103 put it in the game as Hyper3D models; T104 fits the costumes to its new heads from "For T104" in `Docs/tasks/T103.md`. T98 approved the theater that T106 builds on: `Docs/Art/Set/README.md`, and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T110 comes after T106: each scene's props fly in from the wing beside the Prop Table, and the last scene's go out. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
+**Next up:** "Next task" takes the first free task in "Open", from the top: the new art (T109, T106), where each concept and each pick waits for my approval. T102 put the new music, sounds and voices in the game with a quieter mix (my OK on 2026-11-19); "The mix (T102)" in `Docs/AudioShortlist.md` has every level. T104 put the costume models in the game, fitted to every character (my OK on 2026-11-19; `Docs/Art/Costumes/game_fit_grid.png`). T109 re-fitted the cast's arms so they no longer float beside their bodies; it waits for my OK on its before-and-after sheet (`Docs/Art/Cast/arms_game_sheet.png`). T94 set the art direction they follow: `Docs/Art/Direction/README.md`. T95 approved the cast that T96 and T103 build on: `Docs/Art/Cast/README.md`. T103 put it in the game as Hyper3D models; T104 fits the costumes to its new heads from "For T104" in `Docs/tasks/T103.md`. T98 approved the theater that T106 builds on: `Docs/Art/Set/README.md`, and T99 put the new backdrops on its flat, with the stagehand and the burning bills: `Docs/Art/2D/README.md`. T105 put T97's props in the game as Hyper3D models: `Docs/Art/Props/manifest.json`. T96 approved the costumes and the role table that T104 builds on: `Docs/Art/Costumes/README.md`. T110 comes after T106: each scene's props fly in from the wing beside the Prop Table, and the last scene's go out. T85 and T61 come next (T84 put the scene and Start the scene in a middle panel; T85 takes the cast off the card, which still scrolls in Scene Prep), and T34 comes after them in the list; T34 starts with the vote bug that T32 found, and T61 is half built (see its `Waiting:` line). T91 and T92 make `main` the production branch and add the Mac upload.
 
 Keep this paragraph to a few lines: it says what is next, not what was done. What a done task built and found is in its file in `Docs/tasks/`. Until 2026-11-17 this paragraph held a summary of every done task; `git show 05a66dd:Docs/Plan.md` shows it.
 
@@ -120,14 +120,6 @@ These hold for every task, and for editor work outside the task list too. If one
 ### Open
 
 
-
-- [ ] **T104 New art, part 8: the costumes' models, fitted to every character**
-  - **Model and effort:** Opus 5.5, high. A model per costume version, a fit per character in a new `costumes.json`, and a test switch to check every costume on every robot.
-  - **Depends on:** T96 (the approved costumes and role table), T103 (the new heads and sockets); T47 (how the robots dress; done). It doesn't change `BP_Show` or `WBP_Stage`, so it belongs to the non-chain machine.
-  - **Needs:** editor + Unreal MCP running, Test for Free for the PIE shows, Meshy (`Local/meshy_key.json`) or Hyper3D (the Mac's MCP server, or an API key I put in `Local/`), my OK on the estimated cost before the first paid call, my OK on the models and on the final fit grid, my OK on the design doc edit.
-  - **Touches:** new `Content/NHOS/Stage/Costumes/`, `Content/NHOS/Stage/Headpieces/` (deleted), `Content/NHOS/Stage/BP_Robot.uasset` (`SetHeadpiece`, `DressFromShow`, attach points, `costume_test`), `Content/NHOS/Data/costumes.json`, `Content/NHOS/Data/scenes.json` (each seat's costume), `Tools/check_prompts.py` if it checks costumes, `Docs/switches.example.json`, `Docs/Art/Costumes/` (models and logs), `Docs/Assets.md`, the design doc, `Graphs/BP_Robot/` files for the graphs it writes, `Docs/tasks/T104.md`.
-  - **Details:** [Docs/tasks/T104.md](tasks/T104.md)
-  - **Waiting:** built and pushed: the 21 costume models are in the game, each fitted to each character in `costumes.json`, with `costume_test` to check them; the robots dress and undress in a show as before, and a free autoplay show reached `NHOS: SHOW END`. Three old headpieces (`SM_Beanie`, `SM_Fedora`, `SM_TopHat`) stay in `Content/NHOS/Stage/Headpieces/` because the audience uses them (`L_Stage`, `BP_AudienceBot`, T106's files); see the findings in the task file. Left: my OK on the fit grid (`Docs/Art/Costumes/game_fit_grid.png`, next to T96's fit sheets), and my OK on the design doc edit (the Costumes section of `Docs/Design/ArtInspiration.md` shows the game grid and says the models are in).
 
 - [ ] **T109 Fix the cast's arms, which float beside their bodies**
   - **Model and effort:** Opus 5.5, high. A re-fit of ten arms on five bodies, measured from the meshes, that keeps every gesture and hold working.
@@ -392,6 +384,9 @@ These hold for every task, and for editor work outside the task list too. If one
 
 - [x] **T102 New audio, part 3: import the picks and set a quieter mix**
   - **Details:** [Docs/tasks/T102.md](tasks/T102.md)
+
+- [x] **T104 New art, part 8: the costumes' models, fitted to every character**
+  - **Details:** [Docs/tasks/T104.md](tasks/T104.md)
 
 ## Not planned yet
 

@@ -72,11 +72,11 @@ The surfaces: crimson velvet, bright gold, dark wood, stage planks, cream and ho
 
 ### Costumes
 
-**Concepts approved in T96 (2026-11-18); T104 builds the models from them.** Until then the game shows the headpieces as built on 2026-11-15. The picks, the fit sheets, the model views and every round are in [Docs/Art/Costumes/](../Art/Costumes/README.md).
+**Concepts approved in T96 (2026-11-18); the models are in the game since T104 (2026-11-19).** The picks, the fit sheets, the model views and every round are in [Docs/Art/Costumes/](../Art/Costumes/README.md), with T96's concept sheet in `approved.png`. Each costume's fit on each character is in `Content/NHOS/Data/costumes.json`.
 
-![The 13 approved costumes, each fitted on all five characters in seat order: hood, dark shades, top hat, bob wig, ball cap, wide-brim hat, saucepan helmet, wizard hat, tiara, fedora, horned helmet with beard, dino hood and beanie](../Art/Costumes/approved.png)
+![Every costume in the game on all five characters (OpenAI, Anthropic, SpaceXAI, Meta, You), close up: hood, dark shades, top hat, bob wig, ball cap, wide-brim hat, saucepan helmet, wizard hat, tiara, fedora, horned helmet with beard, dino hood, beanie and the ball cap turned back](../Art/Costumes/game_fit_grid.png)
 
-- Thirteen clay costumes dress all 35 roles, each role in its own color: one model per costume version, and the color comes from its clay material. A costume is a headpiece, worn over the robot's own parts. It never hides the face, the mouth, the seat color or the name tag. A cut robot keeps the costume it wore.
+- Thirteen clay costumes dress all 35 roles, each role in its own color: one model per costume version, and the color comes from its clay material. A costume is a headpiece, worn over the robot's own parts. It never hides the face, the mouth, the seat color or the name tag. A cut robot keeps the costume it wore. The dwarf's beard is a second part in its own ginger color.
 - Every costume fits every head. One round version fits the three round heads and Meta, where it sits over the solid hair cap. The soft pieces have a boxy version made for the player's cube: the hood, the bob wig, the ball cap, the saucepan, the dwarf's helmet and beard, the dino hood and the beanie. Hats with a crown and brim sit flat on the cube's lid.
 - Anthropic's antenna light and the player's ping-pong ball poke up through or beside any costume. The shades hide Anthropic's and Meta's own glasses. The dwarf's beard hangs below the mouth.
 - Homemade parody versions only: a black saucepan helmet, never a film's real villain helmet.
