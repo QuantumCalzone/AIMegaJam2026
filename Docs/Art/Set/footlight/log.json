@@ -1,0 +1,44 @@
+{
+ "piece": "footlight",
+ "task": "T106 prep (step 2, and step 1 without the editor), 2026-11-19",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 8000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb (saved as model.glb)",
+ "generation_id": "e13f025a-3078-425a-bff0-c1d22f847651",
+ "display_url": "https://hyper3d.ai/workspace/rodin/e13f025a-3078-425a-bff0-c1d22f847651",
+ "prompt": "A stage footlight made of matte modeling clay, claymation style: a scalloped dome hood over a round cream bulb, on a short round dark base. Chunky rounded forms. One closed piece, soft clay finish, no text.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "-b_nmmZ1YCNS2ZFi7jy2Tw",
+   "from": "Docs/Art/Set/pieces/views/footlight.png"
+  }
+ ],
+ "reference_prep": "none. Made by prep.swift (T103's crop.swift with color and stroke fills), padded square on the view's background gray.",
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 12 calls, about 6 credits in all",
+ "tries": [],
+ "approved": "by my person on Docs/Art/Set/models_sheet.png, 2026-11-19 ('Approve all 12')",
+ "frame": "glTF as exported: metres, +Y up, the piece faces +Z, centred on the origin",
+ "suggested_fit": {
+  "scale_model_axes_WHD": [
+   0.14,
+   0.14,
+   0.14
+  ],
+  "meaning": "scale on the model's own width (glTF X), height (glTF Y) and depth (glTF Z), for an import that turns metres into cm (x100)",
+  "size_cm_WHD": [
+   24.9,
+   26.5,
+   24.9
+  ],
+  "pivot_to_bottom_cm": 13.2,
+  "why": "uniform: 25 x 25 x 27 (T98: 35 x 25 x 25; a width scale of 0.197 stretches it to 35)"
+ }
+}

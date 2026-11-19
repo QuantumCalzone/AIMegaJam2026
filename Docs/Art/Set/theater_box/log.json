@@ -1,0 +1,44 @@
+{
+ "piece": "theater_box",
+ "task": "T106 prep (step 2, and step 1 without the editor), 2026-11-19",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb (saved as model.glb)",
+ "generation_id": "a4dfa3c8-dcc1-4913-901d-7b2828670569",
+ "display_url": "https://hyper3d.ai/workspace/rodin/a4dfa3c8-dcc1-4913-901d-7b2828670569",
+ "prompt": "One opera-house theater box made of matte modeling clay, claymation style: a round-topped arched frame with fluted side pilasters and a beaded moulding, crimson velvet drapes swagged and hanging inside the opening, and a curved balcony front with a carved scroll relief and a rounded rail at the bottom of the opening. The box is a shallow alcove open at the front, closed at the back. One closed piece, soft clay finish, no text.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "eU5Mt4ZfZuPxLfoPWMbIGA",
+   "from": "Docs/Art/Set/pieces/views/theater_box.png"
+  }
+ ],
+ "reference_prep": "none (the view as approved). Made by prep.swift (T103's crop.swift with color and stroke fills), padded square on the view's background gray.",
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 12 calls, about 6 credits in all",
+ "tries": [],
+ "approved": "by my person on Docs/Art/Set/models_sheet.png, 2026-11-19 ('Approve all 12')",
+ "frame": "glTF as exported: metres, +Y up, the piece faces +Z, centred on the origin",
+ "suggested_fit": {
+  "scale_model_axes_WHD": [
+   1.0,
+   1.0,
+   0.904
+  ],
+  "meaning": "scale on the model's own width (glTF X), height (glTF Y) and depth (glTF Z), for an import that turns metres into cm (x100)",
+  "size_cm_WHD": [
+   150.5,
+   190.1,
+   160.0
+  ],
+  "pivot_to_bottom_cm": 95.2,
+  "why": "190 tall to keep the tiers' 190 cm pitch (z 152 and 342), depth to 160; 150 wide, half the old box's 300 (see the build sheet)"
+ }
+}

@@ -1,0 +1,36 @@
+{
+ "file": "model.glb",
+ "frame": "glTF: Y up, metres, as exported",
+ "triangles": 8000,
+ "vertices": 4768,
+ "welded_vertices": 4002,
+ "pieces": 1,
+ "open_edges": 0,
+ "nonmanifold_edges": 0,
+ "bbox_min": [
+  -0.8874,
+  -0.9425,
+  -0.8899
+ ],
+ "bbox_max": [
+  0.8886,
+  0.9528,
+  0.89
+ ],
+ "size": [
+  1.776,
+  1.8953,
+  1.7799
+ ],
+ "materials": [
+  "model"
+ ],
+ "material_factors": [
+  null
+ ],
+ "images": [
+  "texture_normal.png 2048x2048",
+  "texture_diffuse.png 2048x2048",
+  "texture_metallic_roughness.png 2048x2048"
+ ]
+}

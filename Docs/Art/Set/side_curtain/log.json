@@ -1,0 +1,44 @@
+{
+ "piece": "side_curtain",
+ "task": "T106 prep (step 2, and step 1 without the editor), 2026-11-19",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb (saved as model.glb)",
+ "generation_id": "7a417439-a28a-4f57-ba89-530dee6d67d6",
+ "display_url": "https://hyper3d.ai/workspace/rodin/7a417439-a28a-4f57-ba89-530dee6d67d6",
+ "prompt": "One tall theater side curtain made of matte crimson modeling clay, claymation style: thick rounded vertical velvet pleats, gathered at the waist by a thick wide gold band, flaring out to the floor below. Chunky solid folds, no rope, no tassel, no fringe. One closed piece, flat back, soft clay finish, no text.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "VEB1wCBWEvARhZgKB73G-w",
+   "from": "Docs/Art/Set/pieces/views/side_curtain.png"
+  }
+ ],
+ "reference_prep": "the thin rope tie-back and tassel replaced by a thick gold band (T98: 'a thick gold band, not a thin rope'). Made by prep.swift (T103's crop.swift with color and stroke fills), padded square on the view's background gray.",
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 12 calls, about 6 credits in all",
+ "tries": [],
+ "approved": "by my person on Docs/Art/Set/models_sheet.png, 2026-11-19 ('Approve all 12')",
+ "frame": "glTF as exported: metres, +Y up, the piece faces +Z, centred on the origin",
+ "suggested_fit": {
+  "scale_model_axes_WHD": [
+   3.263,
+   3.263,
+   3.263
+  ],
+  "meaning": "scale on the model's own width (glTF X), height (glTF Y) and depth (glTF Z), for an import that turns metres into cm (x100)",
+  "size_cm_WHD": [
+   211.6,
+   620.0,
+   75.9
+  ],
+  "pivot_to_bottom_cm": 310.6,
+  "why": "uniform, 620 tall: 212 x 76 x 620 (T98 says 250 wide: a width scale of 3.856 gives that)"
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "piece": "valance",
+ "task": "T106 prep (step 2, and step 1 without the editor), 2026-11-19",
+ "service": "Hyper3D Rodin (hyper3d.ai) on the Business plan, through the Mac's hyper3d MCP server",
+ "tool": "rodin_generate",
+ "settings": {
+  "tier": "Gen-2.5-Medium",
+  "mesh_mode": "Raw",
+  "quality_override": 15000,
+  "geometry_file_format": "glb",
+  "texture_delight": false
+ },
+ "downloaded_file": "base_basic_pbr.glb (saved as model.glb)",
+ "generation_id": "4539ad13-9683-44bf-8e47-ea22eb61a0ac",
+ "display_url": "https://hyper3d.ai/workspace/rodin/4539ad13-9683-44bf-8e47-ea22eb61a0ac",
+ "prompt": "A long theater valance made of matte crimson modeling clay, claymation style: a straight rounded header roll along the top with a thick gold band under it, and below it deep draped velvet swags falling in curves to both ends, with a thick gold swag band hanging in the middle. Long, wide and shallow, flat back. Chunky solid folds, no rope, no fringe, no tassels. One closed piece, soft clay finish, no text.",
+ "references": [
+  {
+   "file": "reference_front.png",
+   "upload_id": "XUrZFFMgGAkeByfDYYy-0A",
+   "from": "Docs/Art/Set/pieces/views/valance.png"
+  }
+ ],
+ "reference_prep": "the thin rope and knot in the middle painted over as a thick gold swag band, and a gold band painted along the header's lower edge (T98: the rope 'becomes a thick gold band'; 'give it' the house view's gold swag bands). Made by prep.swift (T103's crop.swift with color and stroke fills), padded square on the view's background gray.",
+ "credits": "not reported per call by the MCP tools; about 0.5 a call (T81's measure). This prep made 12 calls, about 6 credits in all",
+ "tries": [],
+ "approved": "by my person on Docs/Art/Set/models_sheet.png, 2026-11-19 ('Approve all 12')",
+ "frame": "glTF as exported: metres, +Y up, the piece faces +Z, centred on the origin",
+ "suggested_fit": {
+  "scale_model_axes_WHD": [
+   7.396,
+   4.111,
+   0.556
+  ],
+  "meaning": "scale on the model's own width (glTF X), height (glTF Y) and depth (glTF Z), for an import that turns metres into cm (x100)",
+  "size_cm_WHD": [
+   1400.1,
+   180.0,
+   60.0
+  ],
+  "pivot_to_bottom_cm": 90.2,
+  "why": "T98's 1400 x 60 x 180: width 7.40, height 4.11, depth 0.56 (Rodin gave it a deep flat top; only the front shows)"
+ }
+}
