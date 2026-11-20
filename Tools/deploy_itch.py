@@ -104,14 +104,20 @@ def run(cmd: list[str], cwd: Path | None = None, check: bool = True, capture: bo
     shown = " ".join(f'"{c}"' if " " in c else c for c in cmd)
     say(f"$ {shown}")
     if capture:
-        proc = subprocess.run(cmd, cwd=cwd, text=True, capture_output=True)
+        proc = subprocess.run(cmd, cwd=cwd, text=True, encoding="utf-8", errors="replace", capture_output=True)
     else:
-        # Streamed through print, so --log gets the packager's and butler's output too.
+        # Streamed through print, so --log gets the packager's and butler's output too. butler
+        # writes UTF-8 (its progress marks); read as the Windows code page, some of its bytes
+        # became U+FFFD, which a redirected cp1252 stdout couldn't print (T91: the script died
+        # mid-push and butler with it). UTF-8 in, and errors="replace" out (main()), so a line
+        # of output can never stop a run.
         with subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                              text=True, errors="replace") as child:
+                              text=True, encoding="utf-8", errors="replace") as child:
+            lines = []
             for line in child.stdout:
+                lines.append(line)
                 print(line, end="", flush=True)
-        proc = subprocess.CompletedProcess(cmd, child.returncode)
+        proc = subprocess.CompletedProcess(cmd, child.returncode, stdout="".join(lines))
     if check and proc.returncode != 0:
         if capture:
             print(proc.stdout + proc.stderr, flush=True)
@@ -356,7 +362,7 @@ def secrets_check(push_root: Path, local: Path, ue_root: Path | None) -> int:
     if ue_root:
         cmd += ["--ue-root", str(ue_root)]
     say("$ " + " ".join(cmd))
-    proc = subprocess.run(cmd, capture_output=True, text=True)
+    proc = subprocess.run(cmd, capture_output=True, text=True, errors="replace")
     out = proc.stdout + proc.stderr
     print(out, flush=True)
     if "No Local/*.json key files" in out:
@@ -370,7 +376,7 @@ def secrets_check(push_root: Path, local: Path, ue_root: Path | None) -> int:
 def channels(butler: Path) -> dict[str, str] | None:
     """Reads the page's channels back. Returns {channel: line} or None when butler can't read them."""
     proc = subprocess.run([str(butler), "status", GAME], capture_output=True, text=True,
-                          stdin=subprocess.DEVNULL, timeout=120)
+                          encoding="utf-8", errors="replace", stdin=subprocess.DEVNULL, timeout=120)
     out = proc.stdout + proc.stderr
     if proc.returncode != 0:
         print(out, flush=True)
@@ -388,9 +394,10 @@ def channels(butler: Path) -> dict[str, str] | None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--commit", default=DEFAULT_COMMIT,
+    ap.add_argument("--commit",
                     help=f"the commit to build (default: {DEFAULT_COMMIT}, the last release; "
-                         f"origin/{WORK_BRANCH} with --dry-run tries the next one)")
+                         f"origin/{WORK_BRANCH} with --dry-run tries the next one). With --build, the "
+                         "commit the build was made from, for its version label")
     ap.add_argument("--build", help="a push root that already holds a NoHumansOnSet_<Windows|Mac>/ build: "
                                     "skip the checkout and the packaging")
     ap.add_argument("--platform", choices=sorted(PLATFORMS),
@@ -404,6 +411,11 @@ def main() -> int:
     ap.add_argument("--butler", help="butler (default: BUTLER, PATH, or the itch app's copy)")
     ap.add_argument("--log", help="also write everything this run prints to this file")
     args = ap.parse_args()
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(errors="replace")  # never stop a run over a character it can't print
+        except (AttributeError, ValueError):
+            pass
     if args.log:
         tee_to(Path(args.log))
 
@@ -432,7 +444,7 @@ def main() -> int:
         if args.build:
             push_root = Path(args.build).resolve()
             sha = None
-            if args.commit != DEFAULT_COMMIT:
+            if args.commit:
                 sha = git("rev-parse", "--verify", f"{args.commit}^{{commit}}", cwd=repo)
         else:
             deploy = Path(deploy_arg).resolve()
@@ -441,7 +453,7 @@ def main() -> int:
             if ue_root is None:
                 return fail("the engine was not found (pass --ue-root or set UE_ROOT)")
             take_lock(deploy)
-            sha = prepare_worktree(repo, deploy, args.commit)
+            sha = prepare_worktree(repo, deploy, args.commit or DEFAULT_COMMIT)
             release = git("rev-parse", "--verify", f"{DEFAULT_COMMIT}^{{commit}}", cwd=repo)
             say(f"building {sha[:7]} in {deploy}"
                 + (" (main's tip, the last release)" if sha == release
@@ -504,9 +516,13 @@ def main() -> int:
         say(f"the build is in {push_root}")
         return 0
     try:
-        run(cmd, capture=False)
+        proc = run(cmd, capture=False)
     except RuntimeError as e:
         return fail(str(e))
+    if "not pushing anything" in (proc.stdout or ""):
+        # --if-changed: the channel's last build already holds these files.
+        say(f"nothing pushed: {GAME}:{channel} already has this build (butler status shows its version)")
+        return 0
     say(f"pushed {version} to {GAME}:{channel}")
     return 0
 
