@@ -2,7 +2,7 @@
 
 Back to [T112](../tasks/T112.md). A spike, made on the PC on 2026-11-20 in a throwaway copy of the project. Nothing in the game changed.
 
-**In short:** the stage survives the mobile renderer better than expected. The robots, the backdrops, the props, the gold and crimson house and every UI panel read the same on the Android Vulkan and Android OpenGL ES 3.1 previews as on the desktop. Two things in the picture change a lot: the near stalls turn much darker without Lumen's bounce light, and the robots cast no shadow on the stage floor, so they seem to float. On top of that, the engine's two touch joysticks show on screen. The work for a phone is mostly elsewhere: touch controls and text size for the typed chat, fewer triangles, smaller textures, and Android files that this PC doesn't have yet.
+**In short:** the stage survives the mobile renderer better than expected. The robots, the backdrops, the props, the gold and crimson house and every UI panel read the same on the Android Vulkan and Android OpenGL ES 3.1 previews as on the desktop. Two things in the picture change a lot: the near stalls turn much darker without Lumen's bounce light, and the robots cast no shadow on the stage floor, so they seem to float. On top of that, the engine's two touch joysticks show on screen. The work for a phone is mostly elsewhere: touch controls and text size for the typed chat, fewer triangles, smaller textures, and Android files that this PC doesn't have. The verdict: no Android release, and web builds are a go, as T123 to T128 from the full UE 5.9 release on (see "The verdict").
 
 ## How the shots were made
 
@@ -74,9 +74,11 @@ Estimates for a device profile that keeps the art direction (the clay opera hous
    - The end screen's four cards scroll; drag-to-scroll works on touch, but the text needs the same scale-up.
 6. **Build size.** The Windows release is 855 MB: 414 MiB of cooked content in one `.ucas`, a 316 MiB Development `.exe`, and engine DLLs (Vulkan layers, DirectML, ONNX runtime). An Android Shipping `.apk` drops the `.exe` and DLLs for one `.so` (about 100 MB, compressed in the `.apk`), and with textures capped at 1024 the content shrinks most. The music (131 MiB of source WAV in `Content/NHOS/Audio/Music`) becomes the next biggest part. My estimate is an `.apk` of 150 to 300 MB, which itch.io takes. Google Play's 200 MB base limit doesn't apply to itch.io.
 
-## Android: what step 4 would need (not done: no OK yet)
+## Android: what step 4 would have needed (not done: Android is cancelled)
 
-Nothing for Android is installed on the PC today, and two separate things are missing:
+My person OKed the downloads on 2026-11-20, then cancelled the Android release before the SDK license step. The JDK 21 and the Android command-line tools that were unpacked by then are removed, and no environment variable was set. What follows is what step 4 would have needed, kept for the record.
+
+Nothing for Android is installed on the PC, and two separate things are missing:
 
 1. **The engine's own Android files.** This 5.8.4 install was made without its platform parts. Its install manifest (`E:/Epic Games/UE_5.8/zen-manifest.json`) lists 20,288 Android files, and 1,362 of them are on disk: there is no `Engine/Binaries/Android` (the prebuilt `UnrealGame-Android-*.so` that a Blueprint-only project packages with) and no `Engine/Build/Android` (the Gradle and Java parts). The Epic launcher doesn't list this install (`LauncherInstalled.dat` is empty), so its Options > Target Platforms > Android checkbox can't add them. They come from the same installer that made the install, with Android ticked. The manifest gives no sizes and Epic gives no figure; my estimate is 2 to 5 GB.
 2. **Google's tools,** at the versions the engine asks for in `Engine/Config/Android/Android_SDK.json`: NDK r27c (27.2.12479018), SDK platform `android-36`, build-tools 36.0.0, CMake 3.22.1, plus platform-tools and the command-line tools. Epic's table for 5.8 names Android Studio Koala (2024.1.2 Patch 1). Android Studio brings its own JDK, and the engine's `Engine/Extras/Android/SetupAndroid.bat` installs the rest through its SDK manager.
@@ -106,6 +108,19 @@ Checked on 2026-11-20 against Epic's 5.9 Preview 2 release notes and announcemen
 | Readiness | Preview builds are "unstable until the final release"; Preview 2 had about a week of work and a short QA pass; the full 5.9 release is "next year". Agents wrote the web platform code, starting from UE4's retired HTML5 platform. | No web build before the full 5.9 release. |
 
 Sources: [5.9 release notes](https://dev.epicgames.com/documentation/unreal-engine/unreal-engine-5-9-release-notes), [5.9 Preview 2 announcement and known issues](https://forums.unrealengine.com/t/preview-2-unreal-engine-5-9-preview/2852840), [indietooling on Preview 1](https://indietooling.com/posts/unreal-5-9-preview-web-export), [Digital Production on the preview](https://digitalproduction.com/2026/11/16/unreal-engine-5-9-preview-agents-canvas-and-a-browser-sized-ambition/), [Epic's Android requirements](https://dev.epicgames.com/documentation/unreal-engine/android-development-requirements-for-unreal-engine), [the NDK r27c release](https://github.com/android/ndk/releases).
+
+## The verdict (2026-11-20)
+
+My person's verdict: **no Android release, and web builds are a go.** The web tasks are in the plan as T123 to T128, and they start when Epic ships the full UE 5.9 release:
+
+- **T123** a spike on the full 5.9 release, in a separate copy (and the choice of moving the project to 5.9 or keeping a web copy);
+- **T124** CORS on the relay;
+- **T125** a mobile look for the stage (the house fill, robot shadows, the texture cap);
+- **T126** fewer triangles;
+- **T127** the game's files and modes in a browser;
+- **T128** the web build on itch.io.
+
+With Android cancelled, the web tasks carry the mobile look work themselves (T125 and T126). The recommendation below is as written before the verdict.
 
 ## The recommendation
 
