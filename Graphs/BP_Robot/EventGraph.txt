@@ -22,6 +22,11 @@
     (Transformation|SetRelativeRotation :self (Variables|Default|GetRig) :NewRotation (Math|Rotator|MakeRotator :Roll (Variables|Default|GetTipRoll) :Pitch (* _k -14.0) :Yaw 0.0))
     (Transformation|SetRelativeRotation :self (Variables|Default|GetArmPivotL) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw 0.0))
     (Transformation|SetRelativeRotation :self (Variables|Default|GetArmPivotR) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw 0.0))
+    ; A cut OpenAI's elbows straighten too, and the hand sockets go back to their forearms' rotation.
+    (Transformation|SetRelativeRotation :self (Variables|Default|GetElbowL) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw 0.0))
+    (Transformation|SetRelativeRotation :self (Variables|Default|GetElbowR) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw 0.0))
+    (Transformation|SetRelativeRotation :self (Variables|Default|GetHandSocket) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw 0.0))
+    (Transformation|SetRelativeRotation :self (Variables|Default|GetHandSocketL) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch 0.0 :Yaw 0.0))
     (else
       ; T87: a robot that rose for the reveal (Rise) eases from its fallen pose back to upright, SetCut's fall in
       ; reverse, at the fall's speed. Slump and TipRoll are 0 for a robot that was never cut, so nothing changes for it.
@@ -48,6 +53,15 @@
       (bind _fr (* (Variables|Default|GetFoldRoll) (Variables|Default|GetFold)))
       (Transformation|SetRelativeRotation :self (Variables|Default|GetArmPivotL) :NewRotation (Math|Rotator|MakeRotator :Roll (- _arm _fr) :Pitch _fp :Yaw 0.0))
       (Transformation|SetRelativeRotation :self (Variables|Default|GetArmPivotR) :NewRotation (Math|Rotator|MakeRotator :Roll (- _fr _arm) :Pitch _fp :Yaw 0.0))
+      ; OpenAI's fold also bends its elbows (FoldElbowPitch, FoldElbowYaw; 0 on the other robots): the forearms come forward and in,
+      ; and the mittens press together in front of the chest. The rigid sleeve is two meshes, SM_OpenAI_UpperArm and SM_OpenAI_Forearm.
+      (bind _ebp (* (Variables|Default|GetFoldElbowPitch) (Variables|Default|GetFold)))
+      (bind _eby (* (Variables|Default|GetFoldElbowYaw) (Variables|Default|GetFold)))
+      (Transformation|SetRelativeRotation :self (Variables|Default|GetElbowL) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch _ebp :Yaw _eby))
+      (Transformation|SetRelativeRotation :self (Variables|Default|GetElbowR) :NewRotation (Math|Rotator|MakeRotator :Roll 0.0 :Pitch _ebp :Yaw (- 0.0 _eby)))
+      ; The hand sockets ride the forearms but keep the shoulder's rotation, so a held prop stays upright as before.
+      (Transformation|SetWorldRotation :self (Variables|Default|GetHandSocket) :NewRotation (Transformation|GetWorldRotation :self (Variables|Default|GetArmPivotR)))
+      (Transformation|SetWorldRotation :self (Variables|Default|GetHandSocketL) :NewRotation (Transformation|GetWorldRotation :self (Variables|Default|GetArmPivotL)))
       (bind _m (select _talk (Math|Float|Absolute(Float) _w13) 0.0))
       ; T75: the talking stretch rides on the emotion's mouth (MouthNow), in units of the resting mouth.
       ; With no emotion, MouthNow is MouthRest (0.02, 0.1, 0.02), so this is T46's stretch exactly.

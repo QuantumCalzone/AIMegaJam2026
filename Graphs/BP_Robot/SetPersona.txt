@@ -19,8 +19,12 @@
   (Variables|Default|SetBobSpeed (select _v 1.1 (select _w 6.0 (select _o 4.5 (select _p 0.7 2.0)))))
   (Variables|Default|SetBobAmp (select _v 3.5 (select _w 1.0 (select _o 4.0 (select _p 0.6 2.5)))))
   (Variables|Default|SetHoverZ 0.0)
-  (Variables|Default|SetFoldPitch (select _v 70.0 0.0))
-  (Variables|Default|SetFoldRoll (select _v 33.0 0.0))
+  ; OpenAI's fold: the shoulders swing a little forward and in, and the elbows bend the forearms forward (85) and in (72), so the mittens meet thumbs up
+  ; in front of the chest, as in its concept. Before the elbows, the straight sleeves swung 70 forward and jutted at the camera.
+  (Variables|Default|SetFoldPitch (select _v 15.0 0.0))
+  (Variables|Default|SetFoldRoll (select _v 8.0 0.0))
+  (Variables|Default|SetFoldElbowPitch (select _v 85.0 0.0))
+  (Variables|Default|SetFoldElbowYaw (select _v 72.0 0.0))
   ; T79: eyes: wide and round (OpenAI), half-closed (Anthropic), small dots (SpaceXAI). T80: round 10 cm eyes for Meta and me.
   ; T103: the new heads are bigger, so OpenAI's and Anthropic's eyes grow, and each head spaces its eyes for its own screen, glasses or slots.
   (bind _es (select _v (Math|Vector|MakeVector :X 0.1 :Y 0.14 :Z 0.14) (select _w (Math|Vector|MakeVector :X 0.1 :Y 0.12 :Z 0.09) (select _o (Math|Vector|MakeVector :X 0.1 :Y 0.09 :Z 0.09) (select _p (Math|Vector|MakeVector :X 0.1 :Y 0.11 :Z 0.11) (Math|Vector|MakeVector :X 0.1 :Y 0.1 :Z 0.1))))))
@@ -45,8 +49,11 @@
   (Transformation|SetRelativeLocation :self (Variables|Default|GetArmPivotR) :NewLocation (Math|Vector|MakeVector :X 0.0 :Y _sy :Z _sz))
   ; T80: each body's head socket, placed and scaled so T47's headpieces fit every head (T80's Findings has the final numbers), and its back socket. T103: Meta's head top is at 151 now.
   ; HandSocket rides on the right arm pivot, at the centre of each arm's hand; T109: HandSocketL is its mirror on the left pivot (Receive's slot 1).
-  (Transformation|SetRelativeLocation :self (Variables|Default|GetHandSocket) :NewLocation (select _v (Math|Vector|MakeVector :X 0.1 :Y 11.1 :Z -36.5) (select _w (Math|Vector|MakeVector :X 0.7 :Y 16.1 :Z -42.9) (select _o (Math|Vector|MakeVector :X -0.1 :Y 23.2 :Z -35.6) (select _p (Math|Vector|MakeVector :X 3.9 :Y 5.4 :Z -32.1) (Math|Vector|MakeVector :X 7.8 :Y -0.7 :Z -60.3))))))
-  (Transformation|SetRelativeLocation :self (Variables|Default|GetHandSocketL) :NewLocation (select _v (Math|Vector|MakeVector :X 0.1 :Y -11.1 :Z -36.5) (select _w (Math|Vector|MakeVector :X 0.7 :Y -16.1 :Z -42.9) (select _o (Math|Vector|MakeVector :X -0.1 :Y -23.2 :Z -35.6) (select _p (Math|Vector|MakeVector :X 3.9 :Y -5.4 :Z -32.1) (Math|Vector|MakeVector :X 7.8 :Y 0.7 :Z -60.3))))))
+  ; Each hand socket now sits on its elbow (ElbowR, ElbowL), which is at the pivot for every robot but OpenAI. OpenAI's elbow is mid-sleeve, so its sockets are measured from there.
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetElbowL) :NewLocation (select _v (Math|Vector|MakeVector :X 0.03 :Y -3.53 :Z -15.66) (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 0.0)))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetElbowR) :NewLocation (select _v (Math|Vector|MakeVector :X 0.03 :Y 3.53 :Z -15.66) (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 0.0)))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetHandSocket) :NewLocation (select _v (Math|Vector|MakeVector :X 1.29 :Y 6.49 :Z -22.84)(select _w (Math|Vector|MakeVector :X 0.7 :Y 16.1 :Z -42.9) (select _o (Math|Vector|MakeVector :X -0.1 :Y 23.2 :Z -35.6) (select _p (Math|Vector|MakeVector :X 3.9 :Y 5.4 :Z -32.1) (Math|Vector|MakeVector :X 7.8 :Y -0.7 :Z -60.3))))))
+  (Transformation|SetRelativeLocation :self (Variables|Default|GetHandSocketL) :NewLocation (select _v (Math|Vector|MakeVector :X 1.29 :Y -6.49 :Z -22.84)(select _w (Math|Vector|MakeVector :X 0.7 :Y -16.1 :Z -42.9) (select _o (Math|Vector|MakeVector :X -0.1 :Y -23.2 :Z -35.6) (select _p (Math|Vector|MakeVector :X 3.9 :Y -5.4 :Z -32.1) (Math|Vector|MakeVector :X 7.8 :Y 0.7 :Z -60.3))))))
   (Transformation|SetRelativeLocation :self (Variables|Default|GetHeadSocket) :NewLocation (select _h (Math|Vector|MakeVector :X -2.0 :Y 0.0 :Z 162.0) (select _p (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 151.0) (Math|Vector|MakeVector :X 0.0 :Y 0.0 :Z 158.0))))
   (bind _hs (select _p 0.9 (select _h 1.1 1.0)))
   (Transformation|SetRelativeScale3D :self (Variables|Default|GetHeadSocket) :NewScale3D (Math|Vector|MakeVector :X _hs :Y _hs :Z _hs))
