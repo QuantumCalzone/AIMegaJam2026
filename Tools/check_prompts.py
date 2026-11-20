@@ -194,7 +194,10 @@ NHOS: TELL lines, and a won show's NHOS: RIVALS against personas.json 'rival'.
 
 Build (T68): llm.json's 'build' goes with every analytics event, and the relay
 refuses one over 20 characters. The file check fails a missing, empty or longer
-'build'.
+'build'. Since T111 it is 'local' in the repo, so the editor and builds packaged
+by hand report local; Tools/deploy_itch.py stamps each build it makes with its
+version label, <commit date>-<short sha> (18 characters), in the deploy
+worktree's copy only.
 
 Emotions in replies (T76): every reply carries 'emotion', the face its robot
 shows while its line plays. The file check fails a reply_schema (or any other

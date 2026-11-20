@@ -29,18 +29,29 @@ What it does, in order:
    commit: git fetch (main and dev), git checkout --detach, git lfs pull. It never builds in the repo folder,
    where sessions have uncommitted work. The worktree shares the repo folder's .git/lfs, so a run
    downloads only new LFS objects.
-2. Packages it with the "Package a Windows build" or "Package a macOS build" command from
+2. Stamps the version label, <commit date>-<short sha> (the date in UTC; the same label its file gets
+   on itch.io, for example 2026-11-20-10f8540), into the deploy worktree's own
+   Content/NHOS/Data/llm.json: the "build" field only, the rest of the file byte for byte as it was.
+   The game sends that field with every analytics event, so the stats can tell one release from
+   another (T111). The repo's llm.json says "local", so the editor and builds packaged by hand report
+   local. The next run's git reset --hard drops the stamp. With --build, nothing is stamped.
+3. Packages it with the "Package a Windows build" or "Package a macOS build" command from
    Docs/Builds.md, into <deploy worktree>/Packaged/deploy/<short sha>/. On Windows the command goes in
    a .bat run with cmd /c. On a Mac it takes the staged app from Saved/StagedBuilds/Mac/ (the
-   archive step copies only the executable) and copies it with ditto --clone.
-3. Puts the build in NoHumansOnSet_<Windows|Mac>/ and deletes every .pdb and any Local/ or Saved/
+   archive step copies only the executable) and copies it with ditto --clone. Either way the
+   packager stages Content/NHOS/Data as loose files, the stamped llm.json among them.
+4. Puts the build in NoHumansOnSet_<Windows|Mac>/ and deletes every .pdb and any Local/ or Saved/
    folder in it (in the Mac app, Contents/UE/AIMegaJam2026/Local/). If that changed anything inside
    the Mac app, it signs the app again ad hoc and keeps its sandbox entitlements.
-4. Runs Tools/check_build_secrets.py on it with --local <repo folder>/Local (the deploy worktree
+5. Reads "build" back from the llm.json staged in the build. If it isn't the version label, the run
+   stops here, before the secrets check, and pushes nothing. It only reads: a change inside the Mac
+   app would break its signature. With --build, the label to check against comes from --commit;
+   with no --commit the script only says what the build reports.
+6. Runs Tools/check_build_secrets.py on it with --local <repo folder>/Local (the deploy worktree
    has no Local/, and nothing is ever copied out of it). Anything but exit code 0 stops the run,
    and so does a check that found no key files to look for. On a Mac,
    codesign --verify --deep --strict must then pass on the app too.
-5. Reads the page's channels back with butler status. A channel that isn't on the page yet would
+7. Reads the page's channels back with butler status. A channel that isn't on the page yet would
    become a new file, visible at once, so only a push with --hidden may make one; the editor's
    menu never does. butler pushes only to its own channels, so it can't touch a file that went up
    through the web form (the jam's file). Then it pushes:
@@ -56,6 +67,7 @@ Exit code: 0 pushed (or, with --dry-run, ready to push), 1 failed or stopped.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import platform
 import re
@@ -72,6 +84,14 @@ RELEASE_BRANCH = "main"  # the production branch: the last release, built by def
 WORK_BRANCH = "dev"  # where all work happens; fetched too, so --commit origin/dev is up to date
 DEFAULT_COMMIT = f"origin/{RELEASE_BRANCH}"
 GAME = "quantumcalzone/no-humans-on-set"
+
+# The game's settings file, relative to a project folder. Its "build" goes with every analytics event
+# (T68); the deploy worktree's copy gets the version label before packaging (T111).
+LLM_JSON = Path("Content/NHOS/Data/llm.json")
+# The one line to stamp: "build": "<plain text>" at the start of a line. The JSON check after the
+# change makes sure it was the top-level field and that nothing else changed.
+BUILD_LINE = re.compile(r'^[ \t]*"build"[ \t]*:[ \t]*"(?P<value>[^"\\\r\n]*)"', re.MULTILINE)
+MAX_BUILD = 20  # the relay refuses a longer build (T67)
 
 PLATFORMS = {
     "windows": {"channel": "windows", "folder": "NoHumansOnSet_Windows", "main": f"{PROJECT}.exe"},
@@ -318,6 +338,72 @@ def prepare_worktree(repo: Path, deploy: Path, commit: str) -> str:
     return sha
 
 
+# ---------------------------------------------------------------- the version label (T111)
+
+def version_label(repo: Path, sha: str | None) -> str:
+    """<commit date>-<short sha>, the date in UTC: the file's version on itch.io and the build's "build".
+
+    With no commit (--build alone) it is <today>-manual.
+    """
+    if not sha:
+        return f"{datetime.now(timezone.utc):%Y-%m-%d}-manual"
+    when = git("show", "-s", "--format=%cI", sha, cwd=repo)
+    day = datetime.fromisoformat(when).astimezone(timezone.utc).strftime("%Y-%m-%d")
+    return f"{day}-{sha[:7]}"
+
+
+def _read_json_bytes(path: Path) -> tuple[bytes, str, dict]:
+    """(UTF-8 BOM or b"", the text as it is on disk, line endings and all, the parsed object)."""
+    raw = path.read_bytes()
+    bom = b"\xef\xbb\xbf" if raw.startswith(b"\xef\xbb\xbf") else b""
+    text = raw[len(bom):].decode("utf-8")
+    data = json.loads(text)
+    if not isinstance(data, dict):
+        raise RuntimeError(f"{path} does not hold a JSON object")
+    return bom, text, data
+
+
+def stamp_build(deploy: Path, label: str) -> None:
+    """Writes the label into the deploy worktree's llm.json, its "build" field only.
+
+    The text is changed in place, so the file keeps its form; the result must parse to the same
+    object with only "build" changed. The packager then stages the file as a loose file. Never edit
+    the file in a finished build: on a Mac it sits inside the signed .app.
+    """
+    if not 1 <= len(label) <= MAX_BUILD:
+        raise RuntimeError(f"the version label {label!r} is not 1 to {MAX_BUILD} characters, so the relay "
+                           "would refuse every event")
+    path = deploy / LLM_JSON
+    bom, text, before = _read_json_bytes(path)
+    found = list(BUILD_LINE.finditer(text))
+    if len(found) != 1:
+        raise RuntimeError(f'{path} must have one "build": "..." line to stamp, but has {len(found)}')
+    m = found[0]
+    stamped = text[:m.start("value")] + label + text[m.end("value"):]
+    if json.loads(stamped) != dict(before, build=label):
+        raise RuntimeError(f'stamping {path} would change more than its top-level "build"')
+    path.write_bytes(bom + stamped.encode("utf-8"))
+    say(f'stamped "build": "{label}" into the deploy worktree\'s {LLM_JSON.as_posix()} '
+        f'(the commit has "{before.get("build")}")')
+
+
+def staged_build(top: Path) -> str:
+    """Reads "build" from the llm.json staged in the build: the one file at .../Content/NHOS/Data/llm.json.
+
+    On Windows it is under AIMegaJam2026/, in a Mac build inside the .app (Contents/UE/AIMegaJam2026/).
+    It only reads, so the Mac app's signature stays valid.
+    """
+    found = [p for p in top.rglob(LLM_JSON.name)
+             if p.relative_to(top).as_posix().endswith(LLM_JSON.as_posix())]
+    if len(found) != 1:
+        raise RuntimeError(f"the build must hold one {LLM_JSON.as_posix()}, but holds {len(found)}: "
+                           + (", ".join(p.relative_to(top).as_posix() for p in found) or "none"))
+    value = _read_json_bytes(found[0])[2].get("build")
+    if not isinstance(value, str):
+        raise RuntimeError(f'{found[0]} has no text "build" ({value!r})')
+    return value
+
+
 def package_windows(deploy: Path, ue_root: Path, run_dir: Path, top: Path) -> None:
     uproject = deploy / f"{PROJECT}.uproject"
     runuat = ue_root / "Engine/Build/BatchFiles/RunUAT.bat"
@@ -511,6 +597,8 @@ def main() -> int:
             sha = None
             if args.commit:
                 sha = git("rev-parse", "--verify", f"{args.commit}^{{commit}}", cwd=repo)
+            version = version_label(repo, sha)
+            say("--build: the build is checked as it is; nothing is stamped into it")
         else:
             deploy = Path(deploy_arg).resolve()
             if deploy == repo or repo in deploy.parents:
@@ -520,9 +608,11 @@ def main() -> int:
             take_lock(deploy)
             sha = prepare_worktree(repo, deploy, args.commit or DEFAULT_COMMIT)
             release = git("rev-parse", "--verify", f"{DEFAULT_COMMIT}^{{commit}}", cwd=repo)
-            say(f"building {sha[:7]} in {deploy}"
+            version = version_label(repo, sha)
+            say(f"building {sha[:7]} as {version} in {deploy}"
                 + (" (main's tip, the last release)" if sha == release
                    else f" (not main's tip {release[:7]}: not a release)"))
+            stamp_build(deploy, version)
             deploy_dir = deploy / "Packaged" / "deploy"
             # Only the newest run's build is kept.
             if deploy_dir.is_dir():
@@ -541,8 +631,18 @@ def main() -> int:
             # Nothing after this point writes into the bundle.
             say("the .app changed, so it is signed again ad hoc, with its entitlements kept")
             resign_app(top / PLATFORMS["mac"]["main"])
-    except (RuntimeError, OSError, subprocess.SubprocessError) as e:
+        # The gate (T111): the build must report its own version label to analytics.
+        reported = staged_build(top)
+    except (RuntimeError, OSError, subprocess.SubprocessError, ValueError) as e:
         return fail(str(e))
+    if args.build and not sha:
+        say(f'the build reports "build": "{reported}" to analytics; with --build and no --commit there is '
+            "no version label to check it against")
+    elif reported != version:
+        return fail(f'the build reports "build": "{reported}" to analytics, not its version label {version}; '
+                    "nothing was pushed")
+    else:
+        say(f'the build reports "build": "{version}" to analytics, its version label')
 
     # The secrets check comes before the signature gate, so a planted key stops the run here.
     code = secrets_check(push_root, local, ue_root)
@@ -554,13 +654,6 @@ def main() -> int:
         if verify_signature(top / PLATFORMS["mac"]["main"]) != 0:
             return fail("codesign --verify --deep --strict failed on the app; nothing was pushed")
         say("the app's signature is valid")
-
-    if sha:
-        when = git("show", "-s", "--format=%cI", sha, cwd=repo)
-        day = datetime.fromisoformat(when).astimezone(timezone.utc).strftime("%Y-%m-%d")
-        version = f"{day}-{sha[:7]}"
-    else:
-        version = f"{datetime.now(timezone.utc):%Y-%m-%d}-manual"
 
     cmd = [str(butler) if butler else "butler", "push", str(push_root), f"{GAME}:{channel}",
            "--userversion", version, "--if-changed"]
