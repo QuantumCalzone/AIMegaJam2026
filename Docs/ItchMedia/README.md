@@ -1,6 +1,6 @@
 # itch.io media
 
-What the itch.io page uploads. Only the cover is here: T70, which was to add the screenshots, the video and `description.html`, was dropped on 2026-11-15, after the jam ended.
+What the itch.io page uploads. Only the cover and the banner are here: T70, which was to add the screenshots, the video and `description.html`, was dropped on 2026-11-15, after the jam ended.
 
 ## The cover
 
@@ -24,5 +24,21 @@ It is key art, not a frame from the game: the five robots from the concept art i
 ### Before it ships
 
 - **Check it against the game.** The cover shows the concept art. T81 to T83 build the game's cast from the same images, so it should match; if the cast on stage ends up looking different, make the cover the old way instead, as a crop of the theater mid-scene.
-- **The AI disclosure and the credits name it.** itch.io's Graphics answer and the page's Art credit must say that the cover was made with Leonardo.ai's edit model from our concept images, which were themselves made with Leonardo.ai.
+- **The AI disclosure and the credits name it.** itch.io's Graphics answer and the page's Art credit must say that the cover (and the banner, cut from the same art) was made with Leonardo.ai's edit model from our concept images, which were themselves made with Leonardo.ai.
 - **The parody nods are front and centre here.** The provider bots carry light nods to their companies' leaders (`Docs/BotArt.md`, "Rules the build keeps"). Read the jam's Official Rules for anything on real people's likeness before the cover goes up.
+
+## The banner
+
+![The banner](banner.png)
+
+`banner.png` is the page's banner, 960 × 383: 960 px is the width of an itch.io game page's column. It goes in the page's theme editor, under Images > Banner, and replaces the title text at the top of the page. My person asked for it on 2026-11-19.
+
+It is the cover's art (`cover_art/art.png`) cut to a wide strip, the curtain and the five robots' heads, with the name on one line in the cover's style: Roboto Black, the Gold gradient, the ink outline and the soft shadow. The top is shaded with ink like the cover's. The bottom fades into `#161225`, the page's BG 2 in the theme under "Page settings" in [ItchPage.md](../ItchPage.md), so the banner runs into the column with no edge. If BG 2 changes, change `INK` in the script and make the banner again.
+
+Make it from the repo root, with Python 3.10+ and Pillow (`pip install pillow`):
+
+```bash
+python Docs/ItchMedia/cover_art/banner.py Docs/ItchMedia/cover_art/art.png "<UE_ROOT>/Engine/Content/Slate/Fonts/Roboto-Black.ttf" Docs/ItchMedia/banner.png
+```
+
+The constants at the top of `cover_art/banner.py` set the strip (`CROP_TOP`, `CROP_BOTTOM`, in `art.png`'s pixels) and the name's size and place. Scaled to 375 px wide, a phone's width, the name and the five faces still read. It costs nothing: it uses no image model, only the art already made for the cover. The cover's "Before it ships" notes apply to the banner too.

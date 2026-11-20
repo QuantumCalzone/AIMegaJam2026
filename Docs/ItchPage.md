@@ -23,6 +23,10 @@ The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used f
 | Cover image | 630 × 500, a crop of the theater mid-scene |
 | Screenshots | The theater mid-scene, Scene Prep, Free Talk, the reveal stamp, the end screen, and the title screen with the three ways to play |
 | Gameplay video | The gameplay video made for the jam |
+| Theme: color | BG `#0E0B18`, BG 2 `#161225`, Text `#FFFFFF`, Link `#F2C14E` (itch.io also paints the Download button in it). Under More options: border `#A9873A`, and if it asks for a button text color, `#161225`. These are the game's own UI colors (the palette in `Docs/Design/ArtInspiration.md`): the ink panels, white text, gold for "act now" and the old-gold trim. Curtain red can't be the link color: red on ink measures 3.2:1. |
+| Theme: text | Font Roboto (the game's body font, and the cover's), size Large. If More options offers a header font, Roboto there too. |
+| Theme: layout | Screenshots: Sidebar, so they stay in view beside the long description. |
+| Theme: images | Banner: `Docs/ItchMedia/banner.png` (see `Docs/ItchMedia/README.md`). Its bottom fades into BG 2, so change both together. Background: none. |
 
 **AI generation disclosure.** itch.io asks whether a project has content made with generative AI. Suggested answers (match them to the wording on the edit page, and confirm them: open question 11):
 
