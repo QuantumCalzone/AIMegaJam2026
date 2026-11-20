@@ -36,14 +36,14 @@ Every view is one object on plain light gray, from a Leonardo generation or edit
 
 One row per role, in each card's seat order in `Content/NHOS/Data/scenes.json`. The colors are T47's, unchanged. T104 writes `costumes.json` and the seats' `headpiece` and `color` from it.
 
-**Changed on 2026-11-19, after T104:** a costume goes only on roles where it fits the story (my person's call). The hood stays on the ring quest and the space saga, and the shades on the bowling night and the simulation; the slacker trades the hood for the shades, in their near-black. The 8 roles marked "none yet" had nothing that fits: their seats' `headpiece` is empty, so they play bare-headed until T121 draws a costume of their own and T122 makes it. Their colors are kept for those costumes and may change with them.
+**Changed on 2026-11-19, after T104:** a costume goes only on roles where it fits the story (my person's call). The hood stays on the ring quest and the space saga, and the shades on the bowling night and the simulation; the slacker trades the hood for the shades, in their near-black. The 8 roles marked "none yet" had nothing that fits: their seats' `headpiece` is empty, so they play bare-headed until T129 draws the costume my person picked for each in T121 (2026-11-20) and T122 makes it. Their colors are kept for those costumes and may change with them.
 
 | Card | Seat | Role | Costume (folder) | Color |
 |---|---|---|---|---|
 | `space_plans` | 1 | A farm kid | wide-brim hat (`wide_brim_hat`) | #E3C770 |
 | `space_plans` | 2 | A masked villain | saucepan helmet (`saucepan_helmet`) | #222226 |
 | `space_plans` | 3 | An old desert hermit | hood (`hood`) | #7A5232 |
-| `space_plans` | 4 | A smuggler pilot | none yet (T121, T122) | #1A1A1E |
+| `space_plans` | 4 | A smuggler pilot | none yet: aviator cap, picked in T121 (T129, T122) | #1A1A1E |
 | `space_plans` | 5 | A rebel princess | tiara (`tiara`) | #D9DEE6 |
 | `mine_bridge` | 1 | A barefoot homebody | bob wig (`bob_wig`) | #8B4A26 |
 | `mine_bridge` | 2 | A bossy old wizard | wizard hat (`wizard_hat`) | #8C8A86 |
@@ -54,16 +54,16 @@ One row per role, in each card's seat order in `Content/NHOS/Data/scenes.json`. 
 | `dino_island` | 2 | A dinosaur expert | wide-brim hat (`wide_brim_hat`) | #7A7A3A |
 | `dino_island` | 3 | A runaway dinosaur with tiny arms | dino hood (`dino_hood`) | #5DA642 |
 | `dino_island` | 4 | A kid on the tour | ball cap (`ball_cap`) | #C8202E |
-| `dino_island` | 5 | The park's nervous lawyer | none yet (T121, T122) | #1A1A1E |
+| `dino_island` | 5 | The park's nervous lawyer | none yet: hard hat, picked in T121 (T129, T122) | #1A1A1E |
 | `favor_father` | 1 | The family boss, father of the bride | fedora (`fedora`) | #2A2A2E |
 | `favor_father` | 2 | The hot-headed eldest son | ball cap, worn backwards (`ball_cap`) | #E0482E |
-| `favor_father` | 3 | The reluctant youngest son | none yet (T121, T122) | #6B6B30 |
-| `favor_father` | 4 | The family adviser | none yet (T121, T122) | #1A1A1E |
+| `favor_father` | 3 | The reluctant youngest son | none yet: newsboy cap, picked in T121 (T129, T122) | #6B6B30 |
+| `favor_father` | 4 | The family adviser | none yet: bowler hat, picked in T121 (T129, T122) | #1A1A1E |
 | `favor_father` | 5 | A washed-up crooner | top hat (`top_hat`) | #8A3FB8 |
-| `glowing_briefcase` | 1 | A chatty errand man in a black suit | none yet (T121, T122) | #121216 |
+| `glowing_briefcase` | 1 | A chatty errand man in a black suit | none yet: pompadour wig, picked in T121 (T129, T122) | #121216 |
 | `glowing_briefcase` | 2 | A nosy errand man in a black suit | fedora (`fedora`) | #4A4A4E |
 | `glowing_briefcase` | 3 | The boss's bored wife | bob wig (`bob_wig`) | #141416 |
-| `glowing_briefcase` | 4 | A runaway boxer who refused to lose | none yet (T121, T122) | #B8262A |
+| `glowing_briefcase` | 4 | A runaway boxer who refused to lose | none yet: boxing headgear, picked in T121 (T129, T122) | #B8262A |
 | `glowing_briefcase` | 5 | A smooth fixer in a tuxedo | top hat (`top_hat`) | #1C1C20 |
 | `league_night` | 1 | A laid-back slacker in a bathrobe | dark shades (`dark_shades`) | #1A1A1E |
 | `league_night` | 2 | A hot-headed teammate who knows every rule | saucepan helmet (`saucepan_helmet`) | #6E7438 |
@@ -71,10 +71,10 @@ One row per role, in each card's seat order in `Content/NHOS/Data/scenes.json`. 
 | `league_night` | 4 | A flashy rival bowler | top hat (`top_hat`) | #F0459A |
 | `league_night` | 5 | An avant-garde artist | bob wig (`bob_wig`) | #1F4FC8 |
 | `pick_a_pill` | 1 | A sleepy office worker | beanie (`beanie`) | #6E7F92 |
-| `pick_a_pill` | 2 | A grand leader in a long coat | none yet (T121, T122) | #6E1E2A |
+| `pick_a_pill` | 2 | A grand leader in a long coat | none yet: round glasses and high collar, picked in T121 (T129, T122) | #6E1E2A |
 | `pick_a_pill` | 3 | A rebel in black leather | bob wig (`bob_wig`) | #18181C |
 | `pick_a_pill` | 4 | A stern agent in a dark suit | dark shades (`dark_shades`) | #1A1A1E |
-| `pick_a_pill` | 5 | A fortune-teller baking cookies | none yet (T121, T122) | #B9A3DE |
+| `pick_a_pill` | 5 | A fortune-teller baking cookies | none yet: headscarf, picked in T121 (T129, T122) | #B9A3DE |
 
 ## How it was made
 
