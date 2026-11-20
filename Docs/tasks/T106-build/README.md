@@ -1,6 +1,6 @@
 # T106's build scripts: the house in `L_Stage`
 
-The editor Python that built T106's theater, in the order it ran (2026-11-19). Run each from the
+The editor Python that built T106's theater, in the order it ran (2026-11-19), and T114's box seats after it (step 7). Run each from the
 editor's `Cmd` box: `py "<repo>/Docs/tasks/T106-build/<step>.py"`. Each writes its result to
 `Saved/T106/out/<step>.json` (or `<step>.err.txt`). [T106.md](../T106.md) has what each found.
 
@@ -14,3 +14,9 @@ editor's `Cmd` box: `py "<repo>/Docs/tasks/T106-build/<step>.py"`. Each writes i
    (`Stage/Theater/Opera/T106`), the old parts named in `DELETE`, and every audience bot, then places it all
    again. It does not save. `s06_shots.py` takes layout shots from the editor viewport.
 6. Save the level, then `s07_cleanup.py` (`DRY_RUN` first) deletes the old assets that nothing references.
+7. `s08_box_seats.py` (T114, 2026-11-20). The box audience's seats, re-runnable: run it after every run of `s05`,
+   which puts the box bots back on the ledge and clears s08's folder (`Stage/Theater/Opera/T106/BoxSeats`). It
+   stands a parapet on each box's balcony (a dark wood panel, gold balusters and mouldings, a crimson velvet rail),
+   hangs a warm lamp under each arch, puts a chair behind the rail for each box bot and seats the bot in it, turned
+   toward the stage. It does not save. Unlike `s05`, it needs no snapshot: it works from the boxes and bots in the
+   level. [T114.md](../T114.md) has the numbers it was tuned with.

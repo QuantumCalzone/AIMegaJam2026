@@ -22,6 +22,12 @@ T106 built the house in `L_Stage` on 2026-11-19 from the 12 models in this folde
 
 ![The game's house: dark wood and gold boxes with audience robots at the edges, gold scroll reliefs on dark boards beside the crimson curtains, the valance and gold chandelier at the top, the five robots on the plank stage with gold robot cherubs at the corners and footlights in gold shell hoods, and the audience in top hats and bowlers in the crimson stalls](game_house_compare.png)
 
+## The box seats (T114)
+
+T114 seated the box audience on 2026-11-20. The theater box model has no rail: its balcony is a flat slab, and T106's bots stood on it like figures on a shelf. Now each box has a chunky parapet on the slab's edge (a dark wood panel, fat gold turned balusters and mouldings, a crimson velvet rail), a warm lamp hanging under its arch, and two crimson chairs (the stalls seat, smaller) behind the rail. Each box bot sits in one, lowered so its head and shoulders show above the rail, turned toward the stage, with its color, hat and glasses kept. Left: before; right: after. Top: the house camera at 1600 × 900 (title screen, UI hidden); bottom: a close-up of the lower left box from the house camera's direction. `Docs/tasks/T106-build/s08_box_seats.py` places it all; [Docs/tasks/T114.md](../../tasks/T114.md) has the numbers.
+
+![Before and after. Top: the house camera; before, the box bots stand on bare ledges at the frame's edges; after, each box has a gold balustrade with a crimson velvet rail and a lamp, and the bots peek over the rail. Bottom: the lower left box close up; before, two bots in top hats stand on a flat shelf in front of the drapes; after, they sit in crimson chairs behind a gold turned balustrade and a velvet rail, under a hanging lamp, turned toward the stage, one with opera glasses](box_seats_compare.png)
+
 ## The pieces T106 makes
 
 ![The 14 piece views on one sheet. Row 1: chandelier, robot cherub on its plinth, wall pilaster, theater box, side curtain. Row 2: valance, Riser, prop table, stalls seat, footlight. Row 3: audience robot front and back, top hat, bowler](pieces/sheet.png)
