@@ -19,7 +19,7 @@ Props: tin-can robot, glow-stick sword, toy blaster; spare: piggy bank.
 | A farm kid | Climb into the space truck on the Riser and leave this dusty planet today, taking the tin-can robot with you if you can. | wide-brim hat (sandy straw yellow) |
 | A masked villain | Breathe very loudly while you hunt for the tin-can robot, then grab it and march it to the Back, where your shuttle waits. | saucepan helmet (black) |
 | An old desert hermit | Teach anyone who will listen your ancient art of waving the glow-stick sword, then give it to your best student. | hood (earthy brown) |
-| A smuggler pilot | Guard your space truck on the Riser with the toy blaster, and let nobody aboard until they hand you something valuable up front. | dark shades (black lenses) |
+| A smuggler pilot | Guard your space truck on the Riser with the toy blaster, and let nobody aboard until they hand you something valuable up front. | none yet: its own costume comes in T121 and T122 |
 | A rebel princess | Grab the toy blaster and keep the tin-can robot out of the wrong hands until you can give it to the one actor you trust. | tiara (silver and white) |
 
 ## The Ring Is Mine, I Mean Ours
@@ -60,7 +60,7 @@ Props: dino egg, meaty drumstick, safety waiver; spare: dino plush.
 | A dinosaur expert | Get every guest up on the Riser before something big shows up, and scold anyone who climbs back down. | wide-brim hat (olive green) |
 | A runaway dinosaur with tiny arms | Get your dino egg back from wherever it ends up, and roar at anyone who touches it. | dino hood (grass green) |
 | A kid on the tour | Feed the meaty drumstick to a dinosaur, or to whoever looks most like one, no matter what the grown-ups say. | ball cap (cherry red) |
-| The park's nervous lawyer | Hand the safety waiver to every guest to sign, then hide at the Back far from anything with teeth. | dark shades (black) |
+| The park's nervous lawyer | Hand the safety waiver to every guest to sign, then hide at the Back far from anything with teeth. | none yet: its own costume comes in T121 and T122 |
 
 ## The Favor Father
 
@@ -78,8 +78,8 @@ Props: plush horse head, cannoli tray, wedding envelope; spare: bowl of oranges.
 | --- | --- | --- |
 | The family boss, father of the bride | Sit on the Riser like a king, say yes to every favor anyone asks, and seal each deal by handing over the cannoli tray. | fedora (charcoal black with a red band) |
 | The hot-headed eldest son | Take offense at every tiny insult to the family, throw the cannoli tray at whoever said it, then storm off to sulk at the Back. | ball cap (tomato red, worn backwards) |
-| The reluctant youngest son | Stay out of the family business: hide at the Front by the footlights and dodge anyone who comes over to ask a favor, because today you cannot say no. | hood (olive green) |
-| The family adviser | Fix every problem the same quiet way: grab the plush horse head and throw it at whoever is causing trouble. | dark shades (black) |
+| The reluctant youngest son | Stay out of the family business: hide at the Front by the footlights and dodge anyone who comes over to ask a favor, because today you cannot say no. | none yet: its own costume comes in T121 and T122 |
+| The family adviser | Fix every problem the same quiet way: grab the plush horse head and throw it at whoever is causing trouble. | none yet: its own costume comes in T121 and T122 |
 | A washed-up crooner | Win a starring movie role: croon a sad song at the Front, then give the wedding envelope to whoever looks most in charge and beg for help. | top hat (glittery purple) |
 
 ## What's in the Glowing Briefcase?
@@ -96,10 +96,10 @@ Props: glowing briefcase, gold pocket watch, giant milkshake; spare: giant chees
 
 | Role | Want | Headpiece |
 | --- | --- | --- |
-| A chatty errand man in a black suit | Carry the glowing briefcase to the boss's booth at the Back, chatting about burgers all the way, and let nobody open it. | dark shades (glossy black) |
+| A chatty errand man in a black suit | Carry the glowing briefcase to the boss's booth at the Back, chatting about burgers all the way, and let nobody open it. | none yet: its own costume comes in T121 and T122 |
 | A nosy errand man in a black suit | Get the glowing briefcase to yourself at the Front and peek inside it while nobody is looking. | fedora (dark gray with a skinny black band) |
 | The boss's bored wife | Win the dance contest on the Riser, pull anyone you like up to be your partner, and claim the giant milkshake as your prize. | bob wig (jet black) |
-| A runaway boxer who refused to lose | Grab your lucky gold pocket watch before anyone else can and keep it safe at Left, dodging anyone who asks about the big fight. | hood (red with gold trim) |
+| A runaway boxer who refused to lose | Grab your lucky gold pocket watch before anyone else can and keep it safe at Left, dodging anyone who asks about the big fight. | none yet: its own costume comes in T121 and T122 |
 | A smooth fixer in a tuxedo | Clean up the chaos in record time: grab any prop left lying loose and throw it back onto the Prop Table. | top hat (black with a white band) |
 
 ## League Night, Bathrobe Optional
@@ -116,7 +116,7 @@ Props: rolled-up rug, bowling ball, ransom bag; spare: milk carton.
 
 | Role | Want | Headpiece |
 | --- | --- | --- |
-| A laid-back slacker in a bathrobe | Replace your ruined rug with the rolled-up rug, throw it down at Center, and stay relaxed no matter who yells at you. | hood (oatmeal beige) |
+| A laid-back slacker in a bathrobe | Replace your ruined rug with the rolled-up rug, throw it down at Center, and stay relaxed no matter who yells at you. | dark shades (black) |
 | A hot-headed teammate who knows every rule | Take charge of the ransom bag, throw it at the Back yourself, and call a foul on anyone who questions your plan. | saucepan helmet (olive green) |
 | A quiet bowler nobody listens to | Get the bowling ball and finally take your turn, rolling it at the pins at the Back, before anyone cuts you off. | ball cap (pale sky blue) |
 | A flashy rival bowler | Claim the Riser as your winners' podium before a single frame is bowled, and hold up the bowling ball like you already won. | top hat (hot pink) |
@@ -137,7 +137,7 @@ Props: red pill, blue pill, ringing phone; spare: bent spoon.
 | Role | Want | Headpiece |
 | --- | --- | --- |
 | A sleepy office worker | Refuse to choose: give away any pill or prop that reaches you, and keep sneaking back to the Riser for a nap. | beanie (dull office gray-blue) |
-| A grand leader in a long coat | Grab a pill, settle into the Riser, and give it to whoever looks most confused, swishing your coat dramatically. | wide-brim hat (deep maroon) |
+| A grand leader in a long coat | Grab a pill, settle into the Riser, and give it to whoever looks most confused, swishing your coat dramatically. | none yet: its own costume comes in T121 and T122 |
 | A rebel in black leather | Grab the ringing phone and give it to whoever seems ready to escape, and dodge in slow motion at Center whenever anything is thrown. | bob wig (glossy black) |
 | A stern agent in a dark suit | Gather up every loose pill and the ringing phone, throw them back onto the Prop Table, and glare at any actor who looks suspiciously like a pill. | dark shades (black) |
-| A fortune-teller baking cookies | Stir your cookie dough at the Back, then give a pill to whoever you predict will pick the wrong one. | wizard hat (soft lavender) |
+| A fortune-teller baking cookies | Stir your cookie dough at the Back, then give a pill to whoever you predict will pick the wrong one. | none yet: its own costume comes in T121 and T122 |

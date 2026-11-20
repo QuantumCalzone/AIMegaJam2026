@@ -80,7 +80,7 @@ The surfaces: crimson velvet, bright gold, dark wood, stage planks, cream and ho
 
 ![Every costume in the game on all five characters (OpenAI, Anthropic, SpaceXAI, Meta, You), close up: hood, dark shades, top hat, bob wig, ball cap, wide-brim hat, saucepan helmet, wizard hat, tiara, fedora, horned helmet with beard, dino hood, beanie and the ball cap turned back](../Art/Costumes/game_fit_grid.png)
 
-- Thirteen clay costumes dress all 35 roles, each role in its own color: one model per costume version, and the color comes from its clay material. A costume is a headpiece, worn over the robot's own parts. It never hides the face, the mouth, the seat color or the name tag. A cut robot keeps the costume it wore. The dwarf's beard is a second part in its own ginger color.
+- Thirteen clay costumes dress 27 of the 35 roles, each role in its own color: one model per costume version, and the color comes from its clay material. A costume goes only on roles where it fits the story, as each card's props do (my call, 2026-11-19), though one that fits several stories may be on several cards: the hood is the ring quest's and the space saga's, the shades the bowling night's and the simulation's. The other 8 roles had nothing that fits, so each gets a costume of its own (T121 draws them, T122 makes the models); until then they play bare-headed. A costume is a headpiece, worn over the robot's own parts. It never hides the face, the mouth, the seat color or the name tag. A cut robot keeps the costume it wore. The dwarf's beard is a second part in its own ginger color.
 - Every costume fits every head. One round version fits the three round heads and Meta, where it sits over the solid hair cap. The soft pieces have a boxy version made for the player's cube: the hood, the bob wig, the ball cap, the saucepan, the dwarf's helmet and beard, the dino hood and the beanie. Hats with a crown and brim sit flat on the cube's lid.
 - Anthropic's antenna light and the player's ping-pong ball poke up through or beside any costume. The shades hide Anthropic's and Meta's own glasses. The dwarf's beard hangs below the mouth.
 - Homemade parody versions only: a black saucepan helmet, never a film's real villain helmet.
@@ -88,19 +88,20 @@ The surfaces: crimson velvet, bright gold, dark wood, stage planks, cream and ho
 
 | Costume | Roles (story: color) |
 | --- | --- |
-| Hood | slacker (bowling: oatmeal) · ranger (ring: moss green) · youngest son (wedding: olive) · boxer (diner: red, gold trim) · hermit (space: brown) |
-| Dark shades | adviser (wedding) · lawyer (dino) · agent (office) · chatty errand man (diner) · smuggler (space) |
+| Hood | ranger (ring: moss green) · hermit (space: brown) |
+| Dark shades | slacker (bowling) · agent (office) |
 | Top hat | rival bowler (hot pink) · crooner (glittery purple) · park owner (cream) · fixer (black, white band); also the audience |
 | Bob wig | artist (cobalt) · homebody (chestnut) · rebel (glossy black) · boss's wife (jet black) |
 | Ball cap | quiet bowler (sky blue) · eldest son (tomato red, backwards) · tour kid (cherry red) |
-| Wide-brim hat | dino expert (olive) · leader in a long coat (maroon) · farm kid (straw) |
+| Wide-brim hat | dino expert (olive) · farm kid (straw) |
 | Saucepan helmet | rule-keeper teammate (olive) · masked villain (black) |
-| Wizard hat | wizard (dusty gray) · fortune-teller (lavender) |
+| Wizard hat | wizard (dusty gray) |
 | Tiara | elf (pale silver) · princess (silver and white) |
 | Fedora | family boss (black, red band) · nosy errand man (dark gray) |
 | Horned helmet with beard | dwarf (iron gray, ginger beard) |
 | Dino hood | runaway dinosaur (grass green) |
 | Beanie | office worker (gray-blue) |
+| Its own, to come (T121, T122) | smuggler pilot (space) · nervous lawyer (dino) · youngest son and adviser (wedding) · chatty errand man and boxer (diner) · leader in a long coat and fortune-teller (office) |
 
 ### Props and backdrops
 

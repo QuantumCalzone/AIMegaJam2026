@@ -131,7 +131,9 @@ scene n, last word) aren't exactly the actors on stage that someone else named
 with @ in its final round, one each, as NHOS: LASTWORDS says.
 
 Costumes (T47, T104): each seat names a costume from costumes.json and a hex
-color. The file check fails an unknown costume, a color that isn't #RRGGBB, a
+color. An empty costume ("") is a role whose own costume is still to be made
+(T121, T122); its robot plays it bare-headed. The file check fails an unknown
+costume, a color that isn't #RRGGBB, a
 version mesh that isn't on disk, a costume without a test_color or without a
 fit for every persona (naming one of its versions, with a scale, x, y, z, yaw
 and top), an extra part without its mesh, color and fits, and a costume no seat
@@ -1101,8 +1103,8 @@ FIT_KEYS = ("scale", "x", "y", "z", "yaw", "top")
 
 
 def costume_problems(cards, cdata) -> list[str]:
-    """costumes.json and each seat's costume (T47, T104): every seat names a known costume and a hex
-    color; every costume has a mesh on disk per version, a test_color, and a fit for every persona
+    """costumes.json and each seat's costume (T47, T104): every seat names a known costume (or "",
+    bare-headed until T121 and T122 make its own) and a hex color; every costume has a mesh on disk per version, a test_color, and a fit for every persona
     that names one of its versions; an extra part has a mesh on disk, a color and a fit per persona;
     every costume is worn by some seat."""
     def num(v):
@@ -1173,8 +1175,10 @@ def costume_problems(cards, cdata) -> list[str]:
     for c in cards:
         for x in c.get("seats", []):
             hp, col = x.get("headpiece"), x.get("color", "")
-            if hp not in costs:
-                out.append(f"scenes.json: {c.get('id')}'s seat {x.get('role')!r} needs a headpiece from costumes.json, not {hp!r}")
+            if hp == "":
+                pass   # its own costume is still to be made (T121, T122): the robot plays it bare-headed
+            elif hp not in costs:
+                out.append(f"scenes.json: {c.get('id')}'s seat {x.get('role')!r} needs a headpiece from costumes.json (or \"\" while its costume is to come), not {hp!r}")
             else:
                 worn.add(hp)
             if not hexcol.fullmatch(col or ""):

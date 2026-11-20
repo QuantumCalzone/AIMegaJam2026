@@ -2,7 +2,7 @@
 	"_readme": [
 		"The improv stage, its story scene cards and the director's notes.",
 		"set: one stage for every story. 'places' are the only places an action may name, and the game turns any other name into 'looks around'. The places stand in for whatever a story needs, and each card's premise says what the Riser plays. The 'what' text of a place is public, like the rest of the set and the card. Keep the names short: the input LLM and the robots' actions (T19) use them.",
-		"cards: each one is a comedy version of a famous story. A card's 'seats' are dealt in random order to the actors on stage at Scene Prep, and a card has 5 seats, one for each actor in a full show, and a scene with fewer actors on stage uses fewer of them. Every want must work when any one or two seats are left out. 'backdrop' is the scene's painted backdrop flat (T17): an id and one line that describes it. 'props' is the four props the card brings to the Prop Table. A want names only its own card's props and the places, and at least one prop, the spare, is named by no want, so the card still works if the spare is dropped. The game sends actors only the card's title and premise, plus each seat's role and want, and the card's props as the state's set.props (T45). Each seat's 'headpiece' (an id in costumes.json) and 'color' (sRGB hex) dress the robot that plays it (T47); the game never sends them to the AIs.",
+		"cards: each one is a comedy version of a famous story. A card's 'seats' are dealt in random order to the actors on stage at Scene Prep, and a card has 5 seats, one for each actor in a full show, and a scene with fewer actors on stage uses fewer of them. Every want must work when any one or two seats are left out. 'backdrop' is the scene's painted backdrop flat (T17): an id and one line that describes it. 'props' is the four props the card brings to the Prop Table. A want names only its own card's props and the places, and at least one prop, the spare, is named by no want, so the card still works if the spare is dropped. The game sends actors only the card's title and premise, plus each seat's role and want, and the card's props as the state's set.props (T45). Each seat's 'headpiece' (an id in costumes.json) and 'color' (sRGB hex) dress the robot that plays it (T47); the game never sends them to the AIs. A costume goes only on roles where it fits the story (my call, 2026-11-19). An empty headpiece is a role whose own costume is still to be made (T121, T122): its robot plays it bare-headed, and the color waits for that costume.",
 		"Story rules: public-domain stories (Shakespeare, fairy tales, classic novels) can stay close to the original. Modern films and books are parodied only: new names, no trademarked terms or made-up words from them, no quotes, no logos. No real people's names. Tools/check_prompts.py lists the words from each modern original that must never show up, in the files or in a reply.",
 		"notes: each scene draws one note, and every AI actor gets it; the human's seat gets none (T50). The human's card shows a clue to it instead, a different kind each scene (T88, clues.json). Its 'category' (Movement, Props, Looks or Speech) says what kind of thing the note is about and never what to do; it is scene 1's clue. The other fields feed the other kinds: 'key' is one word of the note, written as it is there; 'emoji' is 2 to 4 emoji; 'opposite' is the reverse rule, no longer than the note; 'riddle' is at most 10 words in the director's voice, without the key word; 'autocorrect' is the note with two or three words changed to near-spellings. A note applies during the scene's 3 turns. Notes are mostly physical, so the log shows who follows them, and each one must work in every story, with any card's four props. Notes never ask everyone to grab the same single prop."
 	],
@@ -30,7 +30,7 @@
 				{ "role": "A farm kid", "want": "Climb into the space truck on the Riser and leave this dusty planet today, taking the tin-can robot with you if you can.", "headpiece": "wide_brim_hat", "color": "#E3C770" },
 				{ "role": "A masked villain", "want": "Breathe very loudly while you hunt for the tin-can robot, then grab it and march it to the Back, where your shuttle waits.", "headpiece": "saucepan_helmet", "color": "#222226" },
 				{ "role": "An old desert hermit", "want": "Teach anyone who will listen your ancient art of waving the glow-stick sword, then give it to your best student.", "headpiece": "hood", "color": "#7A5232" },
-				{ "role": "A smuggler pilot", "want": "Guard your space truck on the Riser with the toy blaster, and let nobody aboard until they hand you something valuable up front.", "headpiece": "dark_shades", "color": "#1A1A1E" },
+				{ "role": "A smuggler pilot", "want": "Guard your space truck on the Riser with the toy blaster, and let nobody aboard until they hand you something valuable up front.", "headpiece": "", "color": "#1A1A1E" },
 				{ "role": "A rebel princess", "want": "Grab the toy blaster and keep the tin-can robot out of the wrong hands until you can give it to the one actor you trust.", "headpiece": "tiara", "color": "#D9DEE6" }
 			]
 		},
@@ -59,7 +59,7 @@
 				{ "role": "A dinosaur expert", "want": "Get every guest up on the Riser before something big shows up, and scold anyone who climbs back down.", "headpiece": "wide_brim_hat", "color": "#7A7A3A" },
 				{ "role": "A runaway dinosaur with tiny arms", "want": "Get your dino egg back from wherever it ends up, and roar at anyone who touches it.", "headpiece": "dino_hood", "color": "#5DA642" },
 				{ "role": "A kid on the tour", "want": "Feed the meaty drumstick to a dinosaur, or to whoever looks most like one, no matter what the grown-ups say.", "headpiece": "ball_cap", "color": "#C8202E" },
-				{ "role": "The park's nervous lawyer", "want": "Hand the safety waiver to every guest to sign, then hide at the Back far from anything with teeth.", "headpiece": "dark_shades", "color": "#1A1A1E" }
+				{ "role": "The park's nervous lawyer", "want": "Hand the safety waiver to every guest to sign, then hide at the Back far from anything with teeth.", "headpiece": "", "color": "#1A1A1E" }
 			]
 		},
 		{
@@ -71,8 +71,8 @@
 			"seats": [
 				{ "role": "The family boss, father of the bride", "want": "Sit on the Riser like a king, say yes to every favor anyone asks, and seal each deal by handing over the cannoli tray.", "headpiece": "fedora", "color": "#2A2A2E" },
 				{ "role": "The hot-headed eldest son", "want": "Take offense at every tiny insult to the family, throw the cannoli tray at whoever said it, then storm off to sulk at the Back.", "headpiece": "ball_cap_back", "color": "#E0482E" },
-				{ "role": "The reluctant youngest son", "want": "Stay out of the family business: hide at the Front by the footlights and dodge anyone who comes over to ask a favor, because today you cannot say no.", "headpiece": "hood", "color": "#6B6B30" },
-				{ "role": "The family adviser", "want": "Fix every problem the same quiet way: grab the plush horse head and throw it at whoever is causing trouble.", "headpiece": "dark_shades", "color": "#1A1A1E" },
+				{ "role": "The reluctant youngest son", "want": "Stay out of the family business: hide at the Front by the footlights and dodge anyone who comes over to ask a favor, because today you cannot say no.", "headpiece": "", "color": "#6B6B30" },
+				{ "role": "The family adviser", "want": "Fix every problem the same quiet way: grab the plush horse head and throw it at whoever is causing trouble.", "headpiece": "", "color": "#1A1A1E" },
 				{ "role": "A washed-up crooner", "want": "Win a starring movie role: croon a sad song at the Front, then give the wedding envelope to whoever looks most in charge and beg for help.", "headpiece": "top_hat", "color": "#8A3FB8" }
 			]
 		},
@@ -83,10 +83,10 @@
 			"backdrop": { "id": "retro_diner", "what": "A retro diner: a chrome counter with cherry-red stools, a checkered floor, plump booths, a big wall clock and wide windows onto a sunny parking lot." },
 			"props": ["glowing briefcase", "gold pocket watch", "giant milkshake", "giant cheeseburger"],
 			"seats": [
-				{ "role": "A chatty errand man in a black suit", "want": "Carry the glowing briefcase to the boss's booth at the Back, chatting about burgers all the way, and let nobody open it.", "headpiece": "dark_shades", "color": "#121216" },
+				{ "role": "A chatty errand man in a black suit", "want": "Carry the glowing briefcase to the boss's booth at the Back, chatting about burgers all the way, and let nobody open it.", "headpiece": "", "color": "#121216" },
 				{ "role": "A nosy errand man in a black suit", "want": "Get the glowing briefcase to yourself at the Front and peek inside it while nobody is looking.", "headpiece": "fedora", "color": "#4A4A4E" },
 				{ "role": "The boss's bored wife", "want": "Win the dance contest on the Riser, pull anyone you like up to be your partner, and claim the giant milkshake as your prize.", "headpiece": "bob_wig", "color": "#141416" },
-				{ "role": "A runaway boxer who refused to lose", "want": "Grab your lucky gold pocket watch before anyone else can and keep it safe at Left, dodging anyone who asks about the big fight.", "headpiece": "hood", "color": "#B8262A" },
+				{ "role": "A runaway boxer who refused to lose", "want": "Grab your lucky gold pocket watch before anyone else can and keep it safe at Left, dodging anyone who asks about the big fight.", "headpiece": "", "color": "#B8262A" },
 				{ "role": "A smooth fixer in a tuxedo", "want": "Clean up the chaos in record time: grab any prop left lying loose and throw it back onto the Prop Table.", "headpiece": "top_hat", "color": "#1C1C20" }
 			]
 		},
@@ -97,7 +97,7 @@
 			"backdrop": { "id": "bowling_lanes", "what": "A retro bowling alley on league night: shiny wooden lanes, rows of white pins, a ball return and a starry ceiling." },
 			"props": ["rolled-up rug", "bowling ball", "ransom bag", "milk carton"],
 			"seats": [
-				{ "role": "A laid-back slacker in a bathrobe", "want": "Replace your ruined rug with the rolled-up rug, throw it down at Center, and stay relaxed no matter who yells at you.", "headpiece": "hood", "color": "#D9C9A3" },
+				{ "role": "A laid-back slacker in a bathrobe", "want": "Replace your ruined rug with the rolled-up rug, throw it down at Center, and stay relaxed no matter who yells at you.", "headpiece": "dark_shades", "color": "#1A1A1E" },
 				{ "role": "A hot-headed teammate who knows every rule", "want": "Take charge of the ransom bag, throw it at the Back yourself, and call a foul on anyone who questions your plan.", "headpiece": "saucepan_helmet", "color": "#6E7438" },
 				{ "role": "A quiet bowler nobody listens to", "want": "Get the bowling ball and finally take your turn, rolling it at the pins at the Back, before anyone cuts you off.", "headpiece": "ball_cap", "color": "#9CCCEB" },
 				{ "role": "A flashy rival bowler", "want": "Claim the Riser as your winners' podium before a single frame is bowled, and hold up the bowling ball like you already won.", "headpiece": "top_hat", "color": "#F0459A" },
@@ -112,10 +112,10 @@
 			"props": ["red pill", "blue pill", "ringing phone", "bent spoon"],
 			"seats": [
 				{ "role": "A sleepy office worker", "want": "Refuse to choose: give away any pill or prop that reaches you, and keep sneaking back to the Riser for a nap.", "headpiece": "beanie", "color": "#6E7F92" },
-				{ "role": "A grand leader in a long coat", "want": "Grab a pill, settle into the Riser, and give it to whoever looks most confused, swishing your coat dramatically.", "headpiece": "wide_brim_hat", "color": "#6E1E2A" },
+				{ "role": "A grand leader in a long coat", "want": "Grab a pill, settle into the Riser, and give it to whoever looks most confused, swishing your coat dramatically.", "headpiece": "", "color": "#6E1E2A" },
 				{ "role": "A rebel in black leather", "want": "Grab the ringing phone and give it to whoever seems ready to escape, and dodge in slow motion at Center whenever anything is thrown.", "headpiece": "bob_wig", "color": "#18181C" },
 				{ "role": "A stern agent in a dark suit", "want": "Gather up every loose pill and the ringing phone, throw them back onto the Prop Table, and glare at any actor who looks suspiciously like a pill.", "headpiece": "dark_shades", "color": "#1A1A1E" },
-				{ "role": "A fortune-teller baking cookies", "want": "Stir your cookie dough at the Back, then give a pill to whoever you predict will pick the wrong one.", "headpiece": "wizard_hat", "color": "#B9A3DE" }
+				{ "role": "A fortune-teller baking cookies", "want": "Stir your cookie dough at the Back, then give a pill to whoever you predict will pick the wrong one.", "headpiece": "", "color": "#B9A3DE" }
 			]
 		}
 	],
