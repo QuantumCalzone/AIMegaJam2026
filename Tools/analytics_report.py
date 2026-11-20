@@ -9,6 +9,8 @@ packaged game. The relay address comes from stats.json's "relay", or else from
     python Tools/analytics_report.py                    every real event
     python Tools/analytics_report.py --since 2026-11-20 events from that UTC day on
     python Tools/analytics_report.py --test             real and "test" events together
+    python Tools/analytics_report.py --build 2026-11-20-10f8540
+                                                        one build's events alone
     python Tools/analytics_report.py --new-key          write Local/stats.json with a fresh
                                                         key (prints no key; paste it into
                                                         the Worker's STATS_KEY secret)
@@ -16,13 +18,24 @@ packaged game. The relay address comes from stats.json's "relay", or else from
 Other options: --config <path to stats.json>, --relay <address>, --top <n> (rows in the
 long lists, 15 by default). Player ids listed in stats.json's "ignore_players" (our own
 machines) are always left out.
+
+Builds (T111): every event carries the build that sent it. A build that Tools/deploy_itch.py
+makes reports its version label, <commit date>-<short sha>, the label of its file on
+itch.io; the editor and builds packaged by hand report "local", and builds from before T111
+"2026-11-15". The builds table lists players, shows and events per build, newest first (by
+the build's first event). It marks the releases: labels of the form YYYY-MM-DD-<sha> whose
+commit is on main (git merge-base --is-ancestor against origin/main as last fetched, or
+main, when the script runs in the repo). It says "?" when git can't tell (no repo, or a
+commit this clone hasn't fetched). Everything else is not a release.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import secrets
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
@@ -36,6 +49,8 @@ LLM_JSON = ROOT / "Content" / "NHOS" / "Data" / "llm.json"
 # Cloudflare answers 403 to Python's default User-Agent.
 USER_AGENT = "nhos-analytics-report/1"
 PAGE = 5000
+# A build that Tools/deploy_itch.py made: <commit date (UTC)>-<short sha> (T111).
+VERSION_LABEL = re.compile(r"^\d{4}-\d{2}-\d{2}-(?P<sha>[0-9a-f]{7,40})$")
 
 
 def fail(text: str) -> None:
@@ -111,6 +126,39 @@ def fetch_events(relay: str, key: str, since: str, test: bool) -> list[dict]:
         after = page["next"]
 
 
+def release_ref() -> str | None:
+    """origin/main (as last fetched), else main, when the script runs in the repo; None when git can't say."""
+    for ref in ("origin/main", "main"):
+        try:
+            proc = subprocess.run(["git", "rev-parse", "--verify", "--quiet", f"{ref}^{{commit}}"],
+                                  cwd=ROOT, capture_output=True, text=True)
+        except OSError:
+            return None
+        if proc.returncode == 0:
+            return ref
+    return None
+
+
+def is_release(label: str, ref: str | None) -> str:
+    """"yes" for a version label whose commit is on ref, "no" for any other label, "?" when git can't tell."""
+    m = VERSION_LABEL.match(label)
+    if not m:
+        return "no"
+    if ref is None:
+        return "?"
+    try:
+        proc = subprocess.run(["git", "merge-base", "--is-ancestor", m.group("sha"), ref],
+                              cwd=ROOT, capture_output=True, text=True)
+    except OSError:
+        return "?"
+    # 0: an ancestor; 1: not one; anything else: git doesn't know the commit.
+    return {0: "yes", 1: "no"}.get(proc.returncode, "?")
+
+
+def build_of(e: dict) -> str:
+    return str(e.get("build") or "")
+
+
 def heading(text: str) -> None:
     print()
     print(f"== {text}")
@@ -128,6 +176,31 @@ def table(rows: list[list], header: list[str]) -> None:
         print("  " + "  ".join(c.rjust(widths[i]) if right[i] else c.ljust(widths[i]) for i, c in enumerate(r)).rstrip())
         if n == 0:
             print("  " + "  ".join("-" * w for w in widths))
+
+
+def builds_table(events: list[dict]) -> None:
+    """Players, shows and events per build, newest first (by the build's first event), with the releases marked."""
+    players: dict[str, set] = defaultdict(set)
+    shows: dict[str, set] = defaultdict(set)
+    count: Counter = Counter()
+    first: dict[str, dict] = {}
+    last: dict[str, dict] = {}
+    for e in sorted(events, key=lambda e: e["id"]):
+        b = build_of(e)
+        players[b].add(e["player"])
+        if e["event"] == "show_start":
+            shows[b].add(e["session"])
+        count[b] += 1
+        first.setdefault(b, e)
+        last[b] = e
+    ref = release_ref()
+    heading("builds" + (f" (release: its commit is on {ref})" if ref else " (release: ? = not in the repo, so git can't tell)"))
+    names = sorted(count, key=lambda b: -first[b]["id"])
+    table(
+        [[b or "(none)", is_release(b, ref), len(players[b]), len(shows[b]), count[b], first[b]["ts"][:10], last[b]["ts"][:10]]
+         for b in names],
+        ["build", "release", "players", "shows", "events", "first seen", "last seen"],
+    )
 
 
 def report(events: list[dict], top: int) -> None:
@@ -150,6 +223,8 @@ def report(events: list[dict], top: int) -> None:
         [["players", len(seen_days)], ["came back (launches over 1, or seen on 2+ days)", len(back)]],
         ["", "count"],
     )
+
+    builds_table(events)
 
     # modes
     starts = [e for e in events if e["event"] == "show_start"]
@@ -239,6 +314,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Report the game's analytics events from the relay.")
     ap.add_argument("--since", default="", help="only events from this UTC day on (YYYY-MM-DD)")
     ap.add_argument("--test", action="store_true", help='include "test" events')
+    ap.add_argument("--build", default=None,
+                    help='only events from this build (a version label such as 2026-11-20-10f8540, or "local")')
     ap.add_argument("--config", type=Path, default=DEFAULT_CONFIG, help="path to stats.json")
     ap.add_argument("--relay", default=None, help="relay address (overrides stats.json)")
     ap.add_argument("--top", type=int, default=15, help="rows in the long lists")
@@ -250,6 +327,8 @@ def main() -> None:
         return
     if args.since and not (len(args.since) == 10 and args.since[4] == "-" and args.since[7] == "-"):
         fail("--since must be YYYY-MM-DD")
+    if args.build is not None and not 1 <= len(args.build) <= 20:
+        fail("--build must be 1 to 20 characters (a build's label, as the builds table lists it)")
     relay, key, ignore = load_config(args.config, args.relay)
     events = fetch_events(relay, key, args.since, args.test)
     # Our own machines' player ids (ignore_players in stats.json) never count.
@@ -258,6 +337,14 @@ def main() -> None:
     if len(kept) < len(events):
         print(f"left out {len(events) - len(kept)} events from the {len(ignore)} ignored players in {args.config.name}")
     events = kept
+    if args.build is not None:
+        one = [e for e in events if build_of(e) == args.build]
+        if not one:
+            builds = sorted({build_of(e) or "(none)" for e in events})
+            print(f"no events from build {args.build}; the builds with events are: {', '.join(builds) or 'none'}")
+            return
+        print(f"build: {args.build} alone ({len(one)} of {len(events)} events)")
+        events = one
     report(events, args.top)
 
 

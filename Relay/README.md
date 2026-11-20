@@ -78,7 +78,7 @@ Since T67 the relay also collects the game's play stats, because it is the one s
 {
 	"player": "9f1c2a7e4b3d4e6fa0b1c2d3e4f5a6b7",
 	"session": "3f2a9c0e8b7d4e1fa6c5b2d9e0f1a2b3",
-	"build": "2026-11-15",
+	"build": "2026-11-20-10f8540",
 	"mode": "free",
 	"event": "phase",
 	"fields": { "phase": "free_talk_1", "scene": 2 },
@@ -89,6 +89,7 @@ Since T67 the relay also collects the game's play stats, because it is the one s
 - `player`: 32 hex digits, an anonymous id the game makes on its first launch. Stored lower case.
 - `session`: 8 to 64 letters, digits, `-` or `_`. The show's session id, or one made at launch for events before a show.
 - `build` (up to 20 characters), `mode` (`free`, `relay`, `keys` or `""`), `fields` and `test` (true or false) may be left out.
+- `build` is the `build` field of the game's `llm.json` (T111): a build that `Tools/deploy_itch.py` made sends its version label, `<commit date>-<short sha>`, the label of its file on itch.io (for example `2026-11-20-10f8540`); the editor and builds packaged by hand send `local`; builds from before T111 sent `2026-11-15`. See "Deploys to itch.io" in `Docs/Builds.md`.
 - `event` and its `fields` must be on the allow-list in `relay.config.json` (`events.allowed`). Each field has a type and a cap (a string's length, a number's range), and every field may be left out. Anything else is a `bad_request` in the usual error shape: an unknown event, an extra field, a wrong type, a number out of range, a string over its cap, a body over 2 KB.
 
 | Event | Fields |
@@ -115,7 +116,7 @@ The answer is `{"ok": true}`. An event never calls a provider and never counts a
 
 ### The report
 
-`Tools/analytics_report.py` (Python 3.10+, no packages) reads `/stats` and prints the players (and how many came back: `launches` over 1, or seen on two or more days), players and shows per mode, the drop-off (shows that reached each phase, the `show_end` results, and the last phase of shows that never ended), calls per provider and model with failures and tokens, errors by kind, and the most common unsupported actions.
+`Tools/analytics_report.py` (Python 3.10+, no packages) reads `/stats` and prints the players (and how many came back: `launches` over 1, or seen on two or more days), players and shows per mode, the drop-off (shows that reached each phase, the `show_end` results, and the last phase of shows that never ended), calls per provider and model with failures and tokens, errors by kind, and the most common unsupported actions. Since T111 it also lists the builds (players, shows and events per build, newest first by the build's first event) and marks the releases: version labels whose commit is on `main` (`git merge-base --is-ancestor` against `origin/main` as last fetched, when the script runs in the repo; `?` when git can't tell). `local` and the old `2026-11-15` are not releases.
 
 ```bash
 python Tools/analytics_report.py
@@ -125,7 +126,11 @@ python Tools/analytics_report.py
 python Tools/analytics_report.py --since 2026-11-20 --test
 ```
 
-`--since` starts at that UTC day. `--test` adds the test events, which are left out otherwise. It reads the key from `Local/stats.json` (an example is in `Docs/stats.example.json`), never from `Local/llm_key.json`, which ships next to the packaged game. The relay address comes from that file's `relay`, or else from `relay` in `Content/NHOS/Data/llm.json`.
+```bash
+python Tools/analytics_report.py --build 2026-11-20-10f8540
+```
+
+`--since` starts at that UTC day. `--test` adds the test events, which are left out otherwise. `--build <label>` reports one build's events alone (a version label as the builds table lists it, or `local`). It reads the key from `Local/stats.json` (an example is in `Docs/stats.example.json`), never from `Local/llm_key.json`, which ships next to the packaged game. The relay address comes from that file's `relay`, or else from `relay` in `Content/NHOS/Data/llm.json`.
 
 **Leaving out our own machines:** list their player ids in `Local/stats.json` under `ignore_players`. The report always leaves those players out and says how many events it left out; the events stay on the relay. The game prints its player id in the log (T68). The game sends events only from packaged builds, never from the Unreal Editor, except test-marked events for checks (T68).
 
