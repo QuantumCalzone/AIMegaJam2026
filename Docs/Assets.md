@@ -174,6 +174,14 @@ Made with Leonardo.ai through its paid API (private generations) in six rounds o
 |---|---|---|---|
 | `Content/NHOS/UI/Stagehand/T_Stagehand_Portrait` (`Docs/Art/2D/stagehand/portrait_256.png`, from `Docs/Art/2D/stagehand/stagehand.png`) | The friendly AI stagehand's portrait in the earpiece (`WBP_Earpiece`): a little dented trash-can droid with one lens eye, two red indicator lights and a headset over its lid. | Leonardo.ai `lucid-origin` image (generation `1f1e3a4f-84bb-6990-82fc-e23f96310e5a`, seed 179363462, take 1), about 35 API credits for four, 2026-11-18 (T99). | Ours: made on the paid Leonardo API. |
 
+### The game icon
+
+The icon on the packaged game's `.exe`, its window and taskbar button, and the Mac app (T115, my person's pick on 2026-11-20). Drawn in 2D by our own script from an in-engine render of the game's costume model; no outside art and no paid generation. `Docs/Art/Icon/README.md` has how it was made, the render and both rounds of candidates.
+
+| Asset | What it is | Source | License |
+|---|---|---|---|
+| `Build/Windows/Application.ico` (16, 20, 24, 32, 40, 48, 64, 128 and 256 px) and `Build/Mac/Resources/Assets.xcassets/AppIcon.appiconset/` (16 to 1024 px), from `Docs/Art/Icon/icon_1024.png` and `icon_mac_1024.png` | The game icon: a grinning person pushes the costume's teal cardboard box head up and off with one striped sleeve and garden glove, and winks; a UIStyle Red (#C8202F) rounded tile with an ink rim. | Drawn by our C# script `Docs/Art/Icon/RevealArt.cs` (System.Drawing, run by `make_icon.ps1`), 2026-11-20 (T115): vector shapes measured from an in-engine render of `SM_You_Head` and `BP_Robot`'s face parts (`Docs/Art/Icon/render/`), with hand-placed pixels at 16, 20, 24 and 32 px. Colors from the render, the approved cast art (`Docs/Art/Cast/you/`) and `UIStyle`. | Ours. |
+
 ## Audio
 
 Every sound in `Content/NHOS/Audio/` was replaced in T102 (2026-11-19), from the picks my person made by ear in T100 (the music) and T101 (every other sound and three of the four robot voices). Each was reimported over the asset it replaces, under the same name, so every reference stays. The source files are in `SourceAssets/Audio/music/t100/`, `show/`, `robot/`, `ui/` and `voices/<set>/`. How each was picked, every prompt and my person's words are in `Docs/AudioShortlist.md`; the loudness targets and the levels of the mix are there too.
