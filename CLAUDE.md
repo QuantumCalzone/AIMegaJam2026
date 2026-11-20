@@ -54,6 +54,7 @@ When your person asks for a release:
 1. Check that the work to ship is pushed to `dev`. Tools > itch.io > "Dry run of dev" (or `python Tools/deploy_itch.py --commit origin/dev --dry-run`) packages `dev`'s tip and runs the secrets check without uploading, so you can see that the release builds before you make it.
 2. `git fetch origin`, then merge `dev` into `main` as a fast-forward, with a push alone, so no working tree changes: `git push origin origin/dev:refs/heads/main`. Git refuses it if `main` holds a commit that `dev` doesn't. Then stop and tell your person; never add `--force` or a `+`.
 3. Tell your person which commit is now `main` (`git rev-parse --short origin/main`). To upload it, run Tools > itch.io > "Build and upload to itch.io" (or `python Tools/deploy_itch.py`). The file on the page gets that commit's version, `<commit date>-<short sha>`.
+4. The push also redeploys the relay: its Workers Builds production branch is `main` (`Relay/README.md`, "Deploy"). A minute or two later, check that the relay's `/health` answers `"ok": true` with the providers you expect.
 
 Other branches, such as `Take37`, are never part of a release. Leave them alone.
 
