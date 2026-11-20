@@ -107,9 +107,9 @@ Package a build, check it for secrets, upload it to itch.io: [Docs/Builds.md](Do
 
 ### Deploys to itch.io
 
-Builds go to https://quantumcalzone.itch.io/no-humans-on-set with butler. In the editor, **Tools > itch.io** builds the pushed tip of `main` (the last release; see "Releases") and uploads it, and its "Dry run of dev" builds `dev`'s tip without uploading it; `Tools/deploy_itch.py` does the same by hand. Never replace, rename or delete the jam's file on the page. The details are under "Deploys to itch.io" in [Docs/Builds.md](Docs/Builds.md).
+Builds go to https://quantumcalzone.itch.io/no-humans-on-set with butler. In the editor, **Tools > itch.io** builds the pushed tip of `main` (the last release; see "Releases") and uploads it, and its "Dry run of dev" builds `dev`'s tip without uploading it; `Tools/deploy_itch.py` does the same by hand. It packages for the machine it runs on, in a deploy worktree next to the repo folder (`NHOS_deploy`): the PC uploads the `windows` file, and the Mac the `mac` file, whose app must also pass `codesign --verify --deep --strict` after the secrets check. Never replace, rename or delete the jam's file on the page. The details are under "Deploys to itch.io" in [Docs/Builds.md](Docs/Builds.md).
 
-Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.log`.
+Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.log` on Windows, `~/Library/Logs/Unreal Engine/AIMegaJam2026Editor/AIMegaJam2026.log` on a Mac.
 
 ## Working with assets
 

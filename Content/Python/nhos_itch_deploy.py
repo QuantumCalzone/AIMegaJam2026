@@ -21,6 +21,7 @@ Nothing here runs in a packaged game: Content/Python is not cooked or staged.
 """
 
 import os
+import shlex
 import subprocess
 import sys
 
@@ -78,11 +79,16 @@ def launch(dry_run, commit=None):
         subprocess.Popen(f'cmd /c "{line} & echo. & pause"', cwd=project,
                          creationflags=subprocess.CREATE_NEW_CONSOLE)
     else:
-        # Terminal on a Mac, through a small command file.
+        # Terminal on a Mac, through a small command file. Terminal runs it in a new login shell,
+        # not the editor's environment, so deploy_itch.py finds the deploy worktree by its Mac
+        # default (T92). shlex quotes for sh; list2cmdline quotes for Windows. It waits for
+        # Return at the end, like the Windows pause: Terminal may close a window whose script
+        # ended cleanly, and the result would go with it.
         cmd_file = os.path.join(project, "Saved", "DeployItch.command")
         with open(cmd_file, "w") as fh:
-            fh.write("#!/bin/sh\ncd " + subprocess.list2cmdline([project]) + "\n"
-                     + " ".join("'" + a.replace("'", "'\\''") + "'" for a in args) + "\n")
+            fh.write("#!/bin/sh\ncd " + shlex.quote(project) + "\n"
+                     + " ".join(shlex.quote(a) for a in args) + "\n"
+                     + "echo\nprintf 'Press Return to close this window. '\nread _\n")
         os.chmod(cmd_file, 0o755)
         subprocess.Popen(["open", "-a", "Terminal", cmd_file])
     return args

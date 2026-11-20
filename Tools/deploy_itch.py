@@ -24,20 +24,22 @@ release. In the editor, Tools > itch.io runs this script (Content/Python/nhos_it
 
 What it does, in order:
 
-1. Moves the deploy worktree (--deploy or NHOS_DEPLOY; on the PC by default
-   C:/Users/Personal/Projects/NHOS_deploy), a detached git worktree of the repo folder, to the
+1. Moves the deploy worktree (--deploy or NHOS_DEPLOY; by default C:/Users/Personal/Projects/NHOS_deploy
+   on the PC and ~/Projects/NHOS_deploy on a Mac), a detached git worktree of the repo folder, to the
    commit: git fetch (main and dev), git checkout --detach, git lfs pull. It never builds in the repo folder,
    where sessions have uncommitted work. The worktree shares the repo folder's .git/lfs, so a run
    downloads only new LFS objects.
 2. Packages it with the "Package a Windows build" or "Package a macOS build" command from
    Docs/Builds.md, into <deploy worktree>/Packaged/deploy/<short sha>/. On Windows the command goes in
    a .bat run with cmd /c. On a Mac it takes the staged app from Saved/StagedBuilds/Mac/ (the
-   archive step copies only the executable) and copies it with ditto.
+   archive step copies only the executable) and copies it with ditto --clone.
 3. Puts the build in NoHumansOnSet_<Windows|Mac>/ and deletes every .pdb and any Local/ or Saved/
-   folder in it (in the Mac app, Contents/UE/AIMegaJam2026/Local/).
+   folder in it (in the Mac app, Contents/UE/AIMegaJam2026/Local/). If that changed anything inside
+   the Mac app, it signs the app again ad hoc and keeps its sandbox entitlements.
 4. Runs Tools/check_build_secrets.py on it with --local <repo folder>/Local (the deploy worktree
    has no Local/, and nothing is ever copied out of it). Anything but exit code 0 stops the run,
-   and so does a check that found no key files to look for.
+   and so does a check that found no key files to look for. On a Mac,
+   codesign --verify --deep --strict must then pass on the app too.
 5. Reads the page's channels back with butler status. A channel that isn't on the page yet would
    become a new file, visible at once, so only a push with --hidden may make one; the editor's
    menu never does. butler pushes only to its own channels, so it can't touch a file that went up
@@ -76,7 +78,12 @@ PLATFORMS = {
     "mac": {"channel": "mac", "folder": "NoHumansOnSet_Mac", "main": f"{PROJECT}.app"},
 }
 
-DEFAULT_DEPLOY = {"windows": Path("C:/Users/Personal/Projects/NHOS_deploy")}
+# Next to the repo folder on each machine. On a Mac the menu's Terminal window starts a fresh login
+# shell, not the editor's environment, so NHOS_DEPLOY set for the editor would never reach it (T92).
+DEFAULT_DEPLOY = {
+    "windows": Path("C:/Users/Personal/Projects/NHOS_deploy"),
+    "mac": Path.home() / "Projects" / "NHOS_deploy",
+}
 UE_ROOTS = {
     "windows": [Path("C:/Program Files/Epic Games/UE_5.8")],
     "mac": [Path("/Users/Shared/Epic Games/UE_5.8")],
@@ -88,7 +95,8 @@ UE_ROOTS = {
 LEFTOVER_NAMES = ["UnrealEditor-Cmd.exe", "UnrealEditor.exe", "UnrealPak.exe", "UnrealBuildTool.exe",
                   "AutomationTool.exe", "ShaderCompileWorker.exe", "dotnet.exe", "cmd.exe",
                   "cl.exe", "link.exe"]
-LEFTOVER_NAMES_MAC = ["UnrealEditor", "UnrealPak", "dotnet", "ShaderCompileWorker", "xcodebuild", "clang"]
+LEFTOVER_NAMES_MAC = ["UnrealEditor", "UnrealPak", "dotnet", "ShaderCompileWorker", "xcodebuild", "clang",
+                      "clang++", "ld"]
 
 
 def say(text: str) -> None:
@@ -238,6 +246,25 @@ def find_butler(arg: str | None) -> Path | None:
 
 # ---------------------------------------------------------------- the deploy worktree
 
+def _mac_processes() -> list[tuple[int, str, str]]:
+    """(pid, executable name, full command line) for every process.
+
+    The two columns are read apart, each at full width: in one `ps -o pid=,comm=,args=` the comm
+    column is cut to 16 characters, and the engine's path has a space in it (T92).
+    """
+    def column(field: str) -> dict[int, str]:
+        out = subprocess.run(["ps", "-axww", "-o", "pid=", "-o", f"{field}="],
+                             capture_output=True, text=True).stdout
+        rows = {}
+        for line in out.splitlines():
+            pid, _, rest = line.strip().partition(" ")
+            if pid.isdigit():
+                rows[int(pid)] = rest.strip()
+        return rows
+    comm, args = column("comm"), column("args")
+    return [(pid, Path(c).name, args.get(pid, "")) for pid, c in comm.items()]
+
+
 def stop_leftovers(deploy: Path) -> None:
     if os.name == "nt":
         names = ",".join(f"'{n}'" for n in LEFTOVER_NAMES)
@@ -252,14 +279,11 @@ def stop_leftovers(deploy: Path) -> None:
                              capture_output=True, text=True).stdout.strip()
     else:
         out_lines = []
-        ps = subprocess.run(["ps", "-axo", "pid=,comm=,args="], capture_output=True, text=True).stdout
-        for line in ps.splitlines():
-            parts = line.split(None, 2)
-            if len(parts) < 3 or int(parts[0]) == os.getpid():
+        for pid, name, cmdline in _mac_processes():
+            if pid == os.getpid() or name not in LEFTOVER_NAMES_MAC or str(deploy) not in cmdline:
                 continue
-            if Path(parts[1]).name in LEFTOVER_NAMES_MAC and str(deploy) in parts[2]:
-                out_lines.append(f"stopping leftover {Path(parts[1]).name} {parts[0]}")
-                subprocess.run(["kill", "-9", parts[0]], capture_output=True)
+            out_lines.append(f"stopping leftover {name} {pid}")
+            subprocess.run(["kill", "-9", str(pid)], capture_output=True)
         out = "\n".join(out_lines)
     for line in out.splitlines():
         say(line)
@@ -328,22 +352,62 @@ def package_mac(deploy: Path, ue_root: Path, run_dir: Path, top: Path) -> None:
     if not (staged / "Contents").is_dir():
         raise RuntimeError(f"the package step ended but {staged} is missing")
     top.mkdir()
-    run(["ditto", str(staged), str(top / f"{PROJECT}.app")])
+    # --clone: an APFS clone, not a second 1.1 GB copy (the worktree and the push folder share a
+    # volume). The bytes are the same, so is the signature.
+    run(["ditto", "--clone", str(staged), str(top / f"{PROJECT}.app")])
+    # The archive step's app is only the executable; it is never pushed, so free its 411 MB.
+    shutil.rmtree(run_dir / "archive", ignore_errors=True)
 
 
-def strip_build(top: Path) -> None:
+def strip_build(top: Path) -> bool:
+    """Deletes .pdb files and Local/ or Saved/ folders. Returns True when it changed anything inside a .app."""
     removed = 0
+    bundle_changed = False
     for dirpath, dirnames, filenames in os.walk(top, topdown=True):
+        in_app = any(p.endswith(".app") for p in Path(dirpath).relative_to(top).parts)
         for d in list(dirnames):
             if d.lower() in ("local", "saved"):
                 shutil.rmtree(Path(dirpath) / d)
                 dirnames.remove(d)
+                bundle_changed |= in_app
                 say(f"deleted {Path(dirpath, d).relative_to(top.parent).as_posix()}/")
         for f in filenames:
             if f.lower().endswith(".pdb"):
                 (Path(dirpath) / f).unlink()
                 removed += 1
+                bundle_changed |= in_app
     say(f"deleted {removed} .pdb file(s)")
+    return bundle_changed
+
+
+# ---------------------------------------------------------------- the Mac app's signature
+
+def entitlements(app: Path) -> str:
+    proc = subprocess.run(["codesign", "-d", "--entitlements", "-", "--xml", str(app)],
+                          capture_output=True, text=True)
+    return proc.stdout.strip()
+
+
+def resign_app(app: Path) -> None:
+    """Signs the app again ad hoc after a change inside it, and keeps its entitlements.
+
+    A plain `codesign --force --deep --sign -` writes a signature with no entitlements, so the app
+    would lose its sandbox, and read Local/ and write its log somewhere else (T92).
+    """
+    before = entitlements(app)
+    run(["codesign", "--force", "--deep", "--sign", "-",
+         "--preserve-metadata=identifier,entitlements,requirements,flags,runtime", str(app)], capture=True)
+    after = entitlements(app)
+    if before != after:
+        raise RuntimeError("the ad hoc re-sign changed the app's entitlements "
+                           f"(before {len(before)} bytes, after {len(after)} bytes)")
+
+
+def verify_signature(app: Path) -> int:
+    proc = run(["codesign", "--verify", "--deep", "--strict", "--verbose=2", str(app)],
+               check=False, capture=True)
+    print(proc.stdout + proc.stderr, flush=True)  # codesign writes its result to stderr
+    return proc.returncode
 
 
 def check_layout(push_root: Path, plat: str) -> Path:
@@ -405,8 +469,9 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true", help="do everything but the push")
     ap.add_argument("--hidden", action="store_true", help="push to a new channel as hidden (the first push only)")
     ap.add_argument("--repo", help="the repo folder (default: NHOS_REPO, or the main worktree of this checkout)")
-    ap.add_argument("--deploy", help="the deploy worktree (default: NHOS_DEPLOY, or on Windows "
-                                     f"{DEFAULT_DEPLOY['windows']})")
+    ap.add_argument("--deploy", help="the deploy worktree (default: NHOS_DEPLOY, or "
+                                     f"{DEFAULT_DEPLOY['windows']} on Windows and {DEFAULT_DEPLOY['mac']} "
+                                     "on a Mac)")
     ap.add_argument("--ue-root", help="the engine folder (default: UE_ROOT, or the launcher's UE_5.8)")
     ap.add_argument("--butler", help="butler (default: BUTLER, PATH, or the itch app's copy)")
     ap.add_argument("--log", help="also write everything this run prints to this file")
@@ -471,14 +536,24 @@ def main() -> int:
             else:
                 package_mac(deploy, ue_root, run_dir, push_root / folder)
         top = check_layout(push_root, plat)
-        strip_build(top)
+        changed = strip_build(top)
+        if plat == "mac" and changed:
+            # Nothing after this point writes into the bundle.
+            say("the .app changed, so it is signed again ad hoc, with its entitlements kept")
+            resign_app(top / PLATFORMS["mac"]["main"])
     except (RuntimeError, OSError, subprocess.SubprocessError) as e:
         return fail(str(e))
 
+    # The secrets check comes before the signature gate, so a planted key stops the run here.
     code = secrets_check(push_root, local, ue_root)
     if code != 0:
         return fail(f"the secrets check ended with exit code {code}; nothing was pushed")
     say("the secrets check is clean")
+
+    if plat == "mac":
+        if verify_signature(top / PLATFORMS["mac"]["main"]) != 0:
+            return fail("codesign --verify --deep --strict failed on the app; nothing was pushed")
+        say("the app's signature is valid")
 
     if sha:
         when = git("show", "-s", "--format=%cI", sha, cwd=repo)

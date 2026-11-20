@@ -17,7 +17,7 @@ The text for the game's itch.io page: T21's step 3 in [Plan.md](Plan.md), used f
 | Kind of project | Downloadable |
 | Release status | Prototype |
 | Pricing | No payments (free). Change it if you want donations on. |
-| Uploads | `no-humans-on-set-windows.zip`, from butler's channel `windows`, marked Windows: each push that changes the game replaces it (T89; see "Deploys to itch.io" in `Docs/Builds.md`). A Mac file, channel `mac`, comes when the Mac is a runner. Since 2026-11-17 the page holds no jam zip (`QuantumCalzone_NoHumansOnSet_Windows.zip`); never replace one that goes up through the web form. |
+| Uploads | `no-humans-on-set-windows.zip`, from butler's channel `windows`, marked Windows (T89), and `no-humans-on-set-mac.zip`, from butler's channel `mac`, marked macOS (T92): each push that changes the game replaces its platform's file (see "Deploys to itch.io" in `Docs/Builds.md`). The PC pushes the Windows file and the Mac the Mac file, each from Tools > itch.io. Since 2026-11-17 the page holds no jam zip (`QuantumCalzone_NoHumansOnSet_Windows.zip`); never replace one that goes up through the web form. |
 | Genre | Other |
 | Tags | social-deduction, ai, llm, improv, comedy, robots, text-based, unreal-engine |
 | Cover image | 630 × 500, a crop of the theater mid-scene |
@@ -142,6 +142,14 @@ The real game, on your own accounts. Click **Play with my own API keys** and pas
 3. Windows may warn that the app isn't recognized, because it isn't signed. Click **More info**, then **Run anyway** **[T22: check]**.
 
 Needs Windows 10 or 11 (64-bit) and a DirectX 12 graphics card. The game uses Unreal Engine 5's Lumen lighting. Download size: **[T22]**.
+
+### Install and run (Mac) [T92]
+
+1. Download `no-humans-on-set-mac.zip` and double-click it to unzip.
+2. Open `NoHumansOnSet_Mac`, then `AIMegaJam2026.app`. macOS says it can't check the app for malicious software, because the app isn't notarized by Apple. Click **Done**.
+3. Open **System Settings > Privacy & Security**, scroll down to the line about `AIMegaJam2026`, click **Open Anyway** and confirm. You only do this once.
+
+Needs a Mac with Apple silicon (M1 or later). Download size: 760 MB.
 
 ### Known limits
 
