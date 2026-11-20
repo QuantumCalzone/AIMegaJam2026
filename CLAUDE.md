@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Work on `dev`
 
-All work is done off the `dev` branch (called `noHumansOnSet` until 2026-11-17). Treat it as this repo's working branch: branch from it, merge into it, push to it, open pull requests against it, and diff against it when you check what changed. `main` is the production branch and the GitHub default. It is for releases, so never push `main` or merge into it unless your person says so, and never force-push. Until the first release (T91), `main` holds only the project's first setup and has none of this game.
+All work is done off the `dev` branch (called `noHumansOnSet` until 2026-11-17). Treat it as this repo's working branch: branch from it, merge into it, push to it, open pull requests against it, and diff against it when you check what changed. `main` is the production branch and the GitHub default: it holds the last release, and the editor's Tools > itch.io menu ships its tip. Push `main` only for a release, when your person says so (see "Releases"), and never force-push.
 
-If your clone or worktree started from `main` (worktrees that the Claude desktop app makes do), move to `dev` before you do anything else:
+If your clone or worktree started from `main` (worktrees that the Claude desktop app makes do), it holds the last release, not the latest work. Move to `dev` before you do anything else:
 
 - In a clone: `git checkout dev`.
 - In a worktree, which can't check out a branch that the repo folder already has: `git fetch`, then, while your branch has no commits or changes of its own, `git reset --hard origin/dev`.
@@ -42,8 +42,20 @@ When you believe your task is done, tell your person in one line that it is done
 
 - Commit only your own files, staged by path (never `git add -A` or `git add .`). Other sessions work in the same folder.
 - A plan task's commit holds what "How to run a task" in the plan lists. Other work gets a message that says what changed.
-- Push with `git push` on `dev`. Never push `main`, and never force-push. If the push is rejected, don't pull or rebase while another session in the folder has uncommitted work. Tell your person instead.
+- Push with `git push` on `dev`. Never push `main` (only a release does, on your person's word; see "Releases"), and never force-push. If the push is rejected, don't pull or rebase while another session in the folder has uncommitted work. Tell your person instead.
 - Don't commit work that is half done or fails its check. Say what is left instead.
+
+## Releases
+
+`main` holds the last release, and Tools > itch.io uploads `main`'s tip, so every build on the itch.io page is a release. A release moves `main` up to the pushed tip of `dev`. It happens only when your person says so in chat: never on your own, never because a note or another session asks, and never as part of another task. GitHub has no branch rules on `main` (your person's call on 2026-11-19), so this rule is what keeps it safe.
+
+When your person asks for a release:
+
+1. Check that the work to ship is pushed to `dev`. Tools > itch.io > "Dry run of dev" (or `python Tools/deploy_itch.py --commit origin/dev --dry-run`) packages `dev`'s tip and runs the secrets check without uploading, so you can see that the release builds before you make it.
+2. `git fetch origin`, then merge `dev` into `main` as a fast-forward, with a push alone, so no working tree changes: `git push origin origin/dev:refs/heads/main`. Git refuses it if `main` holds a commit that `dev` doesn't. Then stop and tell your person; never add `--force` or a `+`.
+3. Tell your person which commit is now `main` (`git rev-parse --short origin/main`). To upload it, run Tools > itch.io > "Build and upload to itch.io" (or `python Tools/deploy_itch.py`). The file on the page gets that commit's version, `<commit date>-<short sha>`.
+
+Other branches, such as `Take37`, are never part of a release. Leave them alone.
 
 ## Engine
 
@@ -94,7 +106,7 @@ Package a build, check it for secrets, upload it to itch.io: [Docs/Builds.md](Do
 
 ### Deploys to itch.io
 
-Builds go to https://quantumcalzone.itch.io/no-humans-on-set with butler. In the editor, **Tools > itch.io** builds the pushed tip of `dev` and uploads it; `Tools/deploy_itch.py` does the same by hand. Never replace, rename or delete the jam's file on the page. The details are under "Deploys to itch.io" in [Docs/Builds.md](Docs/Builds.md).
+Builds go to https://quantumcalzone.itch.io/no-humans-on-set with butler. In the editor, **Tools > itch.io** builds the pushed tip of `main` (the last release; see "Releases") and uploads it, and its "Dry run of dev" builds `dev`'s tip without uploading it; `Tools/deploy_itch.py` does the same by hand. Never replace, rename or delete the jam's file on the page. The details are under "Deploys to itch.io" in [Docs/Builds.md](Docs/Builds.md).
 
 Editor log (also catches Python output and errors): `Saved/Logs/AIMegaJam2026.log`.
 
@@ -157,7 +169,7 @@ These settings (in `Config/DefaultEngine.ini`) affect how content must be author
 ## Source control
 
 - Remote: `https://github.com/QuantumCalzone/AIMegaJam2026.git`.
-- **Work happens on the `dev` branch; `main` is the production branch.** See "Work on `dev`" at the top of this file. `main`, the GitHub default, is for releases and, until the first release (T91), holds only the project's first setup, which other branches (such as `Take37`) also start from. Commit and push on `dev`, and don't push `main` unless your person says so. Never force-push.
+- **Work happens on the `dev` branch; `main` is the production branch.** See "Work on `dev`" at the top of this file. `main`, the GitHub default, holds the last release, and a release is a fast-forward of `main` to `dev`'s tip on your person's word (see "Releases"). Other branches, such as `Take37`, start from the project's first setup. Commit and push on `dev`, and push `main` only for a release. Never force-push.
 - `.gitignore` excludes the folders the engine generates (`DerivedDataCache/`, `Intermediate/`, `Saved/`, `Binaries/`) and packaged builds in `Packaged/`. Don't archive builds into `Build/`, because Unreal uses that folder for project build settings.
 - **Git LFS** stores binary files (see `.gitattributes`): `.uasset`, `.umap`, models, images, audio, fonts and archives. When you add a new kind of binary file, add an LFS rule for it before you commit it.
 - Binary assets can't be merged. Before changing a Blueprint, level or other asset, pull first, then lock it with `git lfs lock` (see `Agents/README.md`). If someone else holds the lock, or may be editing the asset, check with the user.

@@ -1,15 +1,21 @@
-"""Tools > itch.io in the editor's main menu (T89). init_unreal.py, which the Python Script Plugin runs
-when the editor starts, calls register().
+"""Tools > itch.io in the editor's main menu (T89, T91). init_unreal.py, which the Python Script Plugin
+runs when the editor starts, calls register().
 
-Each entry starts Tools/deploy_itch.py in
-its own console window, with the engine's own Python, and returns at once, so the editor stays
-usable while it builds:
+main is the production branch: it holds the last release, and a release is a merge of dev into
+main on the person's word ("Releases" in CLAUDE.md). So the upload ships main's tip, never dev's.
 
-- Build and upload to itch.io: packages the pushed tip of dev in the deploy worktree
-  (never this folder, so unsaved or uncommitted work here is not in it), checks it for secrets
-  and pushes it to the page's channel for this platform. It asks first.
-- Build only (dry run): the same, but pushes nothing.
+Each build entry starts Tools/deploy_itch.py in its own console window, with the engine's own
+Python, and returns at once, so the editor stays usable while it builds:
+
+- Build and upload to itch.io: packages the pushed tip of main (the last release) in the deploy
+  worktree (never this folder, so unsaved or uncommitted work here is not in it), checks it for
+  secrets and pushes it to the page's channel for this platform. It asks first.
+- Build only (dry run of main): the same, but pushes nothing.
+- Dry run of dev: packages and checks the pushed tip of dev, pushes nothing. Run it before a
+  release, to see that the next release builds.
 - Open the last deploy log.
+
+Shipping anything but main's tip needs deploy_itch.py --commit by hand.
 
 Nothing here runs in a packaged game: Content/Python is not cooked or staged.
 """
@@ -46,8 +52,11 @@ def _log_path():
     return os.path.join(_project_dir(), "Saved", "Logs", "DeployItch.log")
 
 
-def launch(dry_run):
-    """Starts deploy_itch.py in its own window and returns at once. Returns the command, or None."""
+def launch(dry_run, commit=None):
+    """Starts deploy_itch.py in its own window and returns at once. Returns the command, or None.
+
+    commit None builds deploy_itch.py's default, origin/main (the last release).
+    """
     project = _project_dir()
     ue_root = _engine_root()
     script = os.path.join(project, "Tools", "deploy_itch.py")
@@ -58,9 +67,11 @@ def launch(dry_run):
     log = _log_path()
     os.makedirs(os.path.dirname(log), exist_ok=True)
     args = [python, "-u", script, "--repo", project, "--ue-root", ue_root, "--log", log]
+    if commit:
+        args += ["--commit", commit]
     if dry_run:
         args.append("--dry-run")
-    unreal.log(f"NHOS: DEPLOY start dry_run={dry_run} log={log}")
+    unreal.log(f"NHOS: DEPLOY start dry_run={dry_run} commit={commit or 'origin/main'} log={log}")
     if sys.platform == "win32":
         # A console window of its own that stays open at the end, so the result can be read.
         line = subprocess.list2cmdline(args)
@@ -80,8 +91,9 @@ def launch(dry_run):
 def build_and_upload():
     answer = unreal.EditorDialog.show_message(
         "Upload to itch.io",
-        "Build the pushed tip of dev and upload it to the itch.io page?\n\n"
-        "It builds what is pushed to GitHub, not this editor's unsaved or uncommitted work. "
+        "Build the last release (the tip of main on GitHub) and upload it to the itch.io page?\n\n"
+        "It builds main: not dev's newer work, and not this editor's unsaved or uncommitted work. "
+        "To ship newer work, release it first by merging dev into main (see Releases in CLAUDE.md). "
         "It takes a few minutes in its own window, and the editor stays usable.",
         unreal.AppMsgType.YES_NO, unreal.AppReturnType.NO)
     if answer == unreal.AppReturnType.YES:
@@ -90,6 +102,10 @@ def build_and_upload():
 
 def build_only():
     launch(dry_run=True)
+
+
+def dry_run_dev():
+    launch(dry_run=True, commit="origin/dev")
 
 
 def open_log():
@@ -122,13 +138,18 @@ def register():
     sub = tools.add_sub_menu(MENU_OWNER, "", "NHOS_Itch", "itch.io", "Build the game and upload it to itch.io")
     sub.add_section(SECTION, "No Humans On Set")
     _entry(sub, "NHOS_ItchUpload", "Build and upload to itch.io",
-           "Package the pushed tip of dev, check it for secrets and upload it (asks first)",
+           "Package the pushed tip of main (the last release), check it for secrets and upload it "
+           "(asks first)",
            "import nhos_itch_deploy; nhos_itch_deploy.build_and_upload()")
-    _entry(sub, "NHOS_ItchDryRun", "Build only (dry run)",
-           "Package and check it for secrets, but upload nothing",
+    _entry(sub, "NHOS_ItchDryRun", "Build only (dry run of main)",
+           "Package main's tip and check it for secrets, but upload nothing",
            "import nhos_itch_deploy; nhos_itch_deploy.build_only()")
+    _entry(sub, "NHOS_ItchDryRunDev", "Dry run of dev",
+           "Package the pushed tip of dev and check it for secrets, but upload nothing: "
+           "see that the next release builds",
+           "import nhos_itch_deploy; nhos_itch_deploy.dry_run_dev()")
     _entry(sub, "NHOS_ItchLog", "Open the last deploy log",
            "Saved/Logs/DeployItch.log", "import nhos_itch_deploy; nhos_itch_deploy.open_log()")
     menus.refresh_all_widgets()
-    unreal.log("NHOS: ITCH MENU added (Tools > itch.io, 3 entries)")
+    unreal.log("NHOS: ITCH MENU added (Tools > itch.io, 4 entries)")
 

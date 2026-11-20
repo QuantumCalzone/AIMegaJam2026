@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-"""Package a commit of dev and push it to the game's itch.io page with butler.
+"""Package the last release (main's tip) and push it to the game's itch.io page with butler.
 
 Usage (Python 3.10+, no packages needed). It packages for the machine it runs on: a Windows build
 on Windows, a Mac build on a Mac.
 
-    python Tools/deploy_itch.py --dry-run                 # package origin/dev, check it, push nothing
+    python Tools/deploy_itch.py --dry-run                 # package origin/main, check it, push nothing
     python Tools/deploy_itch.py                           # the same, then push it
-    python Tools/deploy_itch.py --commit <sha>            # a given commit
+    python Tools/deploy_itch.py --commit origin/dev --dry-run   # try dev's tip before a release
+    python Tools/deploy_itch.py --commit <sha>            # a given commit (a real push of anything
+                                                          # but main's tip ships an unreleased build)
     python Tools/deploy_itch.py --hidden                  # the first push to a channel: makes it, hidden
     python Tools/deploy_itch.py --build <folder> --dry-run   # check (and push) a build already made
 
-In the editor, Tools > itch.io runs it (Content/Python/nhos_itch_deploy.py). See "Deploys to
-itch.io" in Docs/Builds.md.
+main is the production branch: it holds the last release, and a release is a merge of dev into
+main on the person's word (see "Releases" in CLAUDE.md). So what goes up by default is always a
+release. In the editor, Tools > itch.io runs this script (Content/Python/nhos_itch_deploy.py). See
+"Deploys to itch.io" in Docs/Builds.md.
 
 | Platform | Channel | Folder inside the download   | Built with                         |
 |----------|---------|------------------------------|------------------------------------|
@@ -22,7 +26,7 @@ What it does, in order:
 
 1. Moves the deploy worktree (--deploy or NHOS_DEPLOY; on the PC by default
    C:/Users/Personal/Projects/NHOS_deploy), a detached git worktree of the repo folder, to the
-   commit: git fetch, git checkout --detach, git lfs pull. It never builds in the repo folder,
+   commit: git fetch (main and dev), git checkout --detach, git lfs pull. It never builds in the repo folder,
    where sessions have uncommitted work. The worktree shares the repo folder's .git/lfs, so a run
    downloads only new LFS objects.
 2. Packages it with the "Package a Windows build" or "Package a macOS build" command from
@@ -62,7 +66,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PROJECT = "AIMegaJam2026"
-BRANCH = "dev"
+RELEASE_BRANCH = "main"  # the production branch: the last release, built by default
+WORK_BRANCH = "dev"  # where all work happens; fetched too, so --commit origin/dev is up to date
+DEFAULT_COMMIT = f"origin/{RELEASE_BRANCH}"
 GAME = "quantumcalzone/no-humans-on-set"
 
 PLATFORMS = {
@@ -257,7 +263,7 @@ def stop_leftovers(deploy: Path) -> None:
 
 def prepare_worktree(repo: Path, deploy: Path, commit: str) -> str:
     """Moves the deploy worktree to the commit and returns the full sha."""
-    git("fetch", "origin", BRANCH, cwd=repo, capture=False)
+    git("fetch", "origin", RELEASE_BRANCH, WORK_BRANCH, cwd=repo, capture=False)
     sha = git("rev-parse", "--verify", f"{commit}^{{commit}}", cwd=repo)
     if not (deploy / ".git").exists():
         if deploy.exists() and any(deploy.iterdir()):
@@ -382,7 +388,9 @@ def channels(butler: Path) -> dict[str, str] | None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--commit", default=f"origin/{BRANCH}", help=f"the commit to build (default: origin/{BRANCH})")
+    ap.add_argument("--commit", default=DEFAULT_COMMIT,
+                    help=f"the commit to build (default: {DEFAULT_COMMIT}, the last release; "
+                         f"origin/{WORK_BRANCH} with --dry-run tries the next one)")
     ap.add_argument("--build", help="a push root that already holds a NoHumansOnSet_<Windows|Mac>/ build: "
                                     "skip the checkout and the packaging")
     ap.add_argument("--platform", choices=sorted(PLATFORMS),
@@ -424,7 +432,7 @@ def main() -> int:
         if args.build:
             push_root = Path(args.build).resolve()
             sha = None
-            if args.commit != f"origin/{BRANCH}":
+            if args.commit != DEFAULT_COMMIT:
                 sha = git("rev-parse", "--verify", f"{args.commit}^{{commit}}", cwd=repo)
         else:
             deploy = Path(deploy_arg).resolve()
@@ -434,7 +442,10 @@ def main() -> int:
                 return fail("the engine was not found (pass --ue-root or set UE_ROOT)")
             take_lock(deploy)
             sha = prepare_worktree(repo, deploy, args.commit)
-            say(f"building {sha[:7]} in {deploy}")
+            release = git("rev-parse", "--verify", f"{DEFAULT_COMMIT}^{{commit}}", cwd=repo)
+            say(f"building {sha[:7]} in {deploy}"
+                + (" (main's tip, the last release)" if sha == release
+                   else f" (not main's tip {release[:7]}: not a release)"))
             deploy_dir = deploy / "Packaged" / "deploy"
             # Only the newest run's build is kept.
             if deploy_dir.is_dir():
@@ -483,6 +494,11 @@ def main() -> int:
             say(f"note: {channel} is not on the page yet, so a real push would stop here (use --hidden)")
     if args.hidden:
         cmd.append("--hidden")
+    if sha and not args.dry_run:
+        release = git("rev-parse", "--verify", f"{DEFAULT_COMMIT}^{{commit}}", cwd=repo)
+        if sha != release:
+            say(f"note: {sha[:7]} is not main's tip ({release[:7]}), so this push ships a build that "
+                "is not a release; it was asked for with --commit")
     if args.dry_run:
         say("dry run: would push with " + " ".join(cmd))
         say(f"the build is in {push_root}")
